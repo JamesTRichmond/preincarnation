@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Strange Device — PREINCARNATION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #070b18;
+      --elev: #10182c;
+      --subtle: #162044;
+      --fg: #f4efe2;
+      --muted: #c4bba8;
+      --dim: #8e8676;
+      --gold: #e8c36a;
+      --ink: #140f08;
+      --border: #2a3350;
+      --danger: #c45c4a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Source Sans 3", system-ui, sans-serif;
+    }
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 88px;
+    }
+    .sky {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(800px 400px at 50% 0%, #162044 0%, transparent 60%),
+        var(--bg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap { position: relative; z-index: 1; width: min(28rem, 100%); }
+    .kicker {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0 0 8px;
+    }
+    h1 {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 600;
+      margin: 0;
+    }
+    .lede {
+      color: var(--muted);
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+    .county {
+      min-height: 220px;
+      margin-top: 28px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--elev);
+      padding: 22px;
+    }
+    .county p { margin: 0; color: var(--dim); font-size: 14px; }
+    .lid {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(7, 11, 24, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .lid[hidden] { display: none !important; }
+    .box {
+      width: min(28rem, 100%);
+      background: var(--elev);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 24px;
+    }
+    .bay {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: var(--subtle);
+      border: 1px solid var(--border);
+    }
+    .bay strong {
+      display: block;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .bay .src {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .empty { color: var(--dim); font-size: 14px; }
+    .row { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+    button, label.file {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      min-height: 48px;
+      border-radius: 12px;
+      font: 500 16px "Source Sans 3", system-ui, sans-serif;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gold { background: var(--gold); color: var(--ink); font-weight: 600; }
+    .ghost {
+      background: transparent;
+      color: var(--fg);
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+    .file input { display: none; }
+    .meter {
+      margin-top: 14px;
+      height: 4px;
+      background: #0c1224;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .meter > span {
+      display: block;
+      height: 100%;
+      background: var(--gold);
+      width: 0%;
+    }
+    .times {
+      display: flex;
+      justify-content: space-between;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 6px;
+    }
+    .chip {
+      position: fixed;
+      z-index: 10;
+      left: 16px;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: var(--elev);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 8px 8px 16px;
+      max-width: calc(100% - 32px);
+    }
+    .chip.show { display: flex; }
+    .chip b {
+      font-weight: 500;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chip button {
+      min-height: 36px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .note {
+      margin-top: 18px;
+      color: var(--dim);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="sky"></div>
+  <main class="wrap">
+    <p class="kicker">Vermont · phase 1</p>
+    <h1>Strange Device</h1>
+    <p class="lede">A pocket of other people’s music. Yours, if you feed it. Pocketing the lid does not stop the song. The box remembers the file after you leave, and after you refresh.</p>
+    <section class="county">
+      <p>You are on the Green. The county drone is quiet while the box sings. Open the device when you want the lid. Pause is a different act.</p>
+      <div class="row">
+        <button class="gold" id="open" type="button">Open the device</button>
+      </div>
+    </section>
+    <p class="note">This is phase 1 only: keep-playing and memory. Spotify sync and the copper slug come later.</p>
+  </main>
+
+  <div class="chip" id="chip">
+    <b id="chipTitle">—</b>
+    <button class="ghost" id="chipPause" type="button">Pause</button>
+    <button class="gold" id="chipOpen" type="button">Lid</button>
+  </div>
+
+  <div class="lid" id="lid" hidden>
+    <div class="box">
+      <p class="kicker">Strange device</p>
+      <h1 style="font-size:2rem">A pocket of other music</h1>
+      <p class="lede">Feed it a song from your own library. Towns already hum; this is yours.</p>
+      <div class="bay" id="bay">
+        <span class="src" id="srcLabel">Empty bay</span>
+        <strong id="title">Nothing seated</strong>
+        <p class="empty" id="empty">One file lives here. Spotify bays wait on a later slug.</p>
+        <div class="meter" aria-hidden="true"><span id="bar"></span></div>
+        <div class="times"><span id="t0">0:00</span><span id="t1">0:00</span></div>
+      </div>
+      <div class="row">
+        <label class="file gold">
+          Feed a file
+          <input id="file" type="file" accept="audio/*" />
+        </label>
+        <button class="ghost" id="toggle" type="button">Play</button>
+        <button class="ghost" id="pocket" type="button">Pocket it</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DB_NAME = "preincarnation.deck.v1";
+    const STORE = "files";
+    const META_KEY = "preincarnation.deck.meta.v1";
+
+    const $ = (id) => document.getElementById(id);
+
+    function openDb() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => {
+          if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function idbPut(id, blob) {
+      return openDb().then((db) => new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, "readwrite");
+        tx.objectStore(STORE).put(blob, id);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      }));
+    }
+    function idbGet(id) {
+      return openDb().then((db) => new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, "readonly");
+        const req = tx.objectStore(STORE).get(id);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      }));
+    }
+    function pretty(name) {
+      return name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim() || "Untitled";
+    }
+    function fmt(s) {
+      if (!Number.isFinite(s) || s < 0) return "0:00";
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ":" + String(sec).padStart(2, "0");
+    }
+
+    const audio = document.createElement("audio");
+    audio.preload = "metadata";
+    audio.setAttribute("playsinline", "true");
+    document.body.appendChild(audio);
+
+    let url = null;
+    let meta = { tracks: [], nowPlayingId: null, position: 0 };
+
+    function saveMeta() {
+      try {
+        localStorage.setItem(META_KEY, JSON.stringify({
+          tracks: meta.tracks,
+          nowPlayingId: meta.nowPlayingId,
+          position: audio.currentTime || meta.position,
+        }));
+      } catch {}
+    }
+    function current() {
+      return meta.tracks.find((t) => t.id === meta.nowPlayingId) || meta.tracks[0] || null;
+    }
+    function playing() {
+      return !audio.paused && !audio.ended;
+    }
+    function paint() {
+      const t = current();
+      const on = playing();
+      $("srcLabel").textContent = t ? "File seated" : "Empty bay";
+      $("title").textContent = t ? t.title : "Nothing seated";
+      $("empty").textContent = t
+        ? t.fileName + " — pocket the lid and it keeps walking."
+        : "One file lives here. Spotify bays wait on a later slug.";
+      $("toggle").textContent = on ? "Pause" : "Play";
+      $("toggle").disabled = !t;
+      const dur = Number.isFinite(audio.duration) ? audio.duration : (t?.duration || 0);
+      const pos = audio.currentTime || meta.position || 0;
+      $("t0").textContent = fmt(pos);
+      $("t1").textContent = fmt(dur);
+      $("bar").style.width = dur > 0 ? Math.min(100, (pos / dur) * 100) + "%" : "0%";
+      $("chipTitle").textContent = t ? (on ? "Now · " + t.title : t.title) : "—";
+      $("chipPause").textContent = on ? "Pause" : "Play";
+      $("chip").classList.toggle("show", !!t && $("lid").hidden);
+    }
+
+    async function attach(id, start) {
+      const blob = await idbGet(id);
+      if (!blob) return false;
+      if (url) URL.revokeObjectURL(url);
+      url = URL.createObjectURL(blob);
+      audio.src = url;
+      audio.currentTime = Math.max(0, start || 0);
+      return true;
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      meta.position = audio.currentTime;
+      const t = current();
+      if (t && Number.isFinite(audio.duration)) t.duration = audio.duration;
+      saveMeta();
+      paint();
+    });
+    audio.addEventListener("play", paint);
+    audio.addEventListener("pause", () => { saveMeta(); paint(); });
+    audio.addEventListener("ended", () => { saveMeta(); paint(); });
+
+    $("file").addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const id = "file-" + Date.now().toString(36);
+      await idbPut(id, file);
+      meta = {
+        tracks: [{ id, title: pretty(file.name), fileName: file.name, duration: 0 }],
+        nowPlayingId: id,
+        position: 0,
+      };
+      await attach(id, 0);
+      try { await audio.play(); } catch {}
+      saveMeta();
+      paint();
+    });
+
+    $("toggle").addEventListener("click", async () => {
+      if (!current()) return;
+      if (playing()) audio.pause();
+      else {
+        if (!audio.src) await attach(meta.nowPlayingId, meta.position);
+        try { await audio.play(); } catch {}
+      }
+    });
+    $("chipPause").addEventListener("click", () => $("toggle").click());
+    $("open").addEventListener("click", () => { $("lid").hidden = false; paint(); });
+    $("chipOpen").addEventListener("click", () => { $("lid").hidden = false; paint(); });
+    $("pocket").addEventListener("click", () => { $("lid").hidden = true; paint(); });
+
+    (async () => {
+      try {
+        const raw = localStorage.getItem(META_KEY);
+        if (raw) meta = { tracks: [], nowPlayingId: null, position: 0, ...JSON.parse(raw) };
+      } catch {}
+      if (meta.nowPlayingId) await attach(meta.nowPlayingId, meta.position || 0);
+      paint();
+    })();
+  </script>
+</body>
+</html>

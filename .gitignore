@@ -1,0 +1,16 @@
+node_modules/
+.vercel/
+.tanstack/
+.grok/
+.nitro/
+dist/
+*.local
+.env
+.env.*
+.project_id
+.node_modules.lock
+*.sfc
+*.smc
+.DS_Store
+*.log
+npm-debug.log*

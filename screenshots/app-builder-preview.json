@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "PREINCARNATION",
+      "hasCanvas": true,
+      "bodyTextLen": 308,
+      "bodyTextHash": "7a027a024e8f164b80f7a573d98b8fe7c7e35082470fd9ab199edc6f19c67423",
+      "bodyTextPrefix": "VERMONT · NEVER ENDING PREINCARNATION You will die. God, or the ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "PREINCARNATION",
+      "hasCanvas": true,
+      "bodyTextLen": 308,
+      "bodyTextHash": "7a027a024e8f164b80f7a573d98b8fe7c7e35082470fd9ab199edc6f19c67423",
+      "bodyTextPrefix": "VERMONT · NEVER ENDING PREINCARNATION You will die. God, or the ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
