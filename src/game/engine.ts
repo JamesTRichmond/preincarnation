@@ -8,6 +8,7 @@ import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
+import { creditsOnClose, selectNpcDialogue } from "./dialogue-close";
 import {
   paintCache,
   paintBearFallback,
@@ -171,6 +172,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let interactHint: string | null = null;
   let endingBeat = 0;
   let endingT = 0;
+  let creditsArmed = false;
   let showHelp = false;
   let last = performance.now();
   let acc = 0;
@@ -679,13 +681,23 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           say("The marble yields a cape. The Vein is yours.");
         }
       }
+      if (c.flag.spectrumFate) creditsArmed = true;
     }
     if (c.next && c.next !== "end") {
       openDialogue(c.next);
       return;
     }
+    const closingId = dialogue.id;
+    const enterCredits = creditsOnClose(closingId, creditsArmed);
+    if (enterCredits) creditsArmed = false;
     dialogue = null;
-    mode = "play";
+    if (enterCredits) {
+      mode = "ending";
+      endingBeat = 0;
+      endingT = 0;
+    } else {
+      mode = "play";
+    }
     if (save.flags.sheepFound) props = props.filter((p) => p.kind !== "sheep");
     if (save.flags.elderFate === "release") props = props.filter((p) => p.id !== "elder");
     persist();
@@ -697,40 +709,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (p.kind === "npc") {
       if (!save.flags.talked.includes(p.id)) save.flags.talked = [...save.flags.talked, p.id];
       save.flags.returnedFromDeath = false;
-      if (p.npc === "elder") {
-        if (save.flags.elderFate) openDialogue(save.flags.elderFate === "release" ? "elder_release" : "elder_bind");
-        else if (save.cycle >= 1) openDialogue("elder_return");
-        else if (save.character.bondId === "maeve") openDialogue("elder_bond");
-        else openDialogue("elder_1");
-        noteDeed("You spoke with Maeve on the Green");
-      } else if (p.npc === "farmer") {
-        if (save.flags.farmerHelped) openDialogue("farmer_done");
-        else if (save.flags.sheepFound) openDialogue("farmer_sheep");
-        else if (save.cycle >= 1) openDialogue("farmer_return");
-        else if (save.character.bondId === "perch") openDialogue("farmer_bond");
-        else openDialogue("farmer_1");
-        noteDeed("You spoke with Cal Perch");
-      } else if (p.npc === "mayor") {
-        if (save.flags.millFate) openDialogue(save.flags.millFate === "spare" ? "mayor_spare" : "mayor_condemn");
-        else if (save.cycle >= 1) openDialogue("mayor_return");
-        else openDialogue("mayor_1");
-        noteDeed("You stood in Voss's square");
-      } else if (p.npc === "shop") {
-        openDialogue(save.flags.bombs > 0 ? "shop_buy" : "shop_1");
-      } else if (p.npc === "sentinel") {
-        if (save.flags.sentinelFate) openDialogue(save.flags.sentinelFate === "release" ? "sentinel_release" : "sentinel_crown");
-        else openDialogue("sentinel_1");
-      } else if (p.npc === "resident") {
-        if (save.flags.residentFate) openDialogue(save.flags.residentFate === "release" ? "resident_release" : "resident_bind");
-        else openDialogue("resident_1");
-      } else if (p.npc === "sugar") {
-        openDialogue(save.flags.syrupStash ? "sugar_tin" : "sugar_1");
-      } else if (p.npc === "heart") {
-        if (save.flags.spectrumFate) openDialogue(save.flags.spectrumFate === "release" ? "heart_release" : "heart_bind");
-        else openDialogue("heart_1");
-      } else if (p.npc && NPC_NODE[p.npc]) {
-        openDialogue(NPC_NODE[p.npc]);
-      }
+      const picked = p.npc ? selectNpcDialogue(p.npc, save) : null;
+      if (picked) openDialogue(picked);
+      else if (p.npc && NPC_NODE[p.npc]) openDialogue(NPC_NODE[p.npc]);
+      if (p.npc === "elder") noteDeed("You spoke with Maeve on the Green");
+      else if (p.npc === "farmer") noteDeed("You spoke with Cal Perch");
+      else if (p.npc === "mayor") noteDeed("You stood in Voss's square");
     } else if (p.kind === "sheep") {
       openDialogue("sheep_1");
     } else if (p.kind === "shrine") {
@@ -2356,6 +2340,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     buyUpgrade,
     spendSkill,
     reincarnate,
+    finishCredits: () => {
+      if (mode !== "ending") return;
+      birthIntoWorld();
+    },
     commitCreate,
     advanceIntro,
     pickLife: (id: LifePath) => {

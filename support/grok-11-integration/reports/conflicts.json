@@ -1,0 +1,56 @@
+[
+  {
+    "id": "county-scope",
+    "kind": "world-scope",
+    "status": "unresolved-kept",
+    "detail": "The brief says the campaign takes place only in Addison County. geography.ts also pins Rutland (rutland), Montpelier (washington), White River Junction (windsor), Burlington (chittenden), Shelburne (chittenden), Essex (chittenden), Winooski (chittenden), Woodstock (windsor), Springfield (windsor), Norwich (windsor), Chittenden County (chittenden), Windsor County (windsor). Those maps stay. They were not deleted to satisfy the brief."
+  },
+  {
+    "id": "npc-node-vs-cycle",
+    "kind": "event-contract",
+    "status": "adapter",
+    "detail": "NPC_NODE.elder is elder_1. The engine previously special-cased cycle and fate beside that table. selectNpcDialogue is now the function both the engine and the journey test call. NPC_NODE is unchanged and remains the fallback for NPCs without a cycle line."
+  },
+  {
+    "id": "ending-mode-unarmed",
+    "kind": "event-contract",
+    "status": "adapter",
+    "detail": "ENDING_LINES and the ending overlay existed, and sim() already advanced ending beats, but nothing assigned mode = 'ending'. creditsOnClose arms that mode from the existing Heart fate (heart_release / heart_bind). No fourth ending was written. OBJECTIVES.ending is still 'There is no ending. Walk.'"
+  },
+  {
+    "id": "boots-are-not-a-route",
+    "kind": "inventory-name",
+    "status": "logged",
+    "detail": "Gap boots are a dash timer (engine) and a pickup on the Middlebury map. Acquiring them does not add a warp. The quarry key opens q-lock-a; that is the tool→route transition that was executed."
+  },
+  {
+    "id": "tanstack-floor",
+    "kind": "dependency",
+    "status": "kept-workspace-pin",
+    "detail": "Upstream package-lock resolved @tanstack/react-start 1.168.50, below the 1.168.60 security floor. This candidate keeps the workspace pin ^1.168.60 and does not restore the older lock."
+  },
+  {
+    "id": "missing-expanded-packs",
+    "kind": "missing-dependency",
+    "status": "blocked",
+    "detail": "GitHub JamesTRichmond/preincarnation has one branch (main) and one commit (c737e42). No progression, save-fixture, dungeon, world-map, narrative, combat, or QA pack from another session was found. The brief's 12 districts, 16 dungeons, 6 eras, and 4 endings are not in the tree. They were not invented."
+  },
+  {
+    "id": "project-mount-artifacts",
+    "kind": "provenance",
+    "status": "refused",
+    "detail": "The project mount artifacts/ contains Stay clicklist/ledger HTML and three unrelated generated images. They do not match the git artifacts (education notes, strange-device, sprite refs). They were not adapted into game ids and were not staged."
+  },
+  {
+    "id": "grave-coordinates",
+    "kind": "coordinates",
+    "status": "compatible",
+    "detail": "Graves store pixel x/y. County map placement divides by 16, which equals TILE in snes.ts. No second unit was found."
+  },
+  {
+    "id": "save-flags",
+    "kind": "save-flag",
+    "status": "compatible",
+    "detail": "Save version is 8 under localStorage key preincarnation.save.v1. Journey round-trips used writeSave/loadSave. No second save schema was present to reconcile."
+  }
+]

@@ -252,7 +252,7 @@ export function GameApp() {
       )}
 
       {ui.mode === "ending" && (
-        <Ending beat={ui.endingBeat} onWalk={() => gameRef.current?.reincarnate()} />
+        <Ending beat={ui.endingBeat} onWalk={() => gameRef.current?.finishCredits()} />
       )}
 
       {playing && ui.deckHasTrack && (

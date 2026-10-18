@@ -1,0 +1,207 @@
+{
+  "candidate": "integration/grok-11",
+  "base": "c737e42eb188148291438dfb8a5993d6ce2b77fa",
+  "source": "https://github.com/JamesTRichmond/preincarnation",
+  "campaignRunnableAsBriefed": false,
+  "engineRunnable": true,
+  "addisonPlaces": [
+    "middlebury",
+    "vergennes",
+    "bristol",
+    "ferrisburgh",
+    "salisbury",
+    "addison",
+    "quarry",
+    "soloverse"
+  ],
+  "outsideAddison": [
+    {
+      "id": "rutland",
+      "county": "rutland"
+    },
+    {
+      "id": "montpelier",
+      "county": "washington"
+    },
+    {
+      "id": "whiteriver",
+      "county": "windsor"
+    },
+    {
+      "id": "burlington",
+      "county": "chittenden"
+    },
+    {
+      "id": "shelburne",
+      "county": "chittenden"
+    },
+    {
+      "id": "essex",
+      "county": "chittenden"
+    },
+    {
+      "id": "winooski",
+      "county": "chittenden"
+    },
+    {
+      "id": "woodstock",
+      "county": "windsor"
+    },
+    {
+      "id": "springfieldvt",
+      "county": "windsor"
+    },
+    {
+      "id": "norwich",
+      "county": "windsor"
+    },
+    {
+      "id": "chittenden",
+      "county": "chittenden"
+    },
+    {
+      "id": "windsor",
+      "county": "windsor"
+    }
+  ],
+  "interiors": [
+    "int_farm",
+    "int_inn",
+    "int_cape",
+    "int_sugar",
+    "int_college",
+    "int_capitol",
+    "int_home",
+    "int_barn",
+    "int_shop",
+    "int_creemee",
+    "int_cave"
+  ],
+  "journeys": [
+    {
+      "id": "new-game-town-dungeon-reward-save",
+      "status": "passed",
+      "transitions": [
+        "defaultSave → middlebury",
+        "buildMap middlebury → to-quarry + shovel",
+        "buildMap quarry → sentinel + chest-quarry + q-key",
+        "sentinelFate release removes the sentinel prop",
+        "writeSave/loadSave keeps cape and townsCleared"
+      ],
+      "note": "Reward persistence is the save flag plus the cape relic the engine grants in choose(). The chest's spare-heart roll stays inside the canvas loop and was not simulated as a second reward."
+    },
+    {
+      "id": "death-fourteen-year-return-changed-npc",
+      "status": "passed",
+      "transitions": [
+        "resolveDeath +14 winters",
+        "grantBondKeepsake lantern",
+        "selectNpcDialogue elder → elder_return"
+      ],
+      "note": "NPC_NODE.elder is still the static id elder_1. The live contract is selectNpcDialogue, which the engine calls first. The static table was not rewritten."
+    },
+    {
+      "id": "tool-acquisition-newly-reachable-route",
+      "status": "passed",
+      "transitions": [
+        "q-key + q-lock-a → lock prop removed, tile becomes marble"
+      ],
+      "note": "Gap boots remove their pickup and shorten the dash timer. They do not add a warp. That mismatch is logged; the key/lock route is the one this journey executed."
+    },
+    {
+      "id": "boss-completion-persistent-reward",
+      "status": "passed",
+      "transitions": [
+        "sentinelFate crown → no sentinel prop",
+        "writeSave/loadSave cape + townsCleared"
+      ],
+      "note": "The cape grant itself runs in engine choose() when the fate flag is applied. This journey checked that consequence against the map and the save, not a second combat simulator."
+    },
+    {
+      "id": "ending-credits-post-completion-load",
+      "status": "passed",
+      "transitions": [
+        "spectrum fate arms credits",
+        "heart_release close enters ending mode",
+        "finishCredits calls birthIntoWorld",
+        "writeSave/loadSave keeps spectrumFate"
+      ],
+      "note": "One credits sequence existed in ENDING_LINES and the ending overlay, but nothing set mode to ending. The adapter arms it from the Heart fate already in dialogue. Four campaign endings were not in the content and were not added. OBJECTIVES.ending remains 'There is no ending. Walk.'"
+    },
+    {
+      "id": "expanded-campaign-pack",
+      "status": "blocked",
+      "transitions": [],
+      "note": "Present Addison-pinned places: middlebury, vergennes, bristol, ferrisburgh, salisbury, addison, quarry, soloverse. Places outside Addison: rutland, montpelier, whiteriver, burlington, shelburne, essex, winooski, woodstock, springfieldvt, norwich, chittenden, windsor. Dungeon-like maps found: quarry, int_cave, soloverse. No 12-district, 16-dungeon, 6-era, or 4-ending pack was in the repo or the workspace. None were synthesized."
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "county-scope",
+      "kind": "world-scope",
+      "status": "unresolved-kept",
+      "detail": "The brief says the campaign takes place only in Addison County. geography.ts also pins Rutland (rutland), Montpelier (washington), White River Junction (windsor), Burlington (chittenden), Shelburne (chittenden), Essex (chittenden), Winooski (chittenden), Woodstock (windsor), Springfield (windsor), Norwich (windsor), Chittenden County (chittenden), Windsor County (windsor). Those maps stay. They were not deleted to satisfy the brief."
+    },
+    {
+      "id": "npc-node-vs-cycle",
+      "kind": "event-contract",
+      "status": "adapter",
+      "detail": "NPC_NODE.elder is elder_1. The engine previously special-cased cycle and fate beside that table. selectNpcDialogue is now the function both the engine and the journey test call. NPC_NODE is unchanged and remains the fallback for NPCs without a cycle line."
+    },
+    {
+      "id": "ending-mode-unarmed",
+      "kind": "event-contract",
+      "status": "adapter",
+      "detail": "ENDING_LINES and the ending overlay existed, and sim() already advanced ending beats, but nothing assigned mode = 'ending'. creditsOnClose arms that mode from the existing Heart fate (heart_release / heart_bind). No fourth ending was written. OBJECTIVES.ending is still 'There is no ending. Walk.'"
+    },
+    {
+      "id": "boots-are-not-a-route",
+      "kind": "inventory-name",
+      "status": "logged",
+      "detail": "Gap boots are a dash timer (engine) and a pickup on the Middlebury map. Acquiring them does not add a warp. The quarry key opens q-lock-a; that is the tool→route transition that was executed."
+    },
+    {
+      "id": "tanstack-floor",
+      "kind": "dependency",
+      "status": "kept-workspace-pin",
+      "detail": "Upstream package-lock resolved @tanstack/react-start 1.168.50, below the 1.168.60 security floor. This candidate keeps the workspace pin ^1.168.60 and does not restore the older lock."
+    },
+    {
+      "id": "missing-expanded-packs",
+      "kind": "missing-dependency",
+      "status": "blocked",
+      "detail": "GitHub JamesTRichmond/preincarnation has one branch (main) and one commit (c737e42). No progression, save-fixture, dungeon, world-map, narrative, combat, or QA pack from another session was found. The brief's 12 districts, 16 dungeons, 6 eras, and 4 endings are not in the tree. They were not invented."
+    },
+    {
+      "id": "project-mount-artifacts",
+      "kind": "provenance",
+      "status": "refused",
+      "detail": "The project mount artifacts/ contains Stay clicklist/ledger HTML and three unrelated generated images. They do not match the git artifacts (education notes, strange-device, sprite refs). They were not adapted into game ids and were not staged."
+    },
+    {
+      "id": "grave-coordinates",
+      "kind": "coordinates",
+      "status": "compatible",
+      "detail": "Graves store pixel x/y. County map placement divides by 16, which equals TILE in snes.ts. No second unit was found."
+    },
+    {
+      "id": "save-flags",
+      "kind": "save-flag",
+      "status": "compatible",
+      "detail": "Save version is 8 under localStorage key preincarnation.save.v1. Journey round-trips used writeSave/loadSave. No second save schema was present to reconcile."
+    }
+  ],
+  "notInvented": [
+    "12 districts",
+    "16 dungeons",
+    "6 principal eras",
+    "4 endings",
+    "progression pack",
+    "save-fixture pack",
+    "dungeon pack",
+    "world-map pack",
+    "narrative pack",
+    "combat pack",
+    "external QA pack"
+  ]
+}
