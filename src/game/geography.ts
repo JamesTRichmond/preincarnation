@@ -21,6 +21,7 @@ export const TOWNS: TownDef[] = [
   { id: "addison", name: "Addison County", county: "addison", lat: 44.05, lng: -73.17, blurb: "The county overworld." },
   { id: "rutland", name: "Rutland", county: "rutland", lat: 43.6106, lng: -72.9726, blurb: "Marble city south of the county line." },
   { id: "quarry", name: "Marble Vein", county: "addison", lat: 44.02, lng: -73.02, blurb: "The county temple. Hammer, keys, dark." },
+  { id: "bell", name: "The Bell Without a Clapper", county: "addison", lat: 44.167, lng: -73.254, blurb: "Under the Vergennes falls. The clapper is not hung." },
   { id: "montpelier", name: "Montpelier", county: "washington", lat: 44.2601, lng: -72.5754, blurb: "The capital." },
   { id: "whiteriver", name: "White River Junction", county: "windsor", lat: 43.6487, lng: -72.3195, blurb: "Rail town on the Connecticut." },
   { id: "burlington", name: "Burlington", county: "chittenden", lat: 44.4759, lng: -73.2121, blurb: "The lake city." },
@@ -61,7 +62,7 @@ function hav(aLat: number, aLng: number, bLat: number, bLng: number) {
 
 export function nearestTown(lat: number, lng: number, playable = true): { town: TownDef; km: number } {
   const pool = playable
-    ? TOWNS.filter((t) => t.id !== "addison" && t.id !== "chittenden" && t.id !== "windsor" && t.id !== "quarry" && t.id !== "soloverse")
+    ? TOWNS.filter((t) => t.id !== "addison" && t.id !== "chittenden" && t.id !== "windsor" && t.id !== "quarry" && t.id !== "bell" && t.id !== "soloverse")
     : TOWNS;
   let best = pool[0];
   let bestKm = Infinity;
