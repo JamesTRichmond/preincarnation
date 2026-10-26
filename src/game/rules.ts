@@ -1,4 +1,5 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
+import { deathKeepClause } from "./keep-pack.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
 import { starterWeapon } from "./weapons.ts";
@@ -208,6 +209,7 @@ export function cycleLedger(save: SaveData): CycleLedger {
   if (relic && save.cycle >= 1) keep.push(RELIC_BY_ID[relic].name + " stays with you.");
   const named = ownedUpgradeNames(save.upgrades);
   if (named.length) keep.push(named.join(", ") + ".");
+  keep.push(deathKeepClause(save));
 
   return {
     thisLife,
