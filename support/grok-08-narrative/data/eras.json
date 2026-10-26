@@ -1,0 +1,32 @@
+[
+  {
+    "id": "E0",
+    "year": 1952,
+    "label": "The season of the stake"
+  },
+  {
+    "id": "E1",
+    "year": 1966,
+    "label": "The season of the second gate"
+  },
+  {
+    "id": "E2",
+    "year": 1980,
+    "label": "The season of fair copies"
+  },
+  {
+    "id": "E3",
+    "year": 1994,
+    "label": "The season of the oath"
+  },
+  {
+    "id": "E4",
+    "year": 2008,
+    "label": "The season before the closure"
+  },
+  {
+    "id": "E5",
+    "year": 2022,
+    "label": "The season of plates"
+  }
+]

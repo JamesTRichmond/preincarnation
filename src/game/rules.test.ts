@@ -6,12 +6,14 @@ import {
   bodyStats,
   bondKeepsake,
   cycleLedger,
+  cycleReturnNode,
   devilThreshold,
   fillDialogueText,
   grantBondKeepsake,
   groundKeptLine,
   isIncarnationUnlocked,
   ownedUpgradeNames,
+  quarryHammerLands,
   relicsForGrave,
   resolveDeath,
   sheetDamageMul,
@@ -21,6 +23,7 @@ import {
   soloverseReady,
   spendSkillPoint,
   spinDamage,
+  stepSouthOffStoop,
   wintersPassed,
 } from "./rules.ts";
 import type { Grave } from "./items.ts";
@@ -309,6 +312,14 @@ describe("misc rules", () => {
     assert.equal(fillDialogueText("{name}. {year}. c{cycle}.", "Ira", 2040, 1), "Ira. 2040. c1.");
   });
 
+  it("names the last deed and grave count, and defaults a quiet death", () => {
+    assert.equal(
+      fillDialogueText("{deed}. {graves} graves.", "Ira", 2040, 2, "You spoke with Maeve on the Green", 3),
+      "You spoke with Maeve on the Green. 3 graves.",
+    );
+    assert.equal(fillDialogueText("{deed}", "Ira", 2040, 2, "", 0), "you died with the Vein still quiet");
+  });
+
   it("flaw knobs", () => {
     assert.equal(devilThreshold("the_other_voice"), 3);
     assert.equal(devilThreshold("pride"), 0);
@@ -350,5 +361,34 @@ describe("misc rules", () => {
     assert.equal(next.karma, 12);
     assert.equal(next.upgrades.vitality, 1);
     assert.equal(s.karma, 20);
+  });
+});
+
+describe("second-cycle memory", () => {
+  it("keeps the first return, then names the last deed", () => {
+    assert.equal(cycleReturnNode("mayor", 2), "mayor_second");
+    assert.equal(cycleReturnNode("elder", 1), "elder_return");
+    assert.equal(cycleReturnNode("heart", 1), null);
+    assert.equal(cycleReturnNode("heart", 2), "heart_second");
+    assert.equal(cycleReturnNode("farmer", 0), null);
+  });
+});
+
+describe("quarry hammer", () => {
+  it("lands anywhere except a dark Vein", () => {
+    assert.equal(quarryHammerLands(false, false, false), true);
+    assert.equal(quarryHammerLands(true, true, false), false);
+    assert.equal(quarryHammerLands(true, false, true), false);
+    assert.equal(quarryHammerLands(true, true, true), true);
+  });
+});
+
+describe("house exit", () => {
+  it("steps south off rail onto grass and stops at the map edge", () => {
+    const row = [0, 17, 17, 0];
+    const tileAt = (_x: number, y: number) => row[y];
+    const open = () => false;
+    assert.deepEqual(stepSouthOffStoop(0, 0, tileAt, open), { tx: 0, ty: 3 });
+    assert.equal(stepSouthOffStoop(0, 3, tileAt, open), null);
   });
 });

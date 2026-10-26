@@ -5,11 +5,11 @@ export function createAudio() {
   let sfx: GainNode | null = null;
   let music: GainNode | null = null;
   let muted = false;
-  let drone: OscillatorNode | null = null;
+  const voices: { osc: OscillatorNode; gain: GainNode }[] = [];
 
   const ensure = () => {
     if (ctx) {
-      if (ctx.state === "suspended") void ctx.resume();
+      if (ctx.state === "suspended" && !document.hidden) void ctx.resume();
       return ctx;
     }
     const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -67,40 +67,56 @@ export function createAudio() {
     setTimeout(() => beep(784, 0.28, "sine", 0.1), 180);
   };
 
-  const startDrone = (limbo: boolean) => {
-    const c = ensure();
-    if (!music) return;
-    stopDrone();
-    const o = c.createOscillator();
-    const g = c.createGain();
-    o.type = limbo ? "sine" : "triangle";
-    o.frequency.value = limbo ? 55 : 98;
-    g.gain.value = 0.0001;
-    g.gain.setTargetAtTime(muted ? 0.0001 : limbo ? 0.08 : 0.04, c.currentTime, 0.4);
-    o.connect(g);
-    g.connect(music);
-    o.start();
-    drone = o;
-    if (!limbo) {
-      const o2 = c.createOscillator();
-      const g2 = c.createGain();
-      o2.type = "sine";
-      o2.frequency.value = 147;
-      g2.gain.value = 0.0001;
-      g2.gain.setTargetAtTime(muted ? 0.0001 : 0.02, c.currentTime, 0.8);
-      o2.connect(g2);
-      g2.connect(music);
-      o2.start();
+  const onVis = () => {
+    if (!ctx) return;
+    if (document.hidden) void ctx.suspend();
+    else void ctx.resume();
+  };
+  document.addEventListener("visibilitychange", onVis);
+
+  const stopVoice = (v: { osc: OscillatorNode; gain: GainNode }) => {
+    try {
+      v.osc.stop();
+    } catch {
+      /* already stopped */
+    }
+    try {
+      v.osc.disconnect();
+    } catch {
+      /* already disconnected */
+    }
+    try {
+      v.gain.disconnect();
+    } catch {
+      /* already disconnected */
     }
   };
 
   const stopDrone = () => {
-    try {
-      drone?.stop();
-    } catch {
-      /* already stopped */
-    }
-    drone = null;
+    for (const v of voices) stopVoice(v);
+    voices.length = 0;
+  };
+
+  const addVoice = (type: OscillatorType, freq: number, target: number, tau: number) => {
+    if (!ctx || !music) return;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.value = 0.0001;
+    g.gain.setTargetAtTime(muted ? 0.0001 : target, ctx.currentTime, tau);
+    o.connect(g);
+    g.connect(music);
+    o.start();
+    voices.push({ osc: o, gain: g });
+  };
+
+  const startDrone = (limbo: boolean) => {
+    ensure();
+    if (!music || !ctx) return;
+    stopDrone();
+    addVoice(limbo ? "sine" : "triangle", limbo ? 55 : 98, limbo ? 0.08 : 0.04, 0.4);
+    if (!limbo) addVoice("sine", 147, 0.02, 0.8);
   };
 
   const setDuck = (on: boolean) => {
@@ -114,11 +130,16 @@ export function createAudio() {
     if (master && ctx) master.gain.setTargetAtTime(v ? 0.0001 : 0.7, ctx.currentTime, 0.05);
   };
 
-  document.addEventListener("visibilitychange", () => {
-    if (!ctx) return;
-    if (document.hidden) void ctx.suspend();
-    else void ctx.resume();
-  });
+  const dispose = () => {
+    stopDrone();
+    document.removeEventListener("visibilitychange", onVis);
+    const c = ctx;
+    ctx = null;
+    master = null;
+    sfx = null;
+    music = null;
+    if (c) void c.close();
+  };
 
-  return { unlock, slash, hit, pickup, hurt, die, talk, crown, startDrone, stopDrone, setMuted, setDuck, get muted() { return muted; } };
+  return { unlock, slash, hit, pickup, hurt, die, talk, crown, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
 }
