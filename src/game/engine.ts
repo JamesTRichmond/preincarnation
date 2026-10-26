@@ -33,10 +33,28 @@ import {
   paintHudALttP,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import {
+  STEP_INVULN,
+  STEP_MAX,
+  STEP_MIN,
+  TOMORROW_DELAY,
+  TOMORROW_REACH,
+  chapterDeath,
+  chapterRest,
+  clampInvuln,
+  coatTurn,
+  consumePunish,
+  freshListen,
+  lampReady,
+  pay,
+  validateStep,
+  witnessBite,
+  type ListenState,
+} from "./vein";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
-import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
+import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot, VeinRite } from "./types";
 
 type Actor = {
   id: string;
@@ -159,6 +177,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let localHour = vtHour();
   let debugHour: number | null = null;
   let invuln = 0;
+  let veinListen: ListenState = freshListen();
+  let veinCoat = 0;
+  let veinMark: { x: number; y: number; t: number } | null = null;
+  let veinImage: { x: number; y: number; t: number } | null = null;
+  let veinPunish = false;
+  let veinHeld: VeinRite | null = null;
   let ritual = 0;
   let dashT = 0;
   let hitstop = 0;
@@ -278,6 +302,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     player.x = foot.x;
     player.y = foot.y;
     spawnEnemies();
+    veinMark = null;
+    veinImage = null;
     invuln = 1.8;
     warpLock = 0.55;
     camX = player.x;
@@ -322,8 +348,25 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     writeSave(save);
   };
 
+  const dropVeinMemory = (keepOpens: boolean) => {
+    if (keepOpens) {
+      const died = chapterDeath(save.flags.veinOpens, veinListen);
+      save.flags.veinOpens = died.opens;
+      veinListen = died.listen;
+    } else {
+      const rested = chapterRest();
+      save.flags.veinOpens = rested.opens;
+      veinListen = rested.listen;
+    }
+    veinCoat = 0;
+    veinMark = null;
+    veinImage = null;
+    veinPunish = false;
+  };
+
   const enterLimbo = (_reason: string) => {
     audio.die();
+    dropVeinMemory(true);
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
     mode = "limbo";
     audio.startDrone(true);
@@ -334,6 +377,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const reincarnate = () => {
+    dropVeinMemory(false);
     applyIncarnation(save.incarnation);
     save = grantBondKeepsake(save);
     const ready = soloverseReady(save);
@@ -979,8 +1023,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
-  const hurtPlayer = (amt: number) => {
-    if (invuln > 0) return;
+  const hurtPlayer = (amt: number, scripted = false) => {
+    if (!scripted && invuln > 0) return;
+    if (!scripted) {
+      const turned = coatTurn(veinCoat, false);
+      if (turned.absorbed) {
+        veinCoat = turned.coat;
+        say("The coat turns the blow. It is not a second person.");
+        return;
+      }
+    }
     player.hp -= amt;
     save.hp = player.hp;
     invuln = 0.85;
@@ -993,13 +1045,15 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const w = equipped();
     const k = DIRS[player.dir];
     const spec = INCARNATIONS[save.incarnation];
+    const punish = consumePunish(veinPunish);
+    veinPunish = punish.armed;
     const dmg = slashDamage({
       weaponDmg: w.dmg,
       incarnationDamage: spec.damage,
       edge: save.upgrades.edge,
       tropoverse: save.flags.tropoverse,
       flawId: save.character.flawId,
-    });
+    }) + punish.bonus;
     const aff = {
       burn: w.affixes.reduce((s, a) => s + (a.burn ?? 0), 0),
       slow: w.affixes.reduce((s, a) => s + (a.slow ?? 0), 0),
@@ -1256,6 +1310,24 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (comboGap > 0) comboGap -= dt;
     if (invuln > 0) invuln -= dt;
     if (dashT > 0) dashT -= dt;
+    if (veinCoat > 0) veinCoat = Math.max(0, veinCoat - dt);
+    if (veinImage) {
+      veinImage.t -= dt;
+      if (veinImage.t <= 0) veinImage = null;
+    }
+    if (veinMark && veinMark.t > 0) {
+      veinMark.t -= dt;
+      if (veinMark.t <= 0) {
+        const mark = veinMark;
+        veinMark = null;
+        for (const e of enemies) {
+          if (!e.alive) continue;
+          if (Math.hypot(e.x - mark.x, e.y - mark.y) < TOMORROW_REACH) hitEnemy(e, 2, player.dir);
+        }
+        burst(mark.x, mark.y, "#e8c36a", 8);
+        say("Borrowed tomorrow lands. Once.");
+      }
+    }
     if (playerStoned > 0) playerStoned -= dt;
     if (flash > 0) flash -= dt;
     if (weather?.label.id === "storm" && Math.random() < dt * 0.15) flash = 0.08;
@@ -1323,6 +1395,73 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (mx || my) {
       if (Math.abs(mx) > Math.abs(my)) player.dir = mx < 0 ? 1 : 2;
       else player.dir = my < 0 ? 3 : 0;
+    }
+
+    const heldRite = (): VeinRite | null => {
+      const down = (code: string) => input.keys.has(code) || input.injected.has(code);
+      if (down("Digit1")) return "listen";
+      if (down("Digit2")) return "step";
+      if (down("Digit3")) return "tomorrow";
+      if (down("Digit4")) return "coat";
+      return null;
+    };
+    const pressedRite = heldRite();
+    const riteEdge = pressedRite !== null && pressedRite !== veinHeld;
+    veinHeld = pressedRite;
+    if (riteEdge && pressedRite) {
+      if (!lampReady(save.flags)) {
+        if (save.flags.relics.includes("lantern") && save.flags.ySlot === "lantern") say("The lamp is shut.");
+      } else if (pressedRite === "tomorrow" && veinMark) {
+        say("A mark is already waiting.");
+      } else if (pressedRite === "coat" && veinCoat > 0) {
+        say("The coat is already hung.");
+      } else if (pressedRite === "step") {
+        const k = DIRS[player.dir];
+        const step = validateStep(
+          { x: player.x, y: player.y },
+          k,
+          { w: world.w * TILE, h: world.h * TILE },
+          (x, y) => blocked(x, y, 5),
+        );
+        if (!step.ok) say(step.reason);
+        else {
+          const paid = pay(save.mp, "step");
+          if (!paid.ok) say("The lamp is thin.");
+          else {
+            save.mp = paid.mp;
+            save.flags.veinRite = "step";
+            const ox = player.x;
+            const oy = player.y;
+            player.x = step.x;
+            player.y = step.y;
+            veinImage = { x: ox, y: oy, t: 0.35 };
+            slashes.push({ x: ox, y: oy, dir: player.dir, t: 0.18 });
+            for (const e of enemies) {
+              if (!e.alive) continue;
+              if (Math.hypot(e.x - ox, e.y - oy) < 14) hitEnemy(e, 1, player.dir);
+            }
+            if (invuln <= 0) invuln = clampInvuln(STEP_INVULN);
+            say("Ellis steps. The afterimage cuts. It does not follow.");
+          }
+        }
+      } else {
+        const paid = pay(save.mp, pressedRite);
+        if (!paid.ok) say("The lamp is thin.");
+        else {
+          save.mp = paid.mp;
+          save.flags.veinRite = pressedRite;
+          if (pressedRite === "listen") {
+            veinListen = { listening: true, stored: null };
+            say("Witness. A repeated bite opens once.");
+          } else if (pressedRite === "tomorrow") {
+            veinMark = { x: player.x, y: player.y, t: TOMORROW_DELAY };
+            say("Mark the floor. The strike arrives later.");
+          } else {
+            veinCoat = 1.2;
+            say("The coat hangs. One blow turns.");
+          }
+        }
+      }
     }
 
     const ySlot = save.flags.ySlot;
@@ -1535,6 +1674,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           if (Math.abs(ix) > Math.abs(iy)) e.dir = ix < 0 ? 1 : 2;
           else e.dir = iy < 0 ? 3 : 0;
           if (dist < 12 && e.hurt <= 0) {
+            const seen = witnessBite(veinListen, e.kind, save.flags.veinOpens);
+            veinListen = seen.listen;
+            save.flags.veinOpens = seen.opens;
+            if (seen.result === "stored") say("The vein notes the " + e.kind + ".");
+            else if (seen.result === "opened") {
+              veinPunish = true;
+              say("An opening. The next slash cuts deeper.");
+            } else if (seen.result === "capped") say("The vein goes still.");
             const dmg = e.kind === "bear" ? 1.5 : e.kind === "sentinel" ? 1 : e.kind === "resident" ? 1.2 : 1;
             hurtPlayer(dmg);
             e.hurt = 0.4;
@@ -1877,6 +2024,52 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
       bctx.fillStyle = "#e8c36a";
       bctx.fillRect(sx + k.x * 4, sy + k.y * 4, 3, 3);
+    }
+    if (mode === "play") {
+      const px = worldX(player.x);
+      const py = worldY(player.y);
+      if (veinImage) {
+        bctx.strokeStyle = "#b07ad6";
+        bctx.setLineDash([2, 2]);
+        bctx.strokeRect(worldX(veinImage.x) - 5, worldY(veinImage.y) - 8, 10, 14);
+        bctx.setLineDash([]);
+      }
+      if (veinCoat > 0) {
+        const k = DIRS[player.dir];
+        bctx.strokeStyle = "#b07ad6";
+        bctx.setLineDash([1, 1]);
+        bctx.strokeRect(worldX(player.x - k.x * 6) - 4, worldY(player.y - k.y * 6) - 10, 8, 12);
+        bctx.setLineDash([]);
+      }
+      if (veinMark) {
+        const mx = worldX(veinMark.x);
+        const my = worldY(veinMark.y);
+        bctx.fillStyle = "#e8c36a";
+        bctx.fillRect(mx - 3, my, 7, 1);
+        bctx.fillRect(mx, my - 3, 1, 7);
+      }
+      if (lampReady(save.flags) && save.flags.veinRite === "step") {
+        const k = DIRS[player.dir];
+        const step = validateStep(
+          { x: player.x, y: player.y },
+          k,
+          { w: world.w * TILE, h: world.h * TILE },
+          (x, y) => blocked(x, y, 5),
+        );
+        const ring = (r: number, solid: boolean, color: string) => {
+          const n = Math.max(16, Math.round(r * 0.8));
+          bctx.fillStyle = color;
+          for (let i = 0; i < n; i++) {
+            if (!solid && i % 2 === 0) continue;
+            const a = (i / n) * Math.PI * 2;
+            bctx.fillRect(px + Math.round(Math.cos(a) * r), py + Math.round(Math.sin(a) * r), 1, 1);
+          }
+        };
+        ring(STEP_MIN * zoom, false, "#b07ad6");
+        ring(STEP_MAX * zoom, step.ok, step.ok ? "#e8c36a" : "#b07ad6");
+        bctx.fillStyle = step.ok ? "#e8c36a" : "#b07ad6";
+        bctx.fillRect(px + Math.round(k.x * STEP_MAX * zoom) - 1, py + Math.round(k.y * STEP_MAX * zoom) - 1, 3, 3);
+      }
     }
     for (const p of particles) {
       bctx.fillStyle = p.color;
@@ -2281,6 +2474,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         relics: save.flags.relics.slice(),
         ySlot: save.flags.ySlot,
         lanternOn: save.flags.lanternOn,
+        veinRite: save.flags.veinRite,
+        veinOpens: save.flags.veinOpens,
+        mp: save.mp,
         maxHp: save.maxHp,
         vitality: save.upgrades.vitality,
         ledger: mode === "limbo" ? cycleLedger(save) : null,
@@ -2310,6 +2506,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       },
       setKarma: (n: number) => {
         save.karma = n;
+        lastUi = "";
+      },
+      readyLamp: () => {
+        if (!save.flags.relics.includes("lantern")) save.flags.relics = [...save.flags.relics, "lantern"];
+        save.flags.ySlot = "lantern";
+        save.flags.lanternOn = true;
+        save.mp = save.maxMp;
         lastUi = "";
       },
       kill: () => {
@@ -2475,6 +2678,7 @@ declare global {
       loadMap?: (id: string, tx: number, ty: number) => void;
       setIncarnation?: (id: string) => void;
       setKarma?: (n: number) => void;
+      readyLamp?: () => void;
       kill?: () => void;
       openSoloverse?: () => void;
       openIpod?: () => void;

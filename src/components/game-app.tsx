@@ -429,6 +429,11 @@ function Pause({
                 <td className="px-3 py-2">—</td>
               </tr>
               <tr className="border-t border-border">
+                <td className="px-3 py-2">Lamp rites</td>
+                <td className="px-3 py-2 font-mono">1 / 2 / 3 / 4</td>
+                <td className="px-3 py-2">Listen, step, tomorrow, coat</td>
+              </tr>
+              <tr className="border-t border-border">
                 <td className="px-3 py-2">Pause / this screen</td>
                 <td className="px-3 py-2 font-mono">Esc / P</td>
                 <td className="px-3 py-2">Pause</td>
@@ -438,7 +443,8 @@ function Pause({
         </div>
         <p className="mt-3 text-sm text-fg-muted">
           Space is always the sword — even with the lamp in hand. Y uses the tool in the HUD (shovel, lamp, hammer,
-          cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
+          cape). With Maeve's lamp open, 1 listens for a repeated bite, 2 steps, 3 marks a later strike, and 4 hangs
+          the coat for one blow. Those four keys are the keyboard. Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
           shovel in 14–18 years. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
 

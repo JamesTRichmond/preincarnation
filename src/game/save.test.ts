@@ -81,9 +81,31 @@ describe("migrate", () => {
   });
 
   it("does not invent a lantern for a first-life v8 save", () => {
-    const s = migrate(defaultSave());
+    const raw = defaultSave();
+    raw.version = 8;
+    const flags = { ...raw.flags };
+    delete (flags as { veinRite?: string }).veinRite;
+    delete (flags as { veinOpens?: number }).veinOpens;
+    const s = migrate({ ...raw, flags } as SaveData);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.flags.veinRite, "listen");
+    assert.equal(s.flags.veinOpens, 0);
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
+  });
+
+  it("clamps a corrupted opening count and keeps a real lantern", () => {
+    const raw = defaultSave();
+    raw.version = 9;
+    raw.flags.veinOpens = 9;
+    raw.flags.veinRite = "coat";
+    raw.flags.relics = ["sword", "lantern"];
+    raw.flags.ySlot = "lantern";
+    const s = migrate(raw);
+    assert.equal(s.flags.veinOpens, 2);
+    assert.equal(s.flags.veinRite, "coat");
+    assert.equal(s.flags.relics.includes("lantern"), true);
+    assert.equal(s.flags.ySlot, "lantern");
   });
 });
 

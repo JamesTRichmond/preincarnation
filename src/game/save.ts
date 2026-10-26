@@ -1,5 +1,6 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { clampOpens } from "./vein.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -7,6 +8,7 @@ import {
   SAVE_KEY,
   SAVE_VERSION,
   type SaveData,
+  type VeinRite,
 } from "./types.ts";
 
 export function defaultSave(): SaveData {
@@ -100,6 +102,14 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  if ((save.version ?? 1) < 9) {
+    s.flags.veinRite = "listen";
+    s.flags.veinOpens = 0;
+  }
+  const rite = s.flags.veinRite as string;
+  const known: VeinRite[] = ["listen", "step", "tomorrow", "coat"];
+  s.flags.veinRite = known.includes(rite as VeinRite) ? (rite as VeinRite) : "listen";
+  s.flags.veinOpens = clampOpens(s.flags.veinOpens);
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];

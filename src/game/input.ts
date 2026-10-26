@@ -69,6 +69,10 @@ const GAME_CODES = new Set([
   "BracketLeft",
   "BracketRight",
   "Digit0",
+  "Digit1",
+  "Digit2",
+  "Digit3",
+  "Digit4",
 ]);
 
 /** Unity InputSystem.settings.defaultDeadzoneMin ~ 0.125; we use a slightly larger radial. */
