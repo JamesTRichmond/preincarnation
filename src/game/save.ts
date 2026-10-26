@@ -100,6 +100,12 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  if ((save.version ?? 1) < 9) {
+    s.flags.heirloomPhase = {};
+    s.flags.heirloomHeld = [];
+  }
+  s.flags.heirloomPhase = s.flags.heirloomPhase ?? {};
+  s.flags.heirloomHeld = s.flags.heirloomHeld ?? [];
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];

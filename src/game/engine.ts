@@ -1,4 +1,5 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
+import { heirloomDialogue, stepHeirloom, visitByNpc } from "./heirlooms";
 import { createAudio } from "./audio";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { locatePlayer, TOWN_BY_ID } from "./geography";
@@ -579,6 +580,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       choices: node.choices?.map((c) => ({ ...c, label: fill(c.label) })),
     };
     mode = "dialogue";
+    lastUi = "";
+    audio.talk();
+  };
+
+  const showNode = (node: DialogueNode) => {
+    const fill = (s: string) => fillDialogueText(s, save.character.name, save.flags.year, save.cycle);
+    dialogue = {
+      ...node,
+      speaker: fill(node.speaker),
+      text: fill(node.text),
+      choices: node.choices?.map((c) => ({ ...c, label: fill(c.label) })),
+    };
+    mode = "dialogue";
+    lastUi = "";
     audio.talk();
   };
 
@@ -680,6 +695,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         }
       }
     }
+    if (c.next?.startsWith("heir:")) {
+      const step = stepHeirloom(save.flags.heirloomPhase ?? {}, save.flags.heirloomHeld ?? [], c.next.slice(5));
+      save.flags.heirloomPhase = step.phase;
+      save.flags.heirloomHeld = step.held;
+      if (step.deed) noteDeed(step.deed);
+      if (step.node) {
+        showNode(step.node);
+      } else {
+        dialogue = null;
+        mode = "play";
+      }
+      persist();
+      return;
+    }
     if (c.next && c.next !== "end") {
       openDialogue(c.next);
       return;
@@ -728,6 +757,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (p.npc === "heart") {
         if (save.flags.spectrumFate) openDialogue(save.flags.spectrumFate === "release" ? "heart_release" : "heart_bind");
         else openDialogue("heart_1");
+      } else if (p.npc && visitByNpc(p.npc)) {
+        const node = heirloomDialogue(save.flags.heirloomPhase ?? {}, save.flags.heirloomHeld ?? [], p.npc);
+        if (node) showNode(node);
       } else if (p.npc && NPC_NODE[p.npc]) {
         openDialogue(NPC_NODE[p.npc]);
       }

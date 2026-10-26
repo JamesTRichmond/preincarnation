@@ -85,6 +85,33 @@ describe("migrate", () => {
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
   });
+
+  it("keeps an older notebook and starts heirloom visits empty", () => {
+    const raw = {
+      version: 8,
+      cycle: 1,
+      karma: 0,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: { relics: ["sword", "lantern"], lastDeed: "You spoke with Maeve on the Green", quarryOpen: false },
+      maxHp: 3,
+      hp: 3,
+      mapId: "middlebury",
+      x: 12 * TILE + 8,
+      y: 12 * TILE + 8,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ellis", created: true },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.deepEqual(s.flags.heirloomPhase, {});
+    assert.deepEqual(s.flags.heirloomHeld, []);
+    assert.equal(s.flags.quarryOpen, false);
+    assert.deepEqual(s.flags.relics, ["sword", "lantern"]);
+    assert.equal(s.flags.lastDeed, "You spoke with Maeve on the Green");
+  });
 });
 
 describe("writeSave / loadSave", () => {

@@ -599,6 +599,7 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
       props.push({ kind: "npc", x: hall.x, y: hall.y, id: "elder", npc: "elder" });
     }
     props.push({ kind: "npc", x: farm.x, y: farm.y, id: "farmer", npc: "farmer" });
+    props.push({ kind: "npc", x: 30, y: 7, id: "helen-ames", npc: "helen" });
     props.push({ kind: "inn", x: inn.x, y: inn.y - 1, id: "inn" });
     props.push({ kind: "hall", x: barnB.x, y: barnB.y - 1, id: "hall" });
     props.push({ kind: "college", x: college.x, y: college.y, id: "college" });
@@ -697,6 +698,7 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "spawn", x: 14, y: 10, id: "spawn" });
     props.push({ kind: "npc", x: inn.x, y: inn.y, id: "b-art", npc: "artist" });
     props.push({ kind: "npc", x: first(m, "H", { x: 2, y: 12 }).x, y: first(m, "H", { x: 2, y: 12 }).y, id: "b-hunt", npc: "hunter" });
+    props.push({ kind: "npc", x: 8, y: 13, id: "cal-keeler", npc: "keeler" });
     props.push({ kind: "rock", x: rock.x, y: rock.y, id: "prayer-rock" });
     props.push({ kind: "inn", x: inn.x, y: inn.y - 1, id: "inn" });
     props.push({ kind: "hall", x: hall.x, y: hall.y - 1, id: "hall" });
@@ -718,6 +720,7 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "spawn", x: 12, y: 8, id: "spawn" });
     props.push({ kind: "npc", x: first(m, "H", { x: 24, y: 4 }).x, y: first(m, "H", { x: 24, y: 4 }).y, id: "ferry", npc: "ferry" });
     props.push({ kind: "npc", x: first(m, "N", { x: 8, y: 6 }).x, y: first(m, "N", { x: 8, y: 6 }).y, id: "rokeby", npc: "rokeby" });
+    props.push({ kind: "npc", x: 21, y: 6, id: "june-pell", npc: "june" });
     props.push({ kind: "inn", x: inn.x, y: inn.y - 1, id: "inn" });
     props.push({ kind: "hall", x: first(m, "B", { x: 16, y: 6 }).x, y: first(m, "B", { x: 16, y: 6 }).y - 1, id: "hall" });
     props.push({ kind: "barn", x: 4, y: 9, id: "barn" });
@@ -735,6 +738,8 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "spawn", x: 12, y: 9, id: "spawn" });
     props.push({ kind: "npc", x: first(m, "N", { x: 18, y: 4 }).x, y: first(m, "N", { x: 18, y: 4 }).y, id: "ranger", npc: "ranger" });
     props.push({ kind: "npc", x: first(m, "H", { x: 18, y: 7 }).x, y: first(m, "H", { x: 18, y: 7 }).y, id: "camp", npc: "camper" });
+    props.push({ kind: "npc", x: 22, y: 5, id: "owen-noyes", npc: "noyes" });
+    props.push({ kind: "npc", x: 16, y: 7, id: "ada-whitcomb", npc: "whitcomb" });
     props.push({ kind: "inn", x: first(m, "I", { x: 12, y: 9 }).x, y: first(m, "I", { x: 12, y: 9 }).y - 1, id: "inn" });
     props.push({ kind: "barn", x: 10, y: 12, id: "barn" });
     props.push({ kind: "well", x: first(m, "W", { x: 14, y: 9 }).x, y: first(m, "W", { x: 14, y: 9 }).y, id: "well" });
