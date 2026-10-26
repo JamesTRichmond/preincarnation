@@ -58,3 +58,23 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+@keyframes knowledge-playhead {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100% - 2px);
+  }
+}
+
+.knowledge-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-primary);
+  animation-name: knowledge-playhead;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
