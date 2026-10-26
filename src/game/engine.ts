@@ -5,6 +5,15 @@ import { locatePlayer, TOWN_BY_ID } from "./geography";
 import { gpsOnCounty } from "./raster";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
+import {
+  lipStep,
+  noteAttackDuringHitstop,
+  releaseAttackBuffer,
+  resolveFacing,
+  scaleHitstop,
+  stepCamera,
+  type AxisMem,
+} from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
@@ -162,6 +171,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let ritual = 0;
   let dashT = 0;
   let hitstop = 0;
+  let attackQueued = false;
+  let faceMem: AxisMem = null;
   let trauma = 0;
   let camX = save.x;
   let camY = save.y;
@@ -916,10 +927,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const moveActor = (a: Actor, dx: number, dy: number) => {
-    if (dx && !blocked(a.x + dx, a.y)) a.x += dx;
-    else if (dx && !blocked(a.x + dx * 0.5, a.y)) a.x += dx * 0.5;
-    if (dy && !blocked(a.x, a.y + dy)) a.y += dy;
-    else if (dy && !blocked(a.x, a.y + dy * 0.5)) a.y += dy * 0.5;
+    const next = lipStep(a.x, a.y, dx, dy, (x, y) => blocked(x, y));
+    a.x = next.x;
+    a.y = next.y;
   };
 
   const burst = (x: number, y: number, color: string, n = 8) => {
@@ -943,12 +953,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     e.hp -= dmg;
     e.hurt = 0.22;
     const k = DIRS[dir];
-    e.x += k.x * 10;
-    e.y += k.y * 10;
+    moveActor(e, k.x * 10, k.y * 10);
     burst(e.x, e.y, "#f4efe2", 10);
     floats.push({ x: e.x, y: e.y - 10, t: 0.55, text: String(Math.max(1, Math.round(dmg))), color: "#f4efe2" });
     audio.hit();
-    hitstop = 0.07;
+    hitstop = scaleHitstop(0.07, reduced);
     trauma = Math.min(1, trauma + 0.32);
     if (aff?.lifesteal) {
       player.hp = Math.min(player.maxHp, player.hp + aff.lifesteal);
@@ -960,7 +969,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (e.hp <= 0) {
       e.alive = false;
       burst(e.x, e.y, "#c45c4a", 22);
-      hitstop = 0.11;
+      hitstop = scaleHitstop(0.11, reduced);
       trauma = Math.min(1, trauma + 0.45);
       noteDeed("You killed a " + e.kind + " in " + mapId);
       if (save.character.idealId !== "mercy") addKarma(aff?.karmaOnKill ? 2 + aff.karmaOnKill : 1);
@@ -979,13 +988,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
-  const hurtPlayer = (amt: number) => {
+  const hurtPlayer = (amt: number, fromX = player.x, fromY = player.y) => {
     if (invuln > 0) return;
     player.hp -= amt;
     save.hp = player.hp;
     invuln = 0.85;
+    const away = Math.hypot(player.x - fromX, player.y - fromY) || 1;
+    moveActor(player, ((player.x - fromX) / away) * 8, ((player.y - fromY) / away) * 8);
     audio.hurt();
     trauma = Math.min(1, trauma + 0.55);
+    hitstop = scaleHitstop(Math.max(hitstop, 0.05), reduced);
     if (player.hp <= 0) enterLimbo("The body fails. The cycle completes. You will be louder.");
   };
 
@@ -1321,9 +1333,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       my += Math.cos(animT * 2.2) * 0.1;
     }
     if (mx || my) {
-      if (Math.abs(mx) > Math.abs(my)) player.dir = mx < 0 ? 1 : 2;
-      else player.dir = my < 0 ? 3 : 0;
-    }
+      if (actions.fromKeys) {
+        if (Math.abs(mx) > Math.abs(my)) {
+          player.dir = mx < 0 ? 1 : 2;
+          faceMem = "x";
+        } else {
+          player.dir = my < 0 ? 3 : 0;
+          faceMem = "y";
+        }
+      } else {
+        const faced = resolveFacing(mx, my, player.dir, faceMem);
+        player.dir = faced.dir;
+        faceMem = faced.mem;
+      }
+    } else faceMem = null;
 
     const ySlot = save.flags.ySlot;
     const rifleOut = equipped().kind === "rifle";
@@ -1536,7 +1559,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           else e.dir = iy < 0 ? 3 : 0;
           if (dist < 12 && e.hurt <= 0) {
             const dmg = e.kind === "bear" ? 1.5 : e.kind === "sentinel" ? 1 : e.kind === "resident" ? 1.2 : 1;
-            hurtPlayer(dmg);
+            hurtPlayer(dmg, e.x, e.y);
             e.hurt = 0.4;
           }
         }
@@ -1616,10 +1639,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
 
-    const lerp = 1 - Math.exp(-10 * dt);
     const look = DIRS[player.dir];
-    camX += (player.x + look.x * 16 - camX) * lerp;
-    camY += (player.y + look.y * 10 - camY) * lerp;
+    const cam = stepCamera(camX, camY, player.x + look.x * 16, player.y + look.y * 10, dt, {
+      deadX: 4,
+      deadY: 3,
+      stiffness: reduced ? 18 : 10,
+    });
+    camX = cam.x;
+    camY = cam.y;
   };
 
   const drawSheet = (
@@ -2105,8 +2132,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
     }
-    if (hitstop > 0) hitstop -= raw;
-    else {
+    if (mode === "play") attackQueued = noteAttackDuringHitstop(attackQueued, actions.attackPressed, hitstop);
+    if (hitstop > 0) {
+      hitstop = Math.max(0, hitstop - raw);
+      const released = releaseAttackBuffer(attackQueued, hitstop, attackBuf);
+      attackQueued = released.queued;
+      attackBuf = released.buffer;
+    } else {
       acc += raw;
       const step = 1 / 60;
       while (acc >= step) {
