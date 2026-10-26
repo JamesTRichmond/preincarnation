@@ -33,6 +33,8 @@ import {
   paintHudALttP,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { createCreekPilot, spoilCatch } from "./fishing/bridge";
+import { paintCreek } from "./fishing/paint";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -105,6 +107,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   deck.setDuck((on) => audio.setDuck(on));
 
   let save: SaveData = loadSave();
+  const creek = createCreekPilot();
+  creek.load(save.creek);
   let mode: Mode = "title";
   let introBeat = 0;
   let mapId: MapId = save.mapId;
@@ -175,7 +179,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
   let weather: WeatherState | null = null;
@@ -324,6 +328,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const enterLimbo = (_reason: string) => {
     audio.die();
+    save.creek = spoilCatch(save.creek);
+    creek.load(save.creek);
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
     mode = "limbo";
     audio.startDrone(true);
@@ -420,6 +426,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const startNew = () => {
     save = defaultSave();
+    creek.forget();
     void deck.hydrate(EMPTY_DECK);
     applyIncarnation("wanderer");
     introBeat = 0;
@@ -440,6 +447,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const continueGame = () => {
     save = loadSave();
+    creek.load(save.creek);
     void deck.hydrate(save.flags.deck);
     applyIncarnation(save.incarnation);
     player.hp = save.hp;
@@ -602,9 +610,22 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return false;
   };
 
-  const sip = () => {
+  const sip = (actions?: Actions) => {
     const i = save.flags.bottles.findIndex((b) => b !== "empty");
     if (i < 0) {
+      if (actions && player.hp < player.maxHp) {
+        const meal = creek.tryEat(actions);
+        if (meal) {
+          player.hp = Math.min(player.maxHp, player.hp + 1);
+          save.hp = player.hp;
+          audio.pickup();
+          say(meal);
+          save.creek = creek.blob();
+          persist();
+          return;
+        }
+        if (meal === undefined) return;
+      }
       say("No bottles.");
       return;
     }
@@ -1229,6 +1250,38 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return best;
   };
 
+  const besideWater = () => {
+    if (isInterior(mapId)) return false;
+    const tx = Math.floor(player.x / TILE);
+    const ty = Math.floor(player.y / TILE);
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (world.tiles[ty + dy]?.[tx + dx] === T.water) return true;
+      }
+    }
+    return false;
+  };
+
+  const enterCreek = () => {
+    localHour = debugHour ?? vtHour();
+    creek.enter(mapId, localHour, reduced);
+    save.creek = creek.blob();
+    mode = "fishing";
+    showHelp = false;
+    audio.unlock();
+    persist();
+    lastUi = "";
+  };
+
+  const leaveCreek = () => {
+    creek.abandon();
+    save.creek = creek.blob();
+    mode = "play";
+    say("Back on the bank.");
+    persist();
+    lastUi = "";
+  };
+
   const sim = (dt: number, actions: Actions) => {
     if (mode === "ending") {
       endingT += dt;
@@ -1245,6 +1298,32 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         } else {
           birthIntoWorld();
         }
+      }
+      return;
+    }
+    if (mode === "fishing") {
+      animT += dt;
+      localHour = debugHour ?? vtHour();
+      const fished = creek.step(dt, actions, input.keys, localHour);
+      if (fished.regard) addKarma(fished.regard);
+      if (fished.cue === "land") audio.pickup();
+      else if (fished.cue === "lose") audio.hurt();
+      else if (fished.cue === "hook") audio.talk();
+      else if (fished.cue === "cast") audio.slash();
+      if (player.hp < player.maxHp) {
+        const meal = creek.tryEat(actions);
+        if (meal) {
+          player.hp = Math.min(player.maxHp, player.hp + 1);
+          save.hp = player.hp;
+          audio.pickup();
+          say(meal);
+        }
+      }
+      const trip = creek.session();
+      if (trip?.dirty) {
+        trip.dirty = false;
+        save.creek = creek.blob();
+        persist();
       }
       return;
     }
@@ -1422,7 +1501,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         say(next.name);
       }
     }
-    if (actions.usePressed) sip();
+    if (actions.usePressed) sip(actions);
     if (actions.bombPressed && save.flags.bombs > 0) {
       save.flags.bombs -= 1;
       const k = DIRS[player.dir];
@@ -1474,8 +1553,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                     : near.kind === "home"
                   ? "The homestead"
                   : "Talk"
-      : null;
+      : besideWater()
+        ? "Fish"
+        : null;
     if (actions.interactPressed && near) interactWith(near);
+    else if (actions.interactPressed && !near && besideWater()) enterCreek();
     if (near?.kind === "door" && player.dir === 3 && my < -0.15) {
       const d = Math.hypot(near.x * TILE + 8 - player.x, near.y * TILE + 8 - player.y);
       if (d < 12) enterDoor(near);
@@ -1675,6 +1757,24 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     ctx.imageSmoothingEnabled = false;
     bctx.fillStyle = "#143c28";
     bctx.fillRect(0, 0, SNES_W, SNES_H);
+    if (mode === "fishing") {
+      paintCreek(bctx, creek, animT);
+      const fit = Math.min(w / SNES_W, h / SNES_H);
+      const scale = Math.max(1, Math.floor(fit));
+      const dw = SNES_W * scale;
+      const dh = SNES_H * scale;
+      blit.ox = Math.floor((w - dw) / 2);
+      blit.oy = Math.floor((h - dh) / 2);
+      blit.scale = scale;
+      blit.viewX = 0;
+      blit.viewY = 0;
+      blit.zoom = 1;
+      ctx.fillStyle = "#070b18";
+      ctx.fillRect(0, 0, w, h);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(buf, 0, 0, SNES_W, SNES_H, blit.ox, blit.oy, dw, dh);
+      return;
+    }
 
     const shake = trauma * trauma;
     const ox = shakeOn ? (Math.random() - 0.5) * shake * 8 : 0;
@@ -2104,6 +2204,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
+    } else if (mode === "fishing" && actions.pausePressed) {
+      if (!creek.onPause()) leaveCreek();
     }
     if (hitstop > 0) hitstop -= raw;
     else {
@@ -2122,7 +2224,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   requestAnimationFrame(tick);
 
   const onHide = () => {
-    if (document.hidden) persist();
+    if (document.hidden) {
+      if (mode === "fishing") {
+        creek.hide();
+        save.creek = creek.blob();
+      }
+      persist();
+    }
   };
   document.addEventListener("visibilitychange", onHide);
 
@@ -2293,7 +2401,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         hint: interactHint,
         message,
         hour: localHour,
+        aimX: creek.aimX(),
       }),
+      getAimX: () => creek.aimX(),
+      startCreek: () => {
+        mode = "play";
+        showHelp = false;
+        enterCreek();
+      },
       setHour: (h: number | null) => {
         debugHour = h;
         if (h != null) localHour = h;
@@ -2416,6 +2531,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     reset: () => {
       clearSave();
       save = defaultSave();
+      creek.forget();
       mode = "title";
       showHelp = false;
       void deck.hydrate(EMPTY_DECK);
@@ -2471,6 +2587,8 @@ declare global {
       getSpeed: () => number;
       setKeys?: (codes: string[]) => void;
       getState?: () => Record<string, unknown>;
+      getAimX?: () => number | null;
+      startCreek?: () => void;
       setHour?: (h: number | null) => void;
       loadMap?: (id: string, tx: number, ty: number) => void;
       setIncarnation?: (id: string) => void;

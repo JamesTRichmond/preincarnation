@@ -1,10 +1,11 @@
 import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
+import type { CreekBlob } from "./fishing/bridge.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
-export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod";
+export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod" | "fishing";
 export type MapId =
   | "addison"
   | "middlebury"
@@ -144,6 +145,8 @@ export type SaveData = {
   inventory: Weapon[];
   equippedId: string;
   character: CharacterSheet;
+  /** Optional creek trip. Null on lives that have never fished. */
+  creek: CreekBlob | null;
 };
 
 export type Choice = {
@@ -226,7 +229,7 @@ export type UiSnapshot = {
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export const DEFAULT_UPGRADES: Upgrades = {
   vitality: 0,

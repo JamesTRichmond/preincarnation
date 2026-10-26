@@ -217,7 +217,7 @@ export function GameApp() {
         <DialoguePanel node={ui.dialogue} onChoose={(i) => gameRef.current?.choose(i)} />
       )}
 
-      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
+      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && ui.mode !== "fishing" && (
         <Pause
           ui={ui}
           onResume={() => gameRef.current?.resume()}
