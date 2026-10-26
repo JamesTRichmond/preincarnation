@@ -4,7 +4,7 @@ import type { DeckMeta } from "./ipod.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
-export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod";
+export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod" | "field";
 export type MapId =
   | "addison"
   | "middlebury"

@@ -31,7 +31,7 @@ export const RELICS: RelicDef[] = [
   { id: "flippers", name: "Creek fins", verb: "Swim", slot: "passive", desc: "Otter Creek will take you." },
   { id: "lantern", name: "Oil lamp", verb: "Light", slot: "Y", desc: "The quarry is dark without it." },
   { id: "hammer", name: "Marble hammer", verb: "Smash", slot: "Y", desc: "Cracked marble yields. The temple's gift." },
-  { id: "net", name: "Bug net", verb: "Catch", slot: "Y", desc: "Crows, moths, the odd wandering light." },
+  { id: "net", name: "Bug net", verb: "Catch", slot: "Y", desc: "Crows go in a bottle. Y opens the field book when the mesh is empty." },
   { id: "mirror", name: "Homestead glass", verb: "Return", slot: "Y", desc: "Walk home. The shrine remembers you." },
   { id: "cape", name: "Shadow cape", verb: "Phase", slot: "Y", desc: "A few steps through what would stop you." },
   { id: "cane", name: "Somaria rod", verb: "Block", slot: "Y", desc: "Raise a block. Spend mana." },

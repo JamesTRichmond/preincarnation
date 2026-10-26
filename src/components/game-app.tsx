@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
+import { FieldBook } from "@/components/field-book";
 import {
   afterlifeCopy,
   BACKGROUNDS,
@@ -217,7 +218,7 @@ export function GameApp() {
         <DialoguePanel node={ui.dialogue} onChoose={(i) => gameRef.current?.choose(i)} />
       )}
 
-      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
+      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && ui.mode !== "field" && (
         <Pause
           ui={ui}
           onResume={() => gameRef.current?.resume()}
@@ -250,6 +251,8 @@ export function GameApp() {
           onSeek={(t) => gameRef.current?.seekDeck(t)}
         />
       )}
+
+      {ui.mode === "field" && <FieldBook onClose={() => gameRef.current?.closeField()} />}
 
       {ui.mode === "ending" && (
         <Ending beat={ui.endingBeat} onWalk={() => gameRef.current?.reincarnate()} />

@@ -1192,8 +1192,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     attackT = 0.25;
   };
 
-  const swingNet = () => {
+  const swingNet = (): boolean => {
     attackT = 0.16;
+    let caught = false;
     for (const e of enemies) {
       if (!e.alive || e.kind !== "crow") continue;
       if (Math.hypot(e.x - player.x, e.y - player.y) < 22) {
@@ -1201,8 +1202,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         fillBottle("deluxe");
         say("A light in the net. Bottled.");
         audio.pickup();
+        caught = true;
       }
     }
+    return caught;
   };
 
   const warpHome = () => {
@@ -1360,7 +1363,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (ySlot === "hammer") {
         smash();
       } else if (ySlot === "net") {
-        swingNet();
+        const caught = swingNet();
+        if (!caught) {
+          mode = "field";
+          showHelp = false;
+        }
       } else if (ySlot === "shovel") {
         dig();
       } else if (ySlot === "lantern") {
@@ -2104,6 +2111,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
+    } else if (mode === "field" && actions.pausePressed) {
+      mode = "play";
     }
     if (hitstop > 0) hitstop -= raw;
     else {
@@ -2376,6 +2385,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     },
     closeIpod: () => {
       if (mode === "ipod") mode = "play";
+      lastUi = "";
+    },
+    closeField: () => {
+      if (mode === "field") mode = "play";
       lastUi = "";
     },
     openIpod: () => {
