@@ -857,34 +857,189 @@ export function paintHudALttP(ctx: CanvasRenderingContext2D, info: HudInfo) {
 }
 
 export function makeTileCache() {
-  const cache = new Map<string, HTMLCanvasElement>();
-  const blit = (
+  let atlas: HTMLCanvasElement | null = null;
+  let actx: CanvasRenderingContext2D | null = null;
+  let mw = 0;
+  let mh = 0;
+  let stamp: Uint8Array | null = null;
+  let key = "";
+  const bank = new Map<string, { atlas: HTMLCanvasElement; actx: CanvasRenderingContext2D; stamp: Uint8Array; mw: number; mh: number }>();
+
+  const ensure = (tw: number, th: number) => {
+    if (atlas && actx && stamp && mw === tw && mh === th) return;
+    atlas = document.createElement("canvas");
+    atlas.width = Math.max(1, tw * 16);
+    atlas.height = Math.max(1, th * 16);
+    actx = atlas.getContext("2d");
+    if (actx) actx.imageSmoothingEnabled = false;
+    mw = tw;
+    mh = th;
+    stamp = new Uint8Array(tw * th);
+  };
+
+  const want = (id: number, frame: number) => {
+    if (id === T.water || id === T.cosmic) return 1 + (frame & 3);
+    return 8;
+  };
+
+  const blitView = (
     ctx: CanvasRenderingContext2D,
-    id: number,
-    dx: number,
-    dy: number,
-    tx: number,
-    ty: number,
     tiles: number[][],
+    viewX: number,
+    viewY: number,
+    visW: number,
+    visH: number,
+    zoom: number,
     frame: number,
-    size: number,
   ) => {
-    const n = (ox: number, oy: number) => tiles[ty + oy]?.[tx + ox] ?? T.wall;
-    const anim = id === T.water || id === T.cosmic ? frame & 3 : 0;
-    const key = id + ":" + tx + ":" + ty + ":" + anim + ":" + n(1, 0) + ":" + n(-1, 0) + ":" + n(0, 1) + ":" + n(0, -1);
-    let c = cache.get(key);
-    if (!c) {
-      c = document.createElement("canvas");
-      c.width = 16;
-      c.height = 16;
-      paintTile16(c.getContext("2d")!, id, 0, 0, tx, ty, tiles, frame);
-      cache.set(key, c);
+    const th = tiles.length;
+    const tw = tiles[0]?.length ?? 0;
+    if (!tw || !th) return;
+    ensure(tw, th);
+    if (!atlas || !actx || !stamp) return;
+    const x0 = Math.max(0, Math.floor(viewX / 16) - 1);
+    const y0 = Math.max(0, Math.floor(viewY / 16) - 1);
+    const x1 = Math.min(tw, Math.ceil((viewX + visW) / 16) + 1);
+    const y1 = Math.min(th, Math.ceil((viewY + visH) / 16) + 1);
+    // Water and cosmic repaint every animation bucket. Doing the whole view
+    // in one frame was a measured p95 hitch, so refresh a few of those cells
+    // per frame. A cell with no pixels yet is still painted immediately.
+    let animBudget = 12;
+    for (let ty = y0; ty < y1; ty++) {
+      const row = tiles[ty];
+      if (!row) continue;
+      for (let tx = x0; tx < x1; tx++) {
+        const id = row[tx];
+        const i = ty * tw + tx;
+        const mark = want(id, frame);
+        if (stamp[i] === mark) continue;
+        const animated = mark !== 8;
+        if (animated && stamp[i] !== 0) {
+          if (animBudget <= 0) continue;
+          animBudget -= 1;
+        }
+        paintTile16(actx, id, tx * 16, ty * 16, tx, ty, tiles, frame);
+        stamp[i] = mark;
+      }
     }
-    ctx.drawImage(c, 0, 0, 16, 16, dx, dy, size, size);
+    const srcX = Math.max(0, viewX);
+    const srcY = Math.max(0, viewY);
+    const srcW = Math.max(0, Math.min(visW, tw * 16 - srcX));
+    const srcH = Math.max(0, Math.min(visH, th * 16 - srcY));
+    if (srcW <= 0 || srcH <= 0) return;
+    ctx.drawImage(atlas, srcX, srcY, srcW, srcH, 0, 0, srcW * zoom, srcH * zoom);
+  };
+
+  return {
+    blitView,
+    dirty(tx: number, ty: number) {
+      if (!stamp) return;
+      for (const [ox, oy] of [
+        [0, 0],
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+      ]) {
+        const x = tx + ox;
+        const y = ty + oy;
+        if (x < 0 || y < 0 || x >= mw || y >= mh) continue;
+        stamp[y * mw + x] = 0;
+      }
+    },
+    clear() {
+      if (stamp) stamp.fill(0);
+    },
+    swap(next: string) {
+      if (next === key && atlas && stamp && actx) return;
+      if (key && atlas && stamp && actx) {
+        bank.set(key, { atlas, actx, stamp, mw, mh });
+        if (bank.size > 8) {
+          const oldest = bank.keys().next().value;
+          if (oldest && oldest !== next) bank.delete(oldest);
+        }
+      }
+      key = next;
+      const hit = bank.get(next);
+      if (hit) {
+        atlas = hit.atlas;
+        actx = hit.actx;
+        stamp = hit.stamp;
+        mw = hit.mw;
+        mh = hit.mh;
+      } else {
+        atlas = null;
+        actx = null;
+        stamp = null;
+        mw = 0;
+        mh = 0;
+      }
+    },
+  };
+}
+
+type PropPaint = (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+
+export function makePropCache() {
+  const cache = new Map<string, { canvas: HTMLCanvasElement; ox: number; oy: number }>();
+  const blit = (ctx: CanvasRenderingContext2D, key: string, x: number, y: number, w: number, h: number, ox: number, oy: number, paint: PropPaint) => {
+    let hit = cache.get(key);
+    if (!hit) {
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const c = canvas.getContext("2d");
+      if (!c) {
+        paint(ctx, x, y);
+        return;
+      }
+      c.imageSmoothingEnabled = false;
+      paint(c, ox, oy);
+      hit = { canvas, ox, oy };
+      cache.set(key, hit);
+    }
+    ctx.drawImage(hit.canvas, x - hit.ox, y - hit.oy);
   };
   return {
-    blit,
-    clear: () => cache.clear(),
+    bush(ctx: CanvasRenderingContext2D, x: number, y: number, glow: boolean) {
+      blit(ctx, glow ? "bush1" : "bush0", x, y, 16, 16, 0, 0, (c, px, py) => paintBush16(c, px, py, glow));
+    },
+    rock(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "rock", x, y, 16, 16, 0, 0, (c, px, py) => paintRock16(c, px, py));
+    },
+    building(ctx: CanvasRenderingContext2D, kind: string, x: number, y: number) {
+      blit(ctx, "b:" + kind, x, y, 64, 48, 24, 22, (c, px, py) => paintBuilding16(c, kind, px, py));
+    },
+    npc(ctx: CanvasRenderingContext2D, x: number, y: number, npc: string) {
+      blit(ctx, "npc:" + npc, x, y, 16, 16, 0, 0, (c, px, py) => paintNpc16(c, px, py, npc));
+    },
+    well(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "well", x, y, 16, 16, 0, 0, (c, px, py) => paintWell16(c, px, py));
+    },
+    chest(ctx: CanvasRenderingContext2D, x: number, y: number, glow: boolean) {
+      blit(ctx, glow ? "chest1" : "chest0", x, y, 16, 16, 0, 0, (c, px, py) => paintChest16(c, px, py, glow));
+    },
+    grave(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "grave", x, y, 16, 16, 0, 0, (c, px, py) => paintGrave16(c, px, py));
+    },
+    pot(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "pot", x, y, 16, 16, 0, 0, (c, px, py) => paintPot16(c, px, py));
+    },
+    shrine(ctx: CanvasRenderingContext2D, x: number, y: number, on: boolean) {
+      blit(ctx, on ? "shrine1" : "shrine0", x, y, 16, 16, 0, 0, (c, px, py) => paintShrine16(c, px, py, on));
+    },
+    sheep(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "sheep", x, y, 16, 16, 0, 0, (c, px, py) => paintSheep16(c, px, py));
+    },
+    lock(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "lock", x, y, 16, 16, 0, 0, (c, px, py) => paintLock16(c, px, py));
+    },
+    key(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "key", x, y, 16, 16, 0, 0, (c, px, py) => paintKey16(c, px, py));
+    },
+    cave(ctx: CanvasRenderingContext2D, x: number, y: number) {
+      blit(ctx, "cave", x, y, 16, 16, 0, 0, (c, px, py) => paintCave16(c, px, py));
+    },
   };
 }
 
