@@ -1,6 +1,6 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
-import { clampOpens } from "./vein.ts";
+import { clampOpens } from "./lamp-rites.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,

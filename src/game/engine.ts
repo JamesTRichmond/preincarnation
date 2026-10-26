@@ -50,7 +50,7 @@ import {
   validateStep,
   witnessBite,
   type ListenState,
-} from "./vein";
+} from "./lamp-rites";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";

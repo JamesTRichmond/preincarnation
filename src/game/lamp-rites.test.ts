@@ -15,7 +15,7 @@ import {
   pay,
   validateStep,
   witnessBite,
-} from "./vein.ts";
+} from "./lamp-rites.ts";
 
 const open = { w: 320, h: 240 };
 const clear = () => false;
