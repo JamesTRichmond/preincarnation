@@ -221,6 +221,7 @@ export type UiSnapshot = {
   afterlifeHost: AfterlifeHost | null;
   introBeat: number;
   job: string;
+  beacon: string | null;
   lastDeed: string;
   cycleLedger: CycleLedger;
 };

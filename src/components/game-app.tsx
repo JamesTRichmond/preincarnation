@@ -67,6 +67,7 @@ const EMPTY: UiSnapshot = {
   afterlifeHost: null,
   introBeat: 0,
   job: OBJECTIVES.job,
+  beacon: null,
   lastDeed: "",
   cycleLedger: EMPTY_LEDGER,
 };
@@ -204,6 +205,9 @@ export function GameApp() {
           <p className="mt-1 font-mono text-[10px] tracking-wide text-fg-subtle">
             {ui.character.name} · {traitById(BACKGROUNDS, ui.character.backgroundId).name}
           </p>
+          {ui.beacon && (
+            <p className="mt-1 font-mono text-[11px] tracking-[0.16em] text-primary uppercase">{ui.beacon}</p>
+          )}
         </div>
       )}
 
