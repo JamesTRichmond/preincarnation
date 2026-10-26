@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Preincarnation sound desk</title>
+  <link rel="stylesheet" href="./audition.css" />
+</head>
+<body>
+  <main class="desk">
+    <header class="top">
+      <div>
+        <p class="eyebrow">Preincarnation</p>
+        <h1>Sound desk</h1>
+        <p class="meta">Addison County, heard in place. Original synthesis. The score bus stays empty.</p>
+      </div>
+      <div>
+        <p class="clock">Field clock <b id="clock">0.00</b></p>
+        <p class="hint" id="transport">Audio locked</p>
+      </div>
+    </header>
+
+    <div class="stage" id="stage" data-kind="idle" data-place="" aria-live="assertive">
+      <p class="kind" id="stage-kind">No warning</p>
+      <p class="stage-copy" id="stage-copy">Warnings print here as well as sounding. Mute does not clear them.</p>
+      <p class="years" id="years" hidden></p>
+      <p class="voiced" id="voiced">No place · nothing voiced</p>
+    </div>
+
+    <section class="panel" aria-label="Scenes">
+      <div class="section-head">
+        <h2>In a place</h2>
+        <p class="hint" id="scene-note">A short run of the real cues, in the place they belong. Press the same one to stop.</p>
+      </div>
+      <div class="scenes" id="scenes"></div>
+    </section>
+
+    <section class="panel" aria-label="Mixer">
+      <div class="mix-grid">
+        <div>
+          <h2>Buses</h2>
+          <div class="sliders">
+            <label class="slider"><span>Master <b id="read-master">100</b></span><input id="vol-master" type="range" min="0" max="100" value="100" /></label>
+            <label class="slider"><span>Music <b id="read-music">80</b></span><input id="vol-music" type="range" min="0" max="100" value="80" /></label>
+            <label class="slider"><span>Ambience <b id="read-ambience">85</b></span><input id="vol-ambience" type="range" min="0" max="100" value="85" /></label>
+            <label class="slider"><span>Effects <b id="read-effects">100</b></span><input id="vol-effects" type="range" min="0" max="100" value="100" /></label>
+            <label class="slider"><span>Interface <b id="read-ui">80</b></span><input id="vol-ui" type="range" min="0" max="100" value="80" /></label>
+          </div>
+          <div class="actions">
+            <button class="quiet" id="mute" type="button" aria-pressed="false">Mute</button>
+            <button class="quiet" id="suspend" type="button" aria-pressed="false">Suspend engine</button>
+            <button class="quiet" id="bus-check" type="button" aria-pressed="false">Music bus check</button>
+          </div>
+          <p class="hint">Mute and suspend stop sound only. The clock keeps running, and warnings still show. The check tone proves the empty music wire.</p>
+        </div>
+        <div>
+          <h2>Place</h2>
+          <div class="zones" id="zones"></div>
+          <p class="hint">Choosing the current place again does not stack another loop. Keys 1 to 6.</p>
+        </div>
+      </div>
+      <p class="log" id="voices">Voices 0</p>
+    </section>
+
+    <div class="work">
+      <section class="panel" aria-label="Cues">
+        <h2>Cues</h2>
+        <div class="filters" id="filters"></div>
+        <label class="find">Find
+          <input id="find" type="search" placeholder="blade, snow, boss" />
+        </label>
+        <p class="hint" id="shown"></p>
+        <div class="list" id="list"></div>
+      </section>
+      <section class="panel inspector" aria-label="Selected cue">
+        <p class="eyebrow" id="cue-id">Nothing selected</p>
+        <h2 id="cue-name">Choose a cue</h2>
+        <p class="notes" id="cue-notes"></p>
+        <svg id="wave" viewBox="0 0 640 144" role="img" aria-label="Waveform of the selected cue"></svg>
+        <div class="takes" id="takes" hidden></div>
+        <div class="sliders slim">
+          <label class="slider"><span>Pan <b id="read-pan">center</b></span><input id="pan" type="range" min="-100" max="100" value="0" /></label>
+          <label class="slider"><span>Pace <b id="read-tempo">460 ms</b></span><input id="tempo" type="range" min="240" max="720" step="20" value="460" /></label>
+        </div>
+        <div class="actions">
+          <button class="solid" id="play" type="button" disabled>Play as the game</button>
+          <button class="quiet" id="pace" type="button" disabled aria-pressed="false">Pace</button>
+          <button class="quiet" id="spam" type="button" disabled>Eight too fast</button>
+        </div>
+        <div class="ladder" id="ladder" aria-hidden="true"></div>
+        <p class="hint" id="ladder-caption"></p>
+        <p class="measure" id="cue-measure"></p>
+        <p class="status" id="status"></p>
+        <p class="log" id="log"></p>
+      </section>
+    </div>
+    <p class="hint keys">Space plays as the game. Arrows move the list. P paces. 1 to 6 set the place.</p>
+  </main>
+
+  <div class="gate" id="gate">
+    <div class="panel">
+      <p class="eyebrow">Browser audio</p>
+      <h2>Start sound</h2>
+      <p>Nothing plays until you do this. The desk resumes the audio device inside the click, before it loads a file.</p>
+      <button class="solid" id="unlock" type="button">Start sound</button>
+    </div>
+  </div>
+  <script type="module" src="./audition.js"></script>
+</body>
+</html>
