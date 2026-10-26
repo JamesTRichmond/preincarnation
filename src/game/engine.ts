@@ -175,7 +175,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
   let weather: WeatherState | null = null;
@@ -2104,6 +2104,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
+    } else if (mode === "codex" && actions.pausePressed) {
+      mode = "pause";
     }
     if (hitstop > 0) hitstop -= raw;
     else {
@@ -2377,6 +2379,21 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     closeIpod: () => {
       if (mode === "ipod") mode = "play";
       lastUi = "";
+    },
+    openSatchel: () => {
+      if (mode === "title" || mode === "create" || mode === "intro" || mode === "limbo" || mode === "ending") return;
+      mode = "codex";
+      showHelp = false;
+      lastUi = "";
+    },
+    closeSatchel: () => {
+      if (mode === "codex") mode = "pause";
+      lastUi = "";
+    },
+    knowledge: () => save.flags.knowledge,
+    setKnowledge: (next: typeof save.flags.knowledge) => {
+      save.flags.knowledge = next;
+      persist();
     },
     openIpod: () => {
       mode = "ipod";
