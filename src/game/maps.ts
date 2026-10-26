@@ -66,7 +66,8 @@ export type PropKind =
   | "lock"
   | "relic"
   | "plot"
-  | "cave";
+  | "cave"
+  | "hearth";
 
 export type PropSpec = {
   kind: PropKind;

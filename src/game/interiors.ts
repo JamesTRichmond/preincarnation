@@ -1,4 +1,4 @@
-import { T } from "./tile-ids";
+import { T } from "./tile-ids.ts";
 import type { Flags, MapId } from "./types";
 
 export const INTERIOR_IDS: MapId[] = [
@@ -225,6 +225,9 @@ export function buildInterior(
     if (!flags.caches.includes("creemee-cup")) {
       props.push({ kind: "creemee", x: marks.K[0].x + 1, y: marks.K[0].y, id: "creemee-cup" });
     }
+  }
+  if (id === "int_inn") {
+    props.push({ kind: "hearth", x: 10, y: 4, id: "ferry-hearth" });
   }
   if (id === "int_sugar") {
     const u = marks.U?.[0] ?? { x: 3, y: 2 };

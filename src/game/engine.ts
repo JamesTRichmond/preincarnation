@@ -748,6 +748,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (p.kind === "door" || p.kind === "cave") {
       if (warpLock > 0) return;
       enterDoor(p);
+    } else if (p.kind === "hearth") {
+      mode = "hearth";
+      audio.setDuck(true);
+      lastUi = "";
     } else if (p.kind === "rifle") {
       const w = rollWeapon(p.id, "farmhouse", save.cycle);
       w.ammo = 1 + Math.floor(Math.random() * 3);
@@ -1473,7 +1477,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                     ? "Unlock"
                     : near.kind === "home"
                   ? "The homestead"
-                  : "Talk"
+                  : near.kind === "hearth"
+                    ? "Sit"
+                    : "Talk"
       : null;
     if (actions.interactPressed && near) interactWith(near);
     if (near?.kind === "door" && player.dir === 3 && my < -0.15) {
@@ -1758,6 +1764,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       else if (p.kind === "key") paintKey16(bctx, dx, dy);
       else if (p.kind === "lock") paintLock16(bctx, dx, dy);
       else if (p.kind === "cave") paintCave16(bctx, dx, dy);
+      else if (p.kind === "hearth") {
+        bctx.fillStyle = "#3c2416";
+        bctx.fillRect(dx + 2, dy + 8, 12, 6);
+        bctx.fillStyle = "#e07a3d";
+        bctx.fillRect(dx + 5, dy + 4, 6, 6);
+        bctx.fillStyle = "#e0c48a";
+        bctx.fillRect(dx + 7, dy + 2, 2, 3);
+      }
       else if (p.kind === "relic") {
         const sheet = images.get("relics");
         const ids: RelicId[] = ["shovel","hookshot","boots","flippers","lantern","hammer","net","mirror","cape","cane","bow","ipod","bombs","sword"];
@@ -2104,6 +2118,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
+    } else if (mode === "hearth" && actions.pausePressed) {
+      mode = "play";
+      audio.setDuck(false);
     }
     if (hitstop > 0) hitstop -= raw;
     else {
@@ -2378,6 +2395,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (mode === "ipod") mode = "play";
       lastUi = "";
     },
+    openHearth: () => {
+      mode = "hearth";
+      audio.setDuck(true);
+      lastUi = "";
+    },
+    closeHearth: () => {
+      if (mode !== "hearth") return;
+      mode = "play";
+      audio.setDuck(false);
+      lastUi = "";
+    },
+    duckScore: (on: boolean) => audio.setDuck(on),
     openIpod: () => {
       mode = "ipod";
       showHelp = false;

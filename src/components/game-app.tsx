@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
+import { TavernMusicActivity } from "@/tavern/ui/TavernMusicActivity";
 import {
   afterlifeCopy,
   BACKGROUNDS,
@@ -249,6 +250,16 @@ export function GameApp() {
           onPause={() => gameRef.current?.pauseDeck()}
           onSeek={(t) => gameRef.current?.seekDeck(t)}
         />
+      )}
+
+      {ui.mode === "hearth" && (
+        <div className="absolute inset-0 z-30 overflow-auto bg-bg">
+          <TavernMusicActivity
+            onFocus={() => gameRef.current?.duckScore(true)}
+            onRelease={() => gameRef.current?.duckScore(false)}
+            onStand={() => gameRef.current?.closeHearth()}
+          />
+        </div>
       )}
 
       {ui.mode === "ending" && (
