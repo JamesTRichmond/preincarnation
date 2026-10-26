@@ -1,0 +1,345 @@
+import type { Profile } from "./types.ts";
+
+/**
+ * Twelve profiles for the Otter Creek margin.
+ * Ecology lines are tagged verified / simplified / fictionalized-gameplay.
+ * Season flags are a fiction dated to the afternoon of 18 Oct 2026.
+ * They are not a Vermont Fish & Wildlife regulation — confirm anything real.
+ */
+export const PROFILES: Record<string, Profile> = {
+  deer: {
+    id: "deer",
+    common: "White-tailed deer",
+    latin: "Odocoileus virginianus",
+    habitats: ["woods", "orchard", "field"],
+    scent: 0.94,
+    hearing: 0.72,
+    sight: 0.5,
+    scentRadius: 280,
+    hearRadius: 168,
+    seeRadius: 156,
+    quarry: true,
+    capture: "none",
+    seasonNote:
+      "Gameplay flag: archery deer is treated as open on this October afternoon, matching secondary 2026 statewide date listings (1 Oct–15 Dec). Not a license.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Champlain Valley deer bed in dense cover and feed orchards and hay edges, mostly at dawn and dusk. Smell is the sense that ruins a stalk. A hemlock bed in October is cover beside food, not a winter deer yard — those softwood yards matter later, in deep snow. The apple circuit is a compressed fiction.",
+    sources: [
+      {
+        name: "Vermont habitat guidance treats hemlock deer wintering areas as a distinct winter habitat, separate from October orchard feeding",
+      },
+    ],
+    activities: ["bedded", "traveling", "feeding"],
+    watchTitle: "Apple-drop circuit",
+    watchDetail:
+      "You stayed out of her wind and let the bed empty on its own. The page records the line from hemlock to drops, and the hour she uses.",
+    sketchTitle: "Doe at the drops",
+    huntTitle: "A deer taken early",
+    huntDetail:
+      "Meat for a night. The circuit is unfinished — you never learned which gap she trusts. The pocket heard the shot.",
+  },
+  turkey: {
+    id: "turkey",
+    common: "Wild turkey",
+    latin: "Meleagris gallopavo",
+    habitats: ["woods", "field"],
+    scent: 0.06,
+    hearing: 0.64,
+    sight: 0.96,
+    scentRadius: 36,
+    hearRadius: 150,
+    seeRadius: 236,
+    quarry: true,
+    capture: "none",
+    seasonNote:
+      "Gameplay flag: fall archery turkey treated as open (secondary listings, 1 Oct–13 Nov 2026). Wind is almost useless. Eyes are not.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Turkeys scratch oak mast and will step into a hay edge to feed. Their vision is the practical problem; scent barely matters. A flock that has seen you does not negotiate. Roosting in trees is real; the exact scratch line is placed for play.",
+    sources: [{ name: "Standard northeastern turkey natural history, compressed into one afternoon flock" }],
+    activities: ["scratching", "feeding", "moving to roost"],
+    watchTitle: "Scratch line",
+    watchDetail:
+      "You let the flock work. The page has the difference between a fresh scratch and last week's, and which way the roost trees sit.",
+    sketchTitle: "Flock in the oak gap",
+    huntTitle: "One bird, no pattern",
+    huntDetail: "A bird in the bag and a flock that will not show you the roost. Less than the page was worth.",
+  },
+  cottontail: {
+    id: "cottontail",
+    common: "Eastern cottontail",
+    latin: "Sylvilagus floridanus",
+    habitats: ["orchard", "marsh", "field"],
+    scent: 0.58,
+    hearing: 0.82,
+    sight: 0.48,
+    scentRadius: 140,
+    hearRadius: 124,
+    seeRadius: 96,
+    quarry: true,
+    capture: "box-trap",
+    seasonNote:
+      "Gameplay flag: rabbit season treated as open (secondary listings from 26 Sep). This animal is an eastern cottontail of the farm edge, not a New England cottontail.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Eastern cottontails sit in forms along brush and berms, then nip at the edge. New England cottontails are a different, rarer shrubland animal and are not what this pocket is showing you. The form-and-nibble line is a gameplay compression of that edge habit.",
+    sources: [
+      {
+        name: "Species split: eastern cottontail versus New England cottontail (Sylvilagus transitionalis). Placement on this farm is fictionalized.",
+      },
+    ],
+    activities: ["in form", "nipping", "freezing"],
+    watchTitle: "Form and nibble",
+    watchDetail: "The form was warm and the nibble was later. You can tell them apart now.",
+    sketchTitle: "Rabbit at the brush edge",
+    captureTitle: "Live notes, then the door",
+    captureDetail:
+      "The box sat on the line they had not walked yet. You were elsewhere. The notes are worth more than a snare would have been, and the rabbit left in the brush.",
+    huntTitle: "A rabbit, and no form",
+    huntDetail: "Small meat. You still cannot read a form from a tuft of grass.",
+  },
+  beaver: {
+    id: "beaver",
+    common: "Beaver",
+    latin: "Castor canadensis",
+    habitats: ["water", "marsh"],
+    scent: 0.7,
+    hearing: 0.56,
+    sight: 0.38,
+    scentRadius: 160,
+    hearRadius: 130,
+    seeRadius: 108,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "No hunting season. Trapping, in secondary 2026 listings, opens 24 Oct — after this afternoon. A shot is refused.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Beavers mark with scent mounds and work feeding trails off the water, mostly out of full day. The slap is an alarm. This lodge-mouth circuit is placed on the creek for play; the mound itself is a real kind of sign.",
+    sources: [{ name: "Beaver scent-mound and feeding-trail natural history, simplified; site fictionalized" }],
+    activities: ["in lodge", "hauling", "mounding"],
+    watchTitle: "Scent mound",
+    watchDetail:
+      "Mud and castoreum, not a track you follow like a deer. The mound tells you the family is using this bank. You did not need to open the lodge.",
+    sketchTitle: "Haul at the mound",
+  },
+  otter: {
+    id: "otter",
+    common: "North American river otter",
+    latin: "Lontra canadensis",
+    habitats: ["water"],
+    scent: 0.62,
+    hearing: 0.46,
+    sight: 0.58,
+    scentRadius: 150,
+    hearRadius: 118,
+    seeRadius: 140,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "No open hunting season. Secondary listings put otter trapping from 24 Oct. This pocket will not take one.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Otters use slides and communal latrines (spraints) along Vermont rivers. Otter Creek is the real river of this county; the animal's name and the river's name are a coincidence people enjoy and biologists do not rely on. The particular slide is fictionalized. Creek noise covers some of your footfall. It does not cover scent coming off the hay.",
+    sources: [
+      {
+        name: "Otter Creek is the main river through Addison County. Slide and spraint behavior is simplified natural history; the station is fictionalized.",
+      },
+    ],
+    activities: ["sliding", "fishing", "scenting"],
+    watchTitle: "Slide and spraint",
+    watchDetail:
+      "Two different marks: the worn slide, and a spraint left as a message. You can tell which is travel and which is a letter.",
+    sketchTitle: "Otter at the eddy",
+  },
+  fox: {
+    id: "fox",
+    common: "Red fox",
+    latin: "Vulpes vulpes",
+    habitats: ["field", "orchard"],
+    scent: 0.86,
+    hearing: 0.84,
+    sight: 0.6,
+    scentRadius: 230,
+    hearRadius: 176,
+    seeRadius: 148,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "Trapping in secondary listings opens 24 Oct. This pocket does not offer a fox shot — the pounce is the thing worth learning.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Red foxes hunt meadow voles with a high pounce and travel in a narrow line. Tracks tend toward a single register. The two circuits here — hay pounce and orchard lane — are fictionalized placements of that habit.",
+    sources: [{ name: "Red fox mousing behavior, simplified; both stations fictionalized" }],
+    activities: ["traveling", "pouncing", "listening"],
+    watchTitle: "Pounce line",
+    watchDetail:
+      "A straight track, then a dig where a vole was. The page keeps the difference between traveling and hunting.",
+    sketchTitle: "Fox cocked over the hay",
+  },
+  raccoon: {
+    id: "raccoon",
+    common: "Raccoon",
+    latin: "Procyon lotor",
+    habitats: ["marsh", "water"],
+    scent: 0.5,
+    hearing: 0.5,
+    sight: 0.36,
+    scentRadius: 128,
+    hearRadius: 112,
+    seeRadius: 92,
+    quarry: true,
+    capture: "box-trap",
+    seasonNote:
+      "Gameplay flag: raccoon hunting treated as open (secondary listings 10 Oct–31 Dec). The box still teaches more than the shot.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Raccoons work water edges at night for crayfish and corn, and leave a hand-like print, often with a small drag. Both the ditch and the ford are fictionalized stations on a real kind of shoreline.",
+    sources: [{ name: "Raccoon track and crayfish-foraging natural history, simplified" }],
+    activities: ["foraging", "washing", "traveling"],
+    watchTitle: "Hand print",
+    watchDetail: "Five toes, and a belly drag in the mud. Not a fox, not a cat. The ditch and the ford are different meals.",
+    sketchTitle: "Raccoon in the ditch",
+    captureTitle: "Box on the ford line",
+    captureDetail:
+      "You set it where the prints were going, then left. The book gets a better page than a pelt would have.",
+    huntTitle: "A raccoon, unread",
+    huntDetail: "The print never got interpreted. The shot closed it.",
+  },
+  coyote: {
+    id: "coyote",
+    common: "Eastern coyote",
+    latin: "Canis latrans",
+    habitats: ["field", "marsh"],
+    scent: 0.9,
+    hearing: 0.8,
+    sight: 0.58,
+    scentRadius: 260,
+    hearRadius: 188,
+    seeRadius: 160,
+    quarry: true,
+    capture: "none",
+    seasonNote:
+      "Gameplay flag: coyote hunting without dogs treated as open, per secondary listings. The crossing is worth more than the hide.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Northeastern coyotes are larger than the western animal and use field edges and scat posts as a travel network. This is one crossing, not a territory model. Scent is excellent.",
+    sources: [{ name: "Eastern coyote field-edge travel, simplified; the hay line is fictionalized" }],
+    activities: ["traveling", "scent-posting"],
+    watchTitle: "Hay crossing",
+    watchDetail:
+      "Scat on the line, then the animal itself, once. You have the direction they use when the light drops. A shot would only have deleted the teacher.",
+    sketchTitle: "Coyote on the crossing",
+    huntTitle: "Coyote down",
+    huntDetail: "The crossing is a blank. You know less about this field than when you started.",
+  },
+  grouse: {
+    id: "grouse",
+    common: "Ruffed grouse",
+    latin: "Bonasa umbellus",
+    habitats: ["woods"],
+    scent: 0.08,
+    hearing: 0.97,
+    sight: 0.7,
+    scentRadius: 28,
+    hearRadius: 210,
+    seeRadius: 128,
+    quarry: true,
+    capture: "none",
+    seasonNote:
+      "Gameplay flag: ruffed grouse season treated as open (secondary listings 26 Sep–31 Dec). This is not a spruce grouse.",
+    ecologyLabel: "verified",
+    ecology:
+      "Ruffed grouse are Vermont’s premier small game and are found throughout the state. Spruce grouse are a state endangered species and, on the Vermont Fish & Wildlife page cited here, occur only in isolated Essex County pockets — not in Addison. Shooting the wrong bird is a real legal problem; this pocket only has ruffed grouse. Drumming logs and aspen/young-forest use are simplified; the log itself is placed for play.",
+    sources: [
+      {
+        name: "Vermont Fish & Wildlife — Ruffed Grouse or Spruce Grouse?",
+        url: "https://www.vtfishandwildlife.com/hunt/hunting-and-trapping-opportunities/upland-game-birds/ruffed-grouse-or-spruce-grouse",
+      },
+    ],
+    activities: ["drumming", "feeding"],
+    watchTitle: "Drum log",
+    watchDetail:
+      "Ruffed, not spruce. The burst is a hearing problem: dry leaves, not your scent. The page keeps the log and the aspen it feeds toward.",
+    sketchTitle: "Grouse on the log",
+    huntTitle: "A flush you forced",
+    huntDetail: "You have a bird and no idea which log was the drum. The woods heard you.",
+  },
+  muskrat: {
+    id: "muskrat",
+    common: "Muskrat",
+    latin: "Ondatra zibethicus",
+    habitats: ["marsh"],
+    scent: 0.36,
+    hearing: 0.55,
+    sight: 0.4,
+    scentRadius: 90,
+    hearRadius: 100,
+    seeRadius: 80,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "Hunting season in secondary listings is a spring window; trapping opens 24 Oct. This afternoon is watch-only.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Muskrats cut channels, pile push-ups, and leave a narrow tail drag. They are not beavers and not rats in the barn sense. The channel is a fictionalized station in a real kind of marsh.",
+    sources: [{ name: "Muskrat channel and tail-drag sign, simplified" }],
+    activities: ["cutting", "swimming the channel"],
+    watchTitle: "Channel and cuttings",
+    watchDetail: "A tail drag between the cuttings. Smaller work than a beaver, and it does not want the orchard.",
+    sketchTitle: "Muskrat in the channel",
+  },
+  bobcat: {
+    id: "bobcat",
+    common: "Bobcat",
+    latin: "Lynx rufus",
+    habitats: ["woods"],
+    scent: 0.76,
+    hearing: 0.78,
+    sight: 0.74,
+    scentRadius: 200,
+    hearRadius: 160,
+    seeRadius: 150,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "Secondary listings put bobcat hunting in January. October is closed here. The ledge is a watch.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Bobcats travel ledges and stone lines, leave a round track without claw marks when the claws stay in, and are rarely the animal you meant to see. The ledge route is fictionalized. Taking one this month is refused.",
+    sources: [{ name: "Bobcat ledge travel and retracted-claw track, simplified; route fictionalized" }],
+    activities: ["traveling the ledge", "pausing"],
+    watchTitle: "Ledge line",
+    watchDetail:
+      "Round prints, no claws, on the stone. You waited until the cat crossed the open ledge. That is the whole reward.",
+    sketchTitle: "Cat on the ledge",
+  },
+  "wood-duck": {
+    id: "wood-duck",
+    common: "Wood duck",
+    latin: "Aix sponsa",
+    habitats: ["marsh", "water"],
+    scent: 0.1,
+    hearing: 0.5,
+    sight: 0.9,
+    scentRadius: 40,
+    hearRadius: 120,
+    seeRadius: 200,
+    quarry: false,
+    capture: "none",
+    seasonNote:
+      "Waterfowl dates are not asserted here. This timber hole is observation only, so a wrong season cannot be played as a win.",
+    ecologyLabel: "simplified",
+    ecology:
+      "Wood ducks use flooded timber and cavities, flush on sight, and sit where a hayfield duck would not. The hole is fictionalized. No shot is offered because this pocket is not a waterfowl regulation.",
+    sources: [{ name: "Wood duck timber-hole use, simplified; station fictionalized" }],
+    activities: ["loafing", "flushing"],
+    watchTitle: "Timber hole",
+    watchDetail:
+      "A wood duck, not a mallard in a corn puddle. You saw the hole they trust. The book keeps it; a shot was never on the table.",
+    sketchTitle: "Wood duck in the timber",
+  },
+};
+
+export const PROFILE_LIST: Profile[] = Object.values(PROFILES);
