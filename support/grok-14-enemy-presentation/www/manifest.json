@@ -1,0 +1,6308 @@
+{
+  "title": "PREINCARNATION enemy presentation",
+  "batch": "grok-14",
+  "sourceGap": "No approved enemy-definition file and no renderer contract were mounted in the project. This book does not invent combat numbers, AI, or boss state machines. Boxes are alpha guides.",
+  "canon": {
+    "ordinaryNamedByAssignment": null,
+    "bossesNamedByAssignment": null,
+    "ordinaryTargetIfForty": 40,
+    "bossTargetIfSixteen": 16,
+    "ordinaryDrawn": 12,
+    "bossesDrawn": 4,
+    "claimedComplete": false,
+    "unnamedUnstartedOrdinary": 28,
+    "unnamedUnstartedBosses": 12,
+    "whyUnnamed": "The assignment speaks of forty ordinary enemies and sixteen bosses, but no name list was in the project files. Inventing the other names would fake a roster."
+  },
+  "contract": {
+    "directionsMove": [
+      "south",
+      "west",
+      "east",
+      "north"
+    ],
+    "actionOrder": [
+      "idle",
+      "anticipate",
+      "attack",
+      "recover",
+      "hurt",
+      "defeat"
+    ],
+    "damageWindow": "timing.attack only, and only when the preview is set to connect",
+    "tellsMustSurvive": [
+      "grayscale",
+      "muted audio",
+      "reduced motion hold"
+    ],
+    "falseCueRule": "Impact, splash, stone-break, and projectiles do not play during anticipation. Ground marks are labeled TELL.",
+    "anchors": [
+      "feet",
+      "origin",
+      "muzzle",
+      "status",
+      "shadow"
+    ]
+  },
+  "vfxPolicy": {
+    "impact": "On connect, at the muzzle, during the attack frame only. One shot. Not on a whiff. Not during the tell.",
+    "dust": "Low, behind the feet, on movement. Never in front of a telegraph shape.",
+    "splash": "Water-family connect only.",
+    "stone-break": "Quarry defeat poses only.",
+    "shadow": "Under the feet anchor. Static if reduced motion is on.",
+    "projectiles": "Gallery only for this batch. None of these sixteen attacks are ranged in the approved sense \u2014 no definition said they shoot \u2014 so bolts are not autoplayed.",
+    "status": "Gallery samples. Not bound to invented status mechanics. Shapes differ without color.",
+    "ground-tells": "Arrow, ridge, ring, fissure. They play in the anticipate window and are not damage."
+  },
+  "actors": [
+    {
+      "id": "rubble-mite",
+      "name": "Rubble Mite",
+      "family": "Quarry stone",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.2,
+      "silhouette": "Low stack of three plates",
+      "tell": "The top plate lifts, so the stack gets taller before it slams.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee slam. No chip projectile \u2014 a second flying sprite would read as a different attack.",
+      "locomotion": {
+        "src": "atlases/rubble-mite-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            45,
+            44,
+            42,
+            41,
+            49,
+            61,
+            56,
+            46,
+            47,
+            48,
+            48,
+            48,
+            13,
+            16,
+            17,
+            18
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 13,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.011,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2898,
+            "y": 0.2955,
+            "w": 0.5057,
+            "h": 0.5284
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2955,
+            "w": 0.5057,
+            "h": 0.5312
+          },
+          {
+            "x": 0.2273,
+            "y": 0.304,
+            "w": 0.5057,
+            "h": 0.5284
+          },
+          {
+            "x": 0.1989,
+            "y": 0.3068,
+            "w": 0.5057,
+            "h": 0.5284
+          },
+          {
+            "x": 0.2727,
+            "y": 0.2443,
+            "w": 0.5398,
+            "h": 0.5057
+          },
+          {
+            "x": 0.2386,
+            "y": 0.2472,
+            "w": 0.5369,
+            "h": 0.5057
+          },
+          {
+            "x": 0.2074,
+            "y": 0.2528,
+            "w": 0.5398,
+            "h": 0.5028
+          },
+          {
+            "x": 0.1818,
+            "y": 0.2528,
+            "w": 0.5369,
+            "h": 0.5028
+          },
+          {
+            "x": 0.2756,
+            "y": 0.179,
+            "w": 0.5398,
+            "h": 0.5028
+          },
+          {
+            "x": 0.2415,
+            "y": 0.1818,
+            "w": 0.5398,
+            "h": 0.5028
+          },
+          {
+            "x": 0.2131,
+            "y": 0.1818,
+            "w": 0.5341,
+            "h": 0.5028
+          },
+          {
+            "x": 0.1847,
+            "y": 0.1847,
+            "w": 0.5398,
+            "h": 0.5028
+          },
+          {
+            "x": 0.2983,
+            "y": 0.0852,
+            "w": 0.4801,
+            "h": 0.5398
+          },
+          {
+            "x": 0.267,
+            "y": 0.0938,
+            "w": 0.483,
+            "h": 0.5341
+          },
+          {
+            "x": 0.2386,
+            "y": 0.0966,
+            "w": 0.483,
+            "h": 0.5398
+          },
+          {
+            "x": 0.2102,
+            "y": 0.0994,
+            "w": 0.483,
+            "h": 0.5398
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/rubble-mite-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            75,
+            91,
+            72,
+            71,
+            77,
+            8
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 8,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0197,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2751,
+            "y": 0.3991,
+            "w": 0.5309,
+            "h": 0.3849
+          },
+          {
+            "x": 0.2277,
+            "y": 0.3466,
+            "w": 0.5213,
+            "h": 0.4347
+          },
+          {
+            "x": 0.1876,
+            "y": 0.4048,
+            "w": 0.5203,
+            "h": 0.3849
+          },
+          {
+            "x": 0.2601,
+            "y": 0.2131,
+            "w": 0.5522,
+            "h": 0.3523
+          },
+          {
+            "x": 0.2,
+            "y": 0.1378,
+            "w": 0.5553,
+            "h": 0.4219
+          },
+          {
+            "x": 0.0682,
+            "y": 0.2699,
+            "w": 0.7569,
+            "h": 0.3054
+          }
+        ],
+        "hit": {
+          "x": 0.1535,
+          "y": 0.3793,
+          "w": 0.548,
+          "h": 0.4361,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5406,
+          0.784
+        ],
+        "origin": [
+          0.5406,
+          0.5608
+        ],
+        "muzzle": [
+          0.5406,
+          0.784
+        ],
+        "status": [
+          0.5406,
+          0.3791
+        ],
+        "shadow": [
+          0.5406,
+          0.804
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "kiln-crab",
+      "name": "Kiln Crab",
+      "family": "Quarry stone",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.24,
+      "silhouette": "Wide low dome with two pincers",
+      "tell": "Both pincers rise and lock open before the snap.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee. Pincers are the weapon, kept on the body sheet.",
+      "locomotion": {
+        "src": "atlases/kiln-crab-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            30,
+            31,
+            27,
+            20,
+            28,
+            24,
+            21,
+            16,
+            24,
+            27,
+            31,
+            19,
+            30,
+            32,
+            29,
+            24
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 16,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0491,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1619,
+            "y": 0.25,
+            "w": 0.6875,
+            "h": 0.5455
+          },
+          {
+            "x": 0.1506,
+            "y": 0.2557,
+            "w": 0.6875,
+            "h": 0.5455
+          },
+          {
+            "x": 0.1392,
+            "y": 0.267,
+            "w": 0.6903,
+            "h": 0.5426
+          },
+          {
+            "x": 0.1193,
+            "y": 0.2784,
+            "w": 0.6903,
+            "h": 0.5398
+          },
+          {
+            "x": 0.1449,
+            "y": 0.2131,
+            "w": 0.7045,
+            "h": 0.5511
+          },
+          {
+            "x": 0.1335,
+            "y": 0.2216,
+            "w": 0.6989,
+            "h": 0.5483
+          },
+          {
+            "x": 0.125,
+            "y": 0.233,
+            "w": 0.696,
+            "h": 0.5483
+          },
+          {
+            "x": 0.1108,
+            "y": 0.2415,
+            "w": 0.6989,
+            "h": 0.5426
+          },
+          {
+            "x": 0.1676,
+            "y": 0.1932,
+            "w": 0.6989,
+            "h": 0.5511
+          },
+          {
+            "x": 0.1619,
+            "y": 0.1989,
+            "w": 0.696,
+            "h": 0.5511
+          },
+          {
+            "x": 0.1562,
+            "y": 0.2074,
+            "w": 0.6903,
+            "h": 0.5483
+          },
+          {
+            "x": 0.1193,
+            "y": 0.2102,
+            "w": 0.6932,
+            "h": 0.5511
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1903,
+            "w": 0.6903,
+            "h": 0.4744
+          },
+          {
+            "x": 0.1534,
+            "y": 0.2017,
+            "w": 0.6903,
+            "h": 0.4716
+          },
+          {
+            "x": 0.1449,
+            "y": 0.2102,
+            "w": 0.6875,
+            "h": 0.4688
+          },
+          {
+            "x": 0.1307,
+            "y": 0.2131,
+            "w": 0.6847,
+            "h": 0.4716
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/kiln-crab-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            45,
+            59,
+            67,
+            47,
+            39,
+            2
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 2,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0262,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1727,
+            "y": 0.4062,
+            "w": 0.6866,
+            "h": 0.3835
+          },
+          {
+            "x": 0.1766,
+            "y": 0.3253,
+            "w": 0.6553,
+            "h": 0.419
+          },
+          {
+            "x": 0.1834,
+            "y": 0.4062,
+            "w": 0.6205,
+            "h": 0.3651
+          },
+          {
+            "x": 0.1684,
+            "y": 0.1861,
+            "w": 0.6866,
+            "h": 0.3878
+          },
+          {
+            "x": 0.1298,
+            "y": 0.1548,
+            "w": 0.6979,
+            "h": 0.4034
+          },
+          {
+            "x": 0.0597,
+            "y": 0.277,
+            "w": 0.8209,
+            "h": 0.3182
+          }
+        ],
+        "hit": {
+          "x": 0.1429,
+          "y": 0.3821,
+          "w": 0.5096,
+          "h": 0.4134,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.516,
+          0.7897
+        ],
+        "origin": [
+          0.516,
+          0.5673
+        ],
+        "muzzle": [
+          0.516,
+          0.7897
+        ],
+        "status": [
+          0.516,
+          0.3862
+        ],
+        "shadow": [
+          0.516,
+          0.8097
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "shore-lamprey",
+      "name": "Shore Lamprey",
+      "family": "Water",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.22,
+      "silhouette": "Long low eel",
+      "tell": "The body coils into an S before the lunge.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee lunge. Splash plays only if the strike connects.",
+      "locomotion": {
+        "src": "atlases/shore-lamprey-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            58,
+            60,
+            61,
+            61,
+            30,
+            32,
+            33,
+            34,
+            28,
+            30,
+            32,
+            32,
+            64,
+            64,
+            64,
+            60
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 28,
+          "whiteFracMax": 0.0084,
+          "lumDeltaMax": 0.018,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2159,
+            "y": 0.2528,
+            "w": 0.5369,
+            "h": 0.5284
+          },
+          {
+            "x": 0.2216,
+            "y": 0.2528,
+            "w": 0.5398,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2273,
+            "y": 0.2528,
+            "w": 0.5369,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2301,
+            "y": 0.2528,
+            "w": 0.5426,
+            "h": 0.5256
+          },
+          {
+            "x": 0.1477,
+            "y": 0.3097,
+            "w": 0.6847,
+            "h": 0.3722
+          },
+          {
+            "x": 0.1534,
+            "y": 0.3097,
+            "w": 0.6847,
+            "h": 0.375
+          },
+          {
+            "x": 0.1562,
+            "y": 0.3097,
+            "w": 0.6676,
+            "h": 0.3722
+          },
+          {
+            "x": 0.1591,
+            "y": 0.3097,
+            "w": 0.6818,
+            "h": 0.3722
+          },
+          {
+            "x": 0.142,
+            "y": 0.2898,
+            "w": 0.6875,
+            "h": 0.3636
+          },
+          {
+            "x": 0.1477,
+            "y": 0.2898,
+            "w": 0.6903,
+            "h": 0.3636
+          },
+          {
+            "x": 0.1534,
+            "y": 0.2898,
+            "w": 0.6875,
+            "h": 0.3636
+          },
+          {
+            "x": 0.1591,
+            "y": 0.2898,
+            "w": 0.6875,
+            "h": 0.3636
+          },
+          {
+            "x": 0.2415,
+            "y": 0.2273,
+            "w": 0.517,
+            "h": 0.5
+          },
+          {
+            "x": 0.25,
+            "y": 0.2273,
+            "w": 0.517,
+            "h": 0.5
+          },
+          {
+            "x": 0.2557,
+            "y": 0.2273,
+            "w": 0.5142,
+            "h": 0.5
+          },
+          {
+            "x": 0.2642,
+            "y": 0.2273,
+            "w": 0.517,
+            "h": 0.5
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/shore-lamprey-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            29,
+            76,
+            51,
+            46,
+            94,
+            31
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 29,
+          "whiteFracMax": 0.0073,
+          "lumDeltaMax": 0.0291,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1684,
+            "y": 0.4943,
+            "w": 0.7228,
+            "h": 0.2102
+          },
+          {
+            "x": 0.1979,
+            "y": 0.3991,
+            "w": 0.5532,
+            "h": 0.3565
+          },
+          {
+            "x": 0.1535,
+            "y": 0.4403,
+            "w": 0.6716,
+            "h": 0.3068
+          },
+          {
+            "x": 0.1514,
+            "y": 0.294,
+            "w": 0.7036,
+            "h": 0.2344
+          },
+          {
+            "x": 0.2617,
+            "y": 0.1605,
+            "w": 0.4936,
+            "h": 0.4119
+          },
+          {
+            "x": 0.1173,
+            "y": 0.3864,
+            "w": 0.7569,
+            "h": 0.1534
+          }
+        ],
+        "hit": {
+          "x": 0.1087,
+          "y": 0.4205,
+          "w": 0.7612,
+          "h": 0.3466,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5298,
+          0.7045
+        ],
+        "origin": [
+          0.5298,
+          0.5826
+        ],
+        "muzzle": [
+          0.5298,
+          0.7045
+        ],
+        "status": [
+          0.5298,
+          0.4743
+        ],
+        "shadow": [
+          0.5298,
+          0.7245
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 620,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "puddle-warden",
+      "name": "Puddle Warden",
+      "family": "Water",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.26,
+      "silhouette": "Tall pebble-ring column",
+      "tell": "The spiral knots and the column leans before the crest.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "The crest is the strike. It is not a traveling bolt.",
+      "locomotion": {
+        "src": "atlases/puddle-warden-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            52,
+            52,
+            52,
+            52,
+            52,
+            52,
+            52,
+            52,
+            53,
+            52,
+            52,
+            53,
+            44,
+            44,
+            44,
+            45
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 44,
+          "whiteFracMax": 0.0042,
+          "lumDeltaMax": 0.0031,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2017,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5909
+          },
+          {
+            "x": 0.2131,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2216,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2301,
+            "y": 0.2017,
+            "w": 0.5597,
+            "h": 0.5909
+          },
+          {
+            "x": 0.2017,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2131,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2216,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.233,
+            "y": 0.2017,
+            "w": 0.5568,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2017,
+            "y": 0.2045,
+            "w": 0.5625,
+            "h": 0.5909
+          },
+          {
+            "x": 0.2131,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2216,
+            "y": 0.2017,
+            "w": 0.5625,
+            "h": 0.5938
+          },
+          {
+            "x": 0.233,
+            "y": 0.2045,
+            "w": 0.5568,
+            "h": 0.5909
+          },
+          {
+            "x": 0.2045,
+            "y": 0.179,
+            "w": 0.5597,
+            "h": 0.5966
+          },
+          {
+            "x": 0.2131,
+            "y": 0.179,
+            "w": 0.5625,
+            "h": 0.5966
+          },
+          {
+            "x": 0.2216,
+            "y": 0.179,
+            "w": 0.5597,
+            "h": 0.5966
+          },
+          {
+            "x": 0.233,
+            "y": 0.1818,
+            "w": 0.5568,
+            "h": 0.5938
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/puddle-warden-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            52,
+            67,
+            64,
+            52,
+            67,
+            65
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 52,
+          "whiteFracMax": 0.0093,
+          "lumDeltaMax": 0.0277,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2175,
+            "y": 0.3395,
+            "w": 0.629,
+            "h": 0.4517
+          },
+          {
+            "x": 0.1872,
+            "y": 0.3452,
+            "w": 0.6277,
+            "h": 0.4474
+          },
+          {
+            "x": 0.177,
+            "y": 0.3594,
+            "w": 0.6226,
+            "h": 0.4332
+          },
+          {
+            "x": 0.2175,
+            "y": 0.1605,
+            "w": 0.629,
+            "h": 0.4489
+          },
+          {
+            "x": 0.1894,
+            "y": 0.1776,
+            "w": 0.6255,
+            "h": 0.4332
+          },
+          {
+            "x": 0.1791,
+            "y": 0.402,
+            "w": 0.6162,
+            "h": 0.223
+          }
+        ],
+        "hit": {
+          "x": 0.1365,
+          "y": 0.331,
+          "w": 0.597,
+          "h": 0.4901,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.532,
+          0.7912
+        ],
+        "origin": [
+          0.532,
+          0.5292
+        ],
+        "muzzle": [
+          0.532,
+          0.7912
+        ],
+        "status": [
+          0.532,
+          0.3195
+        ],
+        "shadow": [
+          0.532,
+          0.8112
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "tedder",
+      "name": "Tedder",
+      "family": "Agricultural mechanisms",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.26,
+      "silhouette": "Two wheels and a fan of tines",
+      "tell": "The tines stop and lock; the rigid bar is clearest as the strike starts.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "Weakest ordinary tell: the locked bar reads more on the strike frame than in the wind-up. Do not cover it with chaff.",
+      "locomotion": {
+        "src": "atlases/tedder-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            44,
+            43,
+            41,
+            40,
+            38,
+            37,
+            35,
+            35,
+            36,
+            37,
+            38,
+            40,
+            50,
+            51,
+            50,
+            49
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 35,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0166,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.179,
+            "y": 0.233,
+            "w": 0.5994,
+            "h": 0.5284
+          },
+          {
+            "x": 0.1761,
+            "y": 0.233,
+            "w": 0.5994,
+            "h": 0.5284
+          },
+          {
+            "x": 0.1705,
+            "y": 0.2301,
+            "w": 0.5994,
+            "h": 0.5312
+          },
+          {
+            "x": 0.1676,
+            "y": 0.233,
+            "w": 0.5994,
+            "h": 0.5284
+          },
+          {
+            "x": 0.1676,
+            "y": 0.233,
+            "w": 0.6364,
+            "h": 0.5256
+          },
+          {
+            "x": 0.1648,
+            "y": 0.233,
+            "w": 0.6364,
+            "h": 0.5256
+          },
+          {
+            "x": 0.1591,
+            "y": 0.233,
+            "w": 0.6364,
+            "h": 0.5256
+          },
+          {
+            "x": 0.1591,
+            "y": 0.233,
+            "w": 0.6335,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2386,
+            "y": 0.2017,
+            "w": 0.6023,
+            "h": 0.5398
+          },
+          {
+            "x": 0.2358,
+            "y": 0.2017,
+            "w": 0.6023,
+            "h": 0.5398
+          },
+          {
+            "x": 0.233,
+            "y": 0.2045,
+            "w": 0.6023,
+            "h": 0.5369
+          },
+          {
+            "x": 0.2301,
+            "y": 0.2045,
+            "w": 0.5994,
+            "h": 0.5369
+          },
+          {
+            "x": 0.2017,
+            "y": 0.1903,
+            "w": 0.5938,
+            "h": 0.5142
+          },
+          {
+            "x": 0.1989,
+            "y": 0.1932,
+            "w": 0.5938,
+            "h": 0.5114
+          },
+          {
+            "x": 0.196,
+            "y": 0.1903,
+            "w": 0.5909,
+            "h": 0.5142
+          },
+          {
+            "x": 0.1932,
+            "y": 0.1932,
+            "w": 0.5938,
+            "h": 0.5114
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/tedder-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0242,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1493,
+            "y": 0.1378,
+            "w": 0.7974,
+            "h": 0.7173
+          },
+          {
+            "x": 0.0596,
+            "y": 0.1378,
+            "w": 0.8809,
+            "h": 0.7173
+          },
+          {
+            "x": 0.0533,
+            "y": 0.1378,
+            "w": 0.7825,
+            "h": 0.7173
+          },
+          {
+            "x": 0.1514,
+            "y": 0.1293,
+            "w": 0.7953,
+            "h": 0.706
+          },
+          {
+            "x": 0.0596,
+            "y": 0.1264,
+            "w": 0.8809,
+            "h": 0.7088
+          },
+          {
+            "x": 0.0533,
+            "y": 0.1591,
+            "w": 0.8102,
+            "h": 0.6861
+          }
+        ],
+        "hit": {
+          "x": 0.0,
+          "y": 0.0895,
+          "w": 0.8891,
+          "h": 0.8139,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.548,
+          0.8551
+        ],
+        "origin": [
+          0.548,
+          0.4391
+        ],
+        "muzzle": [
+          0.548,
+          0.8551
+        ],
+        "status": [
+          0.548,
+          0.1178
+        ],
+        "shadow": [
+          0.548,
+          0.8751
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 720,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "stanchion",
+      "name": "Stanchion",
+      "family": "Agricultural mechanisms",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.28,
+      "silhouette": "Walking doorway of two posts and a rail",
+      "tell": "The neck rail lifts above the posts before it slams.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee. Empty frame \u2014 no animal inside.",
+      "locomotion": {
+        "src": "atlases/stanchion-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            54,
+            54,
+            54,
+            53,
+            50,
+            49,
+            50,
+            50,
+            38,
+            38,
+            37,
+            37,
+            54,
+            54,
+            54,
+            54
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 37,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.015,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2585,
+            "y": 0.2727,
+            "w": 0.4773,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2727,
+            "w": 0.4801,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2727,
+            "w": 0.483,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2614,
+            "y": 0.2727,
+            "w": 0.4801,
+            "h": 0.5284
+          },
+          {
+            "x": 0.2727,
+            "y": 0.196,
+            "w": 0.4347,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2727,
+            "y": 0.1932,
+            "w": 0.4347,
+            "h": 0.5966
+          },
+          {
+            "x": 0.2869,
+            "y": 0.196,
+            "w": 0.4375,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2869,
+            "y": 0.196,
+            "w": 0.4375,
+            "h": 0.5938
+          },
+          {
+            "x": 0.3267,
+            "y": 0.1648,
+            "w": 0.3551,
+            "h": 0.5994
+          },
+          {
+            "x": 0.3125,
+            "y": 0.1648,
+            "w": 0.358,
+            "h": 0.5994
+          },
+          {
+            "x": 0.3153,
+            "y": 0.1619,
+            "w": 0.3551,
+            "h": 0.6023
+          },
+          {
+            "x": 0.3153,
+            "y": 0.1619,
+            "w": 0.3551,
+            "h": 0.6023
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2017,
+            "w": 0.4773,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2017,
+            "w": 0.4801,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2585,
+            "y": 0.2017,
+            "w": 0.4801,
+            "h": 0.5256
+          },
+          {
+            "x": 0.2614,
+            "y": 0.2017,
+            "w": 0.4773,
+            "h": 0.5256
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/stanchion-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            69,
+            91,
+            57,
+            69,
+            48,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0247,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2751,
+            "y": 0.4574,
+            "w": 0.5416,
+            "h": 0.3807
+          },
+          {
+            "x": 0.2298,
+            "y": 0.3509,
+            "w": 0.5404,
+            "h": 0.4801
+          },
+          {
+            "x": 0.1599,
+            "y": 0.6065,
+            "w": 0.5629,
+            "h": 0.2386
+          },
+          {
+            "x": 0.2068,
+            "y": 0.1832,
+            "w": 0.6055,
+            "h": 0.3835
+          },
+          {
+            "x": 0.2255,
+            "y": 0.2244,
+            "w": 0.6128,
+            "h": 0.6634
+          },
+          {
+            "x": 0.1514,
+            "y": 0.4219,
+            "w": 0.5714,
+            "h": 0.5426
+          }
+        ],
+        "hit": {
+          "x": 0.1215,
+          "y": 0.5909,
+          "w": 0.6183,
+          "h": 0.2699,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5459,
+          0.8381
+        ],
+        "origin": [
+          0.5459,
+          0.6173
+        ],
+        "muzzle": [
+          0.5459,
+          0.8381
+        ],
+        "status": [
+          0.5459,
+          0.4374
+        ],
+        "shadow": [
+          0.5459,
+          0.8581
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "marblefly",
+      "name": "Marblefly",
+      "family": "Insects",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.22,
+      "silhouette": "Wide dusty wings, or a needle when shut",
+      "tell": "The wings snap shut, so a wide shape becomes a tall needle.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee dive. Wing-shut is the cue, not a glint.",
+      "locomotion": {
+        "src": "atlases/marblefly-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            29,
+            29,
+            29,
+            29,
+            26,
+            28,
+            29,
+            26,
+            23,
+            26,
+            29,
+            28,
+            14,
+            14,
+            14,
+            14
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 14,
+          "whiteFracMax": 0.0005,
+          "lumDeltaMax": 0.006,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1534,
+            "y": 0.179,
+            "w": 0.6676,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1761,
+            "w": 0.6705,
+            "h": 0.679
+          },
+          {
+            "x": 0.1676,
+            "y": 0.179,
+            "w": 0.6705,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1761,
+            "y": 0.1761,
+            "w": 0.6705,
+            "h": 0.679
+          },
+          {
+            "x": 0.1392,
+            "y": 0.1619,
+            "w": 0.6989,
+            "h": 0.571
+          },
+          {
+            "x": 0.1449,
+            "y": 0.1619,
+            "w": 0.7017,
+            "h": 0.571
+          },
+          {
+            "x": 0.1534,
+            "y": 0.1619,
+            "w": 0.6989,
+            "h": 0.571
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1619,
+            "w": 0.7017,
+            "h": 0.571
+          },
+          {
+            "x": 0.1307,
+            "y": 0.1562,
+            "w": 0.7017,
+            "h": 0.5682
+          },
+          {
+            "x": 0.1392,
+            "y": 0.1562,
+            "w": 0.7017,
+            "h": 0.5682
+          },
+          {
+            "x": 0.1477,
+            "y": 0.1562,
+            "w": 0.7017,
+            "h": 0.5682
+          },
+          {
+            "x": 0.1534,
+            "y": 0.1562,
+            "w": 0.7017,
+            "h": 0.5682
+          },
+          {
+            "x": 0.1534,
+            "y": 0.1023,
+            "w": 0.6676,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1023,
+            "w": 0.6705,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1676,
+            "y": 0.1023,
+            "w": 0.6705,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1761,
+            "y": 0.1023,
+            "w": 0.6705,
+            "h": 0.6761
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/marblefly-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            45,
+            80,
+            47,
+            46,
+            55,
+            47
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 45,
+          "whiteFracMax": 0.0004,
+          "lumDeltaMax": 0.0221,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1727,
+            "y": 0.3509,
+            "w": 0.6866,
+            "h": 0.4602
+          },
+          {
+            "x": 0.3596,
+            "y": 0.3068,
+            "w": 0.2809,
+            "h": 0.544
+          },
+          {
+            "x": 0.145,
+            "y": 0.483,
+            "w": 0.6716,
+            "h": 0.2926
+          },
+          {
+            "x": 0.1791,
+            "y": 0.206,
+            "w": 0.678,
+            "h": 0.429
+          },
+          {
+            "x": 0.2,
+            "y": 0.1591,
+            "w": 0.6404,
+            "h": 0.3864
+          },
+          {
+            "x": 0.1429,
+            "y": 0.3849,
+            "w": 0.6503,
+            "h": 0.1747
+          }
+        ],
+        "hit": {
+          "x": 0.1002,
+          "y": 0.4957,
+          "w": 0.7612,
+          "h": 0.2983,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.516,
+          0.8111
+        ],
+        "origin": [
+          0.516,
+          0.5442
+        ],
+        "muzzle": [
+          0.516,
+          0.8111
+        ],
+        "status": [
+          0.516,
+          0.3309
+        ],
+        "shadow": [
+          0.516,
+          0.8311
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 560,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "borer-grub",
+      "name": "Borer Grub",
+      "family": "Insects",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.22,
+      "silhouette": "Low segmented worm, then a reared hook",
+      "tell": "A soil ridge travels in, then the front half rears. The ridge is not the hit.",
+      "tellChannels": [
+        "shape",
+        "ground-mark"
+      ],
+      "attackFacing": "south",
+      "notes": "Ridge is a telegraph mark only. Impact is withheld until the thrust frame and only on a connect.",
+      "locomotion": {
+        "src": "atlases/borer-grub-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            45,
+            52,
+            52,
+            50,
+            26,
+            44,
+            44,
+            26,
+            26,
+            43,
+            46,
+            28,
+            8,
+            8,
+            8,
+            8
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 8,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.057,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.3466,
+            "y": 0.2955,
+            "w": 0.4801,
+            "h": 0.5114
+          },
+          {
+            "x": 0.2955,
+            "y": 0.2955,
+            "w": 0.483,
+            "h": 0.5114
+          },
+          {
+            "x": 0.2386,
+            "y": 0.2955,
+            "w": 0.4801,
+            "h": 0.5114
+          },
+          {
+            "x": 0.1875,
+            "y": 0.2955,
+            "w": 0.4773,
+            "h": 0.5114
+          },
+          {
+            "x": 0.2756,
+            "y": 0.2841,
+            "w": 0.5966,
+            "h": 0.4205
+          },
+          {
+            "x": 0.2301,
+            "y": 0.2841,
+            "w": 0.5909,
+            "h": 0.4176
+          },
+          {
+            "x": 0.179,
+            "y": 0.2841,
+            "w": 0.5938,
+            "h": 0.4176
+          },
+          {
+            "x": 0.1278,
+            "y": 0.2841,
+            "w": 0.5909,
+            "h": 0.4176
+          },
+          {
+            "x": 0.2812,
+            "y": 0.2216,
+            "w": 0.5909,
+            "h": 0.3892
+          },
+          {
+            "x": 0.2301,
+            "y": 0.2216,
+            "w": 0.5938,
+            "h": 0.3892
+          },
+          {
+            "x": 0.1847,
+            "y": 0.2244,
+            "w": 0.5909,
+            "h": 0.3864
+          },
+          {
+            "x": 0.1335,
+            "y": 0.2273,
+            "w": 0.5881,
+            "h": 0.3864
+          },
+          {
+            "x": 0.4261,
+            "y": 0.0767,
+            "w": 0.2812,
+            "h": 0.5966
+          },
+          {
+            "x": 0.3835,
+            "y": 0.0767,
+            "w": 0.2812,
+            "h": 0.5966
+          },
+          {
+            "x": 0.3324,
+            "y": 0.0767,
+            "w": 0.2784,
+            "h": 0.5966
+          },
+          {
+            "x": 0.2812,
+            "y": 0.0767,
+            "w": 0.2812,
+            "h": 0.5966
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/borer-grub-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            52,
+            104,
+            71,
+            69,
+            90,
+            76
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 52,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0888,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2601,
+            "y": 0.4957,
+            "w": 0.5906,
+            "h": 0.2884
+          },
+          {
+            "x": 0.2511,
+            "y": 0.3054,
+            "w": 0.4511,
+            "h": 0.4645
+          },
+          {
+            "x": 0.1834,
+            "y": 0.3722,
+            "w": 0.5011,
+            "h": 0.3963
+          },
+          {
+            "x": 0.2708,
+            "y": 0.2472,
+            "w": 0.5458,
+            "h": 0.3054
+          },
+          {
+            "x": 0.2468,
+            "y": 0.1534,
+            "w": 0.5,
+            "h": 0.3977
+          },
+          {
+            "x": 0.1962,
+            "y": 0.2599,
+            "w": 0.5181,
+            "h": 0.294
+          }
+        ],
+        "hit": {
+          "x": 0.1514,
+          "y": 0.3466,
+          "w": 0.516,
+          "h": 0.4474,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5554,
+          0.7841
+        ],
+        "origin": [
+          0.5554,
+          0.6168
+        ],
+        "muzzle": [
+          0.5554,
+          0.7841
+        ],
+        "status": [
+          0.5554,
+          0.4757
+        ],
+        "shadow": [
+          0.5554,
+          0.8041
+        ]
+      },
+      "groundTell": "ridge",
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 700,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "winter-footstep",
+      "name": "Winter Footstep",
+      "family": "Memories",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.26,
+      "silhouette": "Empty coat on two boots",
+      "tell": "The boots slide together and both sleeves lift.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "No face. Melee shove.",
+      "locomotion": {
+        "src": "atlases/winter-footstep-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            10,
+            8,
+            7,
+            7,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0157,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.3125,
+            "y": 0.1477,
+            "w": 0.4716,
+            "h": 0.7528
+          },
+          {
+            "x": 0.2472,
+            "y": 0.1477,
+            "w": 0.4716,
+            "h": 0.7585
+          },
+          {
+            "x": 0.2074,
+            "y": 0.1506,
+            "w": 0.4744,
+            "h": 0.7585
+          },
+          {
+            "x": 0.1676,
+            "y": 0.1477,
+            "w": 0.4744,
+            "h": 0.7614
+          },
+          {
+            "x": 0.3722,
+            "y": 0.1222,
+            "w": 0.321,
+            "h": 0.804
+          },
+          {
+            "x": 0.3011,
+            "y": 0.1307,
+            "w": 0.3295,
+            "h": 0.7955
+          },
+          {
+            "x": 0.2756,
+            "y": 0.1335,
+            "w": 0.3352,
+            "h": 0.7926
+          },
+          {
+            "x": 0.2244,
+            "y": 0.1364,
+            "w": 0.3324,
+            "h": 0.7898
+          },
+          {
+            "x": 0.3835,
+            "y": 0.0795,
+            "w": 0.3324,
+            "h": 0.8409
+          },
+          {
+            "x": 0.3125,
+            "y": 0.0795,
+            "w": 0.3409,
+            "h": 0.8409
+          },
+          {
+            "x": 0.2898,
+            "y": 0.0795,
+            "w": 0.3239,
+            "h": 0.8409
+          },
+          {
+            "x": 0.2585,
+            "y": 0.0795,
+            "w": 0.3097,
+            "h": 0.8409
+          },
+          {
+            "x": 0.3182,
+            "y": 0.0653,
+            "w": 0.4545,
+            "h": 0.6875
+          },
+          {
+            "x": 0.25,
+            "y": 0.0653,
+            "w": 0.4574,
+            "h": 0.6875
+          },
+          {
+            "x": 0.2159,
+            "y": 0.0625,
+            "w": 0.4545,
+            "h": 0.6903
+          },
+          {
+            "x": 0.179,
+            "y": 0.0653,
+            "w": 0.4545,
+            "h": 0.6932
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/winter-footstep-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            58,
+            82,
+            61,
+            37,
+            24,
+            33
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 24,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0449,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2964,
+            "y": 0.2344,
+            "w": 0.5437,
+            "h": 0.608
+          },
+          {
+            "x": 0.2298,
+            "y": 0.1918,
+            "w": 0.5447,
+            "h": 0.6477
+          },
+          {
+            "x": 0.1642,
+            "y": 0.2358,
+            "w": 0.533,
+            "h": 0.6065
+          },
+          {
+            "x": 0.2388,
+            "y": 0.1023,
+            "w": 0.6397,
+            "h": 0.6165
+          },
+          {
+            "x": 0.1468,
+            "y": 0.0739,
+            "w": 0.6809,
+            "h": 0.5852
+          },
+          {
+            "x": 0.113,
+            "y": 0.4247,
+            "w": 0.6525,
+            "h": 0.3267
+          }
+        ],
+        "hit": {
+          "x": 0.1301,
+          "y": 0.1946,
+          "w": 0.4797,
+          "h": 0.6889,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5682,
+          0.8424
+        ],
+        "origin": [
+          0.5682,
+          0.4898
+        ],
+        "muzzle": [
+          0.5682,
+          0.8424
+        ],
+        "status": [
+          0.5682,
+          0.2144
+        ],
+        "shadow": [
+          0.5682,
+          0.8624
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "choir-photograph",
+      "name": "Choir Photograph",
+      "family": "Memories",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.24,
+      "silhouette": "Curled photo, then a rigid rectangle",
+      "tell": "The paper uncurls into a tall rectangle with a thick dark border. There is no flash.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "Figures inside are abstract silhouettes. Do not add a camera flash.",
+      "locomotion": {
+        "src": "atlases/choir-photograph-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            18,
+            18,
+            18,
+            18,
+            50,
+            50,
+            50,
+            50,
+            27,
+            28,
+            28,
+            28,
+            9,
+            9,
+            10,
+            10
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 9,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0777,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.304,
+            "y": 0.2841,
+            "w": 0.4915,
+            "h": 0.608
+          },
+          {
+            "x": 0.267,
+            "y": 0.2841,
+            "w": 0.4915,
+            "h": 0.608
+          },
+          {
+            "x": 0.2273,
+            "y": 0.2841,
+            "w": 0.4943,
+            "h": 0.608
+          },
+          {
+            "x": 0.1932,
+            "y": 0.2841,
+            "w": 0.4915,
+            "h": 0.608
+          },
+          {
+            "x": 0.3636,
+            "y": 0.2102,
+            "w": 0.375,
+            "h": 0.5938
+          },
+          {
+            "x": 0.3153,
+            "y": 0.2102,
+            "w": 0.3778,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2727,
+            "y": 0.2102,
+            "w": 0.3892,
+            "h": 0.5938
+          },
+          {
+            "x": 0.2443,
+            "y": 0.2131,
+            "w": 0.392,
+            "h": 0.5909
+          },
+          {
+            "x": 0.358,
+            "y": 0.1307,
+            "w": 0.358,
+            "h": 0.5938
+          },
+          {
+            "x": 0.3182,
+            "y": 0.1335,
+            "w": 0.3608,
+            "h": 0.5909
+          },
+          {
+            "x": 0.267,
+            "y": 0.1335,
+            "w": 0.3693,
+            "h": 0.5909
+          },
+          {
+            "x": 0.2472,
+            "y": 0.1335,
+            "w": 0.3636,
+            "h": 0.5909
+          },
+          {
+            "x": 0.3097,
+            "y": 0.0795,
+            "w": 0.4659,
+            "h": 0.5994
+          },
+          {
+            "x": 0.2727,
+            "y": 0.0795,
+            "w": 0.4688,
+            "h": 0.5994
+          },
+          {
+            "x": 0.2415,
+            "y": 0.0824,
+            "w": 0.4659,
+            "h": 0.5966
+          },
+          {
+            "x": 0.2045,
+            "y": 0.0824,
+            "w": 0.4659,
+            "h": 0.5966
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/choir-photograph-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            47,
+            73,
+            51,
+            46,
+            46,
+            39
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 39,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0838,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2345,
+            "y": 0.3026,
+            "w": 0.6247,
+            "h": 0.5312
+          },
+          {
+            "x": 0.2106,
+            "y": 0.2955,
+            "w": 0.5936,
+            "h": 0.5426
+          },
+          {
+            "x": 0.1493,
+            "y": 0.2926,
+            "w": 0.6183,
+            "h": 0.544
+          },
+          {
+            "x": 0.2452,
+            "y": 0.1222,
+            "w": 0.6162,
+            "h": 0.5497
+          },
+          {
+            "x": 0.2,
+            "y": 0.1037,
+            "w": 0.5979,
+            "h": 0.571
+          },
+          {
+            "x": 0.1279,
+            "y": 0.1108,
+            "w": 0.6567,
+            "h": 0.5724
+          }
+        ],
+        "hit": {
+          "x": 0.1087,
+          "y": 0.2571,
+          "w": 0.6461,
+          "h": 0.6151,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5469,
+          0.8338
+        ],
+        "origin": [
+          0.5469,
+          0.5257
+        ],
+        "muzzle": [
+          0.5469,
+          0.8338
+        ],
+        "status": [
+          0.5469,
+          0.2826
+        ],
+        "shadow": [
+          0.5469,
+          0.8538
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 680,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "rodman",
+      "name": "Rodman",
+      "family": "Surveyor constructs",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.28,
+      "silhouette": "Thin range pole and a plumb bob",
+      "tell": "The bob reels to the top and the pole tips backward.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "The bob stays attached. Not a projectile.",
+      "locomotion": {
+        "src": "atlases/rodman-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            21,
+            21,
+            21,
+            21,
+            17,
+            16,
+            16,
+            16,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0019,
+          "lumDeltaMax": 0.0137,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.358,
+            "y": 0.1278,
+            "w": 0.2614,
+            "h": 0.7159
+          },
+          {
+            "x": 0.3523,
+            "y": 0.1278,
+            "w": 0.2614,
+            "h": 0.7159
+          },
+          {
+            "x": 0.3494,
+            "y": 0.1278,
+            "w": 0.2585,
+            "h": 0.7159
+          },
+          {
+            "x": 0.3466,
+            "y": 0.1278,
+            "w": 0.2614,
+            "h": 0.7159
+          },
+          {
+            "x": 0.375,
+            "y": 0.1136,
+            "w": 0.2472,
+            "h": 0.7017
+          },
+          {
+            "x": 0.3693,
+            "y": 0.1108,
+            "w": 0.2358,
+            "h": 0.7045
+          },
+          {
+            "x": 0.3665,
+            "y": 0.1108,
+            "w": 0.2472,
+            "h": 0.7074
+          },
+          {
+            "x": 0.3693,
+            "y": 0.1108,
+            "w": 0.2415,
+            "h": 0.7045
+          },
+          {
+            "x": 0.3636,
+            "y": 0.0994,
+            "w": 0.2585,
+            "h": 0.8239
+          },
+          {
+            "x": 0.358,
+            "y": 0.0994,
+            "w": 0.2585,
+            "h": 0.8239
+          },
+          {
+            "x": 0.3523,
+            "y": 0.0994,
+            "w": 0.2614,
+            "h": 0.8239
+          },
+          {
+            "x": 0.3494,
+            "y": 0.0994,
+            "w": 0.2614,
+            "h": 0.8239
+          },
+          {
+            "x": 0.3636,
+            "y": 0.0682,
+            "w": 0.2585,
+            "h": 0.7188
+          },
+          {
+            "x": 0.358,
+            "y": 0.0682,
+            "w": 0.2585,
+            "h": 0.7188
+          },
+          {
+            "x": 0.3523,
+            "y": 0.0682,
+            "w": 0.2614,
+            "h": 0.7188
+          },
+          {
+            "x": 0.3494,
+            "y": 0.0682,
+            "w": 0.2585,
+            "h": 0.7188
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/rodman-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            127,
+            78,
+            20,
+            62,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0027,
+          "lumDeltaMax": 0.0259,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.371,
+            "y": 0.2372,
+            "w": 0.2601,
+            "h": 0.5455
+          },
+          {
+            "x": 0.1894,
+            "y": 0.3153,
+            "w": 0.3723,
+            "h": 0.4744
+          },
+          {
+            "x": 0.0917,
+            "y": 0.2614,
+            "w": 0.742,
+            "h": 0.517
+          },
+          {
+            "x": 0.371,
+            "y": 0.1222,
+            "w": 0.2601,
+            "h": 0.5227
+          },
+          {
+            "x": 0.2383,
+            "y": 0.1591,
+            "w": 0.7149,
+            "h": 0.4886
+          },
+          {
+            "x": 0.0469,
+            "y": 0.5781,
+            "w": 0.7143,
+            "h": 0.0724
+          }
+        ],
+        "hit": {
+          "x": 0.0426,
+          "y": 0.2273,
+          "w": 0.8401,
+          "h": 0.5852,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.501,
+          0.7827
+        ],
+        "origin": [
+          0.501,
+          0.4663
+        ],
+        "muzzle": [
+          0.501,
+          0.7827
+        ],
+        "status": [
+          0.501,
+          0.2172
+        ],
+        "shadow": [
+          0.501,
+          0.8027
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "chainman",
+      "name": "Chainman",
+      "family": "Surveyor constructs",
+      "tier": "ordinary",
+      "phase": null,
+      "scale": 0.26,
+      "silhouette": "Linked figure, dangling chain or a shoulder coil",
+      "tell": "The loose chain gathers into a loop at the shoulder before the whip.",
+      "tellChannels": [
+        "shape"
+      ],
+      "attackFacing": "south",
+      "notes": "Melee whip. Links stay grouped on hurt so they do not read as a second creature.",
+      "locomotion": {
+        "src": "atlases/chainman-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            22,
+            22,
+            21,
+            21,
+            41,
+            41,
+            40,
+            40,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0008,
+          "lumDeltaMax": 0.0042,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2614,
+            "y": 0.1847,
+            "w": 0.4716,
+            "h": 0.6903
+          },
+          {
+            "x": 0.2216,
+            "y": 0.1875,
+            "w": 0.4688,
+            "h": 0.6875
+          },
+          {
+            "x": 0.1932,
+            "y": 0.1903,
+            "w": 0.5227,
+            "h": 0.6875
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1932,
+            "w": 0.4744,
+            "h": 0.6847
+          },
+          {
+            "x": 0.3438,
+            "y": 0.1847,
+            "w": 0.4517,
+            "h": 0.6392
+          },
+          {
+            "x": 0.3068,
+            "y": 0.1875,
+            "w": 0.4489,
+            "h": 0.6364
+          },
+          {
+            "x": 0.2727,
+            "y": 0.1903,
+            "w": 0.4489,
+            "h": 0.6364
+          },
+          {
+            "x": 0.2443,
+            "y": 0.1903,
+            "w": 0.4517,
+            "h": 0.6364
+          },
+          {
+            "x": 0.2557,
+            "y": 0.1364,
+            "w": 0.4517,
+            "h": 0.7898
+          },
+          {
+            "x": 0.2244,
+            "y": 0.1364,
+            "w": 0.4517,
+            "h": 0.7898
+          },
+          {
+            "x": 0.2017,
+            "y": 0.1392,
+            "w": 0.4517,
+            "h": 0.7869
+          },
+          {
+            "x": 0.1676,
+            "y": 0.1392,
+            "w": 0.4517,
+            "h": 0.7869
+          },
+          {
+            "x": 0.2443,
+            "y": 0.0625,
+            "w": 0.4716,
+            "h": 0.6818
+          },
+          {
+            "x": 0.2045,
+            "y": 0.0625,
+            "w": 0.4716,
+            "h": 0.6818
+          },
+          {
+            "x": 0.2472,
+            "y": 0.0625,
+            "w": 0.4659,
+            "h": 0.6818
+          },
+          {
+            "x": 0.2216,
+            "y": 0.0625,
+            "w": 0.4688,
+            "h": 0.6847
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/chainman-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            70,
+            96,
+            79,
+            21,
+            41,
+            20
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 20,
+          "whiteFracMax": 0.0017,
+          "lumDeltaMax": 0.0293,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2665,
+            "y": 0.2372,
+            "w": 0.548,
+            "h": 0.5625
+          },
+          {
+            "x": 0.2383,
+            "y": 0.2415,
+            "w": 0.5213,
+            "h": 0.5582
+          },
+          {
+            "x": 0.2026,
+            "y": 0.2429,
+            "w": 0.5245,
+            "h": 0.5597
+          },
+          {
+            "x": 0.1343,
+            "y": 0.0696,
+            "w": 0.6738,
+            "h": 0.6051
+          },
+          {
+            "x": 0.134,
+            "y": 0.1293,
+            "w": 0.6936,
+            "h": 0.5384
+          },
+          {
+            "x": 0.0938,
+            "y": 0.4531,
+            "w": 0.7505,
+            "h": 0.2599
+          }
+        ],
+        "hit": {
+          "x": 0.1684,
+          "y": 0.206,
+          "w": 0.5842,
+          "h": 0.6335,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5405,
+          0.7997
+        ],
+        "origin": [
+          0.5405,
+          0.4734
+        ],
+        "muzzle": [
+          0.5405,
+          0.7997
+        ],
+        "status": [
+          0.5405,
+          0.2172
+        ],
+        "shadow": [
+          0.5405,
+          0.8197
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 640,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "slate-matron",
+      "name": "Slate Matron",
+      "family": "Quarry stone",
+      "tier": "boss",
+      "phase": "early",
+      "scale": 0.4,
+      "silhouette": "Kneeling slab colossus with a drill-core crown",
+      "tell": "A fissure opens through the chest and both arms lock overhead before the slam.",
+      "tellChannels": [
+        "shape",
+        "ground-mark"
+      ],
+      "attackFacing": "south",
+      "notes": "Early boss. The gap is a hole in the silhouette, so it survives grayscale. Stone-break plays on defeat, not during the tell.",
+      "locomotion": {
+        "src": "atlases/slate-matron-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            14,
+            17,
+            17,
+            18,
+            18,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            10,
+            11,
+            12,
+            12
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 10,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.023,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1477,
+            "y": 0.1108,
+            "w": 0.6591,
+            "h": 0.7528
+          },
+          {
+            "x": 0.1506,
+            "y": 0.1193,
+            "w": 0.6562,
+            "h": 0.7472
+          },
+          {
+            "x": 0.1534,
+            "y": 0.1193,
+            "w": 0.6591,
+            "h": 0.7472
+          },
+          {
+            "x": 0.1562,
+            "y": 0.1222,
+            "w": 0.6591,
+            "h": 0.7472
+          },
+          {
+            "x": 0.25,
+            "y": 0.1193,
+            "w": 0.4432,
+            "h": 0.7244
+          },
+          {
+            "x": 0.2557,
+            "y": 0.1193,
+            "w": 0.4403,
+            "h": 0.7244
+          },
+          {
+            "x": 0.2614,
+            "y": 0.1193,
+            "w": 0.4403,
+            "h": 0.7244
+          },
+          {
+            "x": 0.267,
+            "y": 0.1193,
+            "w": 0.4375,
+            "h": 0.7244
+          },
+          {
+            "x": 0.2472,
+            "y": 0.1136,
+            "w": 0.4517,
+            "h": 0.7273
+          },
+          {
+            "x": 0.25,
+            "y": 0.1136,
+            "w": 0.4517,
+            "h": 0.7273
+          },
+          {
+            "x": 0.2557,
+            "y": 0.1136,
+            "w": 0.4517,
+            "h": 0.7273
+          },
+          {
+            "x": 0.2614,
+            "y": 0.1136,
+            "w": 0.4489,
+            "h": 0.7273
+          },
+          {
+            "x": 0.1619,
+            "y": 0.0994,
+            "w": 0.6278,
+            "h": 0.7472
+          },
+          {
+            "x": 0.1676,
+            "y": 0.0994,
+            "w": 0.6278,
+            "h": 0.75
+          },
+          {
+            "x": 0.1705,
+            "y": 0.1023,
+            "w": 0.6335,
+            "h": 0.7472
+          },
+          {
+            "x": 0.1761,
+            "y": 0.1023,
+            "w": 0.6307,
+            "h": 0.7472
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/slate-matron-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            65,
+            67,
+            62,
+            55,
+            58,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0303,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2431,
+            "y": 0.3892,
+            "w": 0.58,
+            "h": 0.4418
+          },
+          {
+            "x": 0.1809,
+            "y": 0.2159,
+            "w": 0.5936,
+            "h": 0.6108
+          },
+          {
+            "x": 0.1727,
+            "y": 0.2741,
+            "w": 0.5991,
+            "h": 0.5582
+          },
+          {
+            "x": 0.1962,
+            "y": 0.1605,
+            "w": 0.6439,
+            "h": 0.4517
+          },
+          {
+            "x": 0.1745,
+            "y": 0.1165,
+            "w": 0.6574,
+            "h": 0.5014
+          },
+          {
+            "x": 0.0533,
+            "y": 0.3906,
+            "w": 0.8038,
+            "h": 0.2756
+          }
+        ],
+        "hit": {
+          "x": 0.1322,
+          "y": 0.2372,
+          "w": 0.6674,
+          "h": 0.6321,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5331,
+          0.831
+        ],
+        "origin": [
+          0.5331,
+          0.5748
+        ],
+        "muzzle": [
+          0.5331,
+          0.831
+        ],
+        "status": [
+          0.5331,
+          0.3692
+        ],
+        "shadow": [
+          0.5331,
+          0.851
+        ]
+      },
+      "groundTell": "fissure",
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 880,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "thresh-regent",
+      "name": "Thresh Regent",
+      "family": "Agricultural mechanisms",
+      "tier": "boss",
+      "phase": "middle",
+      "scale": 0.42,
+      "silhouette": "Upright thresher with a reel and a beater bar",
+      "tell": "The reel stops high and the beater bar locks into one long horizontal line.",
+      "tellChannels": [
+        "shape",
+        "motion"
+      ],
+      "attackFacing": "south",
+      "notes": "Middle boss. Chaff is not played in front of the bar. The bar is the cue and it is a dark shape, not a color.",
+      "locomotion": {
+        "src": "atlases/thresh-regent-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            25,
+            24,
+            21,
+            20,
+            30,
+            30,
+            34,
+            36,
+            22,
+            23,
+            26,
+            27,
+            4,
+            6,
+            9,
+            10
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 4,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0038,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2301,
+            "y": 0.196,
+            "w": 0.5824,
+            "h": 0.6705
+          },
+          {
+            "x": 0.2131,
+            "y": 0.2017,
+            "w": 0.5739,
+            "h": 0.6676
+          },
+          {
+            "x": 0.196,
+            "y": 0.2074,
+            "w": 0.5767,
+            "h": 0.6705
+          },
+          {
+            "x": 0.1818,
+            "y": 0.2131,
+            "w": 0.5767,
+            "h": 0.6676
+          },
+          {
+            "x": 0.2045,
+            "y": 0.1477,
+            "w": 0.6051,
+            "h": 0.6733
+          },
+          {
+            "x": 0.1875,
+            "y": 0.1477,
+            "w": 0.6023,
+            "h": 0.6761
+          },
+          {
+            "x": 0.1733,
+            "y": 0.1591,
+            "w": 0.6023,
+            "h": 0.6705
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1648,
+            "w": 0.6023,
+            "h": 0.6676
+          },
+          {
+            "x": 0.196,
+            "y": 0.125,
+            "w": 0.5966,
+            "h": 0.6705
+          },
+          {
+            "x": 0.1818,
+            "y": 0.1278,
+            "w": 0.5909,
+            "h": 0.6733
+          },
+          {
+            "x": 0.1705,
+            "y": 0.1364,
+            "w": 0.5881,
+            "h": 0.6676
+          },
+          {
+            "x": 0.1591,
+            "y": 0.1392,
+            "w": 0.5881,
+            "h": 0.6676
+          },
+          {
+            "x": 0.2102,
+            "y": 0.0739,
+            "w": 0.571,
+            "h": 0.6619
+          },
+          {
+            "x": 0.1989,
+            "y": 0.0795,
+            "w": 0.5625,
+            "h": 0.6591
+          },
+          {
+            "x": 0.1875,
+            "y": 0.0881,
+            "w": 0.5625,
+            "h": 0.6591
+          },
+          {
+            "x": 0.179,
+            "y": 0.0909,
+            "w": 0.5625,
+            "h": 0.6591
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/thresh-regent-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            62,
+            48,
+            34,
+            62,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0115,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.1706,
+            "y": 0.3253,
+            "w": 0.5842,
+            "h": 0.4972
+          },
+          {
+            "x": 0.1511,
+            "y": 0.304,
+            "w": 0.7,
+            "h": 0.517
+          },
+          {
+            "x": 0.1322,
+            "y": 0.3196,
+            "w": 0.7463,
+            "h": 0.5014
+          },
+          {
+            "x": 0.1706,
+            "y": 0.3111,
+            "w": 0.5864,
+            "h": 0.4986
+          },
+          {
+            "x": 0.1574,
+            "y": 0.2841,
+            "w": 0.7894,
+            "h": 0.5227
+          },
+          {
+            "x": 0.0554,
+            "y": 0.6009,
+            "w": 0.8166,
+            "h": 0.2514
+          }
+        ],
+        "hit": {
+          "x": 0.0832,
+          "y": 0.2855,
+          "w": 0.8443,
+          "h": 0.5696,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.4627,
+          0.8225
+        ],
+        "origin": [
+          0.4627,
+          0.5341
+        ],
+        "muzzle": [
+          0.4627,
+          0.8225
+        ],
+        "status": [
+          0.4627,
+          0.3053
+        ],
+        "shadow": [
+          0.4627,
+          0.8425
+        ]
+      },
+      "groundTell": null,
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 900,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "the-sentinel",
+      "name": "The Sentinel",
+      "family": "Surveyor constructs",
+      "tier": "boss",
+      "phase": "middle",
+      "scale": 0.4,
+      "silhouette": "Tall tripod and hood, then a low wedge",
+      "tell": "Before the dash the hood closes to a slit, the tripod folds into a wedge aimed along the dash, and a gravel arrow scratches the ground. The gold collar is only an extra glint.",
+      "tellChannels": [
+        "shape",
+        "motion",
+        "ground-mark",
+        "luminance"
+      ],
+      "attackFacing": "east",
+      "notes": "Gold is not sufficient. Grayscale still shows slit, wedge, and arrow. Dash art is drawn facing east. West is a mirror. North and south dash frames are not drawn.",
+      "locomotion": {
+        "src": "atlases/the-sentinel-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            14,
+            14,
+            14,
+            14,
+            42,
+            36,
+            42,
+            42,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0231,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.3068,
+            "y": 0.1818,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.2557,
+            "y": 0.1818,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.2159,
+            "y": 0.1818,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.1676,
+            "y": 0.1818,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.321,
+            "y": 0.179,
+            "w": 0.4489,
+            "h": 0.6392
+          },
+          {
+            "x": 0.2699,
+            "y": 0.179,
+            "w": 0.4517,
+            "h": 0.6591
+          },
+          {
+            "x": 0.2301,
+            "y": 0.179,
+            "w": 0.4517,
+            "h": 0.6392
+          },
+          {
+            "x": 0.1818,
+            "y": 0.179,
+            "w": 0.4517,
+            "h": 0.6392
+          },
+          {
+            "x": 0.3153,
+            "y": 0.1307,
+            "w": 0.4517,
+            "h": 0.7955
+          },
+          {
+            "x": 0.267,
+            "y": 0.1307,
+            "w": 0.4517,
+            "h": 0.7955
+          },
+          {
+            "x": 0.2273,
+            "y": 0.1307,
+            "w": 0.4489,
+            "h": 0.7955
+          },
+          {
+            "x": 0.179,
+            "y": 0.1307,
+            "w": 0.4489,
+            "h": 0.7955
+          },
+          {
+            "x": 0.3068,
+            "y": 0.0653,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.2557,
+            "y": 0.0653,
+            "w": 0.4688,
+            "h": 0.7131
+          },
+          {
+            "x": 0.2159,
+            "y": 0.0653,
+            "w": 0.4716,
+            "h": 0.7131
+          },
+          {
+            "x": 0.1676,
+            "y": 0.0653,
+            "w": 0.4688,
+            "h": 0.7131
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/the-sentinel-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "east",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            123,
+            58,
+            16,
+            89,
+            77,
+            7
+          ],
+          "edgeTouch": false,
+          "minEdgeMarginPx": 7,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.0276,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.29,
+            "y": 0.2855,
+            "w": 0.42,
+            "h": 0.4801
+          },
+          {
+            "x": 0.166,
+            "y": 0.4901,
+            "w": 0.6362,
+            "h": 0.2898
+          },
+          {
+            "x": 0.081,
+            "y": 0.5938,
+            "w": 0.693,
+            "h": 0.1918
+          },
+          {
+            "x": 0.2708,
+            "y": 0.1577,
+            "w": 0.4819,
+            "h": 0.4673
+          },
+          {
+            "x": 0.2617,
+            "y": 0.142,
+            "w": 0.4043,
+            "h": 0.4815
+          },
+          {
+            "x": 0.0533,
+            "y": 0.4801,
+            "w": 0.5842,
+            "h": 0.1719
+          }
+        ],
+        "hit": {
+          "x": 0.0341,
+          "y": 0.581,
+          "w": 0.7868,
+          "h": 0.2173,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.5,
+          0.7656
+        ],
+        "origin": [
+          0.5,
+          0.4871
+        ],
+        "muzzle": [
+          0.71,
+          0.5015
+        ],
+        "status": [
+          0.5,
+          0.2655
+        ],
+        "shadow": [
+          0.5,
+          0.7856
+        ]
+      },
+      "groundTell": "arrow",
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 980,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "east",
+        "west"
+      ],
+      "mirrorAttack": true,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat share the dash facing.",
+        "Dash poses for north and south are not drawn. West is a horizontal mirror of the east sheet."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    },
+    {
+      "id": "lake-memory",
+      "name": "Lake Memory",
+      "family": "Memories",
+      "tier": "boss",
+      "phase": "late",
+      "scale": 0.42,
+      "silhouette": "Faceless ripple with a blank oval head",
+      "tell": "A second silhouette peels up out of the feet and one ring spreads. No strobe.",
+      "tellChannels": [
+        "shape",
+        "motion",
+        "ground-mark"
+      ],
+      "attackFacing": "south",
+      "notes": "Late boss. Not a portrait of a person. The peel is the cue. The reach is the strike.",
+      "locomotion": {
+        "src": "atlases/lake-memory-loco.png",
+        "cols": 4,
+        "rows": 4,
+        "directions": [
+          "south",
+          "west",
+          "east",
+          "north"
+        ],
+        "cell": [
+          352,
+          352
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            23,
+            23,
+            23,
+            23,
+            26,
+            26,
+            26,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0222,
+          "lumDeltaMax": 0.0079,
+          "cell": [
+            352,
+            352
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2386,
+            "y": 0.142,
+            "w": 0.4886,
+            "h": 0.7244
+          },
+          {
+            "x": 0.2358,
+            "y": 0.142,
+            "w": 0.4915,
+            "h": 0.7244
+          },
+          {
+            "x": 0.233,
+            "y": 0.142,
+            "w": 0.4915,
+            "h": 0.7244
+          },
+          {
+            "x": 0.233,
+            "y": 0.142,
+            "w": 0.4943,
+            "h": 0.7244
+          },
+          {
+            "x": 0.3125,
+            "y": 0.1364,
+            "w": 0.4432,
+            "h": 0.6761
+          },
+          {
+            "x": 0.2983,
+            "y": 0.1364,
+            "w": 0.4517,
+            "h": 0.679
+          },
+          {
+            "x": 0.3011,
+            "y": 0.1364,
+            "w": 0.4489,
+            "h": 0.6847
+          },
+          {
+            "x": 0.2983,
+            "y": 0.1364,
+            "w": 0.4489,
+            "h": 0.679
+          },
+          {
+            "x": 0.2244,
+            "y": 0.125,
+            "w": 0.4489,
+            "h": 0.8011
+          },
+          {
+            "x": 0.2159,
+            "y": 0.125,
+            "w": 0.4489,
+            "h": 0.8011
+          },
+          {
+            "x": 0.2159,
+            "y": 0.125,
+            "w": 0.4432,
+            "h": 0.8011
+          },
+          {
+            "x": 0.2131,
+            "y": 0.125,
+            "w": 0.4403,
+            "h": 0.8011
+          },
+          {
+            "x": 0.2784,
+            "y": 0.071,
+            "w": 0.3807,
+            "h": 0.7614
+          },
+          {
+            "x": 0.2756,
+            "y": 0.071,
+            "w": 0.3892,
+            "h": 0.7614
+          },
+          {
+            "x": 0.2756,
+            "y": 0.071,
+            "w": 0.3892,
+            "h": 0.7614
+          },
+          {
+            "x": 0.2784,
+            "y": 0.071,
+            "w": 0.3949,
+            "h": 0.7614
+          }
+        ]
+      },
+      "actions": {
+        "src": "atlases/lake-memory-act.png",
+        "cols": 3,
+        "rows": 2,
+        "order": [
+          "idle",
+          "anticipate",
+          "attack",
+          "recover",
+          "hurt",
+          "defeat"
+        ],
+        "facing": "south",
+        "cell": [
+          469,
+          704
+        ],
+        "qc": {
+          "edgeMarginPx": [
+            52,
+            35,
+            11,
+            76,
+            0,
+            0
+          ],
+          "edgeTouch": true,
+          "minEdgeMarginPx": 0,
+          "whiteFracMax": 0.0,
+          "lumDeltaMax": 0.061,
+          "cell": [
+            469,
+            704
+          ]
+        },
+        "hurt": [
+          {
+            "x": 0.2324,
+            "y": 0.3537,
+            "w": 0.4947,
+            "h": 0.5369
+          },
+          {
+            "x": 0.117,
+            "y": 0.3281,
+            "w": 0.6447,
+            "h": 0.5682
+          },
+          {
+            "x": 0.0746,
+            "y": 0.3835,
+            "w": 0.7548,
+            "h": 0.517
+          },
+          {
+            "x": 0.2004,
+            "y": 0.3267,
+            "w": 0.565,
+            "h": 0.3778
+          },
+          {
+            "x": 0.1809,
+            "y": 0.1733,
+            "w": 0.7681,
+            "h": 0.5213
+          },
+          {
+            "x": 0.049,
+            "y": 0.5724,
+            "w": 0.7399,
+            "h": 0.1562
+          }
+        ],
+        "hit": {
+          "x": 0.0235,
+          "y": 0.3494,
+          "w": 0.8571,
+          "h": 0.5852,
+          "source": "attack-minus-idle"
+        }
+      },
+      "anchors": {
+        "feet": [
+          0.4798,
+          0.8906
+        ],
+        "origin": [
+          0.4798,
+          0.5792
+        ],
+        "muzzle": [
+          0.4798,
+          0.8906
+        ],
+        "status": [
+          0.4798,
+          0.3337
+        ],
+        "shadow": [
+          0.4798,
+          0.9106
+        ]
+      },
+      "groundTell": "ring",
+      "timing": {
+        "idle": {
+          "sheet": "actions",
+          "frames": [
+            0
+          ],
+          "fps": 1,
+          "loop": true,
+          "damage": false
+        },
+        "move": {
+          "sheet": "locomotion",
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 8,
+          "loop": true,
+          "damage": false
+        },
+        "anticipate": {
+          "sheet": "actions",
+          "frames": [
+            1
+          ],
+          "holdMs": 960,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "attack": {
+          "sheet": "actions",
+          "frames": [
+            2
+          ],
+          "holdMs": 180,
+          "fps": 1,
+          "loop": false,
+          "damage": true
+        },
+        "recover": {
+          "sheet": "actions",
+          "frames": [
+            3
+          ],
+          "holdMs": 380,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "hurt": {
+          "sheet": "actions",
+          "frames": [
+            4
+          ],
+          "holdMs": 320,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        },
+        "defeat": {
+          "sheet": "actions",
+          "frames": [
+            5
+          ],
+          "holdMs": 0,
+          "fps": 1,
+          "loop": false,
+          "damage": false
+        }
+      },
+      "statesPresent": [
+        "idle",
+        "move",
+        "anticipate",
+        "attack",
+        "recover",
+        "hurt",
+        "defeat"
+      ],
+      "directionsMove": [
+        "south",
+        "west",
+        "east",
+        "north"
+      ],
+      "directionsAttack": [
+        "south"
+      ],
+      "mirrorAttack": false,
+      "unfinished": [
+        "Attack sheets for facings that are not drawn.",
+        "No separate idle bob \u2014 idle holds the wind-up sheet's first pose.",
+        "Hurt and defeat are south-facing only.",
+        "East, west, and north strikes are not drawn. Do not spin the south sheet and call it a facing."
+      ],
+      "reducedMotion": {
+        "hold": "anticipate",
+        "suppress": [
+          "impact",
+          "splash",
+          "stone-break",
+          "dust-loop"
+        ]
+      }
+    }
+  ],
+  "vfx": {
+    "impact": {
+      "src": "vfx/impact.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          196,
+          196,
+          177,
+          194
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 177,
+        "whiteFracMax": 0.0,
+        "lumDeltaMax": 0.0397,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": true
+    },
+    "dust": {
+      "src": "vfx/dust.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          82,
+          82,
+          85,
+          85
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 82,
+        "whiteFracMax": 0.0,
+        "lumDeltaMax": 0.0369,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": true
+    },
+    "splash": {
+      "src": "vfx/splash.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          140,
+          129,
+          151,
+          130
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 129,
+        "whiteFracMax": 0.1631,
+        "lumDeltaMax": 0.0356,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": true
+    },
+    "stone-break": {
+      "src": "vfx/stone-break.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          188,
+          144,
+          90,
+          132
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 90,
+        "whiteFracMax": 0.0,
+        "lumDeltaMax": 0.0506,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": false
+    },
+    "shadow": {
+      "src": "vfx/shadow.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          133,
+          141,
+          141,
+          141
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 133,
+        "whiteFracMax": 0.0,
+        "lumDeltaMax": 0.0039,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": true
+    },
+    "projectiles": {
+      "src": "vfx/projectiles.png",
+      "rows": 4,
+      "cols": 4,
+      "frames": 16,
+      "qc": {
+        "edgeMarginPx": [
+          70,
+          94,
+          82,
+          80,
+          72,
+          92,
+          74,
+          48,
+          72,
+          88,
+          71,
+          59,
+          64,
+          64,
+          76,
+          64
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 48,
+        "whiteFracMax": 0.0177,
+        "lumDeltaMax": 0.2031,
+        "cell": [
+          352,
+          352
+        ]
+      },
+      "fps": 12,
+      "loop": true
+    },
+    "status": {
+      "src": "vfx/status.png",
+      "rows": 2,
+      "cols": 3,
+      "frames": 6,
+      "qc": {
+        "edgeMarginPx": [
+          100,
+          64,
+          68,
+          66,
+          90,
+          91
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 64,
+        "whiteFracMax": 0.0004,
+        "lumDeltaMax": 0.1967,
+        "cell": [
+          469,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": false
+    },
+    "ground-tells": {
+      "src": "vfx/ground-tells.png",
+      "rows": 2,
+      "cols": 2,
+      "frames": 4,
+      "qc": {
+        "edgeMarginPx": [
+          190,
+          200,
+          191,
+          178
+        ],
+        "edgeTouch": false,
+        "minEdgeMarginPx": 178,
+        "whiteFracMax": 0.0,
+        "lumDeltaMax": 0.1722,
+        "cell": [
+          704,
+          704
+        ]
+      },
+      "fps": 12,
+      "loop": false
+    }
+  },
+  "backgrounds": [
+    {
+      "id": "quarry",
+      "src": "backgrounds/quarry.jpg"
+    },
+    {
+      "id": "shore",
+      "src": "backgrounds/shore.jpg"
+    },
+    {
+      "id": "barn",
+      "src": "backgrounds/barn.jpg"
+    },
+    {
+      "id": "survey",
+      "src": "backgrounds/survey.jpg"
+    }
+  ],
+  "qcFlags": [
+    {
+      "id": "tedder",
+      "loco": false,
+      "act": true,
+      "locoMargin": 35,
+      "actMargin": 0
+    },
+    {
+      "id": "stanchion",
+      "loco": false,
+      "act": true,
+      "locoMargin": 37,
+      "actMargin": 0
+    },
+    {
+      "id": "winter-footstep",
+      "loco": true,
+      "act": false,
+      "locoMargin": 0,
+      "actMargin": 24
+    },
+    {
+      "id": "rodman",
+      "loco": true,
+      "act": true,
+      "locoMargin": 0,
+      "actMargin": 0
+    },
+    {
+      "id": "chainman",
+      "loco": true,
+      "act": false,
+      "locoMargin": 0,
+      "actMargin": 20
+    },
+    {
+      "id": "slate-matron",
+      "loco": false,
+      "act": true,
+      "locoMargin": 10,
+      "actMargin": 0
+    },
+    {
+      "id": "thresh-regent",
+      "loco": false,
+      "act": true,
+      "locoMargin": 4,
+      "actMargin": 0
+    },
+    {
+      "id": "the-sentinel",
+      "loco": true,
+      "act": false,
+      "locoMargin": 0,
+      "actMargin": 7
+    },
+    {
+      "id": "lake-memory",
+      "loco": true,
+      "act": true,
+      "locoMargin": 0,
+      "actMargin": 0
+    }
+  ],
+  "projectileRows": [
+    {
+      "id": "slate-chip",
+      "row": 0,
+      "family": "Quarry stone"
+    },
+    {
+      "id": "water-bolt",
+      "row": 1,
+      "family": "Water"
+    },
+    {
+      "id": "chaff-dart",
+      "row": 2,
+      "family": "Agricultural mechanisms"
+    },
+    {
+      "id": "survey-tick",
+      "row": 3,
+      "family": "Surveyor constructs"
+    }
+  ],
+  "statusCells": [
+    {
+      "id": "mud",
+      "index": 0,
+      "shape": "drip under a bar"
+    },
+    {
+      "id": "wet",
+      "index": 1,
+      "shape": "closed ring"
+    },
+    {
+      "id": "stone-bind",
+      "index": 2,
+      "shape": "two cracks as a bracket"
+    },
+    {
+      "id": "memory-haze",
+      "index": 3,
+      "shape": "torn rectangle"
+    },
+    {
+      "id": "survey-mark",
+      "index": 4,
+      "shape": "diamond tick"
+    },
+    {
+      "id": "chain-snare",
+      "index": 5,
+      "shape": "single link"
+    }
+  ],
+  "groundTellCells": [
+    {
+      "id": "arrow",
+      "index": 0
+    },
+    {
+      "id": "ridge",
+      "index": 1
+    },
+    {
+      "id": "ring",
+      "index": 2
+    },
+    {
+      "id": "fissure",
+      "index": 3
+    }
+  ]
+}

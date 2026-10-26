@@ -17,6 +17,16 @@
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --color-field: #070b18;
+  --color-panel: #10182c;
+  --color-paper: #f4efe2;
+  --color-ink: #140f08;
+  --color-mist: #c4bba8;
+  --color-hay: #e8c36a;
+  --color-lake: #7ec8a3;
+  --color-copper: #c45c4a;
+  --color-line: #2a3350;
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -57,4 +67,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.checker {
+  background-color: var(--color-field);
+  background-image:
+    linear-gradient(45deg, var(--color-panel) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-panel) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-panel) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-panel) 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
 }
