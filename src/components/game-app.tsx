@@ -16,6 +16,7 @@ import {
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
+import { MasteryBench } from "@/components/mastery-bench";
 
 const EMPTY: UiSnapshot = {
   mode: "title",
@@ -76,6 +77,7 @@ export function GameApp() {
   const gameRef = useRef<GameHandle | null>(null);
   const [ui, setUi] = useState<UiSnapshot>(EMPTY);
   const [hasSave, setHasSave] = useState(false);
+  const [objectsOpen, setObjectsOpen] = useState(false);
   const stickRef = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
 
@@ -217,7 +219,7 @@ export function GameApp() {
         <DialoguePanel node={ui.dialogue} onChoose={(i) => gameRef.current?.choose(i)} />
       )}
 
-      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
+      {(ui.mode === "pause" || ui.showHelp) && !objectsOpen && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
         <Pause
           ui={ui}
           onResume={() => gameRef.current?.resume()}
@@ -266,13 +268,25 @@ export function GameApp() {
 
       {playing && (
         <>
-          <button
-            type="button"
-            onClick={() => gameRef.current?.pause()}
-            className="absolute top-[max(0.4rem,env(safe-area-inset-top))] right-3 z-10 h-8 rounded-full bg-bg-elevated/70 px-3 font-mono text-[10px] tracking-widest text-fg-subtle uppercase ring-1 ring-border/80"
-          >
-            Menu
-          </button>
+          <div className="absolute top-[max(0.4rem,env(safe-area-inset-top))] right-3 z-10 flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                gameRef.current?.pause();
+                setObjectsOpen(true);
+              }}
+              className="h-8 rounded-full bg-bg-elevated/70 px-3 font-mono text-[10px] tracking-widest text-fg-subtle uppercase ring-1 ring-border/80"
+            >
+              Objects
+            </button>
+            <button
+              type="button"
+              onClick={() => gameRef.current?.pause()}
+              className="h-8 rounded-full bg-bg-elevated/70 px-3 font-mono text-[10px] tracking-widest text-fg-subtle uppercase ring-1 ring-border/80"
+            >
+              Menu
+            </button>
+          </div>
           {ui.showControls && (
             <TouchPad
               stickRef={stickRef}
@@ -286,6 +300,16 @@ export function GameApp() {
           )}
         </>
       )}
+      {objectsOpen ? (
+        <div className="absolute inset-0 z-30 overflow-y-auto bg-bg">
+          <MasteryBench
+            onClose={() => {
+              setObjectsOpen(false);
+              gameRef.current?.resume();
+            }}
+          />
+        </div>
+      ) : null}
     </main>
   );
 }
