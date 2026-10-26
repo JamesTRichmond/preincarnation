@@ -1,6 +1,7 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
+import { spendableRanksLeft } from "./rewards.ts";
 import { starterWeapon } from "./weapons.ts";
 
 export function isIncarnationUnlocked(
@@ -152,6 +153,13 @@ export function skillAwardForDeath(idealId: string, townsCleared: readonly strin
   return 2 + (idealId === "the_job" && !townsCleared.includes("quarry") ? 1 : 0);
 }
 
+/** Death pays skill only while a rank is still unbought. Held points already count. */
+export function chapterSkillAward(save: SaveData): number {
+  const raw = skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
+  const room = Math.max(0, spendableRanksLeft(save.upgrades) - save.character.skillPoints);
+  return Math.min(raw, room);
+}
+
 export function wintersPassed(rand: () => number = Math.random): number {
   return 14 + Math.floor(rand() * 5);
 }
@@ -197,9 +205,14 @@ export function groundKeptLine(grave: Grave | undefined): string {
 }
 
 export function cycleLedger(save: SaveData): CycleLedger {
-  const awarded = skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
+  const awarded = save.flags.returnedFromDeath
+    ? (save.flags.lastSkillAward ?? 0)
+    : chapterSkillAward(save);
   const deed = save.flags.lastDeed || "You died with the Vein still quiet";
-  const thisLife = deed + ". " + awarded + " skill for the walk back.";
+  const thisLife =
+    awarded > 0
+      ? deed + ". " + awarded + " skill for the walk back."
+      : deed + ". The purse already holds every rank. Spend what you hold.";
 
   const keep: string[] = ["Same hands."];
   const pts = save.character.skillPoints;
@@ -248,7 +261,10 @@ export function resolveDeath(
   save.flags.bombs = 0;
   save.cycle += 1;
   save.flags.year += winters;
-  save.character.skillPoints += skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
+  const award = chapterSkillAward(save);
+  save.character.skillPoints += award;
+  save.flags.lastSkillAward = award;
+  save.flags.bottles = save.flags.bottles.map(() => "empty");
   save.flags.afterlifeHost = save.karma < devilThreshold(save.character.flawId) ? "devil" : "god";
   save.flags.returnedFromDeath = true;
   return save;

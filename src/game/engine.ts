@@ -7,6 +7,7 @@ import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
+import { storeBottle } from "./rewards";
 import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
 import {
   paintCache,
@@ -586,20 +587,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     save.flags.lastDeed = s;
   };
 
-  const fillBottle = (kind: BottleKind) => {
-    const i = save.flags.bottles.findIndex((b) => b === "empty");
-    if (i >= 0) {
-      const next = save.flags.bottles.slice();
-      next[i] = kind;
-      save.flags.bottles = next;
-      return true;
-    }
-    if (kind === "syrup" || kind === "deluxe") {
-      player.hp = Math.min(player.maxHp, player.hp + 4);
-      save.hp = player.hp;
-    }
-    if (kind === "creemee" || kind === "deluxe") save.mp = save.maxMp;
-    return false;
+  const fillBottle = (kind: Exclude<BottleKind, "empty">) => {
+    const stored = storeBottle(save.flags.bottles, kind);
+    if (!stored.stored) return false;
+    save.flags.bottles = stored.bottles;
+    return true;
   };
 
   const sip = () => {
@@ -644,6 +636,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (!dialogue?.choices) return;
     const c = dialogue.choices[index];
     if (!c) return;
+    if (c.flag?.syrupStash && !fillBottle("syrup")) {
+      say("Both bottles are full. The tin stays on the shelf.");
+      dialogue = null;
+      mode = "play";
+      persist();
+      return;
+    }
     if (c.karma) addKarma(c.karma);
     if (c.crowns) {
       save.crowns += c.crowns;
@@ -655,7 +654,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (c.flag.bombs) save.flags.bombs = Math.max(save.flags.bombs, c.flag.bombs);
       if (c.flag.quarryOpen) save.flags.quarryOpen = true;
       if (c.flag.syrupStash) {
-        fillBottle("syrup");
         player.hp = Math.min(player.maxHp, player.hp + 2);
         save.hp = player.hp;
         say("Grade A dark. Bottled.");
@@ -797,13 +795,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.ySlot = "shovel";
       dig();
     } else if (p.kind === "syrup") {
-      fillBottle("syrup");
+      if (!fillBottle("syrup")) {
+        say("Both bottles are full. The tin stays.");
+        return;
+      }
+      save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
       say("Maple tin. Red bottle. V to drink.");
       persist();
     } else if (p.kind === "creemee") {
-      fillBottle("creemee");
+      if (!fillBottle("creemee")) {
+        say("Both bottles are full. The cup stays.");
+        return;
+      }
       save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
@@ -1197,8 +1202,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     for (const e of enemies) {
       if (!e.alive || e.kind !== "crow") continue;
       if (Math.hypot(e.x - player.x, e.y - player.y) < 22) {
+        if (!fillBottle("deluxe")) {
+          say("Both bottles are full. The crow keeps the light.");
+          continue;
+        }
         e.alive = false;
-        fillBottle("deluxe");
         say("A light in the net. Bottled.");
         audio.pickup();
       }

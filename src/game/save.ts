@@ -1,4 +1,5 @@
 import { TILE } from "./snes.ts";
+import { skillAwardForDeath } from "./rules.ts";
 import { starterWeapon } from "./weapons.ts";
 import {
   DEFAULT_CHARACTER,
@@ -108,6 +109,15 @@ export function migrate(save: SaveData): SaveData {
   s.flags.caches = save.flags?.caches ?? [];
   s.flags.riflesTaken = save.flags?.riflesTaken ?? s.flags.riflesTaken ?? [];
   s.flags.bottles = save.flags?.bottles ?? s.flags.bottles ?? ["empty", "empty"];
+  if ((save.version ?? 1) < 9) {
+    const recorded = save.flags?.lastSkillAward;
+    s.flags.lastSkillAward =
+      typeof recorded === "number"
+        ? recorded
+        : s.flags.returnedFromDeath
+          ? skillAwardForDeath(s.character.idealId, s.flags.townsCleared ?? [])
+          : 0;
+  }
   s.version = SAVE_VERSION;
   return s;
 }

@@ -22,7 +22,9 @@ import {
   spendSkillPoint,
   spinDamage,
   wintersPassed,
+  chapterSkillAward,
 } from "./rules.ts";
+import { spendableRanksLeft, storeBottle } from "./rewards.ts";
 import type { Grave } from "./items.ts";
 import type { SaveData } from "./types.ts";
 
@@ -235,6 +237,59 @@ describe("resolveDeath", () => {
     s.character.skillPoints = 0;
     resolveDeath(s, { mapId: "middlebury", x: 0, y: 0 }, 14);
     assert.equal(s.character.skillPoints, 2);
+  });
+
+  it("stops paying skill once the purse already covers every rank", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    s.upgrades.vitality = 3;
+    s.upgrades.edge = 3;
+    s.upgrades.stride = 3;
+    s.upgrades.sight = 1;
+    s.upgrades.shadowStep = 1;
+    s.upgrades.wraithBond = 1;
+    s.flags.chests = ["solo-fact"];
+    s.flags.bottles = ["syrup", "creemee"];
+    resolveDeath(s, { mapId: "quarry", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, 0);
+    assert.equal(s.flags.lastSkillAward, 0);
+    assert.equal(s.upgrades.vitality, 3);
+    assert.deepEqual(s.flags.chests, ["solo-fact"]);
+    assert.deepEqual(s.flags.bottles, ["empty", "empty"]);
+    assert.equal(s.cycle, 1);
+    assert.match(cycleLedger(s).thisLife, /Spend what you hold/);
+  });
+
+  it("pays only the ranks the purse is still short", () => {
+    const s = copy();
+    s.character.skillPoints = spendableRanksLeft(s.upgrades) - 1;
+    resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.flags.lastSkillAward, 1);
+    assert.equal(s.character.skillPoints, spendableRanksLeft(s.upgrades));
+    assert.equal(chapterSkillAward(s), 0);
+  });
+
+  it("twenty deaths do not mint skill past the ranks you can buy", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    const cap = spendableRanksLeft(s.upgrades);
+    for (let i = 0; i < 20; i++) resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, cap);
+    assert.equal(s.cycle, 20);
+    assert.equal(s.upgrades.vitality, 0);
+    assert.equal(s.upgrades.edge, 0);
+    assert.equal(chapterSkillAward(s), 0);
+  });
+});
+
+describe("storeBottle", () => {
+  it("fills an empty slot and leaves a full belt untouched", () => {
+    const open = storeBottle(["empty", "empty"], "syrup");
+    assert.equal(open.stored, true);
+    assert.deepEqual(open.bottles, ["syrup", "empty"]);
+    const full = storeBottle(["syrup", "creemee"], "deluxe");
+    assert.equal(full.stored, false);
+    assert.deepEqual(full.bottles, ["syrup", "creemee"]);
   });
 });
 
