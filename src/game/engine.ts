@@ -20,11 +20,25 @@ import {
   makePropCache,
   paintShadow,
   paintHudALttP,
+  paintBuilding16,
+  paintRock16,
+  paintPot16,
+  paintSheep16,
+  paintNpc16,
+  paintGrave16,
+  paintKey16,
+  paintLock16,
+  paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
+import { isGroundLoot, lensView, paintIds } from "./lens/ground";
+import { copyDocument } from "./lens/document";
+import { PRESETS } from "./lens/presets";
+import { loadLens, saveLens } from "./lens/store";
+import type { FilterAction, FilterDocument } from "./lens/types";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
 
 type Actor = {
@@ -94,6 +108,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   deck.setDuck((on) => audio.setDuck(on));
 
   let save: SaveData = loadSave();
+  let lensDoc: FilterDocument = loadLens();
   let mode: Mode = "title";
   let introBeat = 0;
   let mapId: MapId = save.mapId;
@@ -165,7 +180,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
   let weather: WeatherState | null = null;
@@ -1625,8 +1640,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
 
     const near = nearestProp();
-    interactHint = near
-      ? near.kind === "warp"
+    const lootNow = lensView(props, lensDoc, save.flags);
+    const verb = !near
+      ? null
+      : near.kind === "warp"
         ? near.id.includes("quarry")
           ? "Marble Vein"
           : near.warp?.map === "bell"
@@ -1658,8 +1675,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                       ? "Turn"
                     : near.kind === "home"
                   ? "The homestead"
-                  : "Talk"
-      : null;
+                  : "Talk";
+    const note = near && isGroundLoot(near.kind) ? lootNow.notes.get(near.id) : undefined;
+    interactHint = verb == null ? null : note ? `${verb} · ${note}`.slice(0, 42) : verb;
     if (actions.interactPressed && near) interactWith(near);
     if (near?.kind === "door" && player.dir === 3 && my < -0.15) {
       const d = Math.hypot(near.x * TILE + 8 - player.x, near.y * TILE + 8 - player.y);
@@ -1979,7 +1997,45 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     type Layer = { y: number; draw: () => void };
     const layers: Layer[] = [];
 
+    const lootFrame = lensView(props, lensDoc, save.flags);
+    const lootCues = lootFrame.actions;
+    const lootPaint = paintIds(props, lootCues);
+
+    const paintLensCue = (ctx: CanvasRenderingContext2D, action: FilterAction | undefined, x: number, y: number) => {
+      if (!action || action === "show" || action === "hide") return;
+      ctx.save();
+      ctx.strokeStyle = "#f4efe2";
+      ctx.fillStyle = "#1a120c";
+      ctx.lineWidth = 1;
+      if (action === "emphasize") {
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y - 1);
+        ctx.lineTo(x + 13, y + 4);
+        ctx.lineTo(x + 8, y + 9);
+        ctx.lineTo(x + 3, y + 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      } else if (action === "collapse") {
+        ctx.strokeRect(x + 1, y + 3, 10, 10);
+        ctx.strokeRect(x + 5, y - 1, 10, 10);
+      } else {
+        ctx.setLineDash([2, 2]);
+        ctx.beginPath();
+        ctx.arc(x + 8, y + 8, 9, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    };
+
     const drawProp = (p: PropSpec) => {
+      if (isGroundLoot(p.kind) && !lootPaint.has(p.id)) return;
+      const cue = isGroundLoot(p.kind) ? lootCues.get(p.id) : undefined;
+      const dim = cue === "reduce";
+      if (dim) {
+        bctx.save();
+        bctx.globalAlpha = 0.62;
+      }
       const dx = worldX(p.x * TILE);
       const dy = worldY(p.y * TILE);
       const glow = save.upgrades.sight > 0;
@@ -2053,6 +2109,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           bctx.strokeRect(dx + 1, dy + 1, 14, 14);
         }
       }
+      if (dim) bctx.restore();
+      paintLensCue(bctx, cue, dx, dy);
     };
 
     for (const p of props) {
@@ -2384,6 +2442,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
+      lensName: lensDoc.showEverything ? "Everything" : lensDoc.name,
     };
     const sig = [
       mode,
@@ -2421,6 +2480,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
+      snap.lensName,
     ].join("|");
     if (sig === lastUi) return;
     lastUi = sig;
@@ -2777,6 +2837,15 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const next = save.inventory[(i + 1) % save.inventory.length];
       save.equippedId = next.id;
       say(next.name);
+    },
+    cycleLens: () => {
+      const order = PRESETS.map((preset) => preset.document);
+      const index = order.findIndex((document) => document.id === lensDoc.id && document.showEverything === lensDoc.showEverything);
+      const next = order[(index + 1) % order.length] ?? order[0];
+      lensDoc = copyDocument(next);
+      saveLens(lensDoc);
+      say(lensDoc.showEverything ? "Everything. Labels only." : lensDoc.name + ". Labels only.");
+      lastUi = "";
     },
     sip,
     dispose: () => {

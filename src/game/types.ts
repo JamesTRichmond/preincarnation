@@ -225,6 +225,7 @@ export type UiSnapshot = {
   beacon: string | null;
   lastDeed: string;
   cycleLedger: CycleLedger;
+  lensName: string;
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";

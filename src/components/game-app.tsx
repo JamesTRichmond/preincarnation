@@ -70,6 +70,7 @@ const EMPTY: UiSnapshot = {
   beacon: null,
   lastDeed: "",
   cycleLedger: EMPTY_LEDGER,
+  lensName: "Trail",
 };
 
 export function GameApp() {
@@ -231,6 +232,7 @@ export function GameApp() {
           onShake={(v) => gameRef.current?.setShake(v)}
           onMute={() => gameRef.current?.toggleMute()}
           onCycle={() => gameRef.current?.cycleWeapon()}
+          onLens={() => gameRef.current?.cycleLens()}
           onControls={(v) => gameRef.current?.setShowControls(v)}
           onReset={() => {
             gameRef.current?.reset();
@@ -337,6 +339,7 @@ function Pause({
   onShake,
   onMute,
   onCycle,
+  onLens,
   onControls,
   onReset,
 }: {
@@ -345,6 +348,7 @@ function Pause({
   onShake: (v: boolean) => void;
   onMute: () => void;
   onCycle: () => void;
+  onLens: () => void;
   onControls: (v: boolean) => void;
   onReset: () => void;
 }) {
@@ -458,6 +462,12 @@ function Pause({
           >
             On-screen buttons {ui.showControls ? "on" : "off"}
           </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onLens}>
+            Ground lens: {ui.lensName}
+          </button>
+          <p className="text-sm text-fg-muted">
+            Labels only. A diamond is MARK, a dashed ring is DIM, layered squares are STACK. Graves, the shovel, and the quarry key stay. Nothing is taken.
+          </p>
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onCycle}>
             Next weapon
           </button>
