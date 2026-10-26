@@ -15,6 +15,7 @@ import {
   ENDING_LINES,
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
+import { BenchScreen } from "@/components/conservation-bench";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
 
 const EMPTY: UiSnapshot = {
@@ -225,6 +226,7 @@ export function GameApp() {
           onMute={() => gameRef.current?.toggleMute()}
           onCycle={() => gameRef.current?.cycleWeapon()}
           onControls={(v) => gameRef.current?.setShowControls(v)}
+          onBench={() => gameRef.current?.openBench()}
           onReset={() => {
             gameRef.current?.reset();
             setHasSave(false);
@@ -250,6 +252,8 @@ export function GameApp() {
           onSeek={(t) => gameRef.current?.seekDeck(t)}
         />
       )}
+
+      {ui.mode === "bench" && <BenchScreen onClose={() => gameRef.current?.closeBench()} />}
 
       {ui.mode === "ending" && (
         <Ending beat={ui.endingBeat} onWalk={() => gameRef.current?.reincarnate()} />
@@ -331,6 +335,7 @@ function Pause({
   onMute,
   onCycle,
   onControls,
+  onBench,
   onReset,
 }: {
   ui: UiSnapshot;
@@ -339,6 +344,7 @@ function Pause({
   onMute: () => void;
   onCycle: () => void;
   onControls: (v: boolean) => void;
+  onBench: () => void;
   onReset: () => void;
 }) {
   return (
@@ -453,6 +459,9 @@ function Pause({
           </button>
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onCycle}>
             Next weapon
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onBench}>
+            Conservation bench
           </button>
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onShake(!ui.shake)}>
             Screen shake {ui.shake ? "on" : "off"}

@@ -33,6 +33,7 @@ import {
   paintHudALttP,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { clearBenchStorage } from "./bench/store";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -175,7 +176,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
   let weather: WeatherState | null = null;
@@ -2104,6 +2105,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
+    } else if (mode === "bench" && actions.pausePressed) {
+      mode = "play";
     }
     if (hitstop > 0) hitstop -= raw;
     else {
@@ -2378,6 +2381,22 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (mode === "ipod") mode = "play";
       lastUi = "";
     },
+    openBench: () => {
+      mode = "bench";
+      showHelp = false;
+      lastUi = "";
+    },
+    closeBench: () => {
+      if (mode === "bench") {
+        mode = "play";
+        lastUi = "";
+        try {
+          cvs.focus();
+        } catch {
+          /* ignore */
+        }
+      }
+    },
     openIpod: () => {
       mode = "ipod";
       showHelp = false;
@@ -2415,6 +2434,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     },
     reset: () => {
       clearSave();
+      clearBenchStorage();
       save = defaultSave();
       mode = "title";
       showHelp = false;
