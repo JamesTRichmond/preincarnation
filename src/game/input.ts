@@ -28,6 +28,7 @@ export type Actions = {
   dashPressed: boolean;
   cyclePressed: boolean;
   usePressed: boolean;
+  use: boolean;
   item: boolean;
   itemPressed: boolean;
   pointerHeld: boolean;
@@ -312,6 +313,7 @@ export function createInput(target: HTMLElement) {
       dashPressed: dash && !prevDash,
       cyclePressed: cycle && !prevCycle,
       usePressed: use && !prevUse,
+      use: use || pad.use,
       item: item,
       itemPressed: item && !prevItem,
       pointerHeld,

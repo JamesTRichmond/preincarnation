@@ -72,12 +72,36 @@ describe("migrate", () => {
     assert.equal(s.version, SAVE_VERSION);
     assert.equal(s.flags.lastDeed, "");
     assert.equal(s.flags.returnedFromDeath, false);
+    assert.equal(s.mastery.sugar, null);
+    assert.equal(s.mastery.ash, null);
+    assert.equal(s.mastery.sap, 80);
     assert.equal(s.character.name, "Ira Fenn");
     assert.equal(s.character.bondId, "maeve");
     assert.equal(s.upgrades.vitality, 1);
     assert.equal(s.upgrades.edge, 0);
     assert.equal(s.inventory[0].id, "starter-iron");
     assert.deepEqual(s.flags.talked, ["elder"]);
+  });
+
+  it("keeps a v9 sugar and ash attunement and clamps sap", () => {
+    const raw = defaultSave();
+    raw.version = 9;
+    raw.mastery = { sugar: "thread-the-needle", ash: "orchard-of-embers", sap: 140, ember: -4 };
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.mastery.sugar, "thread-the-needle");
+    assert.equal(s.mastery.ash, "orchard-of-embers");
+    assert.equal(s.mastery.sap, 100);
+    assert.equal(s.mastery.ember, 0);
+  });
+
+  it("drops an attunement that is not that discipline", () => {
+    const raw = defaultSave();
+    raw.mastery.sugar = "kiln-bloom";
+    raw.mastery.ash = "thread-the-needle";
+    const s = migrate(raw);
+    assert.equal(s.mastery.sugar, null);
+    assert.equal(s.mastery.ash, null);
   });
 
   it("does not invent a lantern for a first-life v8 save", () => {

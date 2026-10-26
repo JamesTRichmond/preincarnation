@@ -126,6 +126,20 @@ export type Flags = {
   returnedFromDeath: boolean;
 };
 
+export type Mastery = {
+  sugar: string | null;
+  ash: string | null;
+  sap: number;
+  ember: number;
+};
+
+export const DEFAULT_MASTERY: Mastery = {
+  sugar: null,
+  ash: null,
+  sap: 80,
+  ember: 76,
+};
+
 export type SaveData = {
   version: number;
   cycle: number;
@@ -144,6 +158,7 @@ export type SaveData = {
   inventory: Weapon[];
   equippedId: string;
   character: CharacterSheet;
+  mastery: Mastery;
 };
 
 export type Choice = {
@@ -223,10 +238,16 @@ export type UiSnapshot = {
   job: string;
   lastDeed: string;
   cycleLedger: CycleLedger;
+  masterySugar: string | null;
+  masteryAsh: string | null;
+  weaveSap: number;
+  weaveEmber: number;
+  weaveChoice: string[] | null;
+  weaveVerb: string | null;
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export const DEFAULT_UPGRADES: Upgrades = {
   vitality: 0,

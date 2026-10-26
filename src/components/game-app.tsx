@@ -16,6 +16,7 @@ import {
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
+import { getAbility, listAbilities } from "@/game/sugar-ash/src/index.js";
 
 const EMPTY: UiSnapshot = {
   mode: "title",
@@ -69,6 +70,12 @@ const EMPTY: UiSnapshot = {
   job: OBJECTIVES.job,
   lastDeed: "",
   cycleLedger: EMPTY_LEDGER,
+  masterySugar: null,
+  masteryAsh: null,
+  weaveSap: 80,
+  weaveEmber: 76,
+  weaveChoice: null,
+  weaveVerb: null,
 };
 
 export function GameApp() {
@@ -229,6 +236,7 @@ export function GameApp() {
             gameRef.current?.reset();
             setHasSave(false);
           }}
+          onAttune={(discipline, id) => gameRef.current?.attuneMastery(discipline, id)}
         />
       )}
 
@@ -237,6 +245,7 @@ export function GameApp() {
           ui={ui}
           onBuy={(k) => gameRef.current?.spendSkill(k)}
           onBirth={() => gameRef.current?.reincarnate()}
+          onAttune={(discipline, id) => gameRef.current?.attuneMastery(discipline, id)}
         />
       )}
 
@@ -253,6 +262,33 @@ export function GameApp() {
 
       {ui.mode === "ending" && (
         <Ending beat={ui.endingBeat} onWalk={() => gameRef.current?.reincarnate()} />
+      )}
+
+      {playing && ui.weaveChoice && (
+        <div className="absolute top-14 left-1/2 z-20 flex w-[min(22rem,calc(100%-1.5rem))] -translate-x-1/2 flex-col gap-2 rounded-2xl bg-bg-elevated/95 p-3 ring-1 ring-border">
+          <p className="font-mono text-[10px] tracking-[0.18em] text-fg-subtle uppercase">
+            Two weaves claim this {ui.weaveVerb ?? "action"}
+          </p>
+          {ui.weaveChoice.map((id) => (
+            <button
+              key={id}
+              type="button"
+              className="min-h-11 rounded-full bg-bg px-4 text-left font-display text-lg text-fg ring-1 ring-border"
+              onClick={() => gameRef.current?.chooseWeave(id)}
+            >
+              {abilityName(id)}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {playing && (ui.masterySugar || ui.masteryAsh) && !ui.weaveChoice && (
+        <p className="pointer-events-none absolute top-[max(0.45rem,env(safe-area-inset-top))] left-3 z-10 max-w-[14rem] font-mono text-[10px] leading-snug text-fg-subtle">
+          {abilityName(ui.masterySugar)} / {abilityName(ui.masteryAsh)}
+          <span className="block text-primary">
+            sap {ui.weaveSap} · ember {ui.weaveEmber}
+          </span>
+        </p>
       )}
 
       {playing && ui.deckHasTrack && (
@@ -324,6 +360,55 @@ function Title({
   );
 }
 
+function abilityName(id: string | null) {
+  if (!id) return "—";
+  return getAbility(id)?.name ?? id;
+}
+
+function WeavePicker({
+  ui,
+  onAttune,
+}: {
+  ui: UiSnapshot;
+  onAttune: (discipline: "sugar" | "ash", id: string | null) => void;
+}) {
+  const all = listAbilities() as {
+    id: string;
+    name: string;
+    discipline: "sugar" | "ash";
+    capstone: boolean;
+  }[];
+  const chip = (discipline: "sugar" | "ash", current: string | null) => (
+    <div className="mt-2 flex flex-wrap gap-2">
+      {all
+        .filter((a) => a.discipline === discipline)
+        .map((a) => {
+          const on = current === a.id;
+          return (
+            <button
+              key={a.id}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onAttune(discipline, a.id)}
+              className={`min-h-11 rounded-full px-3 text-left text-sm ring-1 ${on ? "bg-primary text-bg ring-primary" : "bg-bg text-fg ring-border"}`}
+            >
+              {a.name}
+              {a.capstone ? " · cap" : ""}
+            </button>
+          );
+        })}
+    </div>
+  );
+  return (
+    <div className="mt-4">
+      <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">Sugar · sap {ui.weaveSap}</p>
+      {chip("sugar", ui.masterySugar)}
+      <p className="mt-3 font-mono text-[10px] tracking-[0.18em] text-[#e24b2a] uppercase">Ash · ember {ui.weaveEmber}</p>
+      {chip("ash", ui.masteryAsh)}
+    </div>
+  );
+}
+
 function Pause({
   ui,
   onResume,
@@ -332,6 +417,7 @@ function Pause({
   onCycle,
   onControls,
   onReset,
+  onAttune,
 }: {
   ui: UiSnapshot;
   onResume: () => void;
@@ -340,6 +426,7 @@ function Pause({
   onCycle: () => void;
   onControls: (v: boolean) => void;
   onReset: () => void;
+  onAttune: (discipline: "sugar" | "ash", id: string | null) => void;
 }) {
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4">
@@ -349,6 +436,7 @@ function Pause({
           {ui.character.name} · {traitById(BACKGROUNDS, ui.character.backgroundId).name} · {ui.townName} · Cycle {ui.cycle}
         </p>
         <p className="mt-2 text-sm text-fg">{ui.job}</p>
+        {ui.cycle >= 1 && <WeavePicker ui={ui} onAttune={onAttune} />}
         <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
           <dt className="text-fg-subtle">Bond</dt>
           <dd className="text-fg">{traitById(BONDS, ui.character.bondId).name}</dd>
@@ -369,6 +457,7 @@ function Pause({
           <li>Arrows or WASD. Keyboard always wins — leftover analog is cancelled.</li>
           <li>Mouse / trackpad: click a spot to walk there. Hold to follow the cursor. Let go or leave the map — you stop.</li>
           <li>Right-click slashes. Scroll zooms.</li>
+          <li>After a death, V taps a marked shot and a hold braces. Space is still the cut. Nothing homes.</li>
           <li>Gamepad: left stick or D-pad. Switching devices cancels the last one.</li>
         </ul>
 
@@ -692,10 +781,12 @@ function Afterlife({
   ui,
   onBuy,
   onBirth,
+  onAttune,
 }: {
   ui: UiSnapshot;
   onBuy: (k: (typeof LIMBO_UPGRADES)[number]["key"]) => void;
   onBirth: () => void;
+  onAttune: (discipline: "sugar" | "ash", id: string | null) => void;
 }) {
   const host = ui.afterlifeHost === "devil" ? "devil" : "god";
   const copy = afterlifeCopy(
@@ -756,6 +847,12 @@ function Afterlife({
             </div>
           </dl>
         </div>
+        <h2 className="mt-8 font-display text-2xl">What the dead keep in their hands</h2>
+        <p className="mt-2 max-w-xl text-sm text-fg-muted">
+          One sugar, one ash. They rewrite the cut, the shot, and the brace you already have. The Marble Vein is still the
+          job. Houses and the seal stop a thread. Nothing follows you on its own.
+        </p>
+        <WeavePicker ui={ui} onAttune={onAttune} />
         <h2 className="mt-8 font-display text-2xl">Spend what you were given</h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {SKILL_TRAITS.map((u) => {

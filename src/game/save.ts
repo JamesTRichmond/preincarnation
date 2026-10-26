@@ -3,11 +3,13 @@ import { starterWeapon } from "./weapons.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
+  DEFAULT_MASTERY,
   DEFAULT_UPGRADES,
   SAVE_KEY,
   SAVE_VERSION,
   type SaveData,
 } from "./types.ts";
+import { getAbility } from "./sugar-ash/src/index.js";
 
 export function defaultSave(): SaveData {
   const iron = starterWeapon();
@@ -41,6 +43,7 @@ export function defaultSave(): SaveData {
     inventory: [iron],
     equippedId: iron.id,
     character: { ...DEFAULT_CHARACTER },
+    mastery: { ...DEFAULT_MASTERY },
   };
 }
 
@@ -54,6 +57,7 @@ export function migrate(save: SaveData): SaveData {
     inventory: save.inventory?.length ? save.inventory : base.inventory,
     equippedId: save.equippedId || base.equippedId,
     character: { ...base.character, ...save.character },
+    mastery: { ...base.mastery, ...save.mastery },
     maxMp: save.maxMp ?? 8,
     mp: save.mp ?? 8,
   };
@@ -100,6 +104,15 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  if ((save.version ?? 1) < 9) {
+    s.mastery = { ...DEFAULT_MASTERY };
+  }
+  const sugar = getAbility(s.mastery.sugar);
+  const ash = getAbility(s.mastery.ash);
+  if (!sugar || sugar.discipline !== "sugar") s.mastery.sugar = null;
+  if (!ash || ash.discipline !== "ash") s.mastery.ash = null;
+  s.mastery.sap = clampRes(s.mastery.sap);
+  s.mastery.ember = clampRes(s.mastery.ember);
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];
@@ -110,6 +123,11 @@ export function migrate(save: SaveData): SaveData {
   s.flags.bottles = save.flags?.bottles ?? s.flags.bottles ?? ["empty", "empty"];
   s.version = SAVE_VERSION;
   return s;
+}
+
+function clampRes(n: number) {
+  if (typeof n !== "number" || Number.isNaN(n)) return 80;
+  return Math.max(0, Math.min(100, n));
 }
 
 export function loadSave(): SaveData {

@@ -33,6 +33,7 @@ import {
   paintHudALttP,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { createWeave } from "./weave";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -105,6 +106,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   deck.setDuck((on) => audio.setDuck(on));
 
   let save: SaveData = loadSave();
+  const weave = createWeave({ sap: save.mastery.sap, ember: save.mastery.ember });
+  weave.hydrate(save.mastery);
+  let weaveBracing = false;
+  let weaveHoldT = 0;
+  let prevUseHeld = false;
+  let weaveSpoken = "";
   let mode: Mode = "title";
   let introBeat = 0;
   let mapId: MapId = save.mapId;
@@ -319,6 +326,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     save.mapId = isInterior(mapId) ? save.flags.returnMap ?? "middlebury" : mapId;
     save.hp = player.hp;
     save.flags.deck = deck.snapshot();
+    const res = weave.resources();
+    save.mastery.sap = res.sap;
+    save.mastery.ember = res.ember;
     writeSave(save);
   };
 
@@ -426,6 +436,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     mode = "create";
     showHelp = false;
     loadWorld("middlebury");
+    weave.hydrate(save.mastery);
     audio.unlock();
     audio.startDrone(false);
     persist();
@@ -455,6 +466,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       showHelp = false;
     }
     loadWorld(save.mapId, save.x, save.y);
+    weave.hydrate(save.mastery);
     audio.unlock();
     audio.startDrone(mode === "limbo");
     lastUi = "";
@@ -1063,10 +1075,135 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
+  const syncWeave = () => {
+    const visW = SNES_W / zoom;
+    const visH = VIEW_H / zoom;
+    const tx = Math.floor(player.x / TILE);
+    const ty = Math.floor(player.y / TILE);
+    const solids: { x: number; y: number; w: number; h: number; seal?: boolean }[] = [];
+    for (let y = ty - 18; y <= ty + 18; y++) {
+      for (let x = tx - 18; x <= tx + 18; x++) {
+        const id = world.tiles[y]?.[x];
+        if (id == null) continue;
+        const seal = id === T.marbleWall || id === T.cracked;
+        if (!seal && !isSolid(id, save.incarnation, false)) continue;
+        solids.push({ x: x * TILE, y: y * TILE, w: TILE, h: TILE, seal });
+      }
+    }
+    for (const p of props) {
+      if (p.kind !== "lock") continue;
+      solids.push({ x: p.x * TILE, y: p.y * TILE, w: TILE, h: TILE, seal: true });
+    }
+    weave.sync({
+      mapId,
+      mapW: world.w * TILE,
+      mapH: world.h * TILE,
+      player: {
+        x: player.x,
+        y: player.y,
+        dir: player.dir,
+        moving: Math.hypot(player.vx, player.vy) > 44,
+      },
+      view: { x: camX - visW / 2, y: camY - visH / 2, w: visW, h: visH },
+      foes: enemies.map((e) => ({
+        id: e.id,
+        x: e.x,
+        y: e.y,
+        alive: e.alive,
+        boss: e.kind === "sentinel" || e.kind === "resident",
+      })),
+      solids,
+      shrines: props
+        .filter((p) => p.kind === "shrine")
+        .map((p) => ({ id: p.id, x: p.x * TILE + 8, y: p.y * TILE + 8 })),
+      sugar: save.mastery.sugar,
+      ash: save.mastery.ash,
+      reduced,
+    });
+  };
+
+  const noteWeave = (cast: { line: string }) => {
+    if (!cast.line || cast.line === weaveSpoken) return;
+    weaveSpoken = cast.line;
+    say(cast.line);
+  };
+
+  const applyWeaveHits = () => {
+    for (const hit of weave.pullHits()) {
+      if (hit.hearts <= 0) continue;
+      if (hit.id === "ellis") {
+        hurtPlayer(hit.hearts);
+        continue;
+      }
+      const e = enemies.find((n) => n.id === hit.id);
+      if (!e || !e.alive) continue;
+      e.hp -= hit.hearts;
+      floats.push({
+        x: e.x,
+        y: e.y - 10,
+        t: 0.55,
+        text: hit.hearts >= 1 ? String(Math.round(hit.hearts)) : "½",
+        color: "#e24b2a",
+      });
+      burst(e.x, e.y, "#e2a04a", 4);
+      if (e.hp <= 0) {
+        e.hurt = 0;
+        hitEnemy(e, 0.01, player.dir);
+      }
+    }
+  };
+
+  const noteCountyCuts = () => {
+    const wpn = equipped();
+    const k = DIRS[player.dir];
+    const moving = Math.hypot(player.vx, player.vy) > 44;
+    for (const e of enemies) {
+      if (!e.alive) continue;
+      if (Math.hypot(e.x - (player.x + k.x * 12), e.y - (player.y + k.y * 12)) < wpn.reach + 6) {
+        weave.noteCut(e.id, moving);
+      }
+    }
+  };
+
+  const looseWeaveShot = () => {
+    if (!save.mastery.sugar && !save.mastery.ash) return false;
+    syncWeave();
+    if (!weave.claims("shot") && !weave.pending()) return false;
+    const cast = weave.cast("shot");
+    noteWeave(cast);
+    if (!cast.choice && !cast.consumed && !weave.claims("shot")) return false;
+    attackT = 0.16;
+    charge = 0;
+    applyWeaveHits();
+    return true;
+  };
+
   const startCombo = () => {
+    if (save.mastery.sugar || save.mastery.ash) {
+      syncWeave();
+      if (weave.claims("strike") || weave.pending()) {
+        const cast = weave.cast("strike");
+        noteWeave(cast);
+        if (cast.choice || cast.consumed) {
+          if (cast.consumed) {
+            const k = DIRS[player.dir];
+            audio.slash();
+            slashes.push({ x: player.x + k.x * 12, y: player.y + k.y * 12, dir: player.dir, t: 0.14 });
+            cutGrass();
+            attackT = 0.1;
+            applyWeaveHits();
+          }
+          return;
+        }
+      }
+    }
     fireSlash();
     cutGrass();
     attackT = 0.1;
+    if (save.mastery.sugar === "wreath-of-debts") {
+      syncWeave();
+      noteCountyCuts();
+    }
   };
 
   const fireSpin = () => {
@@ -1337,9 +1474,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (actions.item && ySlot === "bow") {
       charge = Math.min(1, charge + dt * 1.6);
     } else if (charge > 0.12 && ySlot === "bow") {
-      fireBow(charge);
+      if (looseWeaveShot()) {
+        /* the weave spent the arrow */
+      } else fireBow(charge);
     } else if (charge > 0.12 && rifleOut && !actions.attack) {
-      fireBow(charge);
+      if (looseWeaveShot()) {
+        /* the weave spent the arrow */
+      } else fireBow(charge);
     } else if (!actions.attack && !actions.item) {
       charge = Math.max(0, charge - dt * 2);
     }
@@ -1391,6 +1532,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       moveActor(player, k.x * 26, k.y * 26);
       dashT = save.flags.relics.includes("boots") ? 0.28 : 0.55;
       burst(player.x, player.y, "#b07ad6", 5);
+      if (weave.claims("step") || weave.sugarIs("wreath-of-debts")) {
+        syncWeave();
+        const cast = weave.cast("step");
+        noteWeave(cast);
+        applyWeaveHits();
+      }
     }
     const spd = speed * (attackT > 0 ? 0.55 : 1);
     player.vx = mx * spd;
@@ -1422,7 +1569,29 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         say(next.name);
       }
     }
-    if (actions.usePressed) sip();
+    if (actions.use) {
+      weaveHoldT += dt;
+      if (!weaveBracing && weaveHoldT >= 0.18 && (save.mastery.sugar || save.mastery.ash)) {
+        syncWeave();
+        if (weave.claims("brace") || weave.pending()) {
+          const cast = weave.cast("brace");
+          noteWeave(cast);
+          weaveBracing = cast.consumed;
+          if (cast.consumed) applyWeaveHits();
+        }
+      }
+    }
+    if (!actions.use && prevUseHeld) {
+      if (weaveBracing) {
+        weave.release();
+        weaveBracing = false;
+        noteWeave({ line: weave.line() });
+      } else if (weaveHoldT > 0 && weaveHoldT < 0.18) {
+        if (!looseWeaveShot()) sip();
+      }
+      weaveHoldT = 0;
+    }
+    prevUseHeld = actions.use;
     if (actions.bombPressed && save.flags.bombs > 0) {
       save.flags.bombs -= 1;
       const k = DIRS[player.dir];
@@ -1552,6 +1721,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         if (!e.alive) continue;
         if (Math.hypot(e.x - s.x, e.y - s.y) < 10) {
           hitEnemy(e, s.dmg, player.dir, { burn: s.burn, slow: s.slow, stoned: s.stoned, karmaOnKill: 0, lifesteal: 0 });
+          if (save.mastery.sugar === "wreath-of-debts") {
+            syncWeave();
+            weave.noteCut(e.id, Math.hypot(player.vx, player.vy) > 44);
+          }
           s.life = 0;
         }
       }
@@ -1583,6 +1756,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
     if (input.keys.has("Minus") || input.keys.has("BracketLeft")) zoom = 0.5;
     if (input.keys.has("Equal") || input.keys.has("BracketRight")) zoom = 1;
+    if (weave.active()) {
+      syncWeave();
+      weave.tick(dt);
+      applyWeaveHits();
+      const pending = weave.pending();
+      if (pending && weave.line()) noteWeave({ line: weave.line() });
+    }
     localHour = debugHour ?? vtHour();
     slashes = slashes.filter((s) => {
       s.t -= dt;
@@ -1710,6 +1890,34 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       dx: worldX(wx) - Math.round(8 * zoom),
       dy: worldY(wy) - Math.round(12 * zoom),
     });
+
+    if (weave.active()) {
+      const glyphs = weave.glyphs();
+      bctx.save();
+      for (const t of glyphs.tethers) {
+        bctx.strokeStyle = t.glazed ? "#efe6d6" : "#e2a04a";
+        bctx.lineWidth = 1;
+        bctx.beginPath();
+        bctx.moveTo(worldX(t.x1), worldY(t.y1));
+        bctx.lineTo(worldX(t.x2), worldY(t.y2));
+        bctx.stroke();
+      }
+      for (const b of glyphs.blossoms) {
+        bctx.strokeStyle = b.armed ? "#e24b2a" : "#7a4030";
+        bctx.beginPath();
+        bctx.arc(worldX(b.x), worldY(b.y), Math.max(2, b.r * 0.25 * zoom), 0, Math.PI * 2);
+        bctx.stroke();
+      }
+      for (const m of glyphs.marks) {
+        bctx.fillStyle = "#e24b2a";
+        bctx.fillRect(worldX(m.x) - 1, worldY(m.y) - 1, 2, 2);
+      }
+      for (const s of glyphs.shots) {
+        bctx.fillStyle = s.kind === "needle" || s.kind === "sap" ? "#e2a04a" : "#e24b2a";
+        bctx.fillRect(worldX(s.x) - 1, worldY(s.y) - 1, 3, 3);
+      }
+      bctx.restore();
+    }
 
     type Layer = { y: number; draw: () => void };
     const layers: Layer[] = [];
@@ -2050,6 +2258,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
+      masterySugar: save.mastery.sugar,
+      masteryAsh: save.mastery.ash,
+      weaveSap: Math.round(weave.resources().sap),
+      weaveEmber: Math.round(weave.resources().ember),
+      weaveChoice: weave.pending()?.ids ?? null,
+      weaveVerb: weave.pending()?.verb ?? null,
     };
     const sig = [
       mode,
@@ -2086,6 +2300,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
+      snap.masterySugar ?? "",
+      snap.masteryAsh ?? "",
+      snap.weaveSap,
+      snap.weaveEmber,
+      snap.weaveVerb ?? "",
+      (snap.weaveChoice ?? []).join(","),
     ].join("|");
     if (sig === lastUi) return;
     lastUi = sig;
@@ -2419,6 +2639,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       mode = "title";
       showHelp = false;
       void deck.hydrate(EMPTY_DECK);
+      weave.hydrate(save.mastery);
     },
     pause: () => {
       if (mode === "play") mode = "pause";
@@ -2444,6 +2665,21 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       say(next.name);
     },
     sip,
+    attuneMastery: (discipline: "sugar" | "ash", id: string | null) => {
+      const cur = save.mastery[discipline];
+      const next = cur === id ? null : id;
+      save.mastery[discipline] = next;
+      weave.attune(discipline, next);
+      weaveSpoken = "";
+      persist();
+      lastUi = "";
+    },
+    chooseWeave: (id: string) => {
+      const res = weave.choose(id);
+      noteWeave({ line: res.line });
+      applyWeaveHits();
+      lastUi = "";
+    },
     dispose: () => {
       running = false;
       deck.dispose();
