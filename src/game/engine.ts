@@ -18,10 +18,24 @@ import {
 import {
   makeTileCache,
   makePropCache,
-  paintShadow,
+  paintBuilding16,
+  paintCave16,
+  paintGrave16,
   paintHudALttP,
+  paintKey16,
+  paintLock16,
+  paintNpc16,
+  paintPot16,
+  paintRock16,
+  paintShadow,
+  paintSheep16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { CATALOG } from "./fieldbook/catalog.ts";
+import { emptyFieldbook } from "./fieldbook/demo.ts";
+import { dispatch } from "./fieldbook/logic.ts";
+import { fieldbookCard as presentFieldbook } from "./fieldbook/present.ts";
+import type { Action } from "./fieldbook/types.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -165,7 +179,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
   let weather: WeatherState | null = null;
@@ -316,9 +330,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     writeSave(save);
   };
 
+  const applyFieldbook = (action: Action) => {
+    const result = dispatch(CATALOG, save.flags.fieldbook ?? emptyFieldbook(), action);
+    save.flags.fieldbook = result.ctx;
+    return result.messages;
+  };
+
   const enterLimbo = (_reason: string) => {
     audio.die();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
+    applyFieldbook({ type: "death", place: TOWN_BY_ID[mapId]?.name ?? mapId });
     mode = "limbo";
     audio.startDrone(true);
     persist();
@@ -2777,6 +2798,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const next = save.inventory[(i + 1) % save.inventory.length];
       save.equippedId = next.id;
       say(next.name);
+    },
+    fieldbookCard: () => presentFieldbook(save.flags.fieldbook ?? emptyFieldbook()),
+    fieldbookAct: (action: Action) => {
+      const messages = applyFieldbook(action);
+      persist();
+      return messages;
     },
     sip,
     dispose: () => {

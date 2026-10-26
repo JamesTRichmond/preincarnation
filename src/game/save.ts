@@ -1,5 +1,6 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { createDemoContext, emptyFieldbook } from "./fieldbook/demo.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -30,6 +31,7 @@ export function defaultSave(): SaveData {
       relics: ["sword"],
       graves: [],
       plots: [],
+      fieldbook: createDemoContext(),
     },
     maxHp: 3,
     hp: 3,
@@ -99,6 +101,11 @@ export function migrate(save: SaveData): SaveData {
   if ((save.version ?? 1) < 8) {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
+  }
+  if ((save.version ?? 1) < 9) {
+    s.flags.fieldbook = emptyFieldbook();
+  } else if (!s.flags.fieldbook) {
+    s.flags.fieldbook = emptyFieldbook();
   }
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];

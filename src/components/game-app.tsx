@@ -16,6 +16,9 @@ import {
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
+import { FieldBook } from "@/components/field-book";
+import type { FieldbookCard } from "@/game/fieldbook/present";
+import type { Action } from "@/game/fieldbook/types";
 
 const EMPTY: UiSnapshot = {
   mode: "title",
@@ -236,6 +239,8 @@ export function GameApp() {
             gameRef.current?.reset();
             setHasSave(false);
           }}
+          readFieldbook={() => gameRef.current?.fieldbookCard() ?? null}
+          onFieldbook={(action) => gameRef.current?.fieldbookAct(action) ?? []}
         />
       )}
 
@@ -339,6 +344,8 @@ function Pause({
   onCycle,
   onControls,
   onReset,
+  readFieldbook,
+  onFieldbook,
 }: {
   ui: UiSnapshot;
   onResume: () => void;
@@ -347,6 +354,8 @@ function Pause({
   onCycle: () => void;
   onControls: (v: boolean) => void;
   onReset: () => void;
+  readFieldbook: () => FieldbookCard | null;
+  onFieldbook: (action: Action) => string[];
 }) {
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4">
@@ -448,6 +457,8 @@ function Pause({
           cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
           shovel in 14–18 years. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
+
+        {!ui.showHelp && <FieldBook read={readFieldbook} act={onFieldbook} />}
 
         <h3 className="mt-5 font-display text-xl">Settings</h3>
         <div className="mt-3 flex flex-col gap-2">

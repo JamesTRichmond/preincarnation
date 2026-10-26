@@ -46,6 +46,7 @@ describe("defaultSave", () => {
     assert.equal(s.flags.ySlot, null);
     assert.equal(s.inventory[0].id, "starter-iron");
     assert.equal(s.x, 12 * TILE + 8);
+    assert.equal(s.flags.fieldbook?.inventory.loose.find((stack) => stack.componentId === "copper-fitting")?.quantity, 3);
   });
 });
 
@@ -84,6 +85,31 @@ describe("migrate", () => {
     const s = migrate(defaultSave());
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
+  });
+
+  it("gives a v8 life an empty field book instead of the demo bag", () => {
+    const raw = {
+      version: 8,
+      cycle: 1,
+      karma: 0,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: { relics: ["sword"], talked: [] },
+      maxHp: 3,
+      hp: 3,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.flags.fieldbook?.inventory.loose.length, 0);
+    assert.equal(s.flags.fieldbook?.inventory.objects.length, 0);
+    assert.equal(s.character.name, "Ira Fenn");
   });
 });
 

@@ -1,6 +1,7 @@
 import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
+import type { TrackingContext } from "./fieldbook/types.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
@@ -125,6 +126,8 @@ export type Flags = {
   afterlifeHost: AfterlifeHost | null;
   lastDeed: string;
   returnedFromDeath: boolean;
+  /** Component count. Missing on saves from before version 9. */
+  fieldbook?: TrackingContext;
 };
 
 export type SaveData = {
@@ -228,7 +231,7 @@ export type UiSnapshot = {
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export const DEFAULT_UPGRADES: Upgrades = {
   vitality: 0,
