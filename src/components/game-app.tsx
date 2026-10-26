@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
+import { Satchel } from "@/components/knowledge/satchel";
 import {
   afterlifeCopy,
   BACKGROUNDS,
@@ -225,6 +226,7 @@ export function GameApp() {
           onMute={() => gameRef.current?.toggleMute()}
           onCycle={() => gameRef.current?.cycleWeapon()}
           onControls={(v) => gameRef.current?.setShowControls(v)}
+          onSatchel={() => gameRef.current?.openSatchel()}
           onReset={() => {
             gameRef.current?.reset();
             setHasSave(false);
@@ -248,6 +250,14 @@ export function GameApp() {
           onPlay={() => void gameRef.current?.playDeck()}
           onPause={() => gameRef.current?.pauseDeck()}
           onSeek={(t) => gameRef.current?.seekDeck(t)}
+        />
+      )}
+
+      {ui.mode === "codex" && (
+        <Satchel
+          stored={gameRef.current?.knowledge() ?? ui.flags.knowledge}
+          onStore={(next) => gameRef.current?.setKnowledge(next)}
+          onClose={() => gameRef.current?.closeSatchel()}
         />
       )}
 
@@ -331,6 +341,7 @@ function Pause({
   onMute,
   onCycle,
   onControls,
+  onSatchel,
   onReset,
 }: {
   ui: UiSnapshot;
@@ -339,6 +350,7 @@ function Pause({
   onMute: () => void;
   onCycle: () => void;
   onControls: (v: boolean) => void;
+  onSatchel: () => void;
   onReset: () => void;
 }) {
   return (
@@ -349,6 +361,13 @@ function Pause({
           {ui.character.name} · {traitById(BACKGROUNDS, ui.character.backgroundId).name} · {ui.townName} · Cycle {ui.cycle}
         </p>
         <p className="mt-2 text-sm text-fg">{ui.job}</p>
+        <button
+          type="button"
+          onClick={onSatchel}
+          className="mt-4 h-12 w-full rounded-[12px] bg-primary text-base font-medium text-primary-fg"
+        >
+          Open the satchel
+        </button>
         <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
           <dt className="text-fg-subtle">Bond</dt>
           <dd className="text-fg">{traitById(BONDS, ui.character.bondId).name}</dd>
