@@ -223,6 +223,8 @@ export type UiSnapshot = {
   job: string;
   lastDeed: string;
   cycleLedger: CycleLedger;
+  /** True only while walking inside the sugarhouse. The festival bench is a pastime, not a plot flag. */
+  insideSugar: boolean;
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
