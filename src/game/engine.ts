@@ -172,6 +172,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let endingBeat = 0;
   let endingT = 0;
   let showHelp = false;
+  let worldHeld = false;
   let last = performance.now();
   let acc = 0;
   let running = true;
@@ -2050,6 +2051,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
+      insideSugar: mapId === "int_sugar" && mode === "play",
     };
     const sig = [
       mode,
@@ -2086,6 +2088,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
+      snap.insideSugar ? 1 : 0,
     ].join("|");
     if (sig === lastUi) return;
     lastUi = sig;
@@ -2097,15 +2100,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const raw = Math.min(0.1, (now - last) / 1000);
     last = now;
     const actions = input.sample();
-    if (mode === "play" && actions.pausePressed) {
+    if (!worldHeld && mode === "play" && actions.pausePressed) {
       mode = "pause";
       persist();
-    } else if (mode === "pause" && actions.pausePressed && !showHelp) {
+    } else if (!worldHeld && mode === "pause" && actions.pausePressed && !showHelp) {
       mode = "play";
-    } else if (mode === "ipod" && actions.pausePressed) {
+    } else if (!worldHeld && mode === "ipod" && actions.pausePressed) {
       mode = "play";
     }
-    if (hitstop > 0) hitstop -= raw;
+    if (worldHeld) {
+      /* The county waits. The festival bench owns the keys, including Escape. */
+    } else if (hitstop > 0) hitstop -= raw;
     else {
       acc += raw;
       const step = 1 / 60;
@@ -2421,7 +2426,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       void deck.hydrate(EMPTY_DECK);
     },
     pause: () => {
+      if (worldHeld) return;
       if (mode === "play") mode = "pause";
+    },
+    holdWorld: (held: boolean) => {
+      worldHeld = held;
+      if (held) input.setVirtual({ stick: { x: 0, y: 0 } });
     },
     resume: () => {
       if (mode === "pause") {
