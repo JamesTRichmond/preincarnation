@@ -9,9 +9,9 @@ const DIRS = [
 
 export function gridProblems(rows: string[]): string[] {
   const problems: string[] = [];
-  if (rows.length < 3 || rows.length > 6) problems.push("board height out of 3\u20136");
+  if (rows.length < 3 || rows.length > 6) problems.push("board height out of 3–6");
   const w = rows[0]?.length ?? 0;
-  if (w < 3 || w > 6) problems.push("board width out of 3\u20136");
+  if (w < 3 || w > 6) problems.push("board width out of 3–6");
   if (rows.some((r) => r.length !== w)) problems.push("ragged rows");
   let a = 0;
   let h = 0;
@@ -28,7 +28,7 @@ export function gridProblems(rows: string[]): string[] {
   }
   if (a !== 1) problems.push(`expected one tap, found ${a}`);
   if (h !== 1) problems.push(`expected one hearth, found ${h}`);
-  if (sugars < 2 || sugars > 8) problems.push(`sugar count ${sugars} outside 2\u20138`);
+  if (sugars < 2 || sugars > 8) problems.push(`sugar count ${sugars} outside 2–8`);
   if (walk > 18) problems.push(`walkable ${walk} exceeds 18`);
   return problems;
 }

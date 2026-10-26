@@ -42,7 +42,7 @@ export function schedule(piece: Piece): ScheduleResult {
   const inst = INSTRUMENTS[piece.instrument];
   const errors: string[] = [];
   if (!inst) errors.push("unknown instrument");
-  if (piece.tempoBpm < 56 || piece.tempoBpm > 132) errors.push("tempo outside 56\u2013132");
+  if (piece.tempoBpm < 56 || piece.tempoBpm > 132) errors.push("tempo outside 56–132");
   if (piece.beatsPerBar !== 3 && piece.beatsPerBar !== 4) errors.push("meter must be 3 or 4");
   const { events, errors: parseErrors } = parseSpec(piece.spec);
   errors.push(...parseErrors);
@@ -76,7 +76,7 @@ export function schedule(piece: Piece): ScheduleResult {
           midi = piece.rootMidi + piece.scale[degree];
         }
         if (midi < inst.minMidi || midi > inst.maxMidi) {
-          errors.push(`midi ${midi} outside ${inst.name} ${inst.minMidi}\u2013${inst.maxMidi}`);
+          errors.push(`midi ${midi} outside ${inst.name} ${inst.minMidi}–${inst.maxMidi}`);
         }
         notes.push({
           midi,
@@ -91,13 +91,13 @@ export function schedule(piece: Piece): ScheduleResult {
   }
 
   const beats = round4(beat);
-  if (beats < 8 || beats > 32) errors.push(`length ${beats} beats outside 8\u201332`);
+  if (beats < 8 || beats > 32) errors.push(`length ${beats} beats outside 8–32`);
   if (Math.abs(beats / piece.beatsPerBar - Math.round(beats / piece.beatsPerBar)) > 1e-6) {
     errors.push("length is not a whole number of bars");
   }
   const seconds = beats * secPerBeat;
-  if (seconds < 8 || seconds > 36) errors.push(`duration ${seconds.toFixed(1)}s outside 8\u201336`);
-  if (notes.length < 8 || notes.length > 64) errors.push(`note count ${notes.length} outside 8\u201364`);
+  if (seconds < 8 || seconds > 36) errors.push(`duration ${seconds.toFixed(1)}s outside 8–36`);
+  if (notes.length < 8 || notes.length > 64) errors.push(`note count ${notes.length} outside 8–64`);
   if (notes.length && notes[0].startSec > secPerBeat + 1e-6) errors.push("leading silence longer than one beat");
 
   const polyError = polyphonyOverflow(notes, inst.polyphony);
