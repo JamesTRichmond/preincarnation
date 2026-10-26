@@ -115,6 +115,7 @@ export function createInput(target: HTMLElement) {
   let pointerCanceled = false;
 
   const onKeyDown = (e: KeyboardEvent) => {
+    if (document.body?.dataset.ledgerOpen === "1") return;
     if (GAME_CODES.has(e.code)) e.preventDefault();
     keys.add(e.code);
     if (
@@ -125,7 +126,10 @@ export function createInput(target: HTMLElement) {
       scheme = "keyboard";
     }
   };
-  const onKeyUp = (e: KeyboardEvent) => keys.delete(e.code);
+  const onKeyUp = (e: KeyboardEvent) => {
+    if (document.body?.dataset.ledgerOpen === "1") return;
+    keys.delete(e.code);
+  };
 
   const zeroAnalog = () => {
     stick.x = 0;
