@@ -57,7 +57,7 @@ type Actor = {
   stoned: number;
 };
 
-type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number };
+type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
 type SlashFx = { x: number; y: number; dir: Dir; t: number };
 type Floating = { x: number; y: number; t: number; text: string; color: string };
 type Shot = { x: number; y: number; vx: number; vy: number; life: number; dmg: number; burn: number; slow: number; stoned: number };
@@ -202,6 +202,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let downY = 0;
   let mouseAttack = false;
   let warpLock = 0;
+  let beacon: { x: number; y: number; label: string } | null = null;
+  let stepAcc = 0;
+  let moteAcc = 0;
 
   const sheets: Record<string, string> = {
     wanderer: "/game/wanderer-walk/snes.png?v=3",
@@ -557,6 +560,93 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
     if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "A grave of your last skin waits. Bring the shovel.";
     return OBJECTIVES.county;
+  };
+
+  const atProp = (p: PropSpec, label: string) => ({ x: p.x * TILE + 8, y: p.y * TILE + 8, label });
+
+  const questBeacon = () => {
+    const byId = (id: string) => props.find((p) => p.id === id);
+    const byRelic = (id: string) => props.find((p) => p.kind === "relic" && p.relic === id);
+    const exit = () =>
+      props.find((p) => p.kind === "warp" && p.warp?.map === "middlebury") ??
+      props.find((p) => p.kind === "warp" && (p.id === "to-overworld" || p.id.includes("middlebury")));
+
+    if (mapId === "quarry") {
+      if (!save.flags.relics.includes("lantern")) {
+        const p = byRelic("lantern");
+        if (p) return atProp(p, "Lamp");
+      }
+      if (!save.flags.chests.includes("q-key")) {
+        const p = byId("q-key");
+        if (p) return atProp(p, "Key");
+      }
+      if (!save.flags.chests.includes("q-lock-a")) {
+        const p = byId("q-lock-a");
+        if (p) return atProp(p, "Lock");
+      }
+      if (!save.flags.relics.includes("hammer")) {
+        const p = byRelic("hammer");
+        if (p) return atProp(p, "Hammer");
+      }
+      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) {
+        const sen = enemies.find((e) => e.alive && e.kind === "sentinel");
+        if (sen) return { x: sen.x, y: sen.y, label: "Sentinel" };
+        for (let y = 0; y < world.h; y++) {
+          const row = world.tiles[y];
+          for (let x = 0; x < world.w; x++) {
+            if (row?.[x] === T.cracked) return { x: x * TILE + 8, y: y * TILE + 8, label: "Cracked marble" };
+          }
+        }
+      }
+      const back = byId("to-middlebury-q");
+      if (back) return atProp(back, "West");
+      return null;
+    }
+
+    if (mapId === "soloverse") {
+      const heart = props.find((p) => p.npc === "heart" || p.id === "heart");
+      if (heart) return atProp(heart, "Heart");
+      return null;
+    }
+
+    if (!save.flags.talked.includes("elder")) {
+      const p = byId("elder");
+      if (p) return atProp(p, "Maeve");
+      const door = exit();
+      if (door) return atProp(door, "Maeve");
+    }
+    if (!save.flags.relics.includes("shovel")) {
+      const p = byRelic("shovel");
+      if (p) return atProp(p, "Shovel");
+      const door = exit();
+      if (door) return atProp(door, "Shovel");
+    }
+    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) {
+      const q = byId("to-quarry");
+      if (q) return atProp(q, "Marble Vein");
+      const door = exit();
+      if (door) return atProp(door, "Toward the Vein");
+    }
+    if ((save.flags.graves ?? []).some((g) => !g.excavated)) {
+      const gp = props.find((p) => p.kind === "grave");
+      if (gp) return atProp(gp, "Your grave");
+    }
+    return null;
+  };
+
+  const cardinal = (dx: number, dy: number) => {
+    const names = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"];
+    const i = Math.round(Math.atan2(dy, dx) / (Math.PI / 4));
+    return names[((i % 8) + 8) % 8];
+  };
+
+  const beaconLine = () => {
+    if (!beacon || mode !== "play") return null;
+    const dx = beacon.x - player.x;
+    const dy = beacon.y - player.y;
+    const paces = Math.max(0, Math.round(Math.hypot(dx, dy) / TILE));
+    if (paces <= 1) return beacon.label + " · here";
+    return cardinal(dx, dy) + " · " + beacon.label + " · " + paces;
   };
 
   const unlocked = (id: IncarnationId) => isIncarnationUnlocked(id, save.cycle, save.flags, save.crowns);
@@ -1605,7 +1695,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       p.life -= dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vy += 30 * dt;
+      p.vy += (p.g ?? 30) * dt;
       return p.life > 0;
     });
     floats = floats.filter((f) => {
@@ -1626,6 +1716,70 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           color: weather.label.id === "snow" ? "#f4efe2" : "#8eb4d4",
           size: 1,
         });
+      }
+    }
+
+    beacon = questBeacon();
+    if (!reduced && particles.length < 240 && mapId !== "soloverse") {
+      const moving = Math.abs(mx) + Math.abs(my) > 0.2;
+      if (moving) {
+        stepAcc += dt;
+        if (stepAcc > 0.2) {
+          stepAcc = 0;
+          particles.push({
+            x: player.x + (Math.random() - 0.5) * 4,
+            y: player.y + 5,
+            vx: -mx * 8,
+            vy: -6,
+            life: 0.28,
+            color: "#c4b48a",
+            size: 1,
+            g: 18,
+          });
+        }
+      }
+      const outdoors = !isInterior(mapId) && mapId !== "quarry";
+      if (outdoors) {
+        moteAcc += dt;
+        if (moteAcc > 0.45) {
+          moteAcc = 0;
+          const roofs = props.filter(
+            (p) =>
+              p.kind === "home" ||
+              p.kind === "barn" ||
+              p.kind === "inn" ||
+              p.kind === "hall" ||
+              p.kind === "college" ||
+              p.kind === "capitol" ||
+              p.kind === "sugar" ||
+              p.kind === "disp",
+          );
+          if (roofs.length) {
+            const b = roofs[Math.floor(animT * 2) % roofs.length];
+            const night = localHour < 6 || localHour >= 20;
+            particles.push({
+              x: b.x * TILE + 5,
+              y: b.y * TILE + 1,
+              vx: (Math.random() - 0.4) * 6,
+              vy: -12 - Math.random() * 6,
+              life: 1.3,
+              color: night ? "#6a5a48" : "#e4dcc8",
+              size: Math.random() < 0.35 ? 2 : 1,
+              g: 0,
+            });
+          }
+          const night = localHour < 6 || localHour >= 20;
+          particles.push({
+            x: player.x + (Math.random() - 0.5) * 120,
+            y: player.y + (Math.random() - 0.5) * 80,
+            vx: (Math.random() - 0.5) * (night ? 8 : 4),
+            vy: night ? (Math.random() - 0.5) * 6 : -3,
+            life: night ? 2.4 : 1.5,
+            color: night ? "#e8c36a" : "#f4efe2",
+            size: 1,
+            g: 0,
+          });
+        }
       }
     }
 
@@ -1738,11 +1892,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       else if (p.kind === "well") paintWell16(bctx, dx, dy);
       else if (p.kind === "home" || p.kind === "barn" || p.kind === "inn" || p.kind === "hall" || p.kind === "college" || p.kind === "capitol" || p.kind === "sugar" || p.kind === "disp") {
         paintBuilding16(bctx, p.kind === "home" ? "home" : p.kind, dx, dy);
+        if (localHour < 6 || localHour >= 20) {
+          bctx.fillStyle = "#f0d090";
+          bctx.fillRect(dx + 5, dy + 7, 1, 1);
+          bctx.fillRect(dx + 10, dy + 7, 1, 1);
+        }
       } else if (p.kind === "rock") paintRock16(bctx, dx, dy);
       else if (p.kind === "pot") paintPot16(bctx, dx, dy);
-      else if (p.kind === "sheep") paintSheep16(bctx, dx, dy);
+      else if (p.kind === "sheep") {
+        const hop = reduced ? 0 : Math.floor(animT * 2 + p.x) % 5 === 0 ? -1 : 0;
+        paintSheep16(bctx, dx, dy + hop);
+      }
       else if (p.kind === "npc") {
-        paintNpc16(bctx, dx, dy, p.npc ?? "elder");
+        const bob = reduced ? 0 : Math.sin(animT * 2.4 + p.x * 0.7) > 0.92 ? -1 : 0;
+        paintNpc16(bctx, dx, dy + bob, p.npc ?? "elder");
         const mark =
           (p.npc === "elder" && !save.flags.talked.includes("elder")) ||
           (p.npc === "elder" && save.cycle >= 1 && save.flags.returnedFromDeath);
@@ -1900,7 +2063,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
     for (const p of particles) {
       bctx.fillStyle = p.color;
-      bctx.fillRect(Math.round((p.x - viewX) * zoom), Math.round((p.y - viewY) * zoom), 1, 1);
+      const s = p.g === 0 ? Math.max(1, Math.min(2, Math.round(p.size))) : 1;
+      bctx.fillRect(Math.round((p.x - viewX) * zoom), Math.round((p.y - viewY) * zoom), s, s);
     }
     for (const f of floats) {
       bctx.fillStyle = f.color;
@@ -1975,6 +2139,57 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillStyle = "#e8c36a";
       bctx.fillRect(mx - 2, my, 5, 1);
       bctx.fillRect(mx, my - 2, 1, 5);
+    }
+
+    if (mode === "play" && beacon) {
+      const sx = worldX(beacon.x);
+      const sy = worldY(beacon.y);
+      const on = sx > 12 && sx < SNES_W - 12 && sy > 28 && sy < SNES_H - 14;
+      if (on) {
+        const bob = reduced ? 0 : Math.sin(animT * 6) > 0 ? 0 : 1;
+        const mx = sx;
+        const my = sy - 14 - bob;
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(mx - 2, my - 1, 5, 5);
+        bctx.fillStyle = "#e8c36a";
+        bctx.fillRect(mx, my, 1, 1);
+        bctx.fillRect(mx - 1, my + 1, 3, 1);
+        bctx.fillRect(mx, my + 2, 1, 1);
+      } else {
+        const ang = Math.atan2(beacon.y - player.y, beacon.x - player.x);
+        const oct = Math.round(ang / (Math.PI / 4));
+        const dirs: Array<[number, number]> = [
+          [1, 0],
+          [1, 1],
+          [0, 1],
+          [-1, 1],
+          [-1, 0],
+          [-1, -1],
+          [0, -1],
+          [1, -1],
+        ];
+        const [ax, ay] = dirs[((oct % 8) + 8) % 8];
+        const ix = Math.round(Math.max(18, Math.min(SNES_W - 18, SNES_W / 2 + Math.cos(ang) * (SNES_W / 2 - 24))));
+        const iy = Math.round(Math.max(34, Math.min(SNES_H - 18, SNES_H / 2 + Math.sin(ang) * (SNES_H / 2 - 30))));
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(ix - 4, iy - 4, 9, 9);
+        bctx.fillStyle = "#e8c36a";
+        bctx.fillRect(ix, iy, 1, 1);
+        bctx.fillRect(ix + ax, iy + ay, 1, 1);
+        bctx.fillRect(ix + ax * 2, iy + ay * 2, 1, 1);
+        bctx.fillRect(ix - ay, iy + ax, 1, 1);
+        bctx.fillRect(ix + ay, iy - ax, 1, 1);
+        const line = cardinal(beacon.x - player.x, beacon.y - player.y) + " " + beacon.label;
+        bctx.font = "8px monospace";
+        const tw = Math.min(SNES_W - 8, bctx.measureText(line).width);
+        let tx = ix - tw / 2;
+        tx = Math.max(4, Math.min(SNES_W - tw - 4, tx));
+        const ty = Math.max(40, Math.min(SNES_H - 6, iy + (ay >= 0 ? 14 : -8)));
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(tx - 1, ty - 7, tw + 2, 9);
+        bctx.fillStyle = "#f4efe2";
+        bctx.fillText(line, tx, ty);
+      }
     }
 
     drawHudBar();
@@ -2068,6 +2283,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       afterlifeHost: save.flags.afterlifeHost,
       introBeat,
       job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
+      beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
     };
@@ -2103,6 +2319,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.lastDeed,
       introBeat,
       snap.job,
+      snap.beacon,
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
