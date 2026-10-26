@@ -1,0 +1,26 @@
+[
+  {
+    "id": "speaker.ellis",
+    "name": "Ellis",
+    "kind": "player",
+    "note": "The will that returns. Speaks choices in the body's mouth."
+  },
+  {
+    "id": "speaker.narration",
+    "name": "Narration",
+    "kind": "narration",
+    "note": "Spare staging. Not a narrator-god and not a quest log."
+  },
+  {
+    "id": "speaker.voice",
+    "name": "The Voice",
+    "kind": "voice",
+    "note": "Certification grammar. One account of the wound: the record is the act."
+  },
+  {
+    "id": "speaker.other_voice",
+    "name": "The Other Voice",
+    "kind": "voice",
+    "note": "The body's account of the same wound: the hands were late, and the hands were the act."
+  }
+]
