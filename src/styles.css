@@ -14,6 +14,14 @@
   --color-karma-pos: #7ec8a3;
   --color-karma-neg: #b07ad6;
   --color-heart: #d45d5d;
+  --color-surface: #10182c;
+  --color-raised: #162044;
+  --color-muted: #c4bba8;
+  --color-line: #2a3350;
+  --color-accent: #8aa58a;
+  --color-accent-ink: #07140f;
+  --radius-desk: 1.5rem;
+  --radius-control: 0.5rem;
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -57,4 +65,8 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.vein-level {
+  transition: transform 80ms linear;
 }
