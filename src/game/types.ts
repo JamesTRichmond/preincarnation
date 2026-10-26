@@ -14,6 +14,7 @@ export type MapId =
   | "salisbury"
   | "rutland"
   | "quarry"
+  | "bell"
   | "montpelier"
   | "whiteriver"
   | "chittenden"
