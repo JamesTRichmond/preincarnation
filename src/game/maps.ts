@@ -5,6 +5,7 @@ import { buildInterior, isInterior } from "./interiors";
 import { rasterCounty, projectCountyCell } from "./raster";
 import { ageTiles, generations, TOWN_SPAWN } from "./era";
 import { buildSoloverse, fractureTiles } from "./soloverse";
+import { BELL_ENTRY, BELL_SLUICE, BELL_SRC, BELL_WHEEL } from "./bell";
 
 export { TILE } from "./snes";
 export { T };
@@ -64,6 +65,7 @@ export type PropKind =
   | "grave"
   | "key"
   | "lock"
+  | "wheel"
   | "relic"
   | "plot"
   | "cave";
@@ -153,7 +155,7 @@ const VERGENNES_SRC = [
   "#T....pppppppbbpppppp...T#",
   "#....pp..oooooooo..pp....#",
   "#....pp..o.I.B.o...pp....#",
-  "#~~~~bb~~oooooooo~~bb~~~~#",
+  "#~~~~bbD~oooooooo~~bb~~~~#",
   "#~~~~bb~~~~~~~~~~~~bb~~~~#",
   "#....pp....oWo.....pp....#",
   "#....pp............pp....#",
@@ -346,6 +348,7 @@ const SRC: Partial<Record<MapId, string[]>> = {
   salisbury: SALISBURY_SRC,
   rutland: RUTLAND_SRC,
   quarry: QUARRY_SRC,
+  bell: BELL_SRC,
   montpelier: MONTPELIER_SRC,
   whiteriver: WRJ_SRC,
   burlington: BURLINGTON_SRC,
@@ -667,6 +670,24 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     if (flags.elderFate === "bind" && cycle >= 1) {
       props.push({ kind: "enemy", x: hall.x, y: hall.y, id: "maeve-wraith", enemy: "wraith" });
     }
+  } else if (id === "bell") {
+    const entry = first(m, "n", { x: BELL_ENTRY.x, y: BELL_ENTRY.y });
+    const exit = first(m, "U", { x: entry.x, y: entry.y + 1 });
+    props.push({ kind: "spawn", x: entry.x, y: entry.y, id: "bell-spawn" });
+    props.push({
+      kind: "warp",
+      x: exit.x,
+      y: exit.y,
+      id: "to-vergennes-bell",
+      warp: { map: "vergennes", x: 6, y: 6 },
+    });
+    if (flags.chests.includes("bell-race")) {
+      for (const cell of BELL_SLUICE) {
+        if (tiles[cell.y]) tiles[cell.y][cell.x] = T.wood;
+      }
+    } else {
+      props.push({ kind: "wheel", x: BELL_WHEEL.x, y: BELL_WHEEL.y, id: "bell-race" });
+    }
   } else if (id === "vergennes") {
     const inn = first(m, "I", { x: 10, y: 5 });
     const hall = first(m, "B", { x: 12, y: 5 });
@@ -675,6 +696,7 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "npc", x: hall.x, y: hall.y, id: "v-mayor", npc: "vmayor" });
     props.push({ kind: "npc", x: inn.x, y: inn.y, id: "v-mill", npc: "millwright" });
     props.push({ kind: "npc", x: first(m, "H", { x: 2, y: 11 }).x, y: first(m, "H", { x: 2, y: 11 }).y, id: "v-lock", npc: "lockkeep" });
+    props.push({ kind: "warp", x: first(m, "D", { x: 7, y: 6 }).x, y: first(m, "D", { x: 7, y: 6 }).y, id: "to-bell", warp: { map: "bell", x: BELL_ENTRY.x, y: BELL_ENTRY.y } });
     props.push({ kind: "inn", x: inn.x, y: inn.y - 1, id: "inn" });
     props.push({ kind: "hall", x: hall.x, y: hall.y - 1, id: "hall" });
     props.push({ kind: "well", x: well.x, y: well.y, id: "well" });

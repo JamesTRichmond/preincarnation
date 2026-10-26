@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      - name: Game tests
+        run: npm test
+
+      # Browser smoke: dev server (:8080) and built preview (:8081), desktop + mobile.
+      # scripts/browser-smoke.mjs only writes under /workspace, so create it.
+      - name: Install Chromium for smoke
+        run: npx playwright install --with-deps chromium
+
+      - name: Prepare /workspace
+        run: sudo mkdir -p /workspace/screenshots && sudo chown -R "$USER" /workspace
+
+      - name: Smoke (dev)
+        run: |
+          nohup npm run dev > /tmp/dev.log 2>&1 &
+          for i in $(seq 60); do curl -sf -o /dev/null http://127.0.0.1:8080/ && break; sleep 1; done
+          node scripts/browser-smoke.mjs http://127.0.0.1:8080/ /workspace/screenshots/dev.png
+
+      - name: Smoke (built preview)
+        run: |
+          npm run preview:restart
+          for i in $(seq 30); do curl -sf -o /dev/null http://127.0.0.1:8081/ && break; sleep 1; done
+          node scripts/browser-smoke.mjs http://127.0.0.1:8081/ /workspace/screenshots/built.png --baseline /workspace/screenshots/dev.json
+
+      # browser-smoke exits non-zero on HTTP errors and console/page errors;
+      # this also fails on a missing canvas or horizontal overflow.
+      - name: Check smoke verdicts
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            let bad = 0;
+            for (const f of ["dev", "built"]) {
+              const d = JSON.parse(fs.readFileSync(`/workspace/screenshots/${f}.json`, "utf8"));
+              for (const [vp, v] of Object.entries(d.viewports)) {
+                const line = `${f}/${vp}: status=${v.status} canvas=${v.hasCanvas} overflow=${v.horizontalOverflow} console=${v.consoleErrors.length} page=${v.pageErrors.length}`;
+                console.log(line);
+                if (v.status !== 200 || !v.hasCanvas || v.horizontalOverflow || v.consoleErrors.length || v.pageErrors.length) bad++;
+              }
+            }
+            process.exit(bad ? 1 : 0);
+          '
+
+      - name: Stop servers
+        if: always()
+        run: |
+          npm run preview:stop || true
+          pkill -f "vite dev" || true
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke
+          path: |
+            /workspace/screenshots/
+            /tmp/dev.log
+          if-no-files-found: ignore
