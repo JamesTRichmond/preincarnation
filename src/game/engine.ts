@@ -20,6 +20,15 @@ import {
   makePropCache,
   paintShadow,
   paintHudALttP,
+  paintBuilding16,
+  paintRock16,
+  paintPot16,
+  paintSheep16,
+  paintNpc16,
+  paintGrave16,
+  paintKey16,
+  paintLock16,
+  paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
