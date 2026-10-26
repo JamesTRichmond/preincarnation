@@ -275,7 +275,7 @@ export function parseBoard(rows: readonly string[]): Cell[][] {
   if (trimmed.length === 0) throw new Error("Empty yard");
   const grid = trimmed.map((row) => row.split(/\s+/).filter(Boolean).map(parseToken));
   const width = grid[0]?.length ?? 0;
-  if (width === 0 || width > 8 || grid.length > 8) throw new Error("Yard must be 1\u20138 by 1\u20138");
+  if (width === 0 || width > 8 || grid.length > 8) throw new Error("Yard must be 1–8 by 1–8");
   if (grid.some((row) => row.length !== width)) throw new Error("Ragged yard");
   return grid;
 }
@@ -362,7 +362,7 @@ function portPhrase(mask: number): string {
 export function describeCell(cell: Cell, got = cell.got): string {
   if (cell.kind === "empty") return "Bare bench. Sap cannot stand here.";
   if (cell.kind === "block") return "Stone. The line has to walk around it.";
-  if (cell.kind === "cross") return "Cross. North\u2013south stays apart from east\u2013west.";
+  if (cell.kind === "cross") return "Cross. North–south stays apart from east–west.";
   if (cell.kind === "tap") {
     const waiting =
       cell.stock === 0 ? "Empty" : cell.stock === 1 ? "One bucket waiting" : `${cell.stock} buckets waiting`;
@@ -461,7 +461,7 @@ export const CHAPTERS: {
     id: 3,
     title: "Stone and Ice",
     teaches: "Walls force the bend.",
-    why: "Stones are not recoloured pipes. Each yard uses a different blockage \u2014 a pillar, a shed wall, a notch \u2014 so the walking path has to turn.",
+    why: "Stones are not recoloured pipes. Each yard uses a different blockage — a pillar, a shed wall, a notch — so the walking path has to turn.",
   },
   {
     id: 4,
