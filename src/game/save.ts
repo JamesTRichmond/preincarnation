@@ -1,5 +1,7 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { emptyState } from "./loot/src/state.ts";
+import type { LootState } from "./loot/src/types.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -8,6 +10,19 @@ import {
   SAVE_VERSION,
   type SaveData,
 } from "./types.ts";
+
+function isLootPack(value: unknown): value is LootState {
+  if (!value || typeof value !== "object") return false;
+  const pack = value as LootState;
+  return (
+    typeof pack.version === "number" &&
+    !!pack.instances &&
+    typeof pack.instances === "object" &&
+    Array.isArray(pack.deaths) &&
+    !!pack.actor &&
+    typeof pack.actor === "object"
+  );
+}
 
 export function defaultSave(): SaveData {
   const iron = starterWeapon();
@@ -41,6 +56,7 @@ export function defaultSave(): SaveData {
     inventory: [iron],
     equippedId: iron.id,
     character: { ...DEFAULT_CHARACTER },
+    pack: emptyState(),
   };
 }
 
@@ -99,6 +115,11 @@ export function migrate(save: SaveData): SaveData {
   if ((save.version ?? 1) < 8) {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
+  }
+  if ((save.version ?? 1) < 9) {
+    s.pack = isLootPack(save.pack) ? save.pack : emptyState();
+  } else if (!isLootPack(s.pack)) {
+    s.pack = emptyState();
   }
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];

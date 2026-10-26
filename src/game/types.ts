@@ -1,6 +1,7 @@
 import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
+import type { LootState } from "./loot/src/types.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
@@ -144,6 +145,8 @@ export type SaveData = {
   inventory: Weapon[];
   equippedId: string;
   character: CharacterSheet;
+  /** Pieces Ellis still carries after a chapter. Not the weapon bar. */
+  pack: LootState;
 };
 
 export type Choice = {
@@ -226,7 +229,7 @@ export type UiSnapshot = {
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export const DEFAULT_UPGRADES: Upgrades = {
   vitality: 0,

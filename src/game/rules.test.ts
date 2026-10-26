@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { defaultSave } from "./save.ts";
+import { createDemoState } from "./loot/demo/seed.ts";
+import { pieceCount } from "./loot/src/state.ts";
 import {
   applyUpgrade,
   bodyStats,
@@ -235,6 +237,42 @@ describe("resolveDeath", () => {
     s.character.skillPoints = 0;
     resolveDeath(s, { mapId: "middlebury", x: 0, y: 0 }, 14);
     assert.equal(s.character.skillPoints, 2);
+  });
+
+  it("buries the weapon bar and keeps the pack", () => {
+    const s = copy();
+    s.pack = createDemoState();
+    const pieces = pieceCount(s.pack);
+    const ids = Object.keys(s.pack.instances).sort();
+    s.inventory = [
+      s.inventory[0],
+      {
+        id: "farm-axe",
+        name: "Farm axe",
+        kind: "heavy",
+        dmg: 2,
+        speed: 0.2,
+        reach: 14,
+        combo: 1,
+        projectile: false,
+        affixes: [],
+        flavor: "",
+      },
+    ];
+    resolveDeath(s, { mapId: "middlebury", x: 4, y: 4 }, 14);
+    assert.equal(pieceCount(s.pack), pieces);
+    assert.deepEqual(Object.keys(s.pack.instances).sort(), ids);
+    assert.equal(s.pack.deaths.length, 1);
+    assert.equal(s.pack.deaths[0]?.cause, "a chapter");
+    assert.match(s.pack.journal[0]?.title ?? "", /Death did not clear the pack/);
+    assert.equal(s.inventory.length, 1);
+    assert.equal(s.inventory[0].id, "starter-iron");
+    assert.deepEqual(
+      s.flags.graves[0]?.weapons.map((w) => w.name),
+      ["Farm axe"],
+    );
+    assert.match(cycleLedger(s).youKeep, /The pack was not buried/);
+    assert.match(cycleLedger(s).youKeep, /Same hands/);
   });
 });
 

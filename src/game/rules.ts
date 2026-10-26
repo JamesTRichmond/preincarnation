@@ -1,5 +1,7 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
+import { surviveDeath } from "./loot/src/dispatch.ts";
+import { emptyState, pieceCount } from "./loot/src/state.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
 import { starterWeapon } from "./weapons.ts";
 
@@ -208,6 +210,7 @@ export function cycleLedger(save: SaveData): CycleLedger {
   if (relic && save.cycle >= 1) keep.push(RELIC_BY_ID[relic].name + " stays with you.");
   const named = ownedUpgradeNames(save.upgrades);
   if (named.length) keep.push(named.join(", ") + ".");
+  if (save.pack && pieceCount(save.pack) > 0) keep.push("The pack was not buried.");
 
   return {
     thisLife,
@@ -251,5 +254,6 @@ export function resolveDeath(
   save.character.skillPoints += skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
   save.flags.afterlifeHost = save.karma < devilThreshold(save.character.flawId) ? "devil" : "god";
   save.flags.returnedFromDeath = true;
+  save.pack = surviveDeath(save.pack ?? emptyState(), "a chapter");
   return save;
 }
