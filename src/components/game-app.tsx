@@ -320,6 +320,9 @@ function Title({
         )}
       </div>
       <p className="mt-8 max-w-md text-sm text-fg-subtle">First you make the person. Then the county tells you the job.</p>
+      <a href="/winters" className="mt-4 text-sm text-fg-subtle underline">
+        The county table
+      </a>
     </section>
   );
 }

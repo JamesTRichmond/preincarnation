@@ -1,0 +1,659 @@
+/* Scoped to the Fourteen Winters table. Does not restyle the 320×240 county. */
+.fw {
+  --color-bg: #121410;
+  --color-elevated: #1b211c;
+  --color-paper: #efe6d6;
+  --color-ink: #1c1914;
+  --color-fg: #e6e2d8;
+  --color-muted: #a39c90;
+  --color-faint: #6f6a61;
+  --color-line: #2c332c;
+  --color-accent: #d5ddd2;
+  --color-accent-ink: #141714;
+  --color-south: #9a4a3a;
+  --color-north: #3f6774;
+  --font-display: "Iowan Old Style", Palatino, Georgia, serif;
+  --font-sans: "Avenir Next", "Segoe UI", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 16px 16px 32px;
+  box-sizing: border-box;
+}
+.fw button {
+  cursor: pointer;
+
+  .fw-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 560;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .panel {
+    background: var(--color-elevated);
+    border: 1px solid var(--color-line);
+    border-radius: 24px;
+    padding: 16px;
+  }
+
+  .btn {
+    min-height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-fg);
+    font: 600 1rem/1 var(--font-sans);
+    padding: 0 14px;
+    transition: background-color 150ms cubic-bezier(0.22, 1, 0.36, 1), transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    border-color: transparent;
+  }
+
+  .btn:not(:disabled):active {
+    transform: scale(0.98);
+  }
+
+  .field {
+    min-height: 44px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    padding: 0 12px;
+    font: 400 1rem/1.4 var(--font-sans);
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .plot {
+    position: relative;
+    min-height: 72px;
+    min-width: 0;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: #161b17;
+    color: var(--color-fg);
+    text-align: left;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  .plot.is-cursor {
+    border-color: var(--color-paper);
+  }
+
+  .plot.is-legal::after,
+  .plot.is-kept::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .plot.is-legal::after {
+    border: 1px dashed var(--color-accent);
+  }
+
+  .plot.is-kept::after {
+    border: 2px solid var(--color-accent);
+  }
+
+  .plot-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    color: var(--color-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .slip {
+    margin-top: auto;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border-radius: 4px;
+    padding: 4px 5px 5px;
+    border-top: 3px solid var(--color-south);
+  }
+
+  .slip.north {
+    border-top-color: var(--color-north);
+  }
+
+  .slip b {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .marks {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+
+  .plot-meta span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .plot-meta span:last-child {
+    flex: none;
+  }
+
+  .hand {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hand-card {
+    position: relative;
+    flex: 0 0 148px;
+    min-height: 0;
+    text-align: left;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    padding: 8px 28px 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hand-card.is-on {
+    box-shadow: inset 0 0 0 2px var(--color-north);
+  }
+
+  .kind {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ledger {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 4px 8px;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.92rem;
+  }
+
+  .table-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .table-grid > * {
+    min-width: 0;
+  }
+
+  @media (min-width: 960px) {
+    .table-grid {
+      height: calc(100vh - 32px);
+      grid-template-columns: minmax(0, 1fr) 280px;
+      align-items: stretch;
+    }
+
+    .table-main {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(160px, 1fr) auto;
+    }
+
+    .board-scroll,
+    .table-side {
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .board {
+      max-width: 680px;
+    }
+
+    .plot {
+      aspect-ratio: auto;
+      height: 88px;
+    }
+  }
+
+  .identities {
+    display: grid;
+    gap: 12px 24px;
+  }
+
+  @media (min-width: 720px) {
+    .identities {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cover {
+    border-radius: 16px;
+    border: 1px solid var(--color-line);
+    padding: 16px;
+    background: var(--color-bg);
+  }
+
+  .fw-wrap h2 {
+    font-family: var(--font-display);
+    font-weight: 560;
+    letter-spacing: -0.02em;
+  }
+
+  .flavor {
+    color: #5e584e;
+    font-size: 0.85rem;
+  }
+
+  .catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 8px;
+  }
+
+  .hand-card:disabled {
+    opacity: 0.45;
+  }
+
+  .hand-card {
+    position: relative;
+  }
+
+  .hand-card .flavor {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hand-card .status {
+    margin-top: auto;
+    font-size: 0.78rem;
+    color: #5e584e;
+  }
+
+  .hand-card .cost {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    min-width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 99px;
+    display: grid;
+    place-items: center;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hand-card.is-ready {
+    box-shadow: inset 3px 0 0 var(--color-north);
+  }
+
+  .hand-card.is-cold {
+    opacity: 0.72;
+  }
+
+  .hand-card.is-on {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 1px;
+  }
+
+  .plot[data-terrain="mountain"] {
+    background: #1a1e1c;
+    box-shadow: inset 3px 0 0 #8a8478;
+  }
+  .plot[data-terrain="forest"] {
+    background: #151c17;
+    box-shadow: inset 3px 0 0 #3d5c45;
+  }
+  .plot[data-terrain="river"] {
+    background: #141c22;
+    box-shadow: inset 3px 0 0 #3f6774;
+  }
+  .plot[data-terrain="town"] {
+    background: #211c18;
+    box-shadow: inset 3px 0 0 #8a6a4a;
+  }
+  .plot[data-terrain="field"] {
+    background: #1b2016;
+    box-shadow: inset 3px 0 0 #6d7a48;
+  }
+  .plot[data-terrain="marsh"] {
+    background: #161e1c;
+    box-shadow: inset 3px 0 0 #4f6a62;
+  }
+
+  .plot.is-cursor {
+    border-color: var(--color-paper);
+  }
+
+  .plot.is-legal::after,
+  .plot.is-kept::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .plot.is-legal::after {
+    border: 1px dashed var(--color-accent);
+  }
+
+  .plot.is-kept::after {
+    border: 2px solid var(--color-accent);
+  }
+
+  .plot.is-pact .slip {
+    box-shadow: inset 0 -2px 0 var(--color-accent);
+  }
+
+  .plot.is-fresh .slip {
+    outline: 1px solid var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .plot.is-fresh .slip {
+      animation: fw-settle 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  .houses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 8px 0 2px;
+  }
+
+  .house {
+    min-width: 0;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 6px 10px 8px;
+    background: var(--color-elevated);
+  }
+
+  .house.south {
+    border-top: 3px solid var(--color-south);
+  }
+
+  .house.north {
+    border-top: 3px solid var(--color-north);
+  }
+
+  .house.is-turn {
+    border-color: var(--color-accent);
+  }
+
+  .house-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  .house-top strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tally {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .pips,
+  .winters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 6px;
+  }
+
+  .pips i,
+  .winters i {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--color-line);
+  }
+
+  .house.south .pips i.on {
+    background: #c47868;
+  }
+
+  .house.north .pips i.on {
+    background: #7f9aa4;
+  }
+
+  .winters i.spent {
+    background: var(--color-paper);
+  }
+
+  .house-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+    color: var(--color-faint);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .house-meta .winters {
+    margin-top: 0;
+  }
+
+  .note,
+  .callout,
+  .fault,
+  .reading {
+    margin: 6px 0;
+    padding: 6px 10px;
+    border-radius: 0 8px 8px 0;
+    background: var(--color-elevated);
+  }
+
+  .note,
+  .callout {
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .fault {
+    border-left: 3px solid var(--color-south);
+  }
+
+  .reading {
+    border-left: 3px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  .settlement {
+    margin-top: 12px;
+  }
+
+  .settle {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .south-ink {
+    color: #c47868;
+  }
+
+  .north-ink {
+    color: #8aabB6;
+  }
+
+  .home-hero {
+    display: grid;
+    gap: 8px;
+    align-items: end;
+  }
+
+  @media (min-width: 720px) {
+    .home-hero {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+    }
+  }
+
+  .mini-county {
+    display: grid;
+    grid-template-columns: repeat(4, 18px);
+    gap: 4px;
+  }
+
+  .mini-county span {
+    height: 18px;
+    border-radius: 3px;
+    background: #2a312c;
+  }
+
+  .mini-county span[data-terrain="mountain"] {
+    background: #8a8478;
+  }
+  .mini-county span[data-terrain="forest"] {
+    background: #3d5c45;
+  }
+  .mini-county span[data-terrain="river"] {
+    background: #3f6774;
+  }
+  .mini-county span[data-terrain="town"] {
+    background: #8a6a4a;
+  }
+  .mini-county span[data-terrain="field"] {
+    background: #6d7a48;
+  }
+  .mini-county span[data-terrain="marsh"] {
+    background: #4f6a62;
+  }
+
+  .mini-caption {
+    margin: 6px 0 0;
+    color: var(--color-faint);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+
+  .id-card {
+    background: var(--color-elevated);
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    padding: 14px 16px 16px;
+    border-top: 3px solid var(--color-line);
+  }
+
+  .id-card h2 {
+    margin: 0 0 4px;
+    font-size: 1.35rem;
+  }
+
+  .id-card p {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  .id-card .way {
+    margin-top: 8px;
+    color: var(--color-fg);
+  }
+
+  .id-card[data-id="river"] {
+    border-top-color: #3f6774;
+  }
+  .id-card[data-id="orchard"] {
+    border-top-color: #6d7a48;
+  }
+  .id-card[data-id="parish"] {
+    border-top-color: #8a8478;
+  }
+  .id-card[data-id="timber"] {
+    border-top-color: #8a6a4a;
+  }
+  .id-card[data-id="threshold"] {
+    border-top-color: #9a4a3a;
+  }
+  .id-card[data-id="commons"] {
+    border-top-color: #d5ddd2;
+  }
+}
+
+.fw button:disabled {
+  cursor: default;
+}
+
+@keyframes fw-settle {
+  from {
+    transform: translateY(6px);
+    opacity: 0.35;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
