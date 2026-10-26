@@ -1,5 +1,6 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { coerceKnowledge } from "./knowledge/collection.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -30,6 +31,7 @@ export function defaultSave(): SaveData {
       relics: ["sword"],
       graves: [],
       plots: [],
+      knowledge: coerceKnowledge(DEFAULT_FLAGS.knowledge),
     },
     maxHp: 3,
     hp: 3,
@@ -100,6 +102,10 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  if ((save.version ?? 1) < 9) {
+    s.flags.knowledge = coerceKnowledge(null);
+  }
+  s.flags.knowledge = coerceKnowledge(s.flags.knowledge);
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];
