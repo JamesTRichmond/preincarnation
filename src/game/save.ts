@@ -1,5 +1,6 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { sanitizePending } from "./chapter.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -100,6 +101,7 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  s.flags.pendingChapter = sanitizePending(save.flags?.pendingChapter);
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];

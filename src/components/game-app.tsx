@@ -70,6 +70,7 @@ const EMPTY: UiSnapshot = {
   beacon: null,
   lastDeed: "",
   cycleLedger: EMPTY_LEDGER,
+  chapter: null,
 };
 
 export function GameApp() {
@@ -224,7 +225,18 @@ export function GameApp() {
         <DialoguePanel node={ui.dialogue} onChoose={(i) => gameRef.current?.choose(i)} />
       )}
 
-      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
+      {ui.mode === "chapter" && ui.chapter && (
+        <DeathChapter
+          speaker={ui.chapter.speaker}
+          text={ui.chapter.text}
+          index={ui.chapter.index}
+          total={ui.chapter.total}
+          onAdvance={() => gameRef.current?.advanceChapter()}
+          onSkip={() => gameRef.current?.skipChapter()}
+        />
+      )}
+
+      {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "chapter" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
         <Pause
           ui={ui}
           onResume={() => gameRef.current?.resume()}
@@ -477,6 +489,49 @@ function Pause({
         </div>
       </div>
     </div>
+  );
+}
+
+function DeathChapter({
+  speaker,
+  text,
+  index,
+  total,
+  onAdvance,
+  onSkip,
+}: {
+  speaker: string;
+  text: string;
+  index: number;
+  total: number;
+  onAdvance: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <section
+      className="absolute inset-x-0 bottom-0 z-20 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+      onKeyDown={(e) => {
+        if (e.code === "Space" || e.code === "Enter") e.stopPropagation();
+      }}
+    >
+      <div className="mx-auto max-w-xl rounded-md bg-bg/95 p-4 ring-1 ring-border">
+        <p className="font-mono text-[10px] tracking-[0.28em] text-primary uppercase">{speaker}</p>
+        <p className="mt-2 text-pretty text-base leading-relaxed text-fg">{text}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <GoldButton onClick={onAdvance}>Continue</GoldButton>
+          <button
+            type="button"
+            onClick={onSkip}
+            className="h-12 rounded-[12px] border border-border bg-bg-elevated px-5 text-base font-medium text-fg"
+          >
+            Skip
+          </button>
+        </div>
+        <p className="mt-3 font-mono text-[10px] tracking-wide text-fg-subtle">
+          {index + 1} / {total} · Space continues. Skip still counts the winters once.
+        </p>
+      </div>
+    </section>
   );
 }
 

@@ -72,6 +72,7 @@ describe("migrate", () => {
     assert.equal(s.version, SAVE_VERSION);
     assert.equal(s.flags.lastDeed, "");
     assert.equal(s.flags.returnedFromDeath, false);
+    assert.equal(s.flags.pendingChapter, null);
     assert.equal(s.character.name, "Ira Fenn");
     assert.equal(s.character.bondId, "maeve");
     assert.equal(s.upgrades.vitality, 1);
@@ -80,7 +81,30 @@ describe("migrate", () => {
     assert.deepEqual(s.flags.talked, ["elder"]);
   });
 
-  it("does not invent a lantern for a first-life v8 save", () => {
+  it("keeps an unfinished death chapter and drops one that already committed", () => {
+    const pending = {
+      kind: "death" as const,
+      line: 1,
+      winters: 14,
+      cause: "combat" as const,
+      committed: false,
+      mapId: "middlebury",
+      x: 40,
+      y: 80,
+    };
+    const raw = defaultSave();
+    raw.version = 8;
+    raw.flags.pendingChapter = pending;
+    const held = migrate(raw);
+    assert.equal(held.version, SAVE_VERSION);
+    assert.deepEqual(held.flags.pendingChapter, pending);
+
+    const done = defaultSave();
+    done.flags.pendingChapter = { ...pending, committed: true };
+    assert.equal(migrate(done).flags.pendingChapter, null);
+  });
+
+  it("does not invent a lantern for a first-life save", () => {
     const s = migrate(defaultSave());
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);

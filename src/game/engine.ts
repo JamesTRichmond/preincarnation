@@ -1,5 +1,6 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
+import { chapterView, stepChapter, type DeathCause } from "./chapter";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { locatePlayer, TOWN_BY_ID } from "./geography";
 import { gpsOnCounty } from "./raster";
@@ -8,7 +9,7 @@ import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
+import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop, wintersPassed } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -316,15 +317,68 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     writeSave(save);
   };
 
-  const enterLimbo = (_reason: string) => {
-    audio.die();
-    save = resolveDeath(save, { mapId, x: player.x, y: player.y });
+  const showChapterLine = () => {
+    const pending = save.flags.pendingChapter;
+    if (!pending) return;
+    const view = chapterView(save.cycle === 0, pending);
+    message = view.text;
+    messageT = 99;
+  };
+
+  const finishDeathChapter = (commitNow: boolean) => {
+    const pending = save.flags.pendingChapter;
+    if (commitNow && pending) {
+      save = resolveDeath(
+        save,
+        { mapId: pending.mapId as SaveData["mapId"], x: pending.x, y: pending.y },
+        pending.winters,
+      );
+    }
+    save.flags.pendingChapter = null;
     mode = "limbo";
     audio.startDrone(true);
     persist();
     lastUi = "";
     const host = save.flags.afterlifeHost === "devil" ? "The Other Voice" : "The Voice";
     say(host + " has you. " + save.flags.year + ". Finish the job.");
+  };
+
+  const applyChapter = (action: "advance" | "skip") => {
+    const pending = save.flags.pendingChapter;
+    if (mode !== "chapter" || !pending) return;
+    const step = stepChapter(save.cycle === 0, pending, action);
+    save.flags.pendingChapter = step.chapter;
+    if (step.finished) finishDeathChapter(step.commitNow);
+    else {
+      showChapterLine();
+      persist();
+      lastUi = "";
+    }
+  };
+
+  const beginDeathChapter = (cause: DeathCause) => {
+    if (mode === "chapter" || mode === "limbo" || mode === "ending") return;
+    audio.die();
+    save.hp = Math.max(0, player.hp);
+    save.flags.pendingChapter = {
+      kind: "death",
+      line: 0,
+      winters: wintersPassed(),
+      cause,
+      committed: false,
+      mapId,
+      x: player.x,
+      y: player.y,
+    };
+    mode = "chapter";
+    showChapterLine();
+    audio.startDrone(true);
+    persist();
+    lastUi = "";
+  };
+
+  const enterLimbo = (reason: string) => {
+    beginDeathChapter(reason.toLowerCase().includes("release") ? "release" : "combat");
   };
 
   const reincarnate = () => {
@@ -438,7 +492,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     applyIncarnation(save.incarnation);
     player.hp = save.hp;
     introBeat = 0;
-    if (save.flags.afterlifeHost) {
+    if (save.flags.pendingChapter && !save.flags.pendingChapter.committed) {
+      mode = "chapter";
+      showHelp = false;
+      showChapterLine();
+    } else if (save.flags.afterlifeHost) {
       mode = "limbo";
       showHelp = false;
     } else if (!save.character.created) {
@@ -450,7 +508,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
     loadWorld(save.mapId, save.x, save.y);
     audio.unlock();
-    audio.startDrone(mode === "limbo");
+    audio.startDrone(mode === "limbo" || mode === "chapter");
     lastUi = "";
     if (save.flags.geoLat != null && save.flags.geoLng != null) {
       void fetchWeather(save.flags.geoLat, save.flags.geoLng).then((w) => {
@@ -1395,6 +1453,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const sim = (dt: number, actions: Actions) => {
+    if (mode === "chapter") {
+      if (actions.attackPressed || actions.interactPressed) applyChapter("advance");
+      return;
+    }
     if (mode === "ending") {
       endingT += dt;
       if (
@@ -2384,6 +2446,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
+      chapter:
+        mode === "chapter" && save.flags.pendingChapter
+          ? chapterView(save.cycle === 0, save.flags.pendingChapter)
+          : null,
     };
     const sig = [
       mode,
@@ -2421,6 +2487,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
+      snap.chapter?.text ?? "",
+      snap.chapter?.index ?? "",
     ].join("|");
     if (sig === lastUi) return;
     lastUi = sig;
@@ -2691,6 +2759,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     buyUpgrade,
     spendSkill,
     reincarnate,
+    advanceChapter: () => applyChapter("advance"),
+    skipChapter: () => applyChapter("skip"),
     commitCreate,
     advanceIntro,
     pickLife: (id: LifePath) => {
