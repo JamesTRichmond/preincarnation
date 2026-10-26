@@ -1,6 +1,8 @@
 import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
+import type { Discovery } from "./knowledge/types.ts";
+import { freshDiscovery } from "./knowledge/collection.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
@@ -124,6 +126,7 @@ export type Flags = {
   afterlifeHost: AfterlifeHost | null;
   lastDeed: string;
   returnedFromDeath: boolean;
+  knowledge: Discovery;
 };
 
 export type SaveData = {
@@ -226,7 +229,7 @@ export type UiSnapshot = {
 };
 
 export const SAVE_KEY = "preincarnation.save.v1";
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export const DEFAULT_UPGRADES: Upgrades = {
   vitality: 0,
@@ -285,4 +288,5 @@ export const DEFAULT_FLAGS: Flags = {
   afterlifeHost: null,
   lastDeed: "",
   returnedFromDeath: false,
+  knowledge: freshDiscovery(),
 };

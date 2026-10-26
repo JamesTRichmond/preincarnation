@@ -80,7 +80,32 @@ describe("migrate", () => {
     assert.deepEqual(s.flags.talked, ["elder"]);
   });
 
-  it("does not invent a lantern for a first-life v8 save", () => {
+  it("gives a v8 life an empty satchel of featured practices", () => {
+    const raw = {
+      version: 8,
+      cycle: 1,
+      karma: 0,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: { relics: ["sword"], talked: [] },
+      maxHp: 3,
+      hp: 3,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.flags.knowledge.version, 1);
+    assert.equal(s.flags.knowledge.found.length, 20);
+    assert.equal(s.flags.knowledge.read.length, 0);
+    assert.ok(s.flags.knowledge.camp.pantry.water);
+  });
+
+  it("does not invent a lantern for a first-life save", () => {
     const s = migrate(defaultSave());
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
