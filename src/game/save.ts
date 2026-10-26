@@ -30,6 +30,8 @@ export function defaultSave(): SaveData {
       relics: ["sword"],
       graves: [],
       plots: [],
+      veinHeld: [],
+      veinSources: [],
     },
     maxHp: 3,
     hp: 3,
@@ -99,6 +101,10 @@ export function migrate(save: SaveData): SaveData {
   if ((save.version ?? 1) < 8) {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
+  }
+  if ((save.version ?? 1) < 9) {
+    if (!Array.isArray(s.flags.veinHeld)) s.flags.veinHeld = [];
+    if (!Array.isArray(s.flags.veinSources)) s.flags.veinSources = [];
   }
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];

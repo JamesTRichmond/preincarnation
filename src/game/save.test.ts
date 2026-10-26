@@ -85,18 +85,67 @@ describe("migrate", () => {
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
   });
+
+  it("migrates a v8 blob to empty vein lists without inventing a lantern or a key", () => {
+    const raw = {
+      version: 8,
+      cycle: 1,
+      karma: 1,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: { vitality: 1 },
+      flags: { relics: ["sword", "shovel"], talked: ["elder"] },
+      maxHp: 6,
+      hp: 6,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true, bondId: "maeve" },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.version, 9);
+    assert.deepEqual(s.flags.veinHeld, []);
+    assert.deepEqual(s.flags.veinSources, []);
+    assert.equal(s.flags.relics.includes("lantern"), false);
+    assert.deepEqual(s.flags.relics, ["sword", "shovel"]);
+    assert.equal(s.character.name, "Ira Fenn");
+    assert.equal(s.character.bondId, "maeve");
+    assert.equal(s.upgrades.vitality, 1);
+    assert.deepEqual(s.flags.talked, ["elder"]);
+  });
 });
 
 describe("writeSave / loadSave", () => {
-  it("round-trips through storage and a backup key", () => {
-    const s = defaultSave();
-    s.character.name = "Ira Fenn";
-    s.character.created = true;
-    writeSave(s);
-    assert.ok(mem.get(SAVE_KEY));
+  it("round-trips a held vein relic and still loads a v8 blob", () => {
+    const fresh = defaultSave();
+    fresh.character.name = "Ira Fenn";
+    fresh.flags.veinHeld = [{ id: "loot.relic.001", state: "intact" }];
+    fresh.flags.veinSources = ["source.maeve-spare-key"];
+    writeSave(fresh);
     const loaded = loadSave();
+    assert.equal(loaded.version, SAVE_VERSION);
+    assert.deepEqual(loaded.flags.veinHeld, [{ id: "loot.relic.001", state: "intact" }]);
+    assert.deepEqual(loaded.flags.veinSources, ["source.maeve-spare-key"]);
     assert.equal(loaded.character.name, "Ira Fenn");
-    assert.equal(loaded.character.created, true);
+
+    mem.set(
+      SAVE_KEY,
+      JSON.stringify({
+        version: 8,
+        cycle: 0,
+        flags: { relics: ["sword"] },
+        character: { name: "Ellis Perch", bondId: "maeve" },
+      }),
+    );
+    const old = loadSave();
+    assert.equal(old.version, 9);
+    assert.deepEqual(old.flags.veinHeld, []);
+    assert.deepEqual(old.flags.veinSources, []);
+    assert.equal(old.flags.relics.includes("lantern"), false);
+    assert.equal(old.character.name, "Ellis Perch");
   });
 
   it("falls back to a new life when storage is empty or garbage", () => {

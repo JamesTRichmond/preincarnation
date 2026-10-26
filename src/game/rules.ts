@@ -2,6 +2,7 @@ import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
 import { starterWeapon } from "./weapons.ts";
+import { maeveKeyLine, MAEVE_SPARE_KEY, takeVeinRelic, veinAfterDeath, veinKeptLine } from "./vein.ts";
 
 export function isIncarnationUnlocked(
   id: IncarnationId,
@@ -172,6 +173,7 @@ export function grantBondKeepsake(save: SaveData): SaveData {
   if (!save.flags.relics.includes(relic)) save.flags.relics = [...save.flags.relics, relic];
   save.flags.ySlot = relic;
   if (relic === "lantern") save.flags.lanternOn = true;
+  if (save.character.bondId === "maeve") takeVeinRelic(save, MAEVE_SPARE_KEY);
   return save;
 }
 
@@ -206,6 +208,10 @@ export function cycleLedger(save: SaveData): CycleLedger {
   keep.push(pts > 0 ? pts + " skill unspent." : "Shop empty.");
   const relic = bondKeepsake(save.character.bondId);
   if (relic && save.cycle >= 1) keep.push(RELIC_BY_ID[relic].name + " stays with you.");
+  const keyLine = maeveKeyLine(save);
+  if (keyLine) keep.push(keyLine);
+  const veinLine = veinKeptLine(save);
+  if (veinLine) keep.push(veinLine);
   const named = ownedUpgradeNames(save.upgrades);
   if (named.length) keep.push(named.join(", ") + ".");
 
@@ -251,5 +257,6 @@ export function resolveDeath(
   save.character.skillPoints += skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
   save.flags.afterlifeHost = save.karma < devilThreshold(save.character.flawId) ? "devil" : "god";
   save.flags.returnedFromDeath = true;
+  veinAfterDeath(save);
   return save;
 }
