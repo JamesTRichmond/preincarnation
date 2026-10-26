@@ -107,6 +107,16 @@ export const DIALOGUE: Record<string, DialogueNode> = {
       { label: "How do I leave this life?", next: "elder_how" },
     ],
   },
+  elder_second: {
+    id: "elder_second",
+    speaker: "Maeve Holloway",
+    text: "{name}. Cycle {cycle}. {year}. I kept the last hole — {deed}. The Green does not forget a second body. Dig it. The lamp, if you bonded it, is already in your hand. The Vein is still east.",
+    entropy: 0.51,
+    choices: [
+      { label: "I remember the dirt.", next: "end" },
+      { label: "How do I leave this life?", next: "elder_how" },
+    ],
+  },
   elder_how: {
     id: "elder_how",
     speaker: "Maeve Holloway",
@@ -166,6 +176,16 @@ export const DIALOGUE: Record<string, DialogueNode> = {
     entropy: 0.36,
     choices: [{ label: "I still care.", next: "end" }],
   },
+  farmer_second: {
+    id: "farmer_second",
+    speaker: "Cal Perch",
+    text: "{year}, {name}. Two skins is a habit. Last time: {deed}. {graves} mounds, if the weather spared them. The ewe is still north. The loft rifle is still not a metaphor.",
+    entropy: 0.41,
+    choices: [
+      { label: "I'll find her.", next: "end" },
+      { label: "The field can wait.", karma: -1, next: "end" },
+    ],
+  },
   farmer_sheep: {
     id: "farmer_sheep",
     speaker: "Cal Perch",
@@ -196,6 +216,17 @@ export const DIALOGUE: Record<string, DialogueNode> = {
     speaker: "Mayor Voss",
     text: "The square kept your name on a lip, {name}. {year}. The mill is still a dying animal. You already know the question.",
     entropy: 0.5,
+    choices: [
+      { label: "Spare the mill. (Fate)", karma: 5, crowns: 1, flag: { millFate: "spare" }, next: "mayor_spare", note: "Heavenly Crown" },
+      { label: "Condemn it. (Fate)", karma: -5, crowns: 1, flag: { millFate: "condemn" }, next: "mayor_condemn", note: "Heavenly Crown" },
+      { label: "Not yet.", next: "end" },
+    ],
+  },
+  mayor_second: {
+    id: "mayor_second",
+    speaker: "Mayor Voss",
+    text: "You keep dying in public, {name}. {year}. Cycle {cycle}. Last time: {deed}. The square left a chair out. Kindness, or a warning. The mill is still the question.",
+    entropy: 0.58,
     choices: [
       { label: "Spare the mill. (Fate)", karma: 5, crowns: 1, flag: { millFate: "spare" }, next: "mayor_spare", note: "Heavenly Crown" },
       { label: "Condemn it. (Fate)", karma: -5, crowns: 1, flag: { millFate: "condemn" }, next: "mayor_condemn", note: "Heavenly Crown" },
@@ -443,6 +474,17 @@ export const DIALOGUE: Record<string, DialogueNode> = {
     entropy: 0.33,
     choices: [{ label: "Maybe one night.", next: "end" }],
   },
+  heart_second: {
+    id: "heart_second",
+    speaker: "Heart of the Spectrum",
+    text: "Cycle {cycle}. The sphere still has your weather in it. Last life: {deed}. History is not a room. It is {graves} graves arguing with Fact. Choose again, or walk.",
+    entropy: 0.62,
+    choices: [
+      { label: "Release the universe. (Fate)", karma: 8, crowns: 1, flag: { spectrumFate: "release" }, next: "heart_release", note: "Heavenly Crown" },
+      { label: "Bind it as a Crown. (Fate)", karma: -8, crowns: 1, flag: { spectrumFate: "bind" }, next: "heart_bind", note: "Heavenly Crown" },
+      { label: "Just walk.", next: "end" },
+    ],
+  },
   heart_1: {
     id: "heart_1",
     speaker: "Heart of the Spectrum",
@@ -514,18 +556,18 @@ export const DIALOGUE: Record<string, DialogueNode> = {
 };
 
 export const OBJECTIVES = {
-  job: "THE JOB — Wake the Marble Vein east of the Green.",
-  start: "Talk to Maeve on the Green — she has the first step.",
-  sheep: "A ewe is missing in the north pines — if you still care to look.",
-  home: "Your homestead is a shrine. Rest there. The temple is the real work.",
-  quarry: "THE JOB — East road out of Middlebury. The Marble Vein: lamp, key, hammer, Sentinel.",
-  sentinel: "THE JOB — Smash the cracked marble. Face the Sentinel in the north pit.",
-  county: "The Vein is quiet. The job is done, for now. Walk Addison. Death still sends you back.",
-  ready: "Release at the shrine, or fall. They will send you back. Fourteen years will pass.",
-  limbo: "Spend what you were given. Then go back and finish the job.",
-  ending: "There is no ending. Walk.",
-  spectrum: "Four rooms, one sphere. Fact north-west. Fiction the cave. History the graves. Imagination the void. The Heart is the middle.",
-  seam: "A seam on the Green. The spectrum is thin until you die louder.",
+  job: "WAKE the Marble Vein east of the Green.",
+  start: "TALK to Maeve on the Green. She has the first step.",
+  sheep: "FIND the ewe in the north pines — if you still care.",
+  home: "REST at the homestead. The temple is the real work.",
+  quarry: "WALK east out of Middlebury. Lamp, key, hammer, Sentinel.",
+  sentinel: "SMASH the cracked marble with the lamp open. FACE the Sentinel.",
+  county: "WALK Addison. The Vein is quiet. Death still sends you back.",
+  ready: "RELEASE at the shrine, or fall. They send you back.",
+  limbo: "SPEND what you were given. Then finish the job.",
+  ending: "WALK. There is no ending.",
+  spectrum: "WALK four rooms. Fact, Fiction, History, Imagination. The Heart is the middle.",
+  seam: "DIE louder. The seam on the Green is thin until then.",
 };
 
 export type TraitOpt = { id: string; name: string; blurb: string };
