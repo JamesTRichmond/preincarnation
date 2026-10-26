@@ -1,0 +1,433 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Outfit:wght@400;500;600&display=swap");
+
+.yard {
+  --font-display: "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
+  --font-sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  --color-bone: #e7e1d4;
+  --color-paper: #f4f0e6;
+  --color-ink: #1c1915;
+  --color-muted: #6b645a;
+  --color-line: #d5cdc0;
+  --color-rust: #9c341f;
+  --color-rust-ink: #fff6f1;
+  --color-creek: #1e5f5a;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+
+.yard-head h1 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin: 0.15rem 0 0.6rem;
+}
+
+.yard .eyebrow {
+  margin: 0;
+  color: var(--color-rust);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.yard .lede {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.yard .preset-row,
+.yard .scene-row,
+.yard .view-row,
+.yard .row-actions,
+.yard .actions,
+.yard .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.yard .preset-row,
+.yard .view-row {
+  margin: 1rem 0;
+}
+
+.yard .preset,
+.yard .chip,
+.yard .tab,
+.yard .ghost,
+.yard .yard button {
+  min-height: 44px;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font: 500 0.92rem/1 var(--font-sans);
+}
+
+.yard button:disabled {
+  opacity: 0.45;
+}
+
+.yard .preset,
+.yard .yard .actions > button:not(.chip):not(.ghost),
+.yard .row-actions > button:not(.ghost) {
+  background: var(--color-rust);
+  color: var(--color-rust-ink);
+  border-color: var(--color-rust);
+}
+
+.yard .chip.on,
+.yard .tab.on,
+.yard .card.on,
+.yard .slot:hover,
+.yard .card:hover,
+.yard .preset:hover {
+  border-color: var(--color-ink);
+}
+
+.yard .tab.on,
+.yard .chip.on {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.yard-layout {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.yard .panel {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: 1.1rem;
+  padding: 0.85rem;
+  min-width: 0;
+}
+
+.yard .panel-head,
+.yard .row-actions,
+.yard .compare-pick {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.yard .panel h2,
+.yard .compare h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 560;
+  margin: 0;
+}
+
+.yard .alive {
+  color: var(--color-creek);
+  font-size: 0.85rem;
+}
+
+.yard .down {
+  color: var(--color-rust);
+  font-size: 0.85rem;
+}
+
+.yard .slots,
+.yard .bench-list,
+.yard .log,
+.yard .chips {
+  list-style: none;
+  margin: 0.6rem 0;
+  padding: 0;
+}
+
+.yard .slot,
+.yard .card {
+  width: 100%;
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  text-align: left;
+  border-radius: 0.9rem;
+  min-height: 58px;
+}
+
+.yard .glyph {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+}
+
+.yard .glyph-plate {
+  fill: var(--color-paper);
+  stroke: var(--color-line);
+}
+
+.yard .glyph-mark {
+  fill: var(--color-ink);
+  font-size: 7px;
+  font-family: var(--font-sans);
+}
+
+.yard .empty-slot {
+  width: 44px;
+  height: 44px;
+  border: 1px dashed var(--color-line);
+  border-radius: 7px;
+  display: block;
+}
+
+.yard .slot-label,
+.yard .meta,
+.yard .quiet,
+.yard .card-purpose {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+}
+
+.yard .slot-name,
+.yard .card-name {
+  display: block;
+  font-weight: 600;
+}
+
+.yard .quiet {
+  color: var(--color-rust);
+}
+
+.yard-canvas {
+  width: 100%;
+  height: 240px;
+  border-radius: 0.8rem;
+  border: 1px solid var(--color-line);
+  display: block;
+  background: var(--color-bone);
+}
+
+.yard .coach {
+  margin: 0.7rem 0 0;
+  color: var(--color-muted);
+}
+
+.yard .verdict {
+  margin: 0.7rem 0 0;
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.8rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.yard .verdict p {
+  margin: 0.15rem 0;
+}
+
+.yard .notice {
+  margin: 0.7rem 0 0.4rem;
+  min-height: 1.5rem;
+}
+
+.yard .ledger {
+  margin-top: 0.4rem;
+}
+
+.yard .ledger summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.yard .charged {
+  color: var(--color-creek);
+  font-size: 0.82rem;
+}
+
+.yard .spent,
+.yard .quiet {
+  color: var(--color-rust);
+  font-size: 0.82rem;
+}
+
+.yard .attached {
+  margin-top: 0.4rem;
+}
+
+.yard .detail > button {
+  background: var(--color-rust);
+  color: var(--color-rust-ink);
+  border-color: var(--color-rust);
+  margin-top: 0.45rem;
+}
+
+.yard .changes p {
+  margin: 0.25rem 0;
+}
+
+.yard .detail {
+  margin-bottom: 0.7rem;
+}
+
+.yard .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+.yard .field.grow {
+  flex: 1;
+  min-width: 10rem;
+}
+
+.yard select,
+.search {
+  min-height: 44px;
+  border: 1px solid var(--color-line);
+  border-radius: 0.7rem;
+  background: var(--color-bone);
+  color: var(--color-ink);
+  padding: 0 0.7rem;
+  font: 500 1rem/1 var(--font-sans);
+  width: 100%;
+}
+
+.yard .conditions {
+  border: 0;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+}
+
+.yard .conditions legend {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.35rem;
+}
+
+.yard .conditions label {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  min-height: 44px;
+}
+
+.yard .chips li {
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.78rem;
+}
+
+.yard .log li {
+  margin: 0.25rem 0;
+}
+
+.yard .bench-list {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+.yard .detail {
+  border-top: 1px solid var(--color-line);
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+}
+
+.yard .wide {
+  width: 100%;
+}
+
+.yard .compare-grid {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+}
+
+.yard .compare-grid p,
+.yard .matrix-wrap .meta {
+  color: var(--color-muted);
+}
+
+.yard .matrix-scroll {
+  overflow: auto;
+  max-width: 100%;
+}
+
+.yard .matrix {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.86rem;
+}
+
+.yard .matrix th,
+.yard .matrix td {
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  padding: 0.45rem 0.4rem;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.yard .matrix tbody th {
+  white-space: normal;
+  min-width: 9rem;
+}
+
+.yard .card.on {
+  box-shadow: inset 3px 0 0 var(--color-creek);
+}
+
+.yard .card.focus {
+  border-color: var(--color-ink);
+}
+
+.yard .matrix .form-on,
+.yard .matrix .worn-row th {
+  background: var(--color-bone);
+}
+
+.yard .matrix thead th:first-child,
+.yard .matrix tbody th {
+  position: sticky;
+  left: 0;
+  background: var(--color-paper);
+}
+
+.yard .matrix .worn-row th {
+  background: var(--color-bone);
+}
+
+.yard .matrix .ok {
+  color: var(--color-creek);
+}
+
+.yard .matrix .bad {
+  color: var(--color-rust);
+}
+
+@media (min-width: 960px) {
+  .yard-layout {
+    grid-template-columns: 17rem minmax(0, 1fr) 22rem;
+    align-items: start;
+  }
+  .yard-canvas {
+    height: 300px;
+  }
+  .yard .compare-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -58,3 +58,37 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.kit-link {
+  position: fixed;
+  z-index: 40;
+  top: max(0.45rem, env(safe-area-inset-top));
+  left: max(0.45rem, env(safe-area-inset-left));
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-fg-muted);
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  line-height: 1;
+}
+
+.kit-link:hover {
+  color: var(--color-primary);
+}
+
+.yard-shell {
+  min-height: 100%;
+  background: #e7e1d4;
+}
+
+.yard-shell .kit-link {
+  position: sticky;
+  display: inline-flex;
+  margin: 0.55rem 0 0 0.7rem;
+}
+
