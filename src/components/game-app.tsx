@@ -16,6 +16,8 @@ import {
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
+import { PauseSearch } from "@/game/item-search/pause-search.tsx";
+import type { PreincarnationSaveSlice } from "@/game/item-search/adapter.ts";
 
 const EMPTY: UiSnapshot = {
   mode: "title",
@@ -76,6 +78,7 @@ export function GameApp() {
   const gameRef = useRef<GameHandle | null>(null);
   const [ui, setUi] = useState<UiSnapshot>(EMPTY);
   const [hasSave, setHasSave] = useState(false);
+  const [known, setKnown] = useState<PreincarnationSaveSlice | null>(null);
   const stickRef = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
 
@@ -87,6 +90,11 @@ export function GameApp() {
     setHasSave(g.hasSave());
     return () => g.dispose();
   }, []);
+
+  useEffect(() => {
+    if (ui.mode !== "pause" && !ui.showHelp) return;
+    setKnown(gameRef.current?.knownSlice() ?? null);
+  }, [ui.mode, ui.showHelp, ui.weaponName, ui.yName, ui.arrows, ui.keys, ui.year]);
 
   useEffect(() => {
     if (ui.mode !== "intro") return;
@@ -229,6 +237,7 @@ export function GameApp() {
             gameRef.current?.reset();
             setHasSave(false);
           }}
+          known={known}
         />
       )}
 
@@ -332,6 +341,7 @@ function Pause({
   onCycle,
   onControls,
   onReset,
+  known,
 }: {
   ui: UiSnapshot;
   onResume: () => void;
@@ -340,6 +350,7 @@ function Pause({
   onCycle: () => void;
   onControls: (v: boolean) => void;
   onReset: () => void;
+  known: PreincarnationSaveSlice | null;
 }) {
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4">
@@ -363,6 +374,7 @@ function Pause({
           {ui.weaponName}{" "}
           <span className="font-mono text-xs text-primary">{ui.weaponTags}</span>
         </p>
+        {known ? <PauseSearch slice={known} /> : null}
 
         <h3 className="mt-5 font-display text-xl">Move</h3>
         <ul className="mt-2 space-y-1 text-sm text-fg-muted">

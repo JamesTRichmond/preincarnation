@@ -115,6 +115,13 @@ export function createInput(target: HTMLElement) {
   let pointerCanceled = false;
 
   const onKeyDown = (e: KeyboardEvent) => {
+    const target = e.target;
+    if (
+      target instanceof HTMLElement &&
+      (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+    ) {
+      return;
+    }
     if (GAME_CODES.has(e.code)) e.preventDefault();
     keys.add(e.code);
     if (

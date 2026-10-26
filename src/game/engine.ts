@@ -33,6 +33,7 @@ import {
   paintHudALttP,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import type { PreincarnationSaveSlice } from "./item-search/adapter.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -2420,6 +2421,42 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       showHelp = false;
       void deck.hydrate(EMPTY_DECK);
     },
+    knownSlice: (): PreincarnationSaveSlice => ({
+      version: save.version,
+      cycle: save.cycle,
+      inventory: save.inventory.map((weapon) => ({
+        id: weapon.id,
+        name: weapon.name,
+        kind: weapon.kind,
+        flavor: weapon.flavor,
+        affixes: weapon.affixes.map((affix) => ({ id: affix.id, name: affix.name, magic: affix.magic })),
+      })),
+      equippedId: save.equippedId,
+      character: { name: save.character.name, bondId: save.character.bondId },
+      flags: {
+        relics: save.flags.relics.slice(),
+        ySlot: save.flags.ySlot,
+        arrows: save.flags.arrows,
+        bombs: save.flags.bombs,
+        bottles: save.flags.bottles.slice(),
+        keys: save.flags.keys,
+        caches: save.flags.caches.slice(),
+        year: save.flags.year,
+        lifePath: save.flags.lifePath,
+        returnedFromDeath: save.flags.returnedFromDeath,
+        graves: (save.flags.graves ?? []).map((grave) => ({
+          id: grave.id,
+          excavated: grave.excavated,
+          weapons: grave.weapons.map((weapon) => ({
+            id: weapon.id,
+            name: weapon.name,
+            magic: weapon.magic,
+            kind: weapon.kind,
+          })),
+          relics: grave.relics.slice(),
+        })),
+      },
+    }),
     pause: () => {
       if (mode === "play") mode = "pause";
     },
