@@ -1,0 +1,362 @@
+{
+  "label": "MODEL_RESULTS_NOT_ENGINE_PLAYTESTS",
+  "unit_source": "reference_contract_not_engine",
+  "movement_assumptions": {
+    "directions": 4,
+    "diagonals": false,
+    "fairness_speed_px_per_frame": 0.85,
+    "reaction_frames_standard": 8,
+    "reaction_applies_to": "onset of a telegraph the body did not already occupy",
+    "visible_hazards_reaction_frames": 0,
+    "self_commitment_tap_frames": 16,
+    "self_commitment_spin_frames": 40,
+    "competent_policy": "Will not start a tap while a reacted telegraph is on screen. Approaches only when no telegraph is active. Retreats for the whole active window. Uses blade taps, not spins.",
+    "greedy_spin_policy": "Separate. May be punished. A hit against greedy spin is not counted as unavoidable.",
+    "no_precognition_of_untelegraphed_attacks": true
+  },
+  "composition_rules": {
+    "mythology": "Every member comes from the Addison Survey / Unrecorded County set: quarry, agricultural, water, memory, surveyor, unrealized, insect, or human.",
+    "no_dungeon_bosses": true,
+    "mortal_completable": true,
+    "fairness_form": "officer",
+    "fairness_speed_px_per_frame": 0.85,
+    "overlapping_tell_gap_frames": 10,
+    "default_conductor": "stagger",
+    "stagger": "While one living enemy is in telegraph or active, another enemy's transition into a telegraph is refused and retried next tick.",
+    "harmonized": "Two tells may share a beat only when a tile exists that is outside every simultaneous hitbox. The model must be able to stand there.",
+    "projectile_owners": "At most one enemy in a room is a projectile owner. Assisted cap is 2, standard cap is 3, oldest fizzles.",
+    "protection": "The intercept tile is reachable without entering the strike. Standing there with the named tool keeps the protected HP intact.",
+    "mercy_and_forfeit": "Memory and unrealized kills set a forfeit flag. A mastery room is complete only on the spare, never on the grave.",
+    "assisted_profile": "Assisted changes reaction, tell length, damage taken, i-frames, bonus HP, and projectile cap. It does not remove a room, a line, a mercy, or a death.",
+    "reset": "A room reset restores living enemies. Spares persist fourteen years. Kills persist this life unless the record says permanent."
+  },
+  "counts": {
+    "enemies": 40,
+    "minibosses": 24,
+    "encounters": 36,
+    "encounter_kinds": {
+      "teaching": 10,
+      "total": 36,
+      "mixed": 8,
+      "terrain": 7,
+      "protection": 4,
+      "mastery": 7
+    },
+    "enemy_trials": 83
+  },
+  "enemy_trials": {
+    "ok": 83,
+    "fail": 0
+  },
+  "assisted_fair_trials": {
+    "ok": 41,
+    "fail": 0
+  },
+  "minibosses": {
+    "ok": 24,
+    "fail": 0,
+    "rows": [
+      {
+        "id": "keyblock_choir",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "silo_psalm",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "unblinking_reed",
+        "gate": "sheathe",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "sag_keeper",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "four_year_field",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 45,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "vixen_of_lost_tools",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 45,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "the_closer",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "gunters_procession",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "bell_that_didnt_ring",
+        "gate": "sheathe",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 36,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "echo_mason",
+        "gate": "endure",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 54,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "evaporator_queen",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "foreman_of_lights",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "veil_that_knows_breath",
+        "gate": "endure",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 54,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "three_beetles_and_a_debt",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "bridge_contract",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "shift_boss_marlow",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "warden_holt",
+        "gate": "sheathe",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "aunt_cass_glass_trees",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "lenswright",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "the_raising",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "lung_of_the_mill",
+        "gate": "endure",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 54,
+        "god_hp": 6,
+        "god_resolved": false
+      },
+      {
+        "id": "ellis_not_taken",
+        "gate": "sheathe",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 36,
+        "god_hp": 4,
+        "god_resolved": false
+      },
+      {
+        "id": "bob_and_the_beat",
+        "gate": "tool",
+        "earliest": 360,
+        "fair_damage": 0,
+        "resolved_at": 360,
+        "god_banked": 72,
+        "god_hp": 5,
+        "god_resolved": false
+      },
+      {
+        "id": "captain_vesper",
+        "gate": "tiles",
+        "earliest": 480,
+        "fair_damage": 0,
+        "resolved_at": 480,
+        "god_banked": 90,
+        "god_hp": 5,
+        "god_resolved": false
+      }
+    ]
+  },
+  "assisted_miniboss_fair": {
+    "ok": 24,
+    "fail": 0
+  },
+  "encounters": {
+    "ok": 36,
+    "fail": 0
+  },
+  "laws": {
+    "stun_lock": {
+      "ok": true,
+      "hp": 22,
+      "hitstun": 0,
+      "glanced": true
+    },
+    "projectile_cap": {
+      "ok": true,
+      "standard": {
+        "max": 3,
+        "fizzles": 13
+      },
+      "assisted": {
+        "max": 2,
+        "fizzles": 10
+      }
+    },
+    "knockback_stops_at_hazard": {
+      "ok": true,
+      "y": 41,
+      "kind": "floor"
+    },
+    "overlapping_tells": {
+      "ok": true
+    },
+    "god_damage_scale": {
+      "ok": true,
+      "memory": 2,
+      "chip": 1,
+      "officer": 4,
+      "quarry": 6
+    },
+    "persistence": {
+      "ok": true,
+      "year": 1840,
+      "life": 3,
+      "before": [
+        true,
+        true
+      ],
+      "afterDeath": [
+        true,
+        false
+      ],
+      "later": [
+        false,
+        false
+      ]
+    }
+  },
+  "schema_problems": [],
+  "failures": []
+}
