@@ -235,7 +235,11 @@ export function GameApp() {
       {ui.mode === "limbo" && (
         <Afterlife
           ui={ui}
-          onBuy={(k) => gameRef.current?.spendSkill(k)}
+          onBuy={(k) => {
+            const def = LIMBO_UPGRADES.find((u) => u.key === k);
+            if (def?.polarity === "crown") gameRef.current?.buyUpgrade(k);
+            else gameRef.current?.spendSkill(k);
+          }}
           onBirth={() => gameRef.current?.reincarnate()}
         />
       )}
@@ -732,11 +736,14 @@ function Afterlife({
             {ui.karma}
           </span>
           <span className="text-primary">Skill {ui.character.skillPoints}</span>
+          <span className="text-primary">Crowns {ui.crowns}</span>
           <span className="text-fg-muted">Cycle {ui.cycle} · Year {ui.year}</span>
         </div>
         {ui.spectrumReady && (
           <p className="mt-4 rounded-md bg-bg-subtle px-4 py-3 text-sm text-fg ring-1 ring-primary">
-            You have died loud enough. The sphere is open after you finish walking back.
+            {ui.upgrades.soloverseKey
+              ? "The key is spent. The next birth is the sphere, not the grave."
+              : "The seam on the Green is open. Walk back. Death does not carry you there unless you buy the key."}
           </p>
         )}
         <div className="mt-6 max-w-xl rounded-lg bg-bg-elevated p-4 ring-1 ring-border">
@@ -773,6 +780,35 @@ function Afterlife({
                 <div className="flex items-baseline justify-between">
                   <p className="font-display text-xl">{u.name}</p>
                   <p className="font-mono text-xs text-primary">1 pt</p>
+                </div>
+                <p className="mt-1 text-sm text-fg-muted">{u.blurb}</p>
+                <p className="mt-2 font-mono text-xs text-fg-subtle">
+                  {owned}/{u.max}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        <h2 className="mt-8 font-display text-2xl">Crowns</h2>
+        <p className="mt-1 max-w-xl text-sm text-fg-muted">
+          Crowns are not skill points. Echo keeps a feat louder. The key changes where the next death puts you.
+        </p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {LIMBO_UPGRADES.filter((u) => u.polarity === "crown").map((u) => {
+            const val = ui.upgrades[u.key];
+            const owned = typeof val === "boolean" ? (val ? 1 : 0) : (val as number);
+            const maxed = owned >= u.max || ui.crowns < u.cost;
+            return (
+              <button
+                key={u.key}
+                type="button"
+                disabled={maxed}
+                onClick={() => onBuy(u.key)}
+                className="rounded-lg bg-bg-elevated p-4 text-left ring-1 ring-border disabled:opacity-50"
+              >
+                <div className="flex items-baseline justify-between">
+                  <p className="font-display text-xl">{u.name}</p>
+                  <p className="font-mono text-xs text-primary">{u.cost} crown</p>
                 </div>
                 <p className="mt-1 text-sm text-fg-muted">{u.blurb}</p>
                 <p className="mt-2 font-mono text-xs text-fg-subtle">

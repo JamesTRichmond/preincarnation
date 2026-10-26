@@ -42,11 +42,38 @@ function plot(tiles: number[][], x: number, y: number, id: number, thick = 0) {
       const cur = tiles[ty][tx];
       if (id === T.water || cur === T.grass || cur === T.flowers || cur === T.soil) {
         tiles[ty][tx] = id;
-      } else if (id === T.path && cur !== T.water && cur !== T.pine && cur !== T.wall) {
+      } else if (id === T.path && cur === T.water) {
+        // Existing roads already cross the creeks. A bridge tile is walkable; refusing the stroke is what split the county.
+        tiles[ty][tx] = T.bridge;
+      } else if (id === T.path && (cur === T.pine || cur === T.gravel || cur === T.cobble || cur === T.marble)) {
+        tiles[ty][tx] = T.path;
+      } else if (id === T.path && cur !== T.wall && cur !== T.marbleWall) {
         tiles[ty][tx] = T.path;
       }
     }
   }
+}
+
+const BLOCK_PIN = new Set<number>([T.pine, T.wall, T.marbleWall, T.void, T.water, T.cracked, T.cliff]);
+
+/** Move a door off a solid cell onto a tile the interact radius can actually reach. */
+export function snapWalkable(tiles: number[][], x: number, y: number) {
+  const h = tiles.length;
+  const w = tiles[0]?.length ?? 0;
+  const open = (nx: number, ny: number) => {
+    const t = tiles[ny]?.[nx];
+    return t !== undefined && nx > 0 && ny > 0 && nx < w - 1 && ny < h - 1 && !BLOCK_PIN.has(t);
+  };
+  if (open(x, y)) return { x, y };
+  for (let r = 1; r <= 8; r++) {
+    for (let dy = -r; dy <= r; dy++) {
+      for (let dx = -r; dx <= r; dx++) {
+        if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+        if (open(x + dx, y + dy)) return { x: x + dx, y: y + dy };
+      }
+    }
+  }
+  return { x, y };
 }
 
 function stroke(tiles: number[][], pts: [number, number][], box: BBox, id: number, thick: number) {
@@ -129,7 +156,9 @@ export function rasterCounty(
   const props: RasterProp[] = [];
   props.push({ kind: "spawn", x: Math.floor(w / 2), y: Math.floor(h / 2), id: "spawn" });
 
-  const towns = TOWNS.filter((t) => t.county === county && t.id !== county && t.id !== "quarry" && t.id !== "addison");
+  const towns = TOWNS.filter(
+    (t) => t.county === county && t.id !== county && t.id !== "quarry" && t.id !== "addison" && t.id !== "soloverse",
+  );
   for (const t of towns) {
     const cell = projectCountyCell(county, t.lat, t.lng);
     if (!cell) continue;
@@ -142,7 +171,13 @@ export function rasterCounty(
       }
     }
     const spawn = TOWN_SPAWN[t.id] ?? { x: 12, y: 10 };
-    props.push({ kind: "warp", x: tx, y: ty, id: "to-" + t.id, warp: { map: t.id, x: spawn.x, y: spawn.y } });
+    const pin = snapWalkable(tiles, tx, ty);
+    props.push({ kind: "warp", x: pin.x, y: pin.y, id: "to-" + t.id, warp: { map: t.id, x: spawn.x, y: spawn.y } });
+  }
+
+  // Roads are data. Stroke them last so pine, lake, and creek cannot erase the crossings.
+  if (box) {
+    for (const r of ROADS.filter((x) => x.county === county)) stroke(tiles, r.pts, box, T.path, 0);
   }
 
   if (county === "addison") {
@@ -176,6 +211,13 @@ export function rasterCounty(
     props.push({ kind: "enemy", x: 20, y: 16, id: "w-bear", enemy: "bear" });
     props.push({ kind: "enemy", x: 36, y: 30, id: "w-fisher", enemy: "fisher" });
     props.push({ kind: "warp", x: 8, y: 24, id: "to-rutland-e", warp: { map: "rutland", x: 26, y: 12 } });
+  }
+
+  for (const p of props) {
+    if (p.kind !== "warp" || p.x == null || p.y == null) continue;
+    const pin = snapWalkable(tiles, p.x, p.y);
+    p.x = pin.x;
+    p.y = pin.y;
   }
 
   return { tiles, w, h, props };

@@ -22,6 +22,8 @@ import {
   spendSkillPoint,
   spinDamage,
   wintersPassed,
+  campaignObjective,
+  deathFoldsVermont,
 } from "./rules.ts";
 import type { Grave } from "./items.ts";
 import type { SaveData } from "./types.ts";
@@ -116,8 +118,8 @@ describe("Maeve's lantern keepsake", () => {
   it("only Maeve's bond carries the lamp", () => {
     assert.equal(bondKeepsake("maeve"), "lantern");
     assert.equal(bondKeepsake("perch"), null);
-    assert.deepEqual(relicsForGrave(["sword", "lantern", "shovel"], "maeve"), ["shovel"]);
-    assert.deepEqual(relicsForGrave(["sword", "lantern", "shovel"], "perch"), ["lantern", "shovel"]);
+    assert.deepEqual(relicsForGrave(["sword", "lantern", "shovel"], "maeve"), []);
+    assert.deepEqual(relicsForGrave(["sword", "lantern", "shovel"], "perch"), ["lantern"]);
   });
 
   it("does not hand the lamp on the first life", () => {
@@ -202,9 +204,10 @@ describe("resolveDeath", () => {
       grave.weapons.map((w) => w.name),
       ["Farm axe"],
     );
-    assert.ok(grave.relics.includes("shovel"));
+    assert.equal(grave.relics.includes("shovel"), false);
     assert.equal(grave.relics.includes("lantern"), false);
     assert.ok(next.flags.relics.includes("lantern"));
+    assert.ok(next.flags.relics.includes("shovel"));
   });
 
   it("sends dirty hands to the Other Voice", () => {
@@ -269,7 +272,7 @@ describe("cycle ledger", () => {
       bombs: 2,
       excavated: false,
     };
-    assert.equal(groundKeptLine(grave), "Farm axe, 8 arrows, 2 kegs. Bring the shovel.");
+    assert.equal(groundKeptLine(grave), "Farm axe, 8 arrows, 2 kegs. The shovel is still yours.");
     assert.match(groundKeptLine(undefined), /Nothing else hit the dirt/);
   });
 });
@@ -350,5 +353,90 @@ describe("misc rules", () => {
     assert.equal(next.karma, 12);
     assert.equal(next.upgrades.vitality, 1);
     assert.equal(s.karma, 20);
+  });
+});
+
+describe("death folds Vermont only through the seam", () => {
+  it("leaves a crowned adventurer in the county", () => {
+    const s = copy();
+    s.cycle = 3;
+    s.crowns = 3;
+    s.flags.lifePath = "adventurer";
+    assert.equal(soloverseReady(s), true);
+    assert.equal(deathFoldsVermont(s), false);
+    s.upgrades.soloverseKey = true;
+    assert.equal(deathFoldsVermont(s), true);
+    s.upgrades.soloverseKey = false;
+    s.incarnation = "embryo";
+    assert.equal(deathFoldsVermont(s), true);
+    s.cycle = 2;
+    assert.equal(deathFoldsVermont(s), false);
+  });
+});
+
+describe("campaign objective", () => {
+  function ready(): SaveData {
+    const s = copy();
+    s.flags.talked = ["elder"];
+    s.flags.relics = ["sword", "shovel"];
+    return s;
+  }
+
+  it("keeps an unfinished Vein ahead of an open seam", () => {
+    const s = ready();
+    s.cycle = 3;
+    s.crowns = 3;
+    const line = campaignObjective(s, "middlebury", "play");
+    assert.match(line, /THE JOB/);
+    assert.doesNotMatch(line, /seam/i);
+  });
+
+  it("names a Burlington grave and ranks it over the seam", () => {
+    const s = ready();
+    s.cycle = 3;
+    s.crowns = 3;
+    s.flags.townsCleared = ["quarry"];
+    s.flags.graves = [
+      {
+        id: "g",
+        mapId: "burlington",
+        x: 4,
+        y: 5,
+        year: 2068,
+        weapons: [],
+        relics: [],
+        arrows: 0,
+        bombs: 0,
+        excavated: false,
+      },
+    ];
+    const away = campaignObjective(s, "middlebury", "play");
+    assert.match(away, /Burlington/);
+    assert.doesNotMatch(away, /seam/i);
+    assert.match(campaignObjective(s, "burlington", "play"), /this ground/);
+  });
+
+  it("offers the seam only after the Vein is quiet and no grave is open", () => {
+    const s = ready();
+    s.cycle = 3;
+    s.crowns = 3;
+    s.flags.townsCleared = ["quarry"];
+    assert.match(campaignObjective(s, "middlebury", "play"), /seam/i);
+    s.cycle = 1;
+    s.crowns = 0;
+    assert.doesNotMatch(campaignObjective(s, "middlebury", "play"), /seam/i);
+    assert.match(campaignObjective(s, "middlebury", "play"), /Vein is quiet/);
+  });
+
+  it("points at the key on the approach, then the chest door once the Vein is quiet", () => {
+    const s = copy();
+    s.flags.relics = ["lantern", "sword"];
+    assert.match(campaignObjective(s, "quarry", "play"), /on the way to the lock/);
+    s.flags.townsCleared = ["quarry"];
+    assert.match(campaignObjective(s, "quarry", "play"), /beside the chest/);
+  });
+
+  it("spends limbo on the purse, not the county", () => {
+    assert.equal(campaignObjective(copy(), "middlebury", "limbo"), "Spend what you were given.");
   });
 });

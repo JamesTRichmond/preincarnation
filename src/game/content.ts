@@ -72,14 +72,14 @@ export const LIMBO_UPGRADES: UpgradeDef[] = [
   { key: "shadowStep", name: "Shadow Step", blurb: "A dash through the seam of a moment.", cost: 8, polarity: "shadow", max: 1 },
   { key: "wraithBond", name: "Wraith Bond", blurb: "Spirits hesitate before they strike.", cost: 10, polarity: "shadow", max: 1 },
   { key: "echo", name: "Karmic Echo", blurb: "Your feats ring louder in the next world.", cost: 1, polarity: "crown", max: 1 },
-  { key: "soloverseKey", name: "Soloverse Key", blurb: "Unlocks the spherical spectrum after the third death. You keep walking.", cost: 1, polarity: "crown", max: 1 },
+  { key: "soloverseKey", name: "Soloverse Key", blurb: "One Crown. After three deaths, the next death walks you into the sphere instead of back to the grave.", cost: 1, polarity: "crown", max: 1 },
 ];
 
 export const DIALOGUE: Record<string, DialogueNode> = {
   elder_1: {
     id: "elder_1",
     speaker: "Maeve Holloway",
-    text: "{name}. You woke on the Green because the Marble Vein went quiet. That is the job. Otter Creek is west. The Vein is east in the pines. Walk into any house. Take the shovel by the stone. You will die. They will send you back until it is done. Fourteen winters pass each time. The body you leave is still on the ground.",
+    text: "{name}. The Marble Vein went quiet. That is the job. The shovel is by the stone. The Vein is east.",
     entropy: 0.42,
     choices: [
       { label: "How do I leave this life?", next: "elder_how" },
@@ -100,7 +100,7 @@ export const DIALOGUE: Record<string, DialogueNode> = {
   elder_return: {
     id: "elder_return",
     speaker: "Maeve Holloway",
-    text: "{name}. {year}. I watched the last body go cold. Fourteen winters is a long time to leave a friend in the dirt. Dig when you can bear it. The Vein still sleeps. Same job. East.",
+    text: "{name}. {year}. The body is still on the ground. East, if the Vein is still the job.",
     entropy: 0.44,
     choices: [
       { label: "I came back.", next: "end" },
@@ -110,8 +110,18 @@ export const DIALOGUE: Record<string, DialogueNode> = {
   elder_how: {
     id: "elder_how",
     speaker: "Maeve Holloway",
-    text: "Hearts are a courtesy. Empty them, or hold Release at the shrine. Space cuts now — mash it, or hold for a spin. Q cycles the tool in your off hand. Minus zooms out; you can see the whole town. You will die. The Voice — or the Other, if your hands are dirty — will send you back as yourself. Spend the points they give you. Fourteen winters pass. The gear you drop stays where you fall. Bring a shovel.",
+    text: "Hearts are a courtesy. Empty them, or hold Release at the shrine. Space cuts — mash it, or hold for a spin. Q cycles the off hand. Minus zooms out.",
     entropy: 0.48,
+    choices: [
+      { label: "Decide her fate.", next: "elder_fate" },
+      { label: "Not yet.", next: "end" },
+    ],
+  },
+  elder_fate: {
+    id: "elder_fate",
+    speaker: "Maeve Holloway",
+    text: "I have been a mill girl, a widow, a warden of this green. Arbiter work pays in a Crown.",
+    entropy: 0.5,
     choices: [
       { label: "Help her pass. (Fate)", karma: 4, crowns: 1, flag: { elderFate: "release" }, next: "elder_release", note: "Heavenly Crown" },
       { label: "Bind her here. (Fate)", karma: -6, flag: { elderFate: "bind" }, next: "elder_bind" },
@@ -121,9 +131,12 @@ export const DIALOGUE: Record<string, DialogueNode> = {
   elder_who: {
     id: "elder_who",
     speaker: "Maeve Holloway",
-    text: "I have been a mill girl, a widow, a warden of this green. Entropy in my chest is loud today. Decide my fate when you can bear it — Arbiter work pays in Crowns. Spend them when they send you back.",
+    text: "Entropy in my chest is loud today. A Crown spends when they send you back.",
     entropy: 0.55,
-    choices: [{ label: "I understand.", next: "end" }],
+    choices: [
+      { label: "Decide her fate.", next: "elder_fate" },
+      { label: "I understand.", next: "end" },
+    ],
   },
   elder_release: {
     id: "elder_release",
@@ -243,7 +256,7 @@ export const DIALOGUE: Record<string, DialogueNode> = {
   shrine_1: {
     id: "shrine_1",
     speaker: "Stone Circle",
-    text: "Hold Release here if you want the skin off. Or fall in the woods. Either way you see the Voice — or the Other — and they send you back to finish the job. There is no credits sequence that owns you.",
+    text: "Hold Release here if you want the skin off.",
     entropy: 0.5,
     choices: [{ label: "Not yet.", next: "end" }],
   },
@@ -315,6 +328,13 @@ export const DIALOGUE: Record<string, DialogueNode> = {
     speaker: "Lord's Prayer Rock",
     text: "A teamster asked God to slow the wagons on this grade. Someone with a chisel obliged. Slow down. The gap does not.",
     entropy: 0.08,
+    choices: [{ label: "Amen.", karma: 1, next: "end" }],
+  },
+  rock_return: {
+    id: "rock_return",
+    speaker: "Lord's Prayer Rock",
+    text: "The grade is older than this skin. You cut the prayer, or you will. Slow down. The gap does not.",
+    entropy: 0.12,
     choices: [{ label: "Amen.", karma: 1, next: "end" }],
   },
   hunter: {
@@ -568,7 +588,7 @@ export const INTRO_BEATS: { kicker: string; title: string; body: string }[] = [
   {
     kicker: "Addison County · 2026",
     title: "The Green still thinks it is a town",
-    body: "Middlebury. Otter Creek west, the Gap east. Houses leave their doors unlatched. A rifle on a parlor wall is not a metaphor. This is Vermont, compressed the way a myth compresses a kingdom.",
+    body: "Middlebury. Otter Creek west, the Gap east. Houses leave their doors unlatched. A rifle on a parlor wall is not a metaphor.",
   },
   {
     kicker: "You",
@@ -578,17 +598,7 @@ export const INTRO_BEATS: { kicker: string; title: string; body: string }[] = [
   {
     kicker: "The job",
     title: "The Marble Vein has gone quiet",
-    body: "East of the Green, in the pines, the county's temple stopped answering. If it dies, Vermont folds — fact, fiction, history, imagination — into a sphere that does not care what you were. Maeve on the Green knows the first step. The shovel by the stone is the second. East is the rest.",
-  },
-  {
-    kicker: "The rule",
-    title: "You will die. That is not the problem.",
-    body: "The Voice that kept the wagons from the grade will send you back. If your hands are dirty, the Other Voice will send you back too. Both of them say the same sentence. Fourteen winters pass on the body you leave.",
-  },
-  {
-    kicker: "Finish it",
-    title: "Speak with Maeve. Take the shovel. Walk east.",
-    body: "Hearts are a courtesy. Space cuts. E talks. The line at the bottom of the world is the job. There is no credits sequence that owns you.",
+    body: "East of the Green, in the pines, the county's temple stopped answering. Maeve on the Green knows the first step. The shovel by the stone is the second. East is the rest.",
   },
 ];
 
@@ -618,14 +628,14 @@ export function afterlifeCopy(
     return {
       kicker: "The Other Voice",
       title: "I like the mess. I still need the Vein.",
-      body: `${deed}, ${name}. A folded county is boring. ${year} on the ground you left.${flaw ? " I know your flaw: " + flaw + "." : ""} Spend what you were given. Go back. Finish the job. We'll settle the rest when the marble answers.`,
+      body: `${deed}, ${name}. ${year}.${flaw ? " " + flaw + "." : ""}`,
       action: "Finish the job",
     };
   }
   return {
     kicker: "The Voice",
     title: "I did not take you.",
-    body: `The Vein still sleeps, ${name}. ${year}. ${deed}. Fourteen winters on the body you left.${flaw ? " You still carry this: " + flaw + "." : ""} Spend what you were given. Then go back and finish the job.`,
+    body: `${deed}, ${name}. ${year}.${flaw ? " " + flaw + "." : ""}`,
     action: "Finish the job",
   };
 }

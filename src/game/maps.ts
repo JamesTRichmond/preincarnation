@@ -1,10 +1,11 @@
-import type { EnemyKind, Flags, MapId } from "./types";
+import type { EnemyKind, Flags, IncarnationId, MapId } from "./types";
 import { TOWN_BY_ID } from "./geography";
 import { T } from "./tile-ids";
 import { buildInterior, isInterior } from "./interiors";
 import { rasterCounty, projectCountyCell } from "./raster";
 import { ageTiles, generations, TOWN_SPAWN } from "./era";
 import { buildSoloverse, fractureTiles } from "./soloverse";
+import { soloverseReady } from "./rules";
 
 export { TILE } from "./snes";
 export { T };
@@ -87,6 +88,9 @@ export type MapExtras = {
   returnMap?: MapId | null;
   returnX?: number;
   returnY?: number;
+  crowns?: number;
+  soloverseKey?: boolean;
+  incarnation?: IncarnationId;
 };
 
 const ADDISON_SRC = [
@@ -252,13 +256,13 @@ const QUARRY_SRC = [
   "MvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmM",
   "Mvmm............S.....C........mmM",
   "Mvmm...........................mmM",
-  "MvmmmmmmmmmmmmxxxxxxxxmmmmmmmmmmmM",
+  "MMMMMMMMMMMMMMxxxxxxxxMMMMMMMMMMMM",
   "Mvmm..............H............mmM",
   "Mvmm...........................mmM",
-  "MvmmmmmmmmmmmmmmLmmmmmmmmmmmmmmmmM",
+  "MMMMMMMMMMMMMMMMLMMMMMMMMMMMMMMMMM",
   "Mvmm.....ooooooooooo...........mmM",
   "Mvmm.....o.........o...........mmM",
-  "Mvmm..k..o.........o...........mmM",
+  "Mvmm.....o......k..o...........mmM",
   "Mvmm.....ooooooooooo...........mmM",
   "Mvmm...........................mmM",
   "Mvmm...........n...............mmM",
@@ -506,8 +510,8 @@ function decorateVillage(id: MapId, props: PropSpec[], marks: Record<string, { x
   props.push({ kind: "warp", x: 2, y: 8, id: "to-overworld", warp: { map: countyWarp, x: 36, y: 26 } });
   addCache(props, flags, 4, 8, "cache-" + id, "farmhouse");
   addChest(props, flags, 20, 3, "chest-" + id);
-  props.push({ kind: "enemy", x: 22, y: 2, id: id + "-crow", enemy: "crow" });
-  props.push({ kind: "enemy", x: 6, y: 10, id: id + "-bob", enemy: "bobcat" });
+  const fauna = id === "burlington" || id === "woodstock" || id === "norwich" ? "bobcat" : "crow";
+  props.push({ kind: "enemy", x: 22, y: 2, id: id + "-" + fauna, enemy: fauna });
   addBushes(props, [[8, 7], [16, 7], [10, 9]], flags, id + "-bush-");
   if (id === "burlington") {
     props.push({ kind: "npc", x: first(marks, "H", { x: 20, y: 5 }).x, y: first(marks, "H", { x: 20, y: 5 }).y, id: "burl-host", npc: "ferry" });
@@ -543,9 +547,6 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
   if (id === "chittenden" || id === "windsor" || id === "addison") {
     const built = rasterCounty(id, flags, cycle);
     const props = built.props.map(asProp);
-    if (id === "addison") {
-      props.push({ kind: "warp", x: 2, y: 24, id: "to-middlebury-legacy", warp: { map: "middlebury", x: 18, y: 6 } });
-    }
     for (const g of flags.graves ?? []) {
       if (g.mapId === id && !g.excavated) {
         const gx = Math.max(1, Math.min(built.w - 2, Math.floor(g.x / 16)));
@@ -610,7 +611,13 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "spawn", x: 18, y: 6, id: "spawn" });
     props.push({ kind: "warp", x: 2, y: 7, id: "to-overworld", warp: countyDoor("middlebury") });
     props.push({ kind: "warp", x: east.x, y: east.y, id: "to-quarry", warp: { map: "quarry", x: 16, y: 13 } });
-    if (cycle >= 1) {
+    const seam = soloverseReady({
+      cycle,
+      crowns: extras.crowns ?? 0,
+      incarnation: extras.incarnation ?? "wanderer",
+      upgrades: { soloverseKey: !!extras.soloverseKey },
+    });
+    if (seam) {
       props.push({
         kind: "warp",
         x: 21,
@@ -789,21 +796,29 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     props.push({ kind: "pot", x: 10, y: 9, id: "pot-1" });
     props.push({ kind: "pot", x: 13, y: 9, id: "pot-2" });
     props.push({ kind: "enemy", x: 4, y: 3, id: "crow-1", enemy: "crow" });
-    props.push({ kind: "enemy", x: 24, y: 3, id: "crow-2", enemy: "crow" });
     props.push({ kind: "enemy", x: 24, y: 16, id: "wraith-1", enemy: "wraith" });
-    props.push({ kind: "enemy", x: 5, y: 18, id: "wraith-2", enemy: "wraith" });
   } else if (id === "quarry") {
     const sen = first(m, "S", { x: 16, y: 3 });
     const spawn = first(m, "n", { x: 16, y: 14 });
     props.push({ kind: "spawn", x: spawn.x, y: spawn.y + 1, id: "qspawn" });
-    props.push({ kind: "warp", x: 16, y: 16, id: "to-middlebury-q", warp: { map: "middlebury", x: 36, y: 11 } });
+    const back = extras.returnMap && extras.returnMap !== "quarry" && !isInterior(extras.returnMap) ? extras.returnMap : "middlebury";
+    const backX = extras.returnMap && extras.returnX != null ? Math.max(1, Math.floor(extras.returnX / 16)) : 36;
+    const backY = extras.returnMap && extras.returnY != null ? Math.max(1, Math.floor(extras.returnY / 16)) : 11;
+    const veinQuiet = flags.sentinelFate != null || (flags.townsCleared ?? []).includes("quarry");
+    props.push({
+      kind: "warp",
+      x: veinQuiet ? 22 : 16,
+      y: veinQuiet ? 4 : 16,
+      id: "to-quarry-exit",
+      warp: { map: back, x: backX, y: backY },
+    });
     addChest(props, flags, first(m, "C", { x: 22, y: 3 }).x, first(m, "C", { x: 22, y: 3 }).y, "chest-quarry");
     const keySpot = first(m, "k", { x: 6, y: 11 });
     if (!flags.chests.includes("q-key")) {
       props.push({ kind: "key", x: keySpot.x, y: keySpot.y, id: "q-key" });
     }
     const lockA = first(m, "L", { x: 16, y: 8 });
-    if (flags.chests.includes("q-lock-a")) {
+    if (flags.chests.includes("q-lock-a") || veinQuiet) {
       if (tiles[lockA.y]) tiles[lockA.y][lockA.x] = T.marble;
     } else {
       props.push({ kind: "lock", x: lockA.x, y: lockA.y, id: "q-lock-a" });
@@ -815,7 +830,8 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     if (!flags.relics.includes("lantern")) {
       props.push({ kind: "relic", x: spawn.x, y: spawn.y, id: "relic-lantern", relic: "lantern" });
     }
-    if (flags.sentinelFate !== "release" && !flags.townsCleared.includes("quarry")) {
+    if (veinQuiet && tiles[5]) tiles[5][16] = T.marble;
+    if (!veinQuiet) {
       props.push({ kind: "enemy", x: sen.x, y: sen.y, id: "sentinel", enemy: "sentinel" });
       props.push({ kind: "npc", x: sen.x, y: sen.y + 1, id: "sentinel-talk", npc: "sentinel" });
     }
@@ -904,6 +920,26 @@ export function buildMap(id: MapId, flags: Flags, cycle: number, extras: MapExtr
     }
   }
   if (flags.tropoverse && id !== "quarry") fractureTiles(tiles, cycle);
+  // A door painted on pine or wall cannot be touched (22px reaches an orthogonal neighbor only).
+  for (const p of props) {
+    if (p.kind !== "warp" || walkableAt(tiles, p.x, p.y)) continue;
+    let found: { x: number; y: number } | null = null;
+    for (let r = 1; r <= 8 && !found; r++) {
+      for (let dy = -r; dy <= r && !found; dy++) {
+        for (let dx = -r; dx <= r; dx++) {
+          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+          if (walkableAt(tiles, p.x + dx, p.y + dy)) {
+            found = { x: p.x + dx, y: p.y + dy };
+            break;
+          }
+        }
+      }
+    }
+    if (found) {
+      p.x = found.x;
+      p.y = found.y;
+    }
+  }
   return { tiles, w, h, props };
 }
 

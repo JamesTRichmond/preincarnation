@@ -7,7 +7,7 @@ import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
+import { applyUpgrade, bodyStats, campaignObjective, cycleLedger, deathFoldsVermont, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -37,6 +37,7 @@ import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon 
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
+import { countyAgeLine } from "./era";
 
 type Actor = {
   id: string;
@@ -115,6 +116,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     returnMap: save.flags.returnMap,
     returnX: save.flags.returnX,
     returnY: save.flags.returnY,
+    crowns: save.crowns,
+    soloverseKey: save.upgrades.soloverseKey,
+    incarnation: save.incarnation,
   });
   let props: PropSpec[] = world.props;
   const player: Actor = {
@@ -269,6 +273,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       returnMap: save.flags.returnMap,
       returnX: save.flags.returnX,
       returnY: save.flags.returnY,
+      crowns: save.crowns,
+      soloverseKey: save.upgrades.soloverseKey,
+      incarnation: save.incarnation,
     });
     props = world.props;
     const spawn = props.find((p) => p.kind === "spawn");
@@ -336,9 +343,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const reincarnate = () => {
     applyIncarnation(save.incarnation);
     save = grantBondKeepsake(save);
-    const ready = soloverseReady(save);
-    const walkSpectrum =
-      ready && (save.incarnation === "embryo" || save.upgrades.soloverseKey || save.flags.lifePath === "adventurer");
+    const walkSpectrum = deathFoldsVermont(save);
     save.flags.tropoverse = walkSpectrum;
     save.flags.afterlifeHost = null;
     if (walkSpectrum) {
@@ -370,7 +375,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     audio.startDrone(false);
     persist();
     lastUi = "";
-    say("Fourteen winters. " + save.flags.year + ". Same hands. The county aged. The job did not.");
+    const aged = countyAgeLine(save.flags.year);
+    say("Fourteen winters. " + save.flags.year + ". Same hands." + (aged ? " " + aged : " The job did not."));
   };
 
   const applyLocation = (lat: number, lng: number, announce: boolean) => {
@@ -537,26 +543,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     lastUi = "";
   };
 
-  const objective = () => {
-    if (mode === "limbo") return OBJECTIVES.limbo;
-    if (mapId === "soloverse") return OBJECTIVES.spectrum;
-    if (mapId === "quarry") {
-      if (!save.flags.relics.includes("lantern")) return "The lamp is by the door. The Vein is dark without it.";
-      if (!save.flags.chests.includes("q-key")) return "A key waits in the west alcove.";
-      if (!save.flags.chests.includes("q-lock-a")) return "Use the key on the north lock.";
-      if (!save.flags.relics.includes("hammer")) return "The marble hammer is past the lock.";
-      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null)
-        return "Smash the cracked marble. Face the Sentinel.";
-      return "The Vein is quiet. Walk back west, or die here and return with a shovel.";
-    }
-    if (!save.flags.talked.includes("elder") && mapId === "middlebury") return OBJECTIVES.start;
-    if (!save.flags.relics.includes("shovel")) return OBJECTIVES.start;
-    if (mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save))
-      return OBJECTIVES.seam;
-    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
-    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "A grave of your last skin waits. Bring the shovel.";
-    return OBJECTIVES.county;
+  const liftQuarryExit = () => {
+    const exit = props.find((p) => p.id === "to-quarry-exit");
+    if (!exit) return;
+    exit.x = 22;
+    exit.y = 4;
   };
+
+  const objective = () => campaignObjective(save, mapId, mode);
 
   const unlocked = (id: IncarnationId) => isIncarnationUnlocked(id, save.cycle, save.flags, save.crowns);
 
@@ -566,6 +560,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     save = next;
     audio.pickup();
     persist();
+    lastUi = "";
   };
 
   const openDialogue = (id: string) => {
@@ -672,6 +667,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (c.flag.sentinelFate) {
         noteDeed("You faced the Sentinel");
         save.flags.townsCleared = [...new Set([...(save.flags.townsCleared ?? []), "quarry"])];
+        liftQuarryExit();
         enemies = enemies.filter((e) => e.kind !== "sentinel");
         if (!save.flags.relics.includes("cape")) {
           save.flags.relics = [...save.flags.relics, "cape"];
@@ -736,7 +732,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (p.kind === "shrine") {
       openDialogue("shrine_1");
     } else if (p.kind === "rock") {
-      openDialogue("rock_1");
+      if (save.character.bondId === "the_grade" && save.flags.year > 2026) openDialogue("rock_return");
+      else openDialogue("rock_1");
     } else if (p.kind === "home") {
       const door = props.find((x) => x.kind === "door" && x.id.includes(p.id));
       if (door) enterDoor(door);
@@ -837,12 +834,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (warpLock > 0) return;
       const dest = p.warp?.map;
       if (dest === "soloverse" && !soloverseReady(save)) {
-        say("The seam is thin. Die louder — three winters, or an embryo's skin.");
+        say("The seam is shut. It opens after three returns, once you hold three Crowns or the Soloverse Key.");
         return;
       }
-      const locked = dest === "rutland" || dest === "quarry" || dest === "montpelier" || dest === "whiteriver" || dest === "chittenden" || dest === "windsor";
-      if (locked && !phaseOpen() && dest !== "quarry" && dest !== "chittenden") {
-        say("Neighbor counties open after a cycle — or after you settle the homestead.");
+      if (dest === "quarry") {
+        save.flags.returnMap = mapId;
+        save.flags.returnX = player.x;
+        save.flags.returnY = player.y;
+      }
+      const locked = dest === "rutland" || dest === "montpelier" || dest === "whiteriver" || dest === "windsor";
+      if (locked && !phaseOpen()) {
+        say("That road opens when the Vein is quiet, or after a death. Resting at home does not open it.");
         return;
       }
       if (p.warp) loadWorld(p.warp.map, p.warp.x * TILE + 8, p.warp.y * TILE + 8);
@@ -967,6 +969,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (e.kind === "bear" || e.kind === "sentinel") addKarma(3);
       if (e.kind === "sentinel") {
         save.flags.townsCleared = [...new Set([...(save.flags.townsCleared ?? []), "quarry"])];
+        liftQuarryExit();
         if (!save.flags.relics.includes("cape")) {
           save.flags.relics = [...save.flags.relics, "cape"];
           save.flags.ySlot = "cape";
@@ -1521,7 +1524,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         e.vy = Math.cos(animT * 1.7 + e.y) * sp * 0.4;
         moveActor(e, e.vx * dt, e.vy * dt);
       } else if (dist < aggro) {
-        if (e.kind === "sentinel" && e.hp >= e.maxHp) {
+        if (e.kind === "sentinel" && e.hp > e.maxHp * 0.5) {
           e.vx = 0;
           e.vy = 0;
         } else {

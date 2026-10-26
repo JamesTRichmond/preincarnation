@@ -47,6 +47,14 @@ export function warpLabel(id: string, dest?: string | null) {
   return "Enter";
 }
 
+/** The birth line names the existing ageTiles effect. The tiles themselves are easy to miss. */
+export function countyAgeLine(year: number) {
+  const g = generations(year);
+  if (g <= 0) return "";
+  const n = g === 1 ? "1 generation" : g + " generations";
+  return n + ". Pines thinned. Cobble went to gravel.";
+}
+
 /** Pines die, cobble goes to gravel, paths wear. Magic does not live here. */
 export function ageTiles(tiles: number[][], year: number, seed = 1) {
   const g = generations(year);

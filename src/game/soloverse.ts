@@ -201,17 +201,9 @@ export function buildSoloverse(flags: Flags, cycle: number): {
   if (!flags.chests.includes("solo-imag")) props.push({ kind: "chest", x: 38, y: 32, id: "solo-imag" });
 
   props.push({ kind: "enemy", x: 9, y: 8, id: "solo-bob", enemy: "bobcat" });
-  props.push({ kind: "enemy", x: 18, y: 9, id: "solo-crow-a", enemy: "crow" });
-  props.push({ kind: "enemy", x: 36, y: 16, id: "solo-crow-b", enemy: "crow" });
-  props.push({ kind: "enemy", x: 30, y: 6, id: "solo-crow-c", enemy: "crow" });
+  props.push({ kind: "enemy", x: 36, y: 16, id: "solo-crow", enemy: "crow" });
   props.push({ kind: "enemy", x: 9, y: 36, id: "solo-bear", enemy: "bear" });
-  props.push({ kind: "enemy", x: 18, y: 34, id: "solo-fisher", enemy: "fisher" });
-  props.push({ kind: "enemy", x: 32, y: 30, id: "solo-wraith-a", enemy: "wraith" });
-  props.push({ kind: "enemy", x: 38, y: 38, id: "solo-wraith-b", enemy: "wraith" });
-  props.push({ kind: "enemy", x: 28, y: 36, id: "solo-wraith-c", enemy: "wraith" });
-  if (flags.sentinelFate !== "release") {
-    props.push({ kind: "enemy", x: 36, y: 28, id: "solo-sentinel", enemy: "sentinel" });
-  }
+  props.push({ kind: "enemy", x: 32, y: 30, id: "solo-wraith", enemy: "wraith" });
 
   props.push({ kind: "pot", x: 22, y: 26, id: "solo-pot-a" });
   props.push({ kind: "pot", x: 25, y: 26, id: "solo-pot-b" });

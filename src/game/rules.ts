@@ -2,6 +2,7 @@ import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
 import { starterWeapon } from "./weapons.ts";
+import { TOWN_BY_ID } from "./geography.ts";
 
 export function isIncarnationUnlocked(
   id: IncarnationId,
@@ -118,11 +119,56 @@ export function spinDamage(incarnationDamage: number, edge: number): number {
   return 2.2 + incarnationDamage + edge * 0.3;
 }
 
-export function soloverseReady(save: SaveData): boolean {
+export function soloverseReady(save: {
+  cycle: number;
+  crowns: number;
+  incarnation: IncarnationId;
+  upgrades: Pick<Upgrades, "soloverseKey">;
+}): boolean {
   return (
     save.cycle >= 3 &&
     (save.upgrades.soloverseKey || save.incarnation === "embryo" || save.crowns >= 3)
   );
+}
+
+export function deathFoldsVermont(save: SaveData): boolean {
+  // The default life path is "adventurer" and the skin picker is not on the limbo screen.
+  // Folding the county on that default stole the walk back to the grave. The seam is the door.
+  return soloverseReady(save) && (save.incarnation === "embryo" || save.upgrades.soloverseKey);
+}
+
+export function campaignObjective(save: SaveData, mapId: SaveData["mapId"], mode: string): string {
+  const veinQuiet = (save.flags.townsCleared ?? []).includes("quarry") || save.flags.sentinelFate != null;
+  if (mode === "limbo") return "Spend what you were given.";
+  if (mapId === "soloverse") return "Four rooms, one sphere. Fact north-west. Fiction the cave. History the graves. Imagination the void. The Heart is the middle.";
+  if (mapId === "quarry") {
+    if (veinQuiet) return "The way out is beside the chest. It returns you where you entered.";
+    if (!save.flags.relics.includes("lantern")) return "The lamp is by the door. The Vein is dark without it.";
+    if (!save.flags.chests.includes("q-key")) return "The key is on the way to the lock.";
+    if (!save.flags.chests.includes("q-lock-a")) return "Use the key on the north lock.";
+    if (!save.flags.relics.includes("hammer")) return "The marble hammer is past the lock.";
+    return "Smash the cracked marble. Face the Sentinel.";
+  }
+  if (!save.flags.talked.includes("elder") && mapId === "middlebury") return "Talk to Maeve on the Green — she has the first step.";
+  if (!save.flags.relics.includes("shovel")) return "The shovel is by the stone on the Green.";
+  if (!veinQuiet) return "THE JOB — East road out of Middlebury. The Marble Vein: lamp, key, hammer, Sentinel.";
+  const open = (save.flags.graves ?? []).filter((g) => !g.excavated);
+  const here = open.find((g) => g.mapId === mapId);
+  if (save.character.bondId === "the_unburied" && here) {
+    return "A grave of your last skin is on this ground. The shovel is still in your hand.";
+  }
+  if (here) return "Your last skin is on this ground. The shovel is still yours.";
+  if (open.length) {
+    const g = open[open.length - 1];
+    return "Your last skin is in " + placeName(g.mapId) + ". The shovel is still yours.";
+  }
+  if (mapId === "middlebury" && soloverseReady(save)) return "A seam on the Green. It opens. The Heart is the middle.";
+  return "The Vein is quiet. The job is done, for now. Walk Addison. Death still sends you back.";
+}
+
+function placeName(id: string): string {
+  const town = (TOWN_BY_ID as Record<string, { name: string } | undefined>)[id];
+  return town?.name ?? "the last room";
 }
 
 export function devilThreshold(flawId: string): number {
@@ -162,7 +208,8 @@ export function bondKeepsake(bondId: string): RelicId | null {
 
 export function relicsForGrave(relics: readonly RelicId[], bondId: string): RelicId[] {
   const keep = bondKeepsake(bondId);
-  return relics.filter((r) => r !== "sword" && r !== keep);
+  // The shovel stays in the hand. Burying it forced a walk back to the Green before any grave could be opened.
+  return relics.filter((r) => r !== "sword" && r !== "shovel" && r !== keep);
 }
 
 /** Idempotent. Cycle 0 is the first life — the lamp stays in the grass until you return. */
@@ -193,7 +240,7 @@ export function groundKeptLine(grave: Grave | undefined): string {
   if (grave.arrows) bits.push(grave.arrows + " arrows");
   if (grave.bombs) bits.push(grave.bombs + " kegs");
   if (!bits.length) return "A mound. Weather will take the rest.";
-  return bits.join(", ") + ". Bring the shovel.";
+  return bits.join(", ") + ". The shovel is still yours.";
 }
 
 export function cycleLedger(save: SaveData): CycleLedger {
