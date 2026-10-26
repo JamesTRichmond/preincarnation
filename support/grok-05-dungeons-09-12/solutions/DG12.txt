@@ -1,0 +1,138 @@
+DG12 The Moth Infirmary
+Site: The Vein Ward under East Middlebury
+Dependency:
+  ENTER -> dg12.chart
+  dg12.chart -> lamp.ash
+  lamp.ash -> lamp.birch
+  lamp.birch -> lamp.cedar
+  lamp.cedar -> dg12.swarm
+  dg12.swarm -> dg12.void_walked
+  dg12.void_walked -> dg12.cleared
+Shortcut grateful-corridor: One injured release opens a corridor around the Fever Swarm. The three ward lamps and the walked void stay mandatory. Mercy never opens the Keeper by itself.
+
+== route main
+DG12-R01: move 6,5 → interact read-chart → move 16,6 → exit east
+DG12-R02: move 8,5 → interact catch-ash → move 16,6 → exit east → tick → tick → tick
+DG12-R03: move 8,5 → interact lamp-blue → move 1,6 → exit west
+DG12-R02: move 1,6 → exit west
+DG12-R01: move 9,1 → exit north
+DG12-R04: move 8,5 → interact catch-birch → move 16,6 → exit east → tick → tick → tick
+DG12-R05: move 8,5 → interact lamp-green → move 1,6 → exit west
+DG12-R04: move 9,10 → exit south
+DG12-R01: move 9,10 → exit south
+DG12-R06: move 8,5 → interact catch-cedar → move 16,6 → exit east → tick → tick → tick
+DG12-R07: move 8,5 → interact lamp-gold → move 16,6 → exit east
+DG12-R11: miniboss begin → move 8,5 → miniboss light → move 9,5 → miniboss light → move 10,5 → miniboss light → move 16,6 → exit east
+DG12-R16: move 15,6 → exit east
+DG12-R13: move 16,6 → exit east
+DG12-R14: boss begin → move 6,6 → boss net u1 → move 9,6 → boss net u2 → move 12,6 → boss net u3 → move 9,5 → boss pin-book → boss strike hammer → move 8,8 → boss crank → move 14,6 → boss cross → assert item-count keeper-key → assert item-count unlived-kept → assert not-item fever-dust → assert not-item dose-note → assert not-item grateful-thread → assert flag dg12.swarm → assert room DG12-R14
+end DG12-R14 items keeper-keyx1, unlived-keptx1
+
+== route shortcut
+DG12-R01: move 6,5 → interact read-chart → move 1,6 → exit west
+DG12-R08: move 4,5 → interact catch-pip → move 16,6 → exit east
+DG12-R09: move 8,6 → interact grate → move 1,6 → exit west
+DG12-R08: move 1,6 → exit west
+DG12-R01: move 16,6 → exit east
+DG12-R02: move 8,5 → interact catch-ash → move 16,6 → exit east → tick → tick → tick
+DG12-R03: move 8,5 → interact lamp-blue → move 1,6 → exit west
+DG12-R02: move 1,6 → exit west
+DG12-R01: move 9,1 → exit north
+DG12-R04: move 8,5 → interact catch-birch → move 16,6 → exit east → tick → tick → tick
+DG12-R05: move 8,5 → interact lamp-green → move 1,6 → exit west
+DG12-R04: move 9,10 → exit south
+DG12-R01: move 9,10 → exit south
+DG12-R06: move 8,5 → interact catch-cedar → move 16,6 → exit east → tick → tick → tick
+DG12-R07: move 8,5 → interact lamp-gold → move 1,6 → exit west
+DG12-R06: move 9,1 → exit north
+DG12-R01: move 1,6 → exit west
+DG12-R08: move 16,6 → exit east
+DG12-R09: move 16,6 → exit east
+DG12-R12: move 16,6 → exit east
+DG12-R16: move 15,6 → exit east
+DG12-R13: move 16,6 → exit east
+DG12-R14: boss begin → move 6,6 → boss net u1 → move 9,6 → boss net u2 → move 12,6 → boss net u3 → move 9,5 → boss pin-book → boss strike hammer → move 8,8 → boss crank → move 14,6 → boss cross → assert flag dg12.swarm → assert not-visited DG12-R11 → assert item keeper-key → assert item unlived-kept → assert flag mercy.pip
+end DG12-R14 items keeper-keyx1, unlived-keptx1
+
+== route harsh
+DG12-R01: move 6,5 → interact read-chart → move 16,6 → exit east
+DG12-R02: move 8,5 → interact catch-ash → move 16,6 → exit east → tick → tick → tick
+DG12-R03: move 8,5 → interact lamp-blue → move 1,6 → exit west
+DG12-R02: move 1,6 → exit west
+DG12-R01: move 9,1 → exit north
+DG12-R04: move 8,5 → interact catch-birch → move 16,6 → exit east → tick → tick → tick
+DG12-R05: move 8,5 → interact lamp-green → move 1,6 → exit west
+DG12-R04: move 9,10 → exit south
+DG12-R01: move 9,10 → exit south
+DG12-R06: move 8,5 → interact catch-cedar → move 16,6 → exit east → tick → tick → tick
+DG12-R07: move 8,5 → interact lamp-gold → move 16,6 → exit east
+DG12-R11: miniboss begin → move 8,5 → miniboss light → move 9,5 → miniboss light → move 10,5 → miniboss light → move 16,6 → exit east
+DG12-R16: move 15,6 → exit east
+DG12-R13: move 16,6 → exit east
+DG12-R14: boss begin → move 6,6 → boss shoot bow u1 → move 9,6 → boss shoot bow u2 → move 12,6 → boss shoot bow u3 → move 9,5 → boss pin-book → boss strike hammer → move 8,8 → boss crank → move 14,6 → boss cross → assert item keeper-key → assert not-item unlived-kept → assert flag dg12.cleared
+end DG12-R14 items keeper-keyx1
+
+== room solution traces
+DG12-R01 main
+  solve: move 6,4 → interact mile-r01 → move 6,5 → interact read-chart
+  fail leave-before-standing-on-the-ash-door: exit east => NOT_ON_EXIT
+  recover: move 16,6 → exit east
+DG12-R02 main
+  solve: move 8,5 → interact catch-ash → move 16,6 → exit east → tick → tick → tick → move 8,5 → interact lamp-blue
+  fail catch-without-the-net: interact catch-ash => TOOL_REQUIRED
+  recover: grant-tool → interact catch-ash
+DG12-R03 main
+  solve: interact lamp-blue
+  fail injured-moth-rejected-by-ward-lamp: interact lamp-blue => LAMP_REJECTED
+  recover: assert moth → assert flag lamp.ash
+DG12-R04 main
+  solve: move 8,5 → interact catch-birch → move 16,6 → exit east → tick → tick → tick
+  fail birch-door-from-afar: exit east => NOT_ON_EXIT
+  recover: move 9,10 → exit south
+DG12-R05 main
+  solve: interact lamp-green
+  fail ash-in-the-green-lamp: interact lamp-green => LAMP_REJECTED
+  recover: assert moth
+DG12-R06 main
+  solve: move 8,5 → interact catch-cedar → move 16,6 → exit east → tick → tick → tick
+  fail cedar-wall: move 0,2 => NO_PATH
+  recover: move 9,1 → exit north
+DG12-R07 main
+  solve: interact lamp-gold → move 16,6 → exit east
+  fail birch-rejected-by-gold: interact lamp-gold => LAMP_REJECTED
+  recover: assert moth
+DG12-R08 optional
+  solve: move 4,5 → interact catch-pip → move 16,6 → exit east → move 8,6 → interact grate
+  fail second-moth-while-the-net-is-full: interact catch-rue => HANDS_FULL
+  recover: move 16,6 → exit east → move 8,6 → interact grate → move 1,6 → exit west → move 6,5 → interact catch-rue
+DG12-R09 optional
+  solve: interact grate → move 16,6 → exit east
+  fail ward-moth-rejected-by-the-grate: interact grate => WARD_REJECTED
+  recover: assert moth → assert flag mercy.ash
+DG12-R10 optional
+  solve: interact bottle-1 → move 8,5 → interact bottle-2 → move 10,5 → interact bottle-3
+  fail bottles-out-of-order: interact bottle-2 → assert flag dg12.dose => soft
+  recover: move 6,5 → interact bottle-1 → move 8,5 → interact bottle-2 → move 10,5 → interact bottle-3
+DG12-R11 main
+  solve: miniboss begin → move 8,5 → miniboss light → move 9,5 → miniboss light → move 10,5 → miniboss light → move 16,6 → exit east
+  fail god-light-does-not-scatter: miniboss begin → miniboss light => GOD_SEALED
+  recover: set-form → move 8,5 → miniboss light → move 9,5 → miniboss light → move 10,5 → miniboss light
+DG12-R12 optional
+  solve: move 16,6 → exit east
+  fail thread-before-all-four: interact take-thread => FLAG_MISSING
+  recover: move 16,6 → exit east
+DG12-R13 main
+  solve: move 4,5 → interact mile-r13 → move 16,6 → exit east
+  fail door-without-the-void: exit east => EXIT_CLOSED
+  recover: move 4,5 → interact mile-r13
+DG12-R14 main
+  solve: move 4,2 → interact mile-r14 → boss begin → move 6,6 → boss net u1 → move 9,6 → boss net u2 → move 12,6 → boss net u3 → move 9,5 → boss pin-book → boss strike hammer → move 8,8 → boss crank → move 14,6 → boss cross
+  fail arrows-open-the-door-and-miss-the-kept-years: boss begin → move 6,6 → boss shoot bow u1 → move 9,6 → boss shoot bow u2 → move 12,6 → boss shoot bow u3 → move 9,5 → boss pin-book → boss strike hammer → move 8,8 → boss crank → move 14,6 → boss cross => soft
+DG12-R15 optional
+  solve: move 8,6 → interact read-cots
+  fail cot-wall: move 0,2 => NO_PATH
+  recover: move 8,6 → interact read-cots
+DG12-R16 main
+  solve: move 2,3 → interact mile-r16 → move 15,6 → exit east
+  fail god-does-not-walk-the-void: move 15,6 => NO_PATH
+  recover: set-form → move 15,6 → exit east
