@@ -18,11 +18,33 @@ import {
 import {
   makeTileCache,
   makePropCache,
-  paintShadow,
+  paintBuilding16,
+  paintCave16,
+  paintGrave16,
   paintHudALttP,
+  paintKey16,
+  paintLock16,
+  paintNpc16,
+  paintPot16,
+  paintRock16,
+  paintShadow,
+  paintSheep16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
+import {
+  act,
+  chestOffer,
+  liveView,
+  moveSelection,
+  panelCopy,
+  primaryVerb,
+  resolveVerbs,
+  stableRifleRounds,
+  weaponOffer,
+  type LootOffer,
+  type LootView,
+} from "./quick-loot";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
@@ -159,6 +181,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let messageT = 0;
   let dialogue: DialogueNode | null = null;
   let interactHint: string | null = null;
+  let loot: {
+    propId: string;
+    source: "chest" | "cache" | "rifle";
+    view: LootView;
+    weapon: Weapon | null;
+    note: string | null;
+  } | null = null;
+  let lootNavArmed = false;
+  let lootNav = 0;
+  const seenLots = new Set<string>();
   let endingBeat = 0;
   let endingT = 0;
   let showHelp = false;
@@ -255,6 +287,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const loadWorld = (id: MapId, px?: number, py?: number) => {
+    loot = null;
+    lootNavArmed = false;
+    lootNav = 0;
     mapId = id;
     world = buildMap(id, save.flags, save.cycle, {
       homeX: save.flags.homeX,
@@ -317,6 +352,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const enterLimbo = (_reason: string) => {
+    loot = null;
+    lootNavArmed = false;
+    lootNav = 0;
     audio.die();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
     mode = "limbo";
@@ -784,7 +822,133 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const phaseOpen = () => save.cycle >= 1 || save.flags.townsCleared.length > 0 || save.flags.residentFate != null;
 
+  const dismissLoot = () => {
+    loot = null;
+    lootNavArmed = false;
+    lootNav = 0;
+    say("You leave it.");
+  };
+
+  const grantTaken = (
+    hold: {
+      propId: string;
+      source: "chest" | "cache" | "rifle";
+      weapon: Weapon | null;
+    },
+    taken: LootOffer[],
+  ) => {
+    const offer = taken[0];
+    if (!offer) return;
+    if (offer.kind === "heart") {
+      save.maxHp += 1;
+      player.maxHp = save.maxHp;
+      player.hp = save.maxHp;
+      save.flags.chests = [...save.flags.chests, hold.propId];
+      say("A spare heart, hidden in the county.");
+    } else if (offer.kind === "karma") {
+      addKarma(5);
+      save.flags.chests = [...save.flags.chests, hold.propId];
+      say("A knot of stored merit.");
+    } else if (offer.kind === "weapon" && hold.weapon) {
+      save.inventory = [...save.inventory, hold.weapon];
+      if (hold.source === "rifle") {
+        save.flags.riflesTaken = [...save.flags.riflesTaken, hold.propId];
+        say(hold.weapon.name + " — " + (hold.weapon.ammo ?? 0) + " rounds. That is all they kept. It stays in the pack.");
+      } else {
+        save.flags.caches = [...save.flags.caches, hold.propId];
+        say(hold.weapon.name + " — " + hold.weapon.flavor + " It stays in the pack.");
+      }
+    } else {
+      return;
+    }
+    props = props.filter((x) => x.id !== hold.propId);
+    audio.pickup();
+    persist();
+  };
+
+  const applyLootVerb = (verb: "take-one" | "inspect" | "compare" | "leave") => {
+    if (!loot) return;
+    const result = act(loot.view, verb);
+    if (result.act.kind === "take") {
+      const hold = loot;
+      loot = null;
+      lootNavArmed = false;
+      lootNav = 0;
+      grantTaken(hold, result.act.taken);
+      return;
+    }
+    if (result.act.kind === "leave") {
+      dismissLoot();
+      return;
+    }
+    loot.view = result.view;
+    if (result.act.kind === "inspect" || result.act.kind === "compare") {
+      loot.note = result.act.lines.join(" ");
+    }
+  };
+
+  const driveLoot = (actions: Actions) => {
+    if (!loot) return;
+    const nav = actions.moveY < -0.4 ? -1 : actions.moveY > 0.4 ? 1 : 0;
+    if (nav === 0) lootNavArmed = true;
+    if (lootNavArmed && nav !== 0 && nav !== lootNav) {
+      loot.view = moveSelection(loot.view, nav === -1 ? -1 : 1);
+      loot.note = null;
+    }
+    lootNav = nav;
+    if (actions.interactPressed) {
+      const primary = primaryVerb(resolveVerbs(loot.view));
+      if (primary?.id === "take-one" || primary?.id === "inspect") applyLootVerb(primary.id);
+    } else if (actions.itemPressed) applyLootVerb("inspect");
+    else if (actions.cyclePressed) applyLootVerb("compare");
+  };
+
+  const openLoot = (p: PropSpec) => {
+    const fresh = !seenLots.has(p.id);
+    seenLots.add(p.id);
+    let weapon: Weapon | null = null;
+    let offer: LootOffer;
+    if (p.kind === "chest") {
+      offer = chestOffer(p.id, fresh);
+    } else {
+      const arch = p.kind === "rifle" ? "farmhouse" : (p.cache ?? "downtown");
+      weapon = rollWeapon(p.id, arch, save.cycle);
+      if (p.kind === "rifle") weapon = { ...weapon, ammo: stableRifleRounds(p.id, save.cycle) };
+      offer = weaponOffer({
+        id: weapon.id,
+        name: weapon.name,
+        blurb: weapon.flavor,
+        dmg: weapon.dmg,
+        reach: weapon.reach,
+        ammo: weapon.ammo,
+        rare: weapon.affixes.some((a) => a.magic || a.cursed),
+        fresh,
+      });
+    }
+    const pack = save.inventory.map((w) => ({
+      id: w.id,
+      name: w.name,
+      qty: 1,
+      owner: "",
+      compareGroup: "weapon",
+      stats: [
+        { label: "Edge", value: Math.round(w.dmg * 10) },
+        { label: "Reach", value: Math.round(w.reach) },
+      ],
+    }));
+    lootNavArmed = false;
+    lootNav = 0;
+    loot = {
+      propId: p.id,
+      source: p.kind === "rifle" ? "rifle" : p.kind === "cache" ? "cache" : "chest",
+      view: liveView([offer], pack),
+      weapon,
+      note: null,
+    };
+  };
+
   const interactWith = (p: PropSpec) => {
+    if (loot) return;
     if (p.kind === "npc") {
       if (!save.flags.talked.includes(p.id)) save.flags.talked = [...save.flags.talked, p.id];
       save.flags.returnedFromDeath = false;
@@ -852,16 +1016,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (p.kind === "door" || p.kind === "cave") {
       if (warpLock > 0) return;
       enterDoor(p);
-    } else if (p.kind === "rifle") {
-      const w = rollWeapon(p.id, "farmhouse", save.cycle);
-      w.ammo = 1 + Math.floor(Math.random() * 3);
-      save.inventory = [...save.inventory, w];
-      save.equippedId = w.id;
-      save.flags.riflesTaken = [...save.flags.riflesTaken, p.id];
-      props = props.filter((x) => x.id !== p.id);
-      audio.pickup();
-      say(w.name + " — " + w.ammo + " rounds. That is all they kept.");
-      persist();
+    } else if (p.kind === "rifle" || p.kind === "cache" || p.kind === "chest") {
+      openLoot(p);
     } else if (p.kind === "relic") {
       const id = (p.relic ?? "shovel") as RelicId;
       if (!save.flags.relics.includes(id)) save.flags.relics = [...save.flags.relics, id];
@@ -921,30 +1077,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
       say("Maple creemee. Extra fat. Mana.");
-      persist();
-    } else if (p.kind === "cache") {
-      const w = rollWeapon(p.id, p.cache ?? "downtown", save.cycle);
-      save.inventory = [...save.inventory, w];
-      save.equippedId = w.id;
-      save.flags.caches = [...save.flags.caches, p.id];
-      props = props.filter((x) => x.id !== p.id);
-      audio.pickup();
-      say(w.name + " — " + w.flavor);
-      persist();
-    } else if (p.kind === "chest") {
-      save.flags.chests = [...save.flags.chests, p.id];
-      props = props.filter((x) => x.id !== p.id);
-      const roll = p.id.includes("quarry") ? "heart" : Math.random() < 0.5 ? "karma" : "heart";
-      if (roll === "heart") {
-        save.maxHp += 1;
-        player.maxHp = save.maxHp;
-        player.hp = save.maxHp;
-        say("A spare heart, hidden in the county.");
-      } else {
-        addKarma(5);
-        say("A knot of stored merit.");
-      }
-      audio.pickup();
       persist();
     } else if (p.kind === "warp") {
       if (warpLock > 0) return;
@@ -1414,6 +1546,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       return;
     }
     if (mode !== "play") return;
+    if (loot) return;
 
     animT += dt;
     if (warpLock > 0) warpLock -= dt;
@@ -1638,11 +1771,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           ? "Enter"
         : near.kind === "cave"
           ? "Cave"
-        : near.kind === "chest" || near.kind === "cache"
+        : near.kind === "chest" || near.kind === "cache" || near.kind === "rifle"
           ? "Open"
-          : near.kind === "rifle"
-            ? "Take rifle"
-            : near.kind === "syrup" || near.kind === "creemee"
+          : near.kind === "syrup" || near.kind === "creemee"
               ? "Take"
               : near.kind === "shrine"
                 ? "Hold Release"
@@ -1660,7 +1791,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                   ? "The homestead"
                   : "Talk"
       : null;
-    if (actions.interactPressed && near) interactWith(near);
+    if (actions.interactPressed && near) {
+      interactWith(near);
+      if (loot) return;
+    }
     if (near?.kind === "door" && player.dir === 3 && my < -0.15) {
       const d = Math.hypot(near.x * TILE + 8 - player.x, near.y * TILE + 8 - player.y);
       if (d < 12) enterDoor(near);
@@ -1936,6 +2070,35 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       });
     }
     bctx.drawImage(hudLayer, 0, 0);
+  };
+
+  const drawLootPanel = () => {
+    if (!loot) return;
+    const copy = panelCopy(
+      loot.source === "cache" ? "Cache" : loot.source === "rifle" ? "Rifle" : "Chest",
+      loot.view,
+      loot.note,
+    );
+    const x = 8;
+    const y = 168;
+    const w = 304;
+    const h = 64;
+    bctx.fillStyle = "#100c08";
+    bctx.fillRect(x, y, w, h);
+    bctx.fillStyle = "#c4a574";
+    bctx.fillRect(x, y, w, 1);
+    bctx.fillRect(x, y + h - 1, w, 1);
+    bctx.fillRect(x, y, 1, h);
+    bctx.fillRect(x + w - 1, y, 1, h);
+    bctx.font = "8px monospace";
+    bctx.fillStyle = "#e8c36a";
+    bctx.fillText(copy.heading.slice(0, 46), x + 6, y + 12);
+    bctx.fillStyle = "#f4efe2";
+    bctx.fillText(copy.line.slice(0, 46), x + 6, y + 26);
+    bctx.fillStyle = "#c4bba8";
+    bctx.fillText(copy.detail.slice(0, 46), x + 6, y + 40);
+    bctx.fillStyle = "#e8c36a";
+    bctx.fillText(copy.foot.slice(0, 46), x + 6, y + 54);
   };
 
   const draw = (_t: number) => {
@@ -2293,8 +2456,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     drawHudBar();
     bctx.fillStyle = "#e8c36a";
     bctx.font = "8px monospace";
-    if (interactHint) bctx.fillText(interactHint.toUpperCase(), 6, SNES_H - 6);
-    else if (message) bctx.fillText(message.slice(0, 52), 6, SNES_H - 6);
+    if (interactHint && !loot) bctx.fillText(interactHint.toUpperCase(), 6, SNES_H - 6);
+    else if (message && !loot) bctx.fillText(message.slice(0, 52), 6, SNES_H - 6);
+    drawLootPanel();
 
     const fit = Math.min(w / SNES_W, h / SNES_H);
     const scale = Math.max(1, Math.floor(fit));
@@ -2432,7 +2596,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const raw = Math.min(0.1, (now - last) / 1000);
     last = now;
     const actions = input.sample();
-    if (mode === "play" && actions.pausePressed) {
+    if (mode === "play" && loot) {
+      if (actions.pausePressed) dismissLoot();
+      else driveLoot(actions);
+    } else if (mode === "play" && actions.pausePressed) {
       mode = "pause";
       persist();
     } else if (mode === "pause" && actions.pausePressed && !showHelp) {
@@ -2491,6 +2658,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const onPointerDown = (e: PointerEvent) => {
     if (mode !== "play") return;
+    if (loot) return;
     const w = eventToWorld(e);
     if (!w.onWorld) return;
     e.preventDefault();
@@ -2549,6 +2717,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const moved = Math.hypot(e.clientX - downX, e.clientY - downY);
     const wasHold = mouseHeld && heldFor >= 400;
     mouseHeld = false;
+    if (loot) {
+      walkTarget = null;
+      pendingProp = null;
+      return;
+    }
     if (e.button !== 0) return;
     if (mode !== "play") return;
     input.notePointer(e, "canceled");
@@ -2621,6 +2794,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         ledger: mode === "limbo" ? cycleLedger(save) : null,
         keys: save.flags.keys,
         chests: save.flags.chests.slice(),
+        caches: save.flags.caches.slice(),
+        rifles: save.flags.riflesTaken.slice(),
+        equippedId: save.equippedId,
+        inventory: save.inventory.map((w) => w.id),
+        loot: loot
+          ? {
+              source: loot.source,
+              propId: loot.propId,
+              selected: loot.view.selected,
+              name: loot.view.offers[loot.view.selected ?? -1]?.name ?? "",
+            }
+          : null,
         townsCleared: (save.flags.townsCleared ?? []).slice(),
         year: save.flags.year,
         graves: (save.flags.graves ?? []).map((g) => ({ id: g.id, mapId: g.mapId, excavated: g.excavated })),
