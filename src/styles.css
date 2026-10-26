@@ -14,6 +14,17 @@
   --color-karma-pos: #7ec8a3;
   --color-karma-neg: #b07ad6;
   --color-heart: #d45d5d;
+  --color-paper: #e7dcc8;
+  --color-paper-2: #f4ecdf;
+  --color-ink: #1e1a14;
+  --color-muted: #6b6156;
+  --color-maple: #8f3d1b;
+  --color-maple-ink: #f6efe4;
+  --color-creek: #3d5c57;
+  --color-creek-ink: #f3f6f4;
+  --color-line: #d4c6b0;
+  --color-brass: #8a6a32;
+  --shadow-card: 0px 0px 0px 1px rgba(30, 26, 20, 0.08), 0px 1px 2px -1px rgba(30, 26, 20, 0.06), 0px 2px 4px 0px rgba(30, 26, 20, 0.04);
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
