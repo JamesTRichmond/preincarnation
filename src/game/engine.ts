@@ -6,6 +6,7 @@ import { gpsOnCounty } from "./raster";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
+import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
 import {
@@ -789,6 +790,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (world.tiles[p.y]) world.tiles[p.y][p.x] = T.marble;
       say("The lock gives.");
       persist();
+    } else if (p.kind === "wheel") {
+      if (!save.flags.chests.includes(p.id)) save.flags.chests = [...save.flags.chests, p.id];
+      props = props.filter((x) => x.id !== p.id);
+      for (const cell of BELL_SLUICE) {
+        if (world.tiles[cell.y]) world.tiles[cell.y][cell.x] = T.wood;
+      }
+      say("The race turns. The sluice lifts. The clapper is still not yours.");
+      persist();
     } else if (p.kind === "grave") {
       if (!save.flags.relics.includes("shovel")) {
         say("A mound. Your last skin. You need a shovel.");
@@ -1448,6 +1457,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       ? near.kind === "warp"
         ? near.id.includes("quarry")
           ? "Marble Vein"
+          : near.warp?.map === "bell"
+            ? "The bell"
           : near.id.includes("soloverse") || near.id.includes("seam")
             ? "Soloverse"
             : "Enter"
@@ -1471,6 +1482,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                   ? "Key"
                   : near.kind === "lock"
                     ? "Unlock"
+                    : near.kind === "wheel"
+                      ? "Turn"
                     : near.kind === "home"
                   ? "The homestead"
                   : "Talk"
@@ -1757,6 +1770,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (p.kind === "grave") paintGrave16(bctx, dx, dy);
       else if (p.kind === "key") paintKey16(bctx, dx, dy);
       else if (p.kind === "lock") paintLock16(bctx, dx, dy);
+      else if (p.kind === "wheel") {
+        bctx.strokeStyle = "#8a5a2a";
+        bctx.strokeRect(dx + 3, dy + 3, 10, 10);
+        bctx.fillStyle = "#c4a574";
+        bctx.fillRect(dx + 7, dy + 4, 2, 8);
+        bctx.fillRect(dx + 4, dy + 7, 8, 2);
+      }
       else if (p.kind === "cave") paintCave16(bctx, dx, dy);
       else if (p.kind === "relic") {
         const sheet = images.get("relics");
