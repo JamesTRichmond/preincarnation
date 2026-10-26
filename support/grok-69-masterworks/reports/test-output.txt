@@ -1,0 +1,100 @@
+proofs 81/81
+ok 001 Margin Blade
+ok 002 Windup Brand
+ok 003 Backstep Haft
+ok 004 Stillwater Rod
+ok 005 Banked Rake
+ok 006 Courtesy Split
+ok 007 Vein Jab
+ok 008 Creek Cast
+ok 009 Hitch Ladle
+ok 010 Lofted Ash
+ok 011 Path Brand
+ok 012 Absence Notch
+ok 013 Knee Spear
+ok 014 Measured Maul
+ok 015 Courtesy Knife
+ok 016 Grave Fork
+ok 017 Ribbon Carbine
+ok 018 Pairing Stick
+ok 019 Breath Hook
+ok 020 Last-light Sickle
+ok 021 Narrowcoat
+ok 022 Shifted-Mass Belt
+ok 023 Quench Cloak
+ok 024 Delay Mantle
+ok 025 Vein Pauldrons
+ok 026 Creek Waders
+ok 027 Sugar Sash
+ok 028 Lamp Collar
+ok 029 Second-Step Vest
+ok 030 Counter Shawl
+ok 031 Swap Harness
+ok 032 Interrupt Padding
+ok 033 Still Coat
+ok 034 Marker Poncho
+ok 035 Pot Yoke
+ok 036 Form Doublet
+ok 037 Mercy Stole
+ok 038 Creek Scarf
+ok 039 Cinder Cowl
+ok 040 Second-hand Coat
+ok 041 Kiln Charm
+ok 042 Debt Bead
+ok 043 Empty Pocket
+ok 044 Grave Bell
+ok 045 Sugar Cube
+ok 046 Creek Stone
+ok 047 Cinder Seed
+ok 048 Lamp Moth
+ok 049 Wager Coin
+ok 050 Interrupt Thimble
+ok 051 Pair Thread
+ok 052 Form Key
+ok 053 Margin Charm
+ok 054 Old Iron Nail
+ok 055 Quarry Tick
+ok 056 Repeat Marble
+ok 057 Swap Locket
+ok 058 Courtesy Bead
+ok 059 Still Heart
+ok 060 Path Chalk
+ok 061 Vein Fitting
+ok 062 Pot Bell
+ok 063 Shrine Cup
+ok 064 Form Pliers
+ok 065 Margin Stake
+ok 066 Tether Spike
+ok 067 Interrupt Whistle
+ok 068 Creek Bucket
+ok 069 Catch Pan
+ok 070 Sugar Rag
+ok 071 Absence Mask
+ok 072 Legacy Strap
+ok 073 Comparison Lens
+ok 074 Identity Chisel
+ok 075 Restore Cloth
+ok 076 Swap Hook
+ok 077 Quarry Wedge
+ok 078 Lamp Snuff
+ok 079 Damage Seal
+ok 080 Breath Chalk
+ok 000 Legacy kit
+
+Kitchen-door Winchester — Foe two tiles out, room around you
+Short iron — Foe on the next tile
+Margin Blade — Winchester with an empty magazine, foe adjacent
+Short iron — You are unhurt
+Damage Seal — First cut with the seal armed
+Short iron — The cut after the seal has fired
+Gap boots — Dodge while the telegraph still has half a second
+tie — Dodge inside the coat's short window
+Bare hands — Pot on open ground
+Quarry Wedge — Pot in the pillar corridor
+Creek Cast — Foe standing on water, two tiles out
+Short iron — Foe on dry ground, within iron's reach
+Grave Fork — Foe standing on the grave
+Short iron — Foe standing on ordinary ground
+Pairing Stick — Pairing stick with the other slots empty
+Short iron — Pairing stick inside a full masterwork kit
+Margin Blade — Margin blade with the old nail, foe two tiles out

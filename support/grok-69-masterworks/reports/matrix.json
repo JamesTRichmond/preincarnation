@@ -1,0 +1,307 @@
+{
+  "rows": [
+    {
+      "id": "open-field",
+      "situation": "Foe two tiles out, room around you",
+      "winner": "Kitchen-door Winchester",
+      "scores": [
+        {
+          "name": "Kitchen-door Winchester",
+          "value": 2.2
+        },
+        {
+          "name": "Margin Blade",
+          "value": 1.7
+        },
+        {
+          "name": "Short iron",
+          "value": 0
+        },
+        {
+          "name": "Seed kit",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "clinch",
+      "situation": "Foe on the next tile",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Margin Blade",
+          "value": 0.45
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        },
+        {
+          "name": "Seed kit",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "dry-rifle",
+      "situation": "Winchester with an empty magazine, foe adjacent",
+      "winner": "Margin Blade",
+      "scores": [
+        {
+          "name": "Kitchen-door Winchester",
+          "value": 0
+        },
+        {
+          "name": "Margin Blade",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "full-health",
+      "situation": "You are unhurt",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Last-light Sickle",
+          "value": 0
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "seal-open",
+      "situation": "First cut with the seal armed",
+      "winner": "Damage Seal",
+      "scores": [
+        {
+          "name": "Damage Seal",
+          "value": 1.5
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "seal-follow",
+      "situation": "The cut after the seal has fired",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Damage Seal",
+          "value": 0.75
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "panic-dodge",
+      "situation": "Dodge while the telegraph still has half a second",
+      "winner": "Gap boots",
+      "scores": [
+        {
+          "name": "Gap boots",
+          "value": 0.28
+        },
+        {
+          "name": "Narrowcoat",
+          "value": 0
+        },
+        {
+          "name": "Seed kit",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "narrow-dodge",
+      "situation": "Dodge inside the coat's short window",
+      "winner": "tie",
+      "scores": [
+        {
+          "name": "Narrowcoat",
+          "value": 1
+        },
+        {
+          "name": "Gap boots",
+          "value": 0
+        },
+        {
+          "name": "Seed kit",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "open-shove",
+      "situation": "Pot on open ground",
+      "winner": "Bare hands",
+      "scores": [
+        {
+          "name": "Bare hands",
+          "value": 2
+        },
+        {
+          "name": "Quarry Wedge",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "corridor-shove",
+      "situation": "Pot in the pillar corridor",
+      "winner": "Quarry Wedge",
+      "scores": [
+        {
+          "name": "Bare hands",
+          "value": 2
+        },
+        {
+          "name": "Quarry Wedge",
+          "value": 3
+        },
+        {
+          "name": "Seed kit",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "water-body",
+      "situation": "Foe standing on water, two tiles out",
+      "winner": "Creek Cast",
+      "scores": [
+        {
+          "name": "Creek Cast",
+          "value": 1.8
+        },
+        {
+          "name": "Short iron",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "dry-cast",
+      "situation": "Foe on dry ground, within iron's reach",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Creek Cast",
+          "value": 0
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "on-grave",
+      "situation": "Foe standing on the grave",
+      "winner": "Grave Fork",
+      "scores": [
+        {
+          "name": "Grave Fork",
+          "value": 2
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "off-grave",
+      "situation": "Foe standing on ordinary ground",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Grave Fork",
+          "value": 0.4
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "lone-stick",
+      "situation": "Pairing stick with the other slots empty",
+      "winner": "Pairing Stick",
+      "scores": [
+        {
+          "name": "Pairing Stick",
+          "value": 1.45
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "crowded-stick",
+      "situation": "Pairing stick inside a full masterwork kit",
+      "winner": "Short iron",
+      "scores": [
+        {
+          "name": "Pairing Stick",
+          "value": 0
+        },
+        {
+          "name": "Short iron",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "nailed-margin",
+      "situation": "Margin blade with the old nail, foe two tiles out",
+      "winner": "Margin Blade",
+      "scores": [
+        {
+          "name": "Old Iron Nail",
+          "value": 1
+        },
+        {
+          "name": "Margin Blade",
+          "value": 1.7
+        },
+        {
+          "name": "Short iron",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "found": {
+    "winners": [
+      "Kitchen-door Winchester",
+      "Short iron",
+      "Margin Blade",
+      "Damage Seal",
+      "Gap boots",
+      "tie",
+      "Bare hands",
+      "Quarry Wedge",
+      "Creek Cast",
+      "Grave Fork",
+      "Pairing Stick"
+    ],
+    "ironWins": true,
+    "bootsWin": true,
+    "rifleWins": true,
+    "kitWinsAll": false,
+    "foeStillThere": true
+  }
+}
