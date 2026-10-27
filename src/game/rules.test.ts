@@ -5,6 +5,7 @@ import {
   applyUpgrade,
   bodyStats,
   bondKeepsake,
+  chapterSkillAward,
   cycleLedger,
   cycleReturnNode,
   devilThreshold,
@@ -109,9 +110,10 @@ describe("skill award", () => {
 });
 
 describe("wintersPassed", () => {
-  it("is fourteen to eighteen", () => {
+  it("is exactly fourteen", () => {
     assert.equal(wintersPassed(() => 0), 14);
-    assert.equal(wintersPassed(() => 0.99), 18);
+    assert.equal(wintersPassed(() => 0.99), 14);
+    assert.equal(wintersPassed(), 14);
   });
 });
 
@@ -238,6 +240,41 @@ describe("resolveDeath", () => {
     s.character.skillPoints = 0;
     resolveDeath(s, { mapId: "middlebury", x: 0, y: 0 }, 14);
     assert.equal(s.character.skillPoints, 2);
+  });
+
+  it("stops paying skill once the purse already covers every rank", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    s.upgrades.vitality = 3;
+    s.upgrades.edge = 3;
+    s.upgrades.stride = 3;
+    s.upgrades.sight = 1;
+    s.upgrades.shadowStep = 1;
+    s.upgrades.wraithBond = 1;
+    resolveDeath(s, { mapId: "quarry", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, 0);
+    assert.equal(s.flags.lastSkillAward, 0);
+    assert.equal(s.cycle, 1);
+    assert.match(cycleLedger(s).thisLife, /Spend what you hold/);
+  });
+
+  it("pays only the ranks the purse is still short", () => {
+    const s = copy();
+    s.character.skillPoints = 11;
+    s.upgrades.vitality = 0;
+    resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.flags.lastSkillAward, 1);
+    assert.equal(s.character.skillPoints, 12);
+    assert.equal(chapterSkillAward(s), 0);
+  });
+
+  it("twenty deaths do not mint skill past the ranks you can buy", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    for (let i = 0; i < 20; i++) resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, 12);
+    assert.equal(s.cycle, 20);
+    assert.equal(chapterSkillAward(s), 0);
   });
 });
 

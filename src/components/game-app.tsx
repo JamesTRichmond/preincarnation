@@ -393,37 +393,12 @@ function Pause({
               </p>
             </article>
           </div>
-          <p className="mt-2 text-xs text-fg-subtle">
-            This swing is the strike formula for the body you are. It is not a ranking.
-          </p>
+          <p className="mt-2 text-xs text-fg-subtle">This swing is the strike for the body you are. It is not a ranking.</p>
           <p className="mt-2 text-sm text-fg-muted" data-testid="kit-swap">
             {ui.kit.swap}
           </p>
           {ui.kit.missing && <p className="mt-2 text-sm text-fg">{ui.kit.missing}</p>}
           <p className="mt-2 text-sm text-fg-muted">{ui.kit.yLine}</p>
-          <details className="mt-3">
-            <summary className="cursor-pointer text-sm text-fg">Read the steel</summary>
-            <div className="mt-2 grid gap-3 sm:grid-cols-2 text-xs text-fg-muted">
-              <div>
-                <p>{ui.kit.sheetHand}</p>
-                <ul className="mt-1 list-disc pl-4">
-                  {ui.kit.clausesHand.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
-                <p className="mt-1">{ui.kit.flavorHand}</p>
-              </div>
-              <div>
-                <p>{ui.kit.sheetNext ?? "No second blade."}</p>
-                <ul className="mt-1 list-disc pl-4">
-                  {ui.kit.clausesNext.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
-                {ui.kit.flavorNext && <p className="mt-1">{ui.kit.flavorNext}</p>}
-              </div>
-            </div>
-          </details>
         </section>
 
         <h3 className="mt-5 font-display text-xl">Move</h3>

@@ -1,11 +1,20 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
 import { createDeck, EMPTY_DECK } from "./ipod";
-import { locatePlayer, TOWN_BY_ID } from "./geography";
-import { gpsOnCounty } from "./raster";
+import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
+import {
+  lipStep,
+  noteAttackDuringHitstop,
+  releaseAttackBuffer,
+  resolveFacing,
+  scaleHitstop,
+  stepCamera,
+  type AxisMem,
+} from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
+import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
@@ -33,7 +42,6 @@ import {
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
-import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
 
@@ -53,6 +61,8 @@ type Actor = {
   slow: number;
   burn: number;
   stoned: number;
+  beat: SentinelBeat;
+  tell: number;
 };
 
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
@@ -132,6 +142,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     slow: 0,
     burn: 0,
     stoned: 0,
+    beat: "still",
+    tell: 0,
   };
   let enemies: Actor[] = [];
   let particles: Particle[] = [];
@@ -162,6 +174,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let ritual = 0;
   let dashT = 0;
   let hitstop = 0;
+  let attackQueued = false;
+  let faceMem: AxisMem = null;
   let trauma = 0;
   let camX = save.x;
   let camY = save.y;
@@ -175,10 +189,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
-  let weather: WeatherState | null = null;
   let playerStoned = 0;
   let flash = 0;
   const images = new Map<string, HTMLImageElement>();
@@ -260,6 +273,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         slow: 0,
         burn: 0,
         stoned: 0,
+        beat: "still",
+        tell: 0,
       });
     }
   };
@@ -377,49 +392,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     say("Fourteen winters. " + save.flags.year + ". Same hands. The county aged. The job did not.");
   };
 
-  const applyLocation = (lat: number, lng: number, announce: boolean) => {
-    const loc = locatePlayer(lat, lng);
-    save.flags.geoLat = lat;
-    save.flags.geoLng = lng;
-    save.flags.geoTown = loc.town.id;
-    save.flags.homeX = loc.localX;
-    save.flags.homeY = loc.localY;
-    void fetchWeather(loc.town.lat, loc.town.lng).then((w) => {
-      weather = w ?? {
-        tempF: 52,
-        code: 2,
-        wind: 4,
-        isDay: vtHour() >= 6 && vtHour() < 20,
-        precip: 0,
-        label: { id: "cloud", name: "Cloudy" },
-        lat: loc.town.lat,
-        lng: loc.town.lng,
-      };
-    });
-    if (announce) {
-      const where = loc.inVermont
-        ? loc.km < 18
-          ? "You woke in " + loc.town.name + "."
-          : loc.town.name + " is the nearest town (" + Math.round(loc.km) + " km)."
-        : "Far from Vermont. The county borrowed your shadow — " + loc.town.name + ".";
-      say(where + " Houses open. Rifles hang. The map is the land.");
-    }
-    return loc;
-  };
-
-  const senseWorld = async (warp: boolean) => {
-    const pos = await requestGeo();
-    const coords = pos ?? { lat: 44.0153, lng: -73.1673 };
-    const loc = applyLocation(coords.lat, coords.lng, true);
-    if (warp) {
-      if (loc.onOverworld) {
-        const dest = gpsOnCounty(loc.town.county, coords.lat, coords.lng);
-        loadWorld(dest.map, dest.x * TILE + 8, dest.y * TILE + 8);
-      } else {
-        loadWorld(loc.town.id);
-      }
-      persist();
-    }
+  const senseWorld = () => {
+    /* The county is authored. No device location, no forecast. */
   };
 
   const startNew = () => {
@@ -439,7 +413,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } catch {
       /* ignore */
     }
-    void senseWorld(false);
   };
 
   const continueGame = () => {
@@ -462,14 +435,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     audio.unlock();
     audio.startDrone(mode === "limbo");
     lastUi = "";
-    if (save.flags.geoLat != null && save.flags.geoLng != null) {
-      void fetchWeather(save.flags.geoLat, save.flags.geoLng).then((w) => {
-        weather = w;
-      });
-    } else {
-      const t = TOWN_BY_ID[save.mapId];
-      if (t) void fetchWeather(t.lat, t.lng).then((w) => (weather = w));
-    }
     try {
       cvs.focus();
     } catch {
@@ -1083,10 +1048,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const moveActor = (a: Actor, dx: number, dy: number) => {
-    if (dx && !blocked(a.x + dx, a.y)) a.x += dx;
-    else if (dx && !blocked(a.x + dx * 0.5, a.y)) a.x += dx * 0.5;
-    if (dy && !blocked(a.x, a.y + dy)) a.y += dy;
-    else if (dy && !blocked(a.x, a.y + dy * 0.5)) a.y += dy * 0.5;
+    const next = lipStep(a.x, a.y, dx, dy, (x, y) => blocked(x, y));
+    a.x = next.x;
+    a.y = next.y;
   };
 
   const burst = (x: number, y: number, color: string, n = 8) => {
@@ -1110,12 +1074,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     e.hp -= dmg;
     e.hurt = 0.22;
     const k = DIRS[dir];
-    e.x += k.x * 10;
-    e.y += k.y * 10;
+    moveActor(e, k.x * 10, k.y * 10);
     burst(e.x, e.y, "#f4efe2", 10);
     floats.push({ x: e.x, y: e.y - 10, t: 0.55, text: String(Math.max(1, Math.round(dmg))), color: "#f4efe2" });
     audio.hit();
-    hitstop = 0.07;
+    hitstop = scaleHitstop(0.07, reduced);
     trauma = Math.min(1, trauma + 0.32);
     if (aff?.lifesteal) {
       player.hp = Math.min(player.maxHp, player.hp + aff.lifesteal);
@@ -1127,7 +1090,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (e.hp <= 0) {
       e.alive = false;
       burst(e.x, e.y, "#c45c4a", 22);
-      hitstop = 0.11;
+      hitstop = scaleHitstop(0.11, reduced);
       trauma = Math.min(1, trauma + 0.45);
       noteDeed("You killed a " + e.kind + " in " + mapId);
       if (save.character.idealId !== "mercy") addKarma(aff?.karmaOnKill ? 2 + aff.karmaOnKill : 1);
@@ -1146,13 +1109,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
-  const hurtPlayer = (amt: number) => {
+  const hurtPlayer = (amt: number, fromX = player.x, fromY = player.y) => {
     if (invuln > 0) return;
     player.hp -= amt;
     save.hp = player.hp;
     invuln = 0.85;
+    const away = Math.hypot(player.x - fromX, player.y - fromY) || 1;
+    moveActor(player, ((player.x - fromX) / away) * 8, ((player.y - fromY) / away) * 8);
     audio.hurt();
     trauma = Math.min(1, trauma + 0.55);
+    hitstop = scaleHitstop(Math.max(hitstop, 0.05), reduced);
     if (player.hp <= 0) enterLimbo("The body fails. The cycle completes. You will be louder.");
   };
 
@@ -1230,9 +1196,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
+  const noteBladeOnMarble = () => {
+    const k = DIRS[player.dir];
+    const tx = Math.floor((player.x + k.x * 12) / TILE);
+    const ty = Math.floor((player.y + k.y * 12) / TILE);
+    if (world.tiles[ty]?.[tx] !== T.cracked) return;
+    say(strikeMarble("blade", crackRole(mapId, tx, ty)).line);
+  };
+
   const startCombo = () => {
     fireSlash();
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.1;
   };
 
@@ -1249,6 +1224,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.18;
     charge = 0;
   };
@@ -1306,6 +1282,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const lands = quarryHammerLands(mapId === "quarry", save.flags.relics.includes("lantern"), save.flags.lanternOn);
     let opened = false;
     let blind = false;
+    let decoy = false;
     for (const [ox, oy] of [
       [0, 0],
       [-1, 0],
@@ -1316,6 +1293,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const x = tx + ox;
       const y = ty + oy;
       if (world.tiles[y]?.[x] !== T.cracked) continue;
+      if (crackRole(mapId, x, y) === "decoy") {
+        decoy = true;
+        continue;
+      }
       if (!lands) {
         blind = true;
         continue;
@@ -1327,11 +1308,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       burst(x * TILE + 8, y * TILE + 8, "#c4bba8", 12);
       opened = true;
     }
-    if (blind && !opened) say("The marble is blind. Open the lamp, then the hammer.");
-    else if (opened) {
-      say("The plug gives. North is open.");
+    if (opened) {
+      say(strikeMarble("hammer", "true").line);
       persist();
-    }
+    } else if (blind) say("The marble is blind. Open the lamp, then the hammer.");
+    else if (decoy) say(strikeMarble("hammer", "decoy").line);
     fireSlash();
     attackT = 0.2;
   };
@@ -1433,7 +1414,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (dashT > 0) dashT -= dt;
     if (playerStoned > 0) playerStoned -= dt;
     if (flash > 0) flash -= dt;
-    if (weather?.label.id === "storm" && Math.random() < dt * 0.15) flash = 0.08;
     if (messageT > 0) {
       messageT -= dt;
       if (messageT <= 0) message = null;
@@ -1454,9 +1434,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const spec = INCARNATIONS[save.incarnation];
     const wpn = equipped();
     const wx = 1 + weaponMoveMod(wpn);
-    const wMul = weatherSpeed(weather);
     const stonedMul = playerStoned > 0 ? 0.82 : 1;
-    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * wMul * stonedMul * sheetSpeedMul(save.character.flawId);
+    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * stonedMul * sheetSpeedMul(save.character.flawId);
     let mx = actions.moveX;
     let my = actions.moveY;
     if (actions.scheme === "keyboard" || actions.scheme === "gamepad") {
@@ -1496,9 +1475,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       my += Math.cos(animT * 2.2) * 0.1;
     }
     if (mx || my) {
-      if (Math.abs(mx) > Math.abs(my)) player.dir = mx < 0 ? 1 : 2;
-      else player.dir = my < 0 ? 3 : 0;
-    }
+      if (actions.fromKeys) {
+        if (Math.abs(mx) > Math.abs(my)) {
+          player.dir = mx < 0 ? 1 : 2;
+          faceMem = "x";
+        } else {
+          player.dir = my < 0 ? 3 : 0;
+          faceMem = "y";
+        }
+      } else {
+        const faced = resolveFacing(mx, my, player.dir, faceMem);
+        player.dir = faced.dir;
+        faceMem = faced.mem;
+      }
+    } else faceMem = null;
 
     const ySlot = save.flags.ySlot;
     const rifleOut = equipped().kind === "rifle";
@@ -1625,10 +1615,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const tx = Math.floor(bx / TILE);
       const ty = Math.floor(by / TILE);
       if (world.tiles[ty]?.[tx] === T.cracked) {
-        world.tiles[ty][tx] = T.gravel;
-        tileCache.dirty(tx, ty);
-        save.flags.quarryOpen = true;
-        say("The vein gives. The quarry opens.");
+        const verdict = strikeMarble("bomb", crackRole(mapId, tx, ty));
+        if (verdict.open) {
+          world.tiles[ty][tx] = T.gravel;
+          tileCache.dirty(tx, ty);
+          save.flags.quarryOpen = true;
+        }
+        say(verdict.line);
       }
       for (const e of enemies) {
         if (e.alive && Math.hypot(e.x - bx, e.y - by) < 22) hitEnemy(e, 2, player.dir);
@@ -1712,12 +1705,31 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       sp *= bond;
       if (e.slow > 0) sp *= 0.45;
       const aggro = e.kind === "bear" ? 64 : e.kind === "resident" ? 52 : 78;
+      if (e.kind === "sentinel" && dist >= aggro) {
+        e.beat = "still";
+        e.tell = 0;
+      }
       if (e.stoned > 0) {
         e.vx = Math.sin(animT * 2 + e.x) * sp * 0.4;
         e.vy = Math.cos(animT * 1.7 + e.y) * sp * 0.4;
         moveActor(e, e.vx * dt, e.vy * dt);
       } else if (dist < aggro) {
-        if (e.kind === "sentinel" && e.hp >= e.maxHp) {
+        const sentinel =
+          e.kind === "sentinel"
+            ? stepSentinel({
+                hp: e.hp,
+                maxHp: e.maxHp,
+                inRange: true,
+                beat: e.beat,
+                tell: e.tell,
+                dt,
+              })
+            : null;
+        if (sentinel) {
+          e.beat = sentinel.beat;
+          e.tell = sentinel.tell;
+        }
+        if (sentinel && !sentinel.moves) {
           e.vx = 0;
           e.vy = 0;
         } else {
@@ -1732,7 +1744,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           else e.dir = iy < 0 ? 3 : 0;
           if (dist < 12 && e.hurt <= 0) {
             const dmg = e.kind === "bear" ? 1.5 : e.kind === "sentinel" ? 1 : e.kind === "resident" ? 1.2 : 1;
-            hurtPlayer(dmg);
+            hurtPlayer(dmg, e.x, e.y);
             e.hurt = 0.4;
           }
         }
@@ -1796,21 +1808,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       f.y -= 12 * dt;
       return f.t > 0;
     });
-
-    if (weather && (weather.label.id === "rain" || weather.label.id === "storm" || weather.label.id === "snow")) {
-      const n = weather.label.id === "snow" ? 2 : 3;
-      for (let i = 0; i < n; i++) {
-        particles.push({
-          x: camX + (Math.random() - 0.5) * SNES_W,
-          y: camY - VIEW_H / 2 - 4,
-          vx: weather.label.id === "snow" ? 8 : 40 + weather.wind,
-          vy: weather.label.id === "snow" ? 22 : 70,
-          life: 0.9,
-          color: weather.label.id === "snow" ? "#f4efe2" : "#8eb4d4",
-          size: 1,
-        });
-      }
-    }
 
     beacon = questBeacon();
     if (!reduced && particles.length < 240 && mapId !== "soloverse") {
@@ -1876,10 +1873,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
 
-    const lerp = 1 - Math.exp(-10 * dt);
     const look = DIRS[player.dir];
-    camX += (player.x + look.x * 16 - camX) * lerp;
-    camY += (player.y + look.y * 10 - camY) * lerp;
+    const cam = stepCamera(camX, camY, player.x + look.x * 16, player.y + look.y * 10, dt, {
+      deadX: 4,
+      deadY: 3,
+      stiffness: reduced ? 18 : 10,
+    });
+    camX = cam.x;
+    camY = cam.y;
   };
 
   const drawSheet = (
@@ -1909,7 +1910,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const drawHudBar = () => {
     const town = TOWN_BY_ID[mapId]?.name ?? (isInterior(mapId) ? "Inside" : mapId);
     const clock = String(localHour).padStart(2, "0") + "h";
-    const wx = weather ? weather.label.name.slice(0, 8) : "";
+    const wx = "";
     const sig = [
       player.hp,
       player.maxHp,
@@ -2114,6 +2115,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             }
           }
           bctx.globalAlpha = 1;
+          if (a.kind === "sentinel" && a.beat === "gold") {
+            bctx.globalAlpha = 0.95;
+            bctx.fillStyle = "#e8c36a";
+            bctx.fillRect(dx + 2, dy + 1, 12, 3);
+            bctx.globalAlpha = 1;
+          }
           if (a.hp < a.maxHp) {
             bctx.fillStyle = "#2a2018";
             bctx.fillRect(dx, dy - 3, 16, 2);
@@ -2212,15 +2219,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const lamp = save.flags.lanternOn ? 0.1 : 0.2;
       bctx.fillStyle = "rgba(12,18,48," + lamp + ")";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
-    }
-    if (weather?.label.id === "rain" || weather?.label.id === "storm") {
-      bctx.fillStyle = "rgba(200,220,240,0.55)";
-      for (let i = 0; i < 22; i++) {
-        const rx = Math.floor((animT * 140 + i * 37) % SNES_W);
-        const ry = Math.floor((animT * 180 + i * 53) % SNES_H);
-        bctx.fillRect(rx, ry, 1, 3);
-        bctx.fillRect(rx + 1, ry + 3, 1, 2);
-      }
     }
     if (charge > 0.05) {
       bctx.fillStyle = "#2a2018";
@@ -2361,8 +2359,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         : mapId === "soloverse"
           ? "Soloverse"
           : (town?.name ?? mapId),
-      weatherName: weather ? weather.label.name + " " + weather.tempF + "°" : "…",
-      tempF: weather?.tempF ?? null,
+      weatherName: "…",
+      tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
       kit: readKit(
@@ -2426,7 +2424,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.weatherName,
       snap.weaponName,
       snap.kit.handName,
-      snap.kit.nextName ?? "",
       snap.kit.lead,
       snap.showControls,
       snap.tropoverse,
@@ -2465,8 +2462,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
     }
-    if (hitstop > 0) hitstop -= raw;
-    else {
+    if (mode === "play") attackQueued = noteAttackDuringHitstop(attackQueued, actions.attackPressed, hitstop);
+    if (hitstop > 0) {
+      hitstop = Math.max(0, hitstop - raw);
+      const released = releaseAttackBuffer(attackQueued, hitstop, attackBuf);
+      attackQueued = released.queued;
+      attackBuf = released.buffer;
+    } else {
       acc += raw;
       const step = 1 / 60;
       while (acc >= step) {
@@ -2795,7 +2797,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         }
       }
     },
-    senseWorld: () => void senseWorld(mode !== "title"),
+    senseWorld: () => senseWorld(),
     cycleWeapon: () => {
       if (save.inventory.length < 2) return;
       const next = wearNextWeapon(save.inventory, save.equippedId);

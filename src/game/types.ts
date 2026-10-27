@@ -1,5 +1,6 @@
 import type { KitRead } from "./kit-compare.ts";
 import type { Weapon } from "./weapons.ts";
+import type { KitRead } from "./kit-compare.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
 
@@ -126,6 +127,7 @@ export type Flags = {
   afterlifeHost: AfterlifeHost | null;
   lastDeed: string;
   returnedFromDeath: boolean;
+  lastSkillAward: number;
 };
 
 export type SaveData = {
@@ -289,4 +291,5 @@ export const DEFAULT_FLAGS: Flags = {
   afterlifeHost: null,
   lastDeed: "",
   returnedFromDeath: false,
+  lastSkillAward: 0,
 };
