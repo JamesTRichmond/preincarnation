@@ -1,7 +1,7 @@
 import { RELICS, type RelicId } from "./items.ts";
 
 /** Acts that are not a relic but still move the one plot. */
-export const LIFE_VERBS = ["walk", "speak", "die", "drink"] as const;
+export const LIFE_VERBS = ["walk", "speak", "die", "drink", "fold"] as const;
 
 export type ThemeVerb = (typeof LIFE_VERBS)[number] | RelicId;
 
@@ -11,6 +11,7 @@ export const THEME_LINES: Record<ThemeVerb, string> = {
   speak: "One voice answers. There is no party and no one to send.",
   die: "Death is a chapter of fourteen winters. You come back as yourself.",
   drink: "A county bite restores the body you already have. It is not a hunger economy.",
+  fold: "The four rooms are Addison after the Vein goes quiet. They are not a second world, and they do not get new rooms.",
   sword: "The short iron sparks on cracked marble. It does not open the Vein.",
   shovel: "A grave is a year you already lived. Digging reads it. It does not mint a new plot.",
   hookshot: "The sugar-line crosses a gap. It is not a second road to the Vein.",
@@ -37,3 +38,12 @@ export function missingThemeLines(verbs: readonly string[] = themeVerbs()): stri
     return typeof line !== "string" || line.trim().length < 20;
   });
 }
+
+/** Named second plots. Recording them is not permission to build them. */
+export const THEME_DISSONANCE = [
+  {
+    id: "heart-fate",
+    line: "Release the universe and Bind it as a Crown turn Vermont into furniture for a next empire. That is a second plot. The rooms stay. Those choices are not the job. Do not add rooms.",
+  },
+] as const;
+

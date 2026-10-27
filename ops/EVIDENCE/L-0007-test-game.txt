@@ -1,0 +1,3656 @@
+
+> test:game
+> node --experimental-strip-types --test 'src/**/*.test.ts' 'support/**/*.test.ts' 'support/**/*.test.mjs'
+
+TAP version 13
+# Subtest: Bell Without a Clapper
+    # Subtest: has twelve chambers and the clapper is behind the sluice
+    ok 1 - has twelve chambers and the clapper is behind the sluice
+      ---
+      duration_ms: 1.213037
+      type: 'test'
+      ...
+    # Subtest: lets a body into the wheel chamber after the race turns, and not to the clapper
+    ok 2 - lets a body into the wheel chamber after the race turns, and not to the clapper
+      ---
+      duration_ms: 3.051744
+      type: 'test'
+      ...
+    1..2
+ok 1 - Bell Without a Clapper
+  ---
+  duration_ms: 5.341344
+  type: 'suite'
+  ...
+# Subtest: forty-eight recipes are complete, fictional, and non-stacking
+ok 2 - forty-eight recipes are complete, fictional, and non-stacking
+  ---
+  duration_ms: 2.24365
+  type: 'test'
+  ...
+# Subtest: every recipe cooks when the pot is exact
+ok 3 - every recipe cooks when the pot is exact
+  ---
+  duration_ms: 20.10116
+  type: 'test'
+  ...
+# Subtest: a short known recipe spends nothing
+ok 4 - a short known recipe spends nothing
+  ---
+  duration_ms: 1.31426
+  type: 'test'
+  ...
+# Subtest: a substitute cooks a shorter plate and does not touch the missing ingredient
+ok 5 - a substitute cooks a shorter plate and does not touch the missing ingredient
+  ---
+  duration_ms: 0.244513
+  type: 'test'
+  ...
+# Subtest: the wrong tend is rustic, not ruined
+ok 6 - the wrong tend is rustic, not ruined
+  ---
+  duration_ms: 0.225349
+  type: 'test'
+  ...
+# Subtest: effects expire on the road and do not have to be renewed
+ok 7 - effects expire on the road and do not have to be renewed
+  ---
+  duration_ms: 0.49936
+  type: 'test'
+  ...
+# Subtest: a second plate in the same seat is not eaten
+ok 8 - a second plate in the same seat is not eaten
+  ---
+  duration_ms: 0.251118
+  type: 'test'
+  ...
+# Subtest: resolveEffectApplication refreshes without adding time or strength
+ok 9 - resolveEffectApplication refreshes without adding time or strength
+  ---
+  duration_ms: 0.302059
+  type: 'test'
+  ...
+# Subtest: an ordinary plate and a Vein plate may both be with you, then both die
+ok 10 - an ordinary plate and a Vein plate may both be with you, then both die
+  ---
+  duration_ms: 0.818873
+  type: 'test'
+  ...
+# Subtest: death halves fresh food, keeps dry goods and recipe memory
+ok 11 - death halves fresh food, keeps dry goods and recipe memory
+  ---
+  duration_ms: 0.456705
+  type: 'test'
+  ...
+# Subtest: save and load round-trip a death, and a torn card starts fresh
+ok 12 - save and load round-trip a death, and a torn card starts fresh
+  ---
+  duration_ms: 0.939724
+  type: 'test'
+  ...
+# Subtest: inventory overflow waits on the stoop and can be taken back
+ok 13 - inventory overflow waits on the stoop and can be taken back
+  ---
+  duration_ms: 0.198688
+  type: 'test'
+  ...
+# Subtest: a near miss tastes one piece and a wide miss tastes none
+ok 14 - a near miss tastes one piece and a wide miss tastes none
+  ---
+  duration_ms: 1.450907
+  type: 'test'
+  ...
+# Subtest: the right ingredients in the wrong amounts write the card and spend nothing
+ok 15 - the right ingredients in the wrong amounts write the card and spend nothing
+  ---
+  duration_ms: 0.298256
+  type: 'test'
+  ...
+# Subtest: a full satchel refuses the next plate before anything is spent
+ok 16 - a full satchel refuses the next plate before anything is spent
+  ---
+  duration_ms: 0.468269
+  type: 'test'
+  ...
+# Subtest: the kitchen state has no combat or hunger fields
+ok 17 - the kitchen state has no combat or hunger fields
+  ---
+  duration_ms: 0.107421
+  type: 'test'
+  ...
+# Subtest: resolveFacing
+    # Subtest: keeps the previous axis inside the diagonal band
+    ok 1 - keeps the previous axis inside the diagonal band
+      ---
+      duration_ms: 0.737408
+      type: 'test'
+      ...
+    # Subtest: leaves the band when one axis dominates
+    ok 2 - leaves the band when one axis dominates
+      ---
+      duration_ms: 0.186893
+      type: 'test'
+      ...
+    # Subtest: ties an equal stick to vertical when nothing is remembered
+    ok 3 - ties an equal stick to vertical when nothing is remembered
+      ---
+      duration_ms: 0.111565
+      type: 'test'
+      ...
+    1..3
+ok 18 - resolveFacing
+  ---
+  duration_ms: 1.826363
+  type: 'suite'
+  ...
+# Subtest: lipStep
+    # Subtest: walks through open ground
+    ok 1 - walks through open ground
+      ---
+      duration_ms: 0.798407
+      type: 'test'
+      ...
+    # Subtest: slides a 4px lip and stops on a solid wall
+    ok 2 - slides a 4px lip and stops on a solid wall
+      ---
+      duration_ms: 0.352559
+      type: 'test'
+      ...
+    # Subtest: does not treat an 8px overlap as a lip
+    ok 3 - does not treat an 8px overlap as a lip
+      ---
+      duration_ms: 0.134288
+      type: 'test'
+      ...
+    # Subtest: still takes a half step when the full step is blocked and the lip is not
+    ok 4 - still takes a half step when the full step is blocked and the lip is not
+      ---
+      duration_ms: 0.191296
+      type: 'test'
+      ...
+    1..4
+ok 19 - lipStep
+  ---
+  duration_ms: 1.854027
+  type: 'suite'
+  ...
+# Subtest: stepCamera
+    # Subtest: does not move while the focus stays inside the deadzone
+    ok 1 - does not move while the focus stays inside the deadzone
+      ---
+      duration_ms: 0.284328
+      type: 'test'
+      ...
+    # Subtest: eases toward a focus that has left the deadzone
+    ok 2 - eases toward a focus that has left the deadzone
+      ---
+      duration_ms: 0.188574
+      type: 'test'
+      ...
+    1..2
+ok 20 - stepCamera
+  ---
+  duration_ms: 0.718898
+  type: 'suite'
+  ...
+# Subtest: hitstop buffer
+    # Subtest: keeps a press that arrives during the freeze and spends it after
+    ok 1 - keeps a press that arrives during the freeze and spends it after
+      ---
+      duration_ms: 1.111635
+      type: 'test'
+      ...
+    # Subtest: does not invent a swing when nothing was pressed
+    ok 2 - does not invent a swing when nothing was pressed
+      ---
+      duration_ms: 0.154727
+      type: 'test'
+      ...
+    # Subtest: shortens the freeze under reduced motion and caps it
+    ok 3 - shortens the freeze under reduced motion and caps it
+      ---
+      duration_ms: 0.107199
+      type: 'test'
+      ...
+    1..3
+ok 21 - hitstop buffer
+  ---
+  duration_ms: 1.498867
+  type: 'suite'
+  ...
+# Subtest: install shell
+    # Subtest: names one app, standalone, at the county root
+    ok 1 - names one app, standalone, at the county root
+      ---
+      duration_ms: 1.219652
+      type: 'test'
+      ...
+    # Subtest: caches the 320×240 shell and leaves accounts and the save alone
+    ok 2 - caches the 320×240 shell and leaves accounts and the save alone
+      ---
+      duration_ms: 0.407239
+      type: 'test'
+      ...
+    # Subtest: the document points at that manifest and registers only /sw.js
+    ok 3 - the document points at that manifest and registers only /sw.js
+      ---
+      duration_ms: 0.208777
+      type: 'test'
+      ...
+    1..3
+ok 22 - install shell
+  ---
+  duration_ms: 2.878016
+  type: 'suite'
+  ...
+# Subtest: erodeGrave
+    # Subtest: keeps magic steel and named relics through fourteen winters
+    ok 1 - keeps magic steel and named relics through fourteen winters
+      ---
+      duration_ms: 1.284011
+      type: 'test'
+      ...
+    # Subtest: mundane steel can survive a short winter if the roll is kind
+    ok 2 - mundane steel can survive a short winter if the roll is kind
+      ---
+      duration_ms: 0.259763
+      type: 'test'
+      ...
+    # Subtest: emptied mounds keep no mundane steel
+    ok 3 - emptied mounds keep no mundane steel
+      ---
+      duration_ms: 0.15957
+      type: 'test'
+      ...
+    # Subtest: shovel and starter iron leave after twenty winters; named relics stay
+    ok 4 - shovel and starter iron leave after twenty winters; named relics stay
+      ---
+      duration_ms: 0.122367
+      type: 'test'
+      ...
+    # Subtest: arrows thin, then vanish
+    ok 5 - arrows thin, then vanish
+      ---
+      duration_ms: 0.201966
+      type: 'test'
+      ...
+    1..5
+ok 23 - erodeGrave
+  ---
+  duration_ms: 3.085017
+  type: 'suite'
+  ...
+# Subtest: RELIC_BY_ID
+    # Subtest: marks the lamp as a Y-slot verb
+    ok 1 - marks the lamp as a Y-slot verb
+      ---
+      duration_ms: 0.112665
+      type: 'test'
+      ...
+    1..1
+ok 24 - RELIC_BY_ID
+  ---
+  duration_ms: 0.199066
+  type: 'suite'
+  ...
+# Subtest: wearNextId — a swap is only an id
+    # Subtest: steps to the next blade and wraps
+    ok 1 - steps to the next blade and wraps
+      ---
+      duration_ms: 0.580346
+      type: 'test'
+      ...
+    # Subtest: a missing equipped id resolves the way the yard does, to the first blade
+    ok 2 - a missing equipped id resolves the way the yard does, to the first blade
+      ---
+      duration_ms: 0.12902
+      type: 'test'
+      ...
+    # Subtest: does not take life, mana, or the swing timer as arguments
+    ok 3 - does not take life, mana, or the swing timer as arguments
+      ---
+      duration_ms: 0.190367
+      type: 'test'
+      ...
+    # Subtest: an empty bag leaves the equipped id alone
+    ok 4 - an empty bag leaves the equipped id alone
+      ---
+      duration_ms: 0.0898
+      type: 'test'
+      ...
+    1..4
+ok 25 - wearNextId — a swap is only an id
+  ---
+  duration_ms: 1.920379
+  type: 'suite'
+  ...
+# Subtest: readKit — the sheet is not a damage ranking
+    # Subtest: lists both strikes and refuses a damage arrow
+    ok 1 - lists both strikes and refuses a damage arrow
+      ---
+      duration_ms: 0.672646
+      type: 'test'
+      ...
+    # Subtest: keeps hunger and a curse out of the strike number
+    ok 2 - keeps hunger and a curse out of the strike number
+      ---
+      duration_ms: 0.300297
+      type: 'test'
+      ...
+    # Subtest: traces walk and names sheet speed as not the attack clock
+    ok 3 - traces walk and names sheet speed as not the attack clock
+      ---
+      duration_ms: 0.340365
+      type: 'test'
+      ...
+    # Subtest: explains an empty second slot without inventing a second body
+    ok 4 - explains an empty second slot without inventing a second body
+      ---
+      duration_ms: 0.274217
+      type: 'test'
+      ...
+    # Subtest: says when the equipped id is not in the bag
+    ok 5 - says when the equipped id is not in the bag
+      ---
+      duration_ms: 0.345422
+      type: 'test'
+      ...
+    # Subtest: a staff shot names the mana cost and does not treat it as damage
+    ok 6 - a staff shot names the mana cost and does not treat it as damage
+      ---
+      duration_ms: 0.333592
+      type: 'test'
+      ...
+    1..6
+ok 26 - readKit — the sheet is not a damage ranking
+  ---
+  duration_ms: 2.623014
+  type: 'suite'
+  ...
+# Subtest: candidate catalog is 768 definitions
+ok 27 - candidate catalog is 768 definitions
+  ---
+  duration_ms: 0.922016
+  type: 'test'
+  ...
+# Subtest: external packs are absent and the broken fixture is detected
+ok 28 - external packs are absent and the broken fixture is detected
+  ---
+  duration_ms: 63.947544
+  type: 'test'
+  ...
+# Subtest: sample of each category verifies
+ok 29 - sample of each category verifies
+  ---
+  duration_ms: 21.521289
+  type: 'test'
+  ...
+# Subtest: cross-system cases, economy, and coverage counts
+ok 30 - cross-system cases, economy, and coverage counts
+  ---
+  duration_ms: 1093.112394
+  type: 'test'
+  ...
+# Subtest: focused runs stay free of no-effect clicks
+ok 31 - focused runs stay free of no-effect clicks
+  ---
+  duration_ms: 19.485479
+  type: 'test'
+  ...
+# Subtest: strikeMarble
+    # Subtest: lets the orchard blade spark and never open cracked marble
+    ok 1 - lets the orchard blade spark and never open cracked marble
+      ---
+      duration_ms: 0.662447
+      type: 'test'
+      ...
+    # Subtest: opens a true plug with the hammer and refuses the decoy face
+    ok 2 - opens a true plug with the hammer and refuses the decoy face
+      ---
+      duration_ms: 0.175548
+      type: 'test'
+      ...
+    # Subtest: still lets a bomb open true marble, not a decoy
+    ok 3 - still lets a bomb open true marble, not a decoy
+      ---
+      duration_ms: 0.165333
+      type: 'test'
+      ...
+    1..3
+ok 32 - strikeMarble
+  ---
+  duration_ms: 2.093849
+  type: 'suite'
+  ...
+# Subtest: crackRole
+    # Subtest: marks the lock-line and the hammer face as decoys; the gaps between them are true
+    ok 1 - marks the lock-line and the hammer face as decoys; the gaps between them are true
+      ---
+      duration_ms: 0.221405
+      type: 'test'
+      ...
+    1..1
+ok 33 - crackRole
+  ---
+  duration_ms: 0.326128
+  type: 'suite'
+  ...
+# Subtest: stepSentinel
+    # Subtest: holds still at full health so the fate talk can happen
+    ok 1 - holds still at full health so the fate talk can happen
+      ---
+      duration_ms: 0.374587
+      type: 'test'
+      ...
+    # Subtest: flashes gold for 36 frames at 60fps before the first lunge
+    ok 2 - flashes gold for 36 frames at 60fps before the first lunge
+      ---
+      duration_ms: 0.345227
+      type: 'test'
+      ...
+    # Subtest: lunges 27 frames, then gold again
+    ok 3 - lunges 27 frames, then gold again
+      ---
+      duration_ms: 0.291307
+      type: 'test'
+      ...
+    # Subtest: drops the tell when the player leaves reach
+    ok 4 - drops the tell when the player leaves reach
+      ---
+      duration_ms: 0.192147
+      type: 'test'
+      ...
+    1..4
+ok 34 - stepSentinel
+  ---
+  duration_ms: 1.466309
+  type: 'suite'
+  ...
+# Subtest: place underfoot
+    # Subtest: names the creek, the bridge, and the Vein
+    ok 1 - names the creek, the bridge, and the Vein
+      ---
+      duration_ms: 0.55123
+      type: 'test'
+      ...
+    1..1
+ok 35 - place underfoot
+  ---
+  duration_ms: 1.409573
+  type: 'suite'
+  ...
+# Subtest: county tell
+    # Subtest: does not touch the Sentinel
+    ok 1 - does not touch the Sentinel
+      ---
+      duration_ms: 0.271817
+      type: 'test'
+      ...
+    # Subtest: holds still and shows a tell before the bite
+    ok 2 - holds still and shows a tell before the bite
+      ---
+      duration_ms: 0.176924
+      type: 'test'
+      ...
+    # Subtest: forgets the warning once you are clear
+    ok 3 - forgets the warning once you are clear
+      ---
+      duration_ms: 0.129402
+      type: 'test'
+      ...
+    # Subtest: draws a ring and a broken line, not a sentence
+    ok 4 - draws a ring and a broken line, not a sentence
+      ---
+      duration_ms: 0.214034
+      type: 'test'
+      ...
+    1..4
+ok 36 - county tell
+  ---
+  duration_ms: 1.071687
+  type: 'suite'
+  ...
+# Subtest: bodyStats — cycle does not fatten the ribcage
+    # Subtest: wanderer starts at 3 HP / 8 MP
+    ok 1 - wanderer starts at 3 HP / 8 MP
+      ---
+      duration_ms: 0.635199
+      type: 'test'
+      ...
+    # Subtest: Spare Heart is the only extra chamber
+    ok 2 - Spare Heart is the only extra chamber
+      ---
+      duration_ms: 0.120174
+      type: 'test'
+      ...
+    # Subtest: officer skin is heavier without a cycle term
+    ok 3 - officer skin is heavier without a cycle term
+      ---
+      duration_ms: 0.098213
+      type: 'test'
+      ...
+    1..3
+ok 37 - bodyStats — cycle does not fatten the ribcage
+  ---
+  duration_ms: 1.741625
+  type: 'suite'
+  ...
+# Subtest: slash / spin — no silent cycle damage
+    # Subtest: starter iron on a wanderer is 1
+    ok 1 - starter iron on a wanderer is 1
+      ---
+      duration_ms: 0.159568
+      type: 'test'
+      ...
+    # Subtest: Keen Edge multiplies, tropoverse and the blade stack
+    ok 2 - Keen Edge multiplies, tropoverse and the blade stack
+      ---
+      duration_ms: 0.151442
+      type: 'test'
+      ...
+    # Subtest: spin ignores cycle
+    ok 3 - spin ignores cycle
+      ---
+      duration_ms: 0.105123
+      type: 'test'
+      ...
+    1..3
+ok 38 - slash / spin — no silent cycle damage
+  ---
+  duration_ms: 0.64899
+  type: 'suite'
+  ...
+# Subtest: skill award
+    # Subtest: pays 2, plus 1 while Finish-it and the quarry still sleeps
+    ok 1 - pays 2, plus 1 while Finish-it and the quarry still sleeps
+      ---
+      duration_ms: 0.188136
+      type: 'test'
+      ...
+    1..1
+ok 39 - skill award
+  ---
+  duration_ms: 0.425282
+  type: 'suite'
+  ...
+# Subtest: wintersPassed
+    # Subtest: is exactly fourteen
+    ok 1 - is exactly fourteen
+      ---
+      duration_ms: 0.165251
+      type: 'test'
+      ...
+    1..1
+ok 40 - wintersPassed
+  ---
+  duration_ms: 0.295203
+  type: 'suite'
+  ...
+# Subtest: Maeve's lantern keepsake
+    # Subtest: only Maeve's bond carries the lamp
+    ok 1 - only Maeve's bond carries the lamp
+      ---
+      duration_ms: 0.857582
+      type: 'test'
+      ...
+    # Subtest: does not hand the lamp on the first life
+    ok 2 - does not hand the lamp on the first life
+      ---
+      duration_ms: 0.62707
+      type: 'test'
+      ...
+    # Subtest: puts the lamp in the off-hand after a death
+    ok 3 - puts the lamp in the off-hand after a death
+      ---
+      duration_ms: 0.223631
+      type: 'test'
+      ...
+    # Subtest: is idempotent if the lamp is already owned
+    ok 4 - is idempotent if the lamp is already owned
+      ---
+      duration_ms: 0.166592
+      type: 'test'
+      ...
+    # Subtest: leaves other bonds alone
+    ok 5 - leaves other bonds alone
+      ---
+      duration_ms: 0.117835
+      type: 'test'
+      ...
+    1..5
+ok 41 - Maeve's lantern keepsake
+  ---
+  duration_ms: 2.207885
+  type: 'suite'
+  ...
+# Subtest: resolveDeath
+    # Subtest: banks skill, ages the year, and quotes God when karma is clean
+    ok 1 - banks skill, ages the year, and quotes God when karma is clean
+      ---
+      duration_ms: 0.488827
+      type: 'test'
+      ...
+    # Subtest: sends dirty hands to the Other Voice
+    ok 2 - sends dirty hands to the Other Voice
+      ---
+      duration_ms: 0.276365
+      type: 'test'
+      ...
+    # Subtest: the_other_voice needs karma below 3 to meet the Devil
+    ok 3 - the_other_voice needs karma below 3 to meet the Devil
+      ---
+      duration_ms: 0.308597
+      type: 'test'
+      ...
+    # Subtest: drops the extra Finish-it point once the quarry is cleared
+    ok 4 - drops the extra Finish-it point once the quarry is cleared
+      ---
+      duration_ms: 0.208675
+      type: 'test'
+      ...
+    # Subtest: stops paying skill once the purse already covers every rank
+    ok 5 - stops paying skill once the purse already covers every rank
+      ---
+      duration_ms: 0.438327
+      type: 'test'
+      ...
+    # Subtest: pays only the ranks the purse is still short
+    ok 6 - pays only the ranks the purse is still short
+      ---
+      duration_ms: 0.161018
+      type: 'test'
+      ...
+    # Subtest: twenty deaths do not mint skill past the ranks you can buy
+    ok 7 - twenty deaths do not mint skill past the ranks you can buy
+      ---
+      duration_ms: 0.291704
+      type: 'test'
+      ...
+    1..7
+ok 42 - resolveDeath
+  ---
+  duration_ms: 2.39353
+  type: 'suite'
+  ...
+# Subtest: cycle ledger
+    # Subtest: names this life, what you keep, and what hit the dirt
+    ok 1 - names this life, what you keep, and what hit the dirt
+      ---
+      duration_ms: 0.40654
+      type: 'test'
+      ...
+    # Subtest: lists dropped steel on the ground line
+    ok 2 - lists dropped steel on the ground line
+      ---
+      duration_ms: 0.11589
+      type: 'test'
+      ...
+    1..2
+ok 43 - cycle ledger
+  ---
+  duration_ms: 0.616823
+  type: 'suite'
+  ...
+# Subtest: spendSkillPoint
+    # Subtest: refuses a dry purse and a maxed pip
+    ok 1 - refuses a dry purse and a maxed pip
+      ---
+      duration_ms: 0.260159
+      type: 'test'
+      ...
+    # Subtest: buys Spare Heart without mutating the original
+    ok 2 - buys Spare Heart without mutating the original
+      ---
+      duration_ms: 0.121394
+      type: 'test'
+      ...
+    # Subtest: will not sell a crown upgrade for skill
+    ok 3 - will not sell a crown upgrade for skill
+      ---
+      duration_ms: 0.149082
+      type: 'test'
+      ...
+    1..3
+ok 44 - spendSkillPoint
+  ---
+  duration_ms: 0.635586
+  type: 'suite'
+  ...
+# Subtest: enemyMaxHp
+    # Subtest: does not fatten a body because you have died before
+    ok 1 - does not fatten a body because you have died before
+      ---
+      duration_ms: 0.122128
+      type: 'test'
+      ...
+    # Subtest: tropoverse is one world, not a stack of deaths
+    ok 2 - tropoverse is one world, not a stack of deaths
+      ---
+      duration_ms: 0.063591
+      type: 'test'
+      ...
+    # Subtest: the spawn line no longer multiplies by the cycle
+    ok 3 - the spawn line no longer multiplies by the cycle
+      ---
+      duration_ms: 0.718318
+      type: 'test'
+      ...
+    1..3
+ok 45 - enemyMaxHp
+  ---
+  duration_ms: 1.025953
+  type: 'suite'
+  ...
+# Subtest: misc rules
+    # Subtest: fills dialogue tokens
+    ok 1 - fills dialogue tokens
+      ---
+      duration_ms: 0.198263
+      type: 'test'
+      ...
+    # Subtest: names the last deed and grave count, and defaults a quiet death
+    ok 2 - names the last deed and grave count, and defaults a quiet death
+      ---
+      duration_ms: 0.085997
+      type: 'test'
+      ...
+    # Subtest: flaw knobs
+    ok 3 - flaw knobs
+      ---
+      duration_ms: 0.105399
+      type: 'test'
+      ...
+    # Subtest: incarnation unlocks stay on the old keys
+    ok 4 - incarnation unlocks stay on the old keys
+      ---
+      duration_ms: 0.168322
+      type: 'test'
+      ...
+    # Subtest: soloverse opens after three deaths with a key, an embryo, or three crowns
+    ok 5 - soloverse opens after three deaths with a key, an embryo, or three crowns
+      ---
+      duration_ms: 0.176746
+      type: 'test'
+      ...
+    # Subtest: ownedUpgradeNames skips zeros and crowns
+    ok 6 - ownedUpgradeNames skips zeros and crowns
+      ---
+      duration_ms: 0.152855
+      type: 'test'
+      ...
+    # Subtest: karma shop still spends karma, not skill
+    ok 7 - karma shop still spends karma, not skill
+      ---
+      duration_ms: 0.24975
+      type: 'test'
+      ...
+    1..7
+ok 46 - misc rules
+  ---
+  duration_ms: 1.372146
+  type: 'suite'
+  ...
+# Subtest: second-cycle memory
+    # Subtest: keeps the first return, then names the last deed
+    ok 1 - keeps the first return, then names the last deed
+      ---
+      duration_ms: 0.17667
+      type: 'test'
+      ...
+    1..1
+ok 47 - second-cycle memory
+  ---
+  duration_ms: 0.286744
+  type: 'suite'
+  ...
+# Subtest: quarry hammer
+    # Subtest: lands anywhere except a dark Vein
+    ok 1 - lands anywhere except a dark Vein
+      ---
+      duration_ms: 0.111042
+      type: 'test'
+      ...
+    1..1
+ok 48 - quarry hammer
+  ---
+  duration_ms: 0.195585
+  type: 'suite'
+  ...
+# Subtest: house exit
+    # Subtest: steps south off rail onto grass and stops at the map edge
+    ok 1 - steps south off rail onto grass and stops at the map edge
+      ---
+      duration_ms: 0.184484
+      type: 'test'
+      ...
+    1..1
+ok 49 - house exit
+  ---
+  duration_ms: 0.240877
+  type: 'suite'
+  ...
+# Subtest: defaultSave
+    # Subtest: wakes a wanderer on the Green with three skill and a short iron
+    ok 1 - wakes a wanderer on the Green with three skill and a short iron
+      ---
+      duration_ms: 1.332591
+      type: 'test'
+      ...
+    1..1
+ok 50 - defaultSave
+  ---
+  duration_ms: 2.142062
+  type: 'suite'
+  ...
+# Subtest: migrate
+    # Subtest: fills lastDeed and returnedFromDeath on v7 blobs
+    ok 1 - fills lastDeed and returnedFromDeath on v7 blobs
+      ---
+      duration_ms: 0.558056
+      type: 'test'
+      ...
+    # Subtest: does not invent a lantern for a first-life v8 save
+    ok 2 - does not invent a lantern for a first-life v8 save
+      ---
+      duration_ms: 0.920672
+      type: 'test'
+      ...
+    # Subtest: remembers a death's skill award when the kitchen raises the save
+    ok 3 - remembers a death's skill award when the kitchen raises the save
+      ---
+      duration_ms: 0.472984
+      type: 'test'
+      ...
+    1..3
+ok 51 - migrate
+  ---
+  duration_ms: 2.230944
+  type: 'suite'
+  ...
+# Subtest: writeSave / loadSave
+    # Subtest: round-trips through storage and a backup key
+    ok 1 - round-trips through storage and a backup key
+      ---
+      duration_ms: 0.779038
+      type: 'test'
+      ...
+    # Subtest: falls back to a new life when storage is empty or garbage
+    ok 2 - falls back to a new life when storage is empty or garbage
+      ---
+      duration_ms: 0.278516
+      type: 'test'
+      ...
+    # Subtest: clearSave forgets the blob
+    ok 3 - clearSave forgets the blob
+      ---
+      duration_ms: 0.257217
+      type: 'test'
+      ...
+    # Subtest: does not let a version stub inherit Middlebury and erase the backup
+    ok 4 - does not let a version stub inherit Middlebury and erase the backup
+      ---
+      duration_ms: 0.438493
+      type: 'test'
+      ...
+    # Subtest: does not treat feet without a town or a year as a life
+    ok 5 - does not treat feet without a town or a year as a life
+      ---
+      duration_ms: 0.410262
+      type: 'test'
+      ...
+    # Subtest: still migrates a seventh life that already stood
+    ok 6 - still migrates a seventh life that already stood
+      ---
+      duration_ms: 0.349395
+      type: 'test'
+      ...
+    # Subtest: forget does not resurrect the backup
+    ok 7 - forget does not resurrect the backup
+      ---
+      duration_ms: 0.232077
+      type: 'test'
+      ...
+    1..7
+ok 52 - writeSave / loadSave
+  ---
+  duration_ms: 3.165234
+  type: 'suite'
+  ...
+# Subtest: county kitchen on the life
+    # Subtest: gives a v8 life a kitchen and keeps the person
+    ok 1 - gives a v8 life a kitchen and keeps the person
+      ---
+      duration_ms: 0.213626
+      type: 'test'
+      ...
+    # Subtest: a chapter halves fresh food and keeps the cards
+    ok 2 - a chapter halves fresh food and keeps the cards
+      ---
+      duration_ms: 0.584932
+      type: 'test'
+      ...
+    1..2
+ok 53 - county kitchen on the life
+  ---
+  duration_ms: 0.91377
+  type: 'suite'
+  ...
+# Subtest: theme map
+    # Subtest: gives every core verb a line
+    ok 1 - gives every core verb a line
+      ---
+      duration_ms: 1.45917
+      type: 'test'
+      ...
+    # Subtest: the ledger repeats those lines and no verb is missing from it
+    ok 2 - the ledger repeats those lines and no verb is missing from it
+      ---
+      duration_ms: 0.442518
+      type: 'test'
+      ...
+    # Subtest: the four rooms are the folded county, and the Crown is not the job
+    ok 3 - the four rooms are the folded county, and the Crown is not the job
+      ---
+      duration_ms: 1.48297
+      type: 'test'
+      ...
+    1..3
+ok 54 - theme map
+  ---
+  duration_ms: 4.331697
+  type: 'suite'
+  ...
+# Subtest: creek transformation contracts
+    # Subtest: passes the room, including collision, death, and duplication
+    ok 1 - passes the room, including collision, death, and duplication
+      ---
+      duration_ms: 14.420166
+      type: 'test'
+      ...
+    # Subtest: names live relics and incarnations without claiming the overworld calls the bench
+    ok 2 - names live relics and incarnations without claiming the overworld calls the bench
+      ---
+      duration_ms: 0.15946
+      type: 'test'
+      ...
+    1..2
+ok 55 - creek transformation contracts
+  ---
+  duration_ms: 15.593441
+  type: 'suite'
+  ...
+# (node:2759) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: callTool failure memo
+    # Subtest: replays an identical failure within the memo window without refetching
+    ok 1 - replays an identical failure within the memo window without refetching
+      ---
+      duration_ms: 4.185317
+      type: 'test'
+      ...
+    # Subtest: keys by token identity so a reminted token shares the memo entry
+    ok 2 - keys by token identity so a reminted token shares the memo entry
+      ---
+      duration_ms: 1.10522
+      type: 'test'
+      ...
+    # Subtest: sweeps expired entries on write so unique keys do not accumulate
+    ok 3 - sweeps expired entries on write so unique keys do not accumulate
+      ---
+      duration_ms: 1.857746
+      type: 'test'
+      ...
+    # Subtest: never memoizes login-required 401s
+    ok 4 - never memoizes login-required 401s
+      ---
+      duration_ms: 1.216127
+      type: 'test'
+      ...
+    1..4
+ok 56 - callTool failure memo
+  ---
+  duration_ms: 9.375911
+  type: 'suite'
+  ...
+# Subtest: callTool in the workspace preview vs deployed
+    # Subtest: returns pending (no loginRequired) when the preview has no token yet
+    ok 1 - returns pending (no loginRequired) when the preview has no token yet
+      ---
+      duration_ms: 0.709391
+      type: 'test'
+      ...
+    # Subtest: returns a plain error (no sign-in CTA) when a deployed app has no token
+    ok 2 - returns a plain error (no sign-in CTA) when a deployed app has no token
+      ---
+      duration_ms: 0.516005
+      type: 'test'
+      ...
+    # Subtest: treats a gate 401 in the preview as pending and parks the rejected token
+    ok 3 - treats a gate 401 in the preview as pending and parks the rejected token
+      ---
+      duration_ms: 1.340218
+      type: 'test'
+      ...
+    # Subtest: keeps loginRequired for a gate 401 on a deployed app
+    ok 4 - keeps loginRequired for a gate 401 on a deployed app
+      ---
+      duration_ms: 0.899776
+      type: 'test'
+      ...
+    1..4
+ok 57 - callTool in the workspace preview vs deployed
+  ---
+  duration_ms: 3.858213
+  type: 'suite'
+  ...
+# Subtest: callTool
+    # Subtest: resolves ok:false for non-serializable args instead of rejecting
+    ok 1 - resolves ok:false for non-serializable args instead of rejecting
+      ---
+      duration_ms: 0.45399
+      type: 'test'
+      ...
+    1..1
+ok 58 - callTool
+  ---
+  duration_ms: 0.546603
+  type: 'suite'
+  ...
+# Subtest: isLoginRequired
+    # Subtest: is true only for login-required failures
+    ok 1 - is true only for login-required failures
+      ---
+      duration_ms: 0.192595
+      type: 'test'
+      ...
+    1..1
+ok 59 - isLoginRequired
+  ---
+  duration_ms: 0.301811
+  type: 'suite'
+  ...
+# Subtest: redirectToLoginIfRequired
+    # Subtest: no-ops when login is not required
+    ok 1 - no-ops when login is not required
+      ---
+      duration_ms: 0.211448
+      type: 'test'
+      ...
+    # Subtest: navigates to the server-built loginUrl in the browser
+    ok 2 - navigates to the server-built loginUrl in the browser
+      ---
+      duration_ms: 0.119479
+      type: 'test'
+      ...
+    # Subtest: opens a new tab instead of navigating when framed
+    ok 3 - opens a new tab instead of navigating when framed
+      ---
+      duration_ms: 0.11294
+      type: 'test'
+      ...
+    # Subtest: falls back to navigation when framed and the popup is blocked
+    ok 4 - falls back to navigation when framed and the popup is blocked
+      ---
+      duration_ms: 0.105813
+      type: 'test'
+      ...
+    # Subtest: returns false when the result has no loginUrl
+    ok 5 - returns false when the result has no loginUrl
+      ---
+      duration_ms: 0.13101
+      type: 'test'
+      ...
+    # Subtest: returns false on the server (no window)
+    ok 6 - returns false on the server (no window)
+      ---
+      duration_ms: 0.067071
+      type: 'test'
+      ...
+    1..6
+ok 60 - redirectToLoginIfRequired
+  ---
+  duration_ms: 0.901761
+  type: 'suite'
+  ...
+# Subtest: GoogleCalendarTools
+    # Subtest: does not expose a list_events name
+    ok 1 - does not expose a list_events name
+      ---
+      duration_ms: 0.082133
+      type: 'test'
+      ...
+    1..1
+ok 61 - GoogleCalendarTools
+  ---
+  duration_ms: 0.13329
+  type: 'suite'
+  ...
+# Subtest: classifyCallToolError
+    # Subtest: returns null for successful results
+    ok 1 - returns null for successful results
+      ---
+      duration_ms: 0.193974
+      type: 'test'
+      ...
+    # Subtest: classifies a pending preview token as pending before any other kind
+    ok 2 - classifies a pending preview token as pending before any other kind
+      ---
+      duration_ms: 0.101807
+      type: 'test'
+      ...
+    # Subtest: classifies a deployed missing token as error, not a login CTA
+    ok 3 - classifies a deployed missing token as error, not a login CTA
+      ---
+      duration_ms: 0.130716
+      type: 'test'
+      ...
+    # Subtest: classifies gate loginRequired without a missing-token message as login
+    ok 4 - classifies gate loginRequired without a missing-token message as login
+      ---
+      duration_ms: 0.076665
+      type: 'test'
+      ...
+    # Subtest: classifies not_connected and failed_precondition
+    ok 5 - classifies not_connected and failed_precondition
+      ---
+      duration_ms: 0.146414
+      type: 'test'
+      ...
+    # Subtest: classifies scope_denied without claiming a missing grant
+    ok 6 - classifies scope_denied without claiming a missing grant
+      ---
+      duration_ms: 0.198055
+      type: 'test'
+      ...
+    # Subtest: classifies access_denied
+    ok 7 - classifies access_denied
+      ---
+      duration_ms: 0.083013
+      type: 'test'
+      ...
+    # Subtest: falls back to a generic error with the raw message
+    ok 8 - falls back to a generic error with the raw message
+      ---
+      duration_ms: 0.102816
+      type: 'test'
+      ...
+    1..8
+ok 62 - classifyCallToolError
+  ---
+  duration_ms: 1.217322
+  type: 'suite'
+  ...
+# Subtest: readinessProbeDelayMs
+    # Subtest: backs off through the schedule and then holds the last delay
+    ok 1 - backs off through the schedule and then holds the last delay
+      ---
+      duration_ms: 1.103864
+      type: 'test'
+      ...
+    # Subtest: clamps a negative attempt to the first delay
+    ok 2 - clamps a negative attempt to the first delay
+      ---
+      duration_ms: 0.151353
+      type: 'test'
+      ...
+    1..2
+ok 63 - readinessProbeDelayMs
+  ---
+  duration_ms: 2.160858
+  type: 'suite'
+  ...
+# Subtest: readinessProbeExhausted
+    # Subtest: gives up only once the total wait budget has elapsed
+    ok 1 - gives up only once the total wait budget has elapsed
+      ---
+      duration_ms: 0.192591
+      type: 'test'
+      ...
+    1..1
+ok 64 - readinessProbeExhausted
+  ---
+  duration_ms: 0.299268
+  type: 'suite'
+  ...
+# Subtest: verifyGateIdentityToken
+    # Subtest: returns the identity for a valid token
+    ok 1 - returns the identity for a valid token
+      ---
+      duration_ms: 12.231325
+      type: 'test'
+      ...
+    # Subtest: omits optional claims as nulls
+    ok 2 - omits optional claims as nulls
+      ---
+      duration_ms: 3.572959
+      type: 'test'
+      ...
+    # Subtest: rejects a wrong audience
+    ok 3 - rejects a wrong audience
+      ---
+      duration_ms: 9.014247
+      type: 'test'
+      ...
+    # Subtest: rejects a wrong issuer
+    ok 4 - rejects a wrong issuer
+      ---
+      duration_ms: 1.609696
+      type: 'test'
+      ...
+    # Subtest: rejects an expired token
+    ok 5 - rejects an expired token
+      ---
+      duration_ms: 2.560102
+      type: 'test'
+      ...
+    # Subtest: rejects a token without exp
+    ok 6 - rejects a token without exp
+      ---
+      duration_ms: 1.541089
+      type: 'test'
+      ...
+    # Subtest: rejects a token signed by a different key with the same kid
+    ok 7 - rejects a token signed by a different key with the same kid
+      ---
+      duration_ms: 1.432246
+      type: 'test'
+      ...
+    # Subtest: refetches the JWKS when the kid rotates
+    ok 8 - refetches the JWKS when the kid rotates
+      ---
+      duration_ms: 3.341214
+      type: 'test'
+      ...
+    1..8
+ok 65 - verifyGateIdentityToken
+  ---
+  duration_ms: 37.262652
+  type: 'suite'
+  ...
+# Subtest: gateIdentityFromHeaders
+    # Subtest: verifies the header token end to end and fails closed without it
+    ok 1 - verifies the header token end to end and fails closed without it
+      ---
+      duration_ms: 18.414805
+      type: 'test'
+      ...
+    # Subtest: activates on a deployed-shaped request without GROK_GATE_ORIGIN
+    ok 2 - activates on a deployed-shaped request without GROK_GATE_ORIGIN
+      ---
+      duration_ms: 4.663106
+      type: 'test'
+      ...
+    # Subtest: verifies a preview-audience token with no gate env vars via the loopback default
+    ok 3 - verifies a preview-audience token with no gate env vars via the loopback default
+      ---
+      duration_ms: 1.700408
+      type: 'test'
+      ...
+    # Subtest: rejects a wrong-issuer token in the loopback default mode
+    ok 4 - rejects a wrong-issuer token in the loopback default mode
+      ---
+      duration_ms: 1.466446
+      type: 'test'
+      ...
+    # Subtest: verifies a preview-audience token when only GROK_GATE_ORIGIN is set
+    ok 5 - verifies a preview-audience token when only GROK_GATE_ORIGIN is set
+      ---
+      duration_ms: 1.408115
+      type: 'test'
+      ...
+    # Subtest: rejects a preview-audience token when GROK_PROJECT_ID is set
+    ok 6 - rejects a preview-audience token when GROK_PROJECT_ID is set
+      ---
+      duration_ms: 1.473693
+      type: 'test'
+      ...
+    # Subtest: rejects an app-audience token in preview mode
+    ok 7 - rejects an app-audience token in preview mode
+      ---
+      duration_ms: 1.683071
+      type: 'test'
+      ...
+    1..7
+ok 66 - gateIdentityFromHeaders
+  ---
+  duration_ms: 31.353777
+  type: 'suite'
+  ...
+# Subtest: gateIdentityEnabled
+    # Subtest: is enabled by default with no gate env vars
+    ok 1 - is enabled by default with no gate env vars
+      ---
+      duration_ms: 0.14699
+      type: 'test'
+      ...
+    # Subtest: is disabled when VITE_AUTH_ENABLED is false
+    ok 2 - is disabled when VITE_AUTH_ENABLED is false
+      ---
+      duration_ms: 0.125692
+      type: 'test'
+      ...
+    1..2
+ok 67 - gateIdentityEnabled
+  ---
+  duration_ms: 0.396846
+  type: 'suite'
+  ...
+# Subtest: gateTokenAudience
+    # Subtest: pins app:<id> when GROK_PROJECT_ID is set, even alongside GROK_GATE_ORIGIN
+    ok 1 - pins app:<id> when GROK_PROJECT_ID is set, even alongside GROK_GATE_ORIGIN
+      ---
+      duration_ms: 0.118829
+      type: 'test'
+      ...
+    # Subtest: pins preview when GROK_PROJECT_ID is unset
+    ok 2 - pins preview when GROK_PROJECT_ID is unset
+      ---
+      duration_ms: 0.09597
+      type: 'test'
+      ...
+    1..2
+ok 68 - gateTokenAudience
+  ---
+  duration_ms: 0.30064
+  type: 'suite'
+  ...
+# Subtest: gateIdentityUserInfo
+    # Subtest: falls back to a synthetic email and name for sub-only claims
+    ok 1 - falls back to a synthetic email and name for sub-only claims
+      ---
+      duration_ms: 0.137778
+      type: 'test'
+      ...
+    # Subtest: keeps real claims, lowercasing the email and marking it verified
+    ok 2 - keeps real claims, lowercasing the email and marking it verified
+      ---
+      duration_ms: 0.178612
+      type: 'test'
+      ...
+    1..2
+ok 69 - gateIdentityUserInfo
+  ---
+  duration_ms: 0.39873
+  type: 'suite'
+  ...
+# Subtest: sessionBoundToGateIdentity
+    # Subtest: keeps the session when it is bound to the same gate sub
+    ok 1 - keeps the session when it is bound to the same gate sub
+      ---
+      duration_ms: 0.134442
+      type: 'test'
+      ...
+    # Subtest: rotates when the session belongs to a different gate sub
+    ok 2 - rotates when the session belongs to a different gate sub
+      ---
+      duration_ms: 0.069228
+      type: 'test'
+      ...
+    # Subtest: rotates when the session user has no gate-bound account
+    ok 3 - rotates when the session user has no gate-bound account
+      ---
+      duration_ms: 0.064831
+      type: 'test'
+      ...
+    1..3
+ok 70 - sessionBoundToGateIdentity
+  ---
+  duration_ms: 0.368207
+  type: 'suite'
+  ...
+# Subtest: resolveSignInGateState
+    # Subtest: is pending while the session check is in flight, user or not
+    ok 1 - is pending while the session check is in flight, user or not
+      ---
+      duration_ms: 0.701475
+      type: 'test'
+      ...
+    # Subtest: is signed_in once a user is present
+    ok 2 - is signed_in once a user is present
+      ---
+      duration_ms: 0.159784
+      type: 'test'
+      ...
+    # Subtest: is signed_out only after the check resolved with no user
+    ok 3 - is signed_out only after the check resolved with no user
+      ---
+      duration_ms: 0.107524
+      type: 'test'
+      ...
+    1..3
+ok 71 - resolveSignInGateState
+  ---
+  duration_ms: 2.021278
+  type: 'suite'
+  ...
+# Subtest: grok-02 persistence pack
+    # Subtest: keeps the reference model consistent and refuses to bind the live save
+    ok 1 - keeps the reference model consistent and refuses to bind the live save
+      ---
+      duration_ms: 251.510905
+      type: 'test'
+      ...
+    1..1
+ok 72 - grok-02 persistence pack
+  ---
+  duration_ms: 252.498484
+  type: 'suite'
+  ...
+# Subtest: DG05 through DG08 have no missing refs, dead ends, or broken keys
+ok 73 - DG05 through DG08 have no missing refs, dead ends, or broken keys
+  ---
+  duration_ms: 255.644796
+  type: 'test'
+  ...
+# Subtest: a broken miniature pack fails closed
+ok 74 - a broken miniature pack fails closed
+  ---
+  duration_ms: 43.823513
+  type: 'test'
+  ...
+# Subtest: DG13–DG16 graph, endings, and death recovery
+ok 75 - DG13–DG16 graph, endings, and death recovery
+  ---
+  duration_ms: 125.655548
+  type: 'test'
+  ...
+# Subtest: the county cartogram validates
+ok 76 - the county cartogram validates
+  ---
+  duration_ms: 2096.791482
+  type: 'test'
+  ...
+# Subtest: catalog has at least forty complete scenarios
+ok 77 - catalog has at least forty complete scenarios
+  ---
+  duration_ms: 2.566421
+  type: 'test'
+  ...
+# Subtest: every requirement is linked and every link exists
+ok 78 - every requirement is linked and every link exists
+  ---
+  duration_ms: 0.367916
+  type: 'test'
+  ...
+# Subtest: a missing client fails availability and blocks behavior
+ok 79 - a missing client fails availability and blocks behavior
+  ---
+  duration_ms: 0.269019
+  type: 'test'
+  ...
+# Subtest: availability passes only when a playable surface was actually found
+ok 80 - availability passes only when a playable surface was actually found
+  ---
+  duration_ms: 0.114095
+  type: 'test'
+  ...
+# Subtest: east movement passes on a fake seam and fails when position does not change
+ok 81 - east movement passes on a fake seam and fails when position does not change
+  ---
+  duration_ms: 1.160672
+  type: 'test'
+  ...
+# Subtest: a feature the build reports as absent is not a pass
+ok 82 - a feature the build reports as absent is not a pass
+  ---
+  duration_ms: 0.175415
+  type: 'test'
+  ...
+# Subtest: campaign scope check rejects an over-claim and accepts an honest partial list
+ok 83 - campaign scope check rejects an over-claim and accepts an honest partial list
+  ---
+  duration_ms: 0.343981
+  type: 'test'
+  ...
+# Subtest: inventory of an empty tree is not a game
+ok 84 - inventory of an empty tree is not a game
+  ---
+  duration_ms: 11.556654
+  type: 'test'
+  ...
+# Subtest: contrast and page-only checks do not pretend a missing seam passed
+ok 85 - contrast and page-only checks do not pretend a missing seam passed
+  ---
+  duration_ms: 0.66506
+  type: 'test'
+  ...
+# Subtest: closed port probe is not a successful client
+ok 86 - closed port probe is not a successful client
+  ---
+  duration_ms: 20.465799
+  type: 'test'
+  ...
+# Subtest: county environment art
+    # Subtest: meets the library minimums and leaves the county save alone
+    ok 1 - meets the library minimums and leaves the county save alone
+      ---
+      duration_ms: 2.066601
+      type: 'test'
+      ...
+    # Subtest: keeps every tile on the 16px grid, with collision and a file that matches
+    ok 2 - keeps every tile on the 16px grid, with collision and a file that matches
+      ---
+      duration_ms: 27.889304
+      type: 'test'
+      ...
+    # Subtest: ships atlas sheets whose edges sit on the 16px grid
+    ok 3 - ships atlas sheets whose edges sit on the 16px grid
+      ---
+      duration_ms: 1.935729
+      type: 'test'
+      ...
+    1..3
+ok 87 - county environment art
+  ---
+  duration_ms: 32.886172
+  type: 'suite'
+  ...
+# Subtest: icons
+    # Subtest: draws every tool, bottle, heart, lock, key, and interaction state on one grid
+    ok 1 - draws every tool, bottle, heart, lock, key, and interaction state on one grid
+      ---
+      duration_ms: 1.233743
+      type: 'test'
+      ...
+    1..1
+ok 88 - icons
+  ---
+  duration_ms: 1.983851
+  type: 'suite'
+  ...
+# Subtest: focus
+    # Subtest: moves in a grid, skips disabled rows, and wraps
+    ok 1 - moves in a grid, skips disabled rows, and wraps
+      ---
+      duration_ms: 0.381501
+      type: 'test'
+      ...
+    # Subtest: pages long text before leaving the row
+    ok 2 - pages long text before leaving the row
+      ---
+      duration_ms: 0.678401
+      type: 'test'
+      ...
+    # Subtest: keeps left and right on sliders for the caller
+    ok 3 - keeps left and right on sliders for the caller
+      ---
+      duration_ms: 2.137581
+      type: 'test'
+      ...
+    1..3
+ok 89 - focus
+  ---
+  duration_ms: 3.519059
+  type: 'suite'
+  ...
+# Subtest: input parity
+    # Subtest: maps keyboard and gamepad onto the same intents
+    ok 1 - maps keyboard and gamepad onto the same intents
+      ---
+      duration_ms: 0.447357
+      type: 'test'
+      ...
+    1..1
+ok 90 - input parity
+  ---
+  duration_ms: 0.590088
+  type: 'suite'
+  ...
+# Subtest: navigation
+    # Subtest: backs out one screen and does not leave the title
+    ok 1 - backs out one screen and does not leave the title
+      ---
+      duration_ms: 0.616676
+      type: 'test'
+      ...
+    # Subtest: asks before erasing a written page and keeps it when refused
+    ok 2 - asks before erasing a written page and keeps it when refused
+      ---
+      duration_ms: 0.455629
+      type: 'test'
+      ...
+    # Subtest: repairs a torn page on retry and will not open a blank page with continue
+    ok 3 - repairs a torn page on retry and will not open a blank page with continue
+      ---
+      duration_ms: 0.653679
+      type: 'test'
+      ...
+    # Subtest: remembers focus when a menu is reopened
+    ok 4 - remembers focus when a menu is reopened
+      ---
+      duration_ms: 0.673291
+      type: 'test'
+      ...
+    1..4
+ok 91 - navigation
+  ---
+  duration_ms: 2.884568
+  type: 'suite'
+  ...
+# Subtest: retention
+    # Subtest: does not move the life while a menu is open, and does move it on the field
+    ok 1 - does not move the life while a menu is open, and does move it on the field
+      ---
+      duration_ms: 1.019434
+      type: 'test'
+      ...
+    # Subtest: keeps ground fields when a sip and a tool change on purpose
+    ok 2 - keeps ground fields when a sip and a tool change on purpose
+      ---
+      duration_ms: 0.844391
+      type: 'test'
+      ...
+    # Subtest: does not simulate field steps when the engine owns movement
+    ok 3 - does not simulate field steps when the engine owns movement
+      ---
+      duration_ms: 0.213207
+      type: 'test'
+      ...
+    1..3
+ok 92 - retention
+  ---
+  duration_ms: 2.204821
+  type: 'suite'
+  ...
+# Subtest: journeys
+    # Subtest: walks five complete journeys
+    ok 1 - walks five complete journeys
+      ---
+      duration_ms: 5.76888
+      type: 'test'
+      ...
+    1..1
+ok 93 - journeys
+  ---
+  duration_ms: 5.849868
+  type: 'suite'
+  ...
+# Subtest: plates
+    # Subtest: keeps a plate and a seat for every place in the register
+    ok 1 - keeps a plate and a seat for every place in the register
+      ---
+      duration_ms: 0.425822
+      type: 'test'
+      ...
+    1..1
+ok 94 - plates
+  ---
+  duration_ms: 0.508148
+  type: 'suite'
+  ...
+# Subtest: register copy
+    # Subtest: does not add a quest compass, an objective marker, or a currency
+    ok 1 - does not add a quest compass, an objective marker, or a currency
+      ---
+      duration_ms: 4.245798
+      type: 'test'
+      ...
+    1..1
+ok 95 - register copy
+  ---
+  duration_ms: 4.844232
+  type: 'suite'
+  ...
+# Subtest: equal-power endpoints and energy
+ok 96 - equal-power endpoints and energy
+  ---
+  duration_ms: 0.853831
+  type: 'test'
+  ...
+# Subtest: curves stay positive and move the right way
+ok 97 - curves stay positive and move the right way
+  ---
+  duration_ms: 0.289222
+  type: 'test'
+  ...
+# Subtest: intensity layers stack upward and solo replaces them
+ok 98 - intensity layers stack upward and solo replaces them
+  ---
+  duration_ms: 0.199926
+  type: 'test'
+  ...
+# Subtest: menu duck, veil exceptions, mute and suspend
+ok 99 - menu duck, veil exceptions, mute and suspend
+  ---
+  duration_ms: 0.144356
+  type: 'test'
+  ...
+# Subtest: keyboard movement
+    # Subtest: maps WASD to screen signs: A left, D right, W up, S down
+    ok 1 - maps WASD to screen signs: A left, D right, W up, S down
+      ---
+      duration_ms: 3.984637
+      type: 'test'
+      ...
+    # Subtest: maps arrow keys the same way as WASD
+    ok 2 - maps arrow keys the same way as WASD
+      ---
+      duration_ms: 1.674648
+      type: 'test'
+      ...
+    # Subtest: cancels opposite east and west
+    ok 3 - cancels opposite east and west
+      ---
+      duration_ms: 0.421141
+      type: 'test'
+      ...
+    # Subtest: cancels opposite north and south
+    ok 4 - cancels opposite north and south
+      ---
+      duration_ms: 0.296646
+      type: 'test'
+      ...
+    # Subtest: keeps four-direction movement on the newest axis
+    ok 5 - keeps four-direction movement on the newest axis
+      ---
+      duration_ms: 0.319235
+      type: 'test'
+      ...
+    # Subtest: allows diagonals only when the plane is eight-way
+    ok 6 - allows diagonals only when the plane is eight-way
+      ---
+      duration_ms: 0.324441
+      type: 'test'
+      ...
+    # Subtest: reads movement and a blade tap in the same gesture
+    ok 7 - reads movement and a blade tap in the same gesture
+      ---
+      duration_ms: 0.392444
+      type: 'test'
+      ...
+    1..7
+ok 100 - keyboard movement
+  ---
+  duration_ms: 8.577933
+  type: 'suite'
+  ...
+# Subtest: blade tap versus spin
+    # Subtest: emits a tap and not a spin when released before the threshold
+    ok 1 - emits a tap and not a spin when released before the threshold
+      ---
+      duration_ms: 0.420239
+      type: 'test'
+      ...
+    # Subtest: emits a spin and not a tap once the hold crosses the threshold
+    ok 2 - emits a spin and not a tap once the hold crosses the threshold
+      ---
+      duration_ms: 1.015187
+      type: 'test'
+      ...
+    # Subtest: ends a spin on release without adding a tap
+    ok 3 - ends a spin on release without adding a tap
+      ---
+      duration_ms: 0.547777
+      type: 'test'
+      ...
+    # Subtest: treats a release exactly at the threshold as a spin, not a tap
+    ok 4 - treats a release exactly at the threshold as a spin, not a tap
+      ---
+      duration_ms: 0.271599
+      type: 'test'
+      ...
+    # Subtest: ignores key repeat so one press is one tap
+    ok 5 - ignores key repeat so one press is one tap
+      ---
+      duration_ms: 0.232467
+      type: 'test'
+      ...
+    # Subtest: counts repeated taps separately
+    ok 6 - counts repeated taps separately
+      ---
+      duration_ms: 0.658731
+      type: 'test'
+      ...
+    # Subtest: holds a spin across a long press and does not complete a shrine rite
+    ok 7 - holds a spin across a long press and does not complete a shrine rite
+      ---
+      duration_ms: 0.554349
+      type: 'test'
+      ...
+    1..7
+ok 101 - blade tap versus spin
+  ---
+  duration_ms: 4.120465
+  type: 'suite'
+  ...
+# Subtest: shrine release protection
+    # Subtest: does not release on a tap
+    ok 1 - does not release on a tap
+      ---
+      duration_ms: 0.304211
+      type: 'test'
+      ...
+    # Subtest: releases once, only after the full hold, and not again while still held
+    ok 2 - releases once, only after the full hold, and not again while still held
+      ---
+      duration_ms: 0.478009
+      type: 'test'
+      ...
+    # Subtest: cancels the rite when the player moves, with no release
+    ok 3 - cancels the rite when the player moves, with no release
+      ---
+      duration_ms: 0.335558
+      type: 'test'
+      ...
+    # Subtest: cancels the rite when the blade is pressed
+    ok 4 - cancels the rite when the blade is pressed
+      ---
+      duration_ms: 0.256008
+      type: 'test'
+      ...
+    # Subtest: cancels a charging rite on blur and does not release
+    ok 5 - cancels a charging rite on blur and does not release
+      ---
+      duration_ms: 0.391685
+      type: 'test'
+      ...
+    1..5
+ok 102 - shrine release protection
+  ---
+  duration_ms: 1.937319
+  type: 'suite'
+  ...
+# Subtest: focus, cancel, and off-hand
+    # Subtest: ends a spin on blur and does not keep movement held
+    ok 1 - ends a spin on blur and does not keep movement held
+      ---
+      duration_ms: 1.21266
+      type: 'test'
+      ...
+    # Subtest: does not synthesize held movement when focus returns
+    ok 2 - does not synthesize held movement when focus returns
+      ---
+      duration_ms: 0.288148
+      type: 'test'
+      ...
+    # Subtest: cancels a touch shrine when the page hides
+    ok 3 - cancels a touch shrine when the page hides
+      ---
+      duration_ms: 0.578587
+      type: 'test'
+      ...
+    # Subtest: drops a blade when the touch is cancelled before the spin
+    ok 4 - drops a blade when the touch is cancelled before the spin
+      ---
+      duration_ms: 0.330251
+      type: 'test'
+      ...
+    # Subtest: emits a tap when the touch ends inside the blade
+    ok 5 - emits a tap when the touch ends inside the blade
+      ---
+      duration_ms: 0.276624
+      type: 'test'
+      ...
+    # Subtest: slides off the blade without producing a tap
+    ok 6 - slides off the blade without producing a tap
+      ---
+      duration_ms: 0.304622
+      type: 'test'
+      ...
+    # Subtest: uses hold or toggle for the off-hand and refuses to toggle the shrine
+    ok 7 - uses hold or toggle for the off-hand and refuses to toggle the shrine
+      ---
+      duration_ms: 0.487598
+      type: 'test'
+      ...
+    1..7
+ok 103 - focus, cancel, and off-hand
+  ---
+  duration_ms: 3.915575
+  type: 'suite'
+  ...
+# Subtest: touch and gamepad
+    # Subtest: moves and attacks with two pointers at once
+    ok 1 - moves and attacks with two pointers at once
+      ---
+      duration_ms: 0.469306
+      type: 'test'
+      ...
+    # Subtest: releases a cancelled stick so movement does not stick
+    ok 2 - releases a cancelled stick so movement does not stick
+      ---
+      duration_ms: 0.361206
+      type: 'test'
+      ...
+    # Subtest: ignores stick drift inside the radial deadzone and reads a real tilt
+    ok 3 - ignores stick drift inside the radial deadzone and reads a real tilt
+      ---
+      duration_ms: 1.073789
+      type: 'test'
+      ...
+    # Subtest: cancels opposite d-pad directions
+    ok 4 - cancels opposite d-pad directions
+      ---
+      duration_ms: 0.420563
+      type: 'test'
+      ...
+    # Subtest: points north when the left stick is pushed up
+    ok 5 - points north when the left stick is pushed up
+      ---
+      duration_ms: 0.529083
+      type: 'test'
+      ...
+    # Subtest: ends a spin and does not release the shrine when the pad drops mid-combat
+    ok 6 - ends a spin and does not release the shrine when the pad drops mid-combat
+      ---
+      duration_ms: 0.633804
+      type: 'test'
+      ...
+    # Subtest: does not fire shrine release if the pad drops during the hold
+    ok 7 - does not fire shrine release if the pad drops during the hold
+      ---
+      duration_ms: 0.509373
+      type: 'test'
+      ...
+    # Subtest: requires both triggers for the gamepad shrine chord
+    ok 8 - requires both triggers for the gamepad shrine chord
+      ---
+      duration_ms: 0.911493
+      type: 'test'
+      ...
+    # Subtest: does not restart a spin if the pad reconnects while the button is still down
+    ok 9 - does not restart a spin if the pad reconnects while the button is still down
+      ---
+      duration_ms: 0.66586
+      type: 'test'
+      ...
+    # Subtest: ignores injected pads when the Gamepad API is missing
+    ok 10 - ignores injected pads when the Gamepad API is missing
+      ---
+      duration_ms: 0.222081
+      type: 'test'
+      ...
+    1..10
+ok 104 - touch and gamepad
+  ---
+  duration_ms: 6.192353
+  type: 'suite'
+  ...
+# Subtest: prompts, menu, and device changes
+    # Subtest: follows the device that was used most recently
+    ok 1 - follows the device that was used most recently
+      ---
+      duration_ms: 0.897507
+      type: 'test'
+      ...
+    # Subtest: labels a non-standard pad with generic faces, not Xbox print
+    ok 2 - labels a non-standard pad with generic faces, not Xbox print
+      ---
+      duration_ms: 0.333745
+      type: 'test'
+      ...
+    # Subtest: keeps a menu open when the device changes and swallows combat edges
+    ok 3 - keeps a menu open when the device changes and swallows combat edges
+      ---
+      duration_ms: 0.574774
+      type: 'test'
+      ...
+    # Subtest: buffers an interact press briefly, then drops it
+    ok 4 - buffers an interact press briefly, then drops it
+      ---
+      duration_ms: 0.358838
+      type: 'test'
+      ...
+    1..4
+ok 105 - prompts, menu, and device changes
+  ---
+  duration_ms: 2.333807
+  type: 'suite'
+  ...
+# Subtest: rebinding, recovery, and persistence
+    # Subtest: swaps a conflicting key so both actions keep a binding
+    ok 1 - swaps a conflicting key so both actions keep a binding
+      ---
+      duration_ms: 0.805871
+      type: 'test'
+      ...
+    # Subtest: rejects a conflict without changing the table
+    ok 2 - rejects a conflict without changing the table
+      ---
+      duration_ms: 0.436006
+      type: 'test'
+      ...
+    # Subtest: refuses to remove the last pause key
+    ok 3 - refuses to remove the last pause key
+      ---
+      duration_ms: 0.493243
+      type: 'test'
+      ...
+    # Subtest: refuses the reserved recovery key
+    ok 4 - refuses the reserved recovery key
+      ---
+      duration_ms: 0.110667
+      type: 'test'
+      ...
+    # Subtest: restores defaults from the recovery hold even after a rebind
+    ok 5 - restores defaults from the recovery hold even after a rebind
+      ---
+      duration_ms: 0.465339
+      type: 'test'
+      ...
+    # Subtest: opens settings on a short recovery press without resetting
+    ok 6 - opens settings on a short recovery press without resetting
+      ---
+      duration_ms: 0.368595
+      type: 'test'
+      ...
+    # Subtest: round-trips bindings through storage
+    ok 7 - round-trips bindings through storage
+      ---
+      duration_ms: 0.660274
+      type: 'test'
+      ...
+    # Subtest: falls back when saved bindings are corrupt and still has pause
+    ok 8 - falls back when saved bindings are corrupt and still has pause
+      ---
+      duration_ms: 0.409865
+      type: 'test'
+      ...
+    1..8
+ok 106 - rebinding, recovery, and persistence
+  ---
+  duration_ms: 3.99131
+  type: 'suite'
+  ...
+# Subtest: touch layout
+    # Subtest: keeps controls inside the safe area at a 44px minimum
+    ok 1 - keeps controls inside the safe area at a 44px minimum
+      ---
+      duration_ms: 0.247867
+      type: 'test'
+      ...
+    # Subtest: mirrors the stick when handedness changes
+    ok 2 - mirrors the stick when handedness changes
+      ---
+      duration_ms: 0.154298
+      type: 'test'
+      ...
+    # Subtest: pushes the shrine off the blade when a layout would overlap them
+    ok 3 - pushes the shrine off the blade when a layout would overlap them
+      ---
+      duration_ms: 0.170658
+      type: 'test'
+      ...
+    # Subtest: keeps phone-width controls from sitting on each other
+    ok 4 - keeps phone-width controls from sitting on each other
+      ---
+      duration_ms: 0.148383
+      type: 'test'
+      ...
+    1..4
+ok 107 - touch layout
+  ---
+  duration_ms: 0.841823
+  type: 'suite'
+  ...
+# Subtest: arena signs and the simulation bridge
+    # Subtest: moves the marker right on D, left on A, and up on W
+    ok 1 - moves the marker right on D, left on A, and up on W
+      ---
+      duration_ms: 0.418635
+      type: 'test'
+      ...
+    # Subtest: hands the simulation move and intents without device or combat fields
+    ok 2 - hands the simulation move and intents without device or combat fields
+      ---
+      duration_ms: 0.36317
+      type: 'test'
+      ...
+    1..2
+ok 108 - arena signs and the simulation bridge
+  ---
+  duration_ms: 1.811524
+  type: 'suite'
+  ...
+# Subtest: world holds together
+ok 109 - world holds together
+  ---
+  duration_ms: 17.515414
+  type: 'test'
+  ...
+# Subtest: 1 attentive hour understands every lesson
+ok 110 - 1 attentive hour understands every lesson
+  ---
+  duration_ms: 100.49258
+  type: 'test'
+  ...
+# Subtest: 2 already-knows: no idle hint and no wrong-tool hint
+ok 111 - 2 already-knows: no idle hint and no wrong-tool hint
+  ---
+  duration_ms: 16.837854
+  type: 'test'
+  ...
+# Subtest: 3 early death still leaves every teacher
+ok 112 - 3 early death still leaves every teacher
+  ---
+  duration_ms: 30.684523
+  type: 'test'
+  ...
+# Subtest: 4 ditch warns, then releases forward
+ok 113 - 4 ditch warns, then releases forward
+  ---
+  duration_ms: 0.974492
+  type: 'test'
+  ...
+# Subtest: 5 skip every conversation
+ok 114 - 5 skip every conversation
+  ---
+  duration_ms: 10.410848
+  type: 'test'
+  ...
+# Subtest: 6 refuse the vein; the yard block is enough to shift
+ok 115 - 6 refuse the vein; the yard block is enough to shift
+  ---
+  duration_ms: 6.430329
+  type: 'test'
+  ...
+# Subtest: 7 vein before the parcel
+ok 116 - 7 vein before the parcel
+  ---
+  duration_ms: 5.403884
+  type: 'test'
+  ...
+# Subtest: 8 long break resumes mid-speech and does not restart it
+ok 117 - 8 long break resumes mid-speech and does not restart it
+  ---
+  duration_ms: 2.922276
+  type: 'test'
+  ...
+# Subtest: 9 salve at full health is kept
+ok 118 - 9 salve at full health is kept
+  ---
+  duration_ms: 6.684942
+  type: 'test'
+  ...
+# Subtest: 10 rest writes a session notch and is not the save lesson
+ok 119 - 10 rest writes a session notch and is not the save lesson
+  ---
+  duration_ms: 1.940078
+  type: 'test'
+  ...
+# Subtest: 11 leveling the blade does not lock Ione or kill anyone
+ok 120 - 11 leveling the blade does not lock Ione or kill anyone
+  ---
+  duration_ms: 2.777025
+  type: 'test'
+  ...
+# Subtest: 12 seam before the hammer is not a lock
+ok 121 - 12 seam before the hammer is not a lock
+  ---
+  duration_ms: 1.704079
+  type: 'test'
+  ...
+# Subtest: 13 walking past the impression does not count as seeing it
+ok 122 - 13 walking past the impression does not count as seeing it
+  ---
+  duration_ms: 5.272505
+  type: 'test'
+  ...
+# Subtest: 14 seeing the impression does not force the year-shift
+ok 123 - 14 seeing the impression does not force the year-shift
+  ---
+  duration_ms: 8.509454
+  type: 'test'
+  ...
+# Subtest: 15 remaining on the shore does not nag or advance the year
+ok 124 - 15 remaining on the shore does not nag or advance the year
+  ---
+  duration_ms: 0.858246
+  type: 'test'
+  ...
+# Subtest: 16 a scar and an open face survive release, and resume will not rewind them
+ok 125 - 16 a scar and an open face survive release, and resume will not rewind them
+  ---
+  duration_ms: 17.509379
+  type: 'test'
+  ...
+# Subtest: 17 opening the parcel alone does not lock the house
+ok 126 - 17 opening the parcel alone does not lock the house
+  ---
+  duration_ms: 2.546066
+  type: 'test'
+  ...
+# Subtest: 18 speech continues where it stopped
+ok 127 - 18 speech continues where it stopped
+  ---
+  duration_ms: 2.836969
+  type: 'test'
+  ...
+# Subtest: 19 a long break with no notch does not throw or recap
+ok 128 - 19 a long break with no notch does not throw or recap
+  ---
+  duration_ms: 0.175641
+  type: 'test'
+  ...
+# Subtest: 20 refusing a remedy can still end in release
+ok 129 - 20 refusing a remedy can still end in release
+  ---
+  duration_ms: 1.438611
+  type: 'test'
+  ...
+# Subtest: 21 yard rule, then the real vein, after the shift
+ok 130 - 21 yard rule, then the real vein, after the shift
+  ---
+  duration_ms: 6.879207
+  type: 'test'
+  ...
+# Subtest: 22 corrupt saves fall back instead of crashing
+ok 131 - 22 corrupt saves fall back instead of crashing
+  ---
+  duration_ms: 0.782003
+  type: 'test'
+  ...
+# Subtest: 23 the lane can be refused
+ok 132 - 23 the lane can be refused
+  ---
+  duration_ms: 9.68868
+  type: 'test'
+  ...
+# Subtest: 24 idle hint happens once and only if you have not moved
+ok 133 - 24 idle hint happens once and only if you have not moved
+  ---
+  duration_ms: 0.46041
+  type: 'test'
+  ...
+# Subtest: 25 hammer rule: face, edge, and thread are different
+ok 134 - 25 hammer rule: face, edge, and thread are different
+  ---
+  duration_ms: 2.30784
+  type: 'test'
+  ...
+# Subtest: 26 briars can bleed a body out without a remedy
+ok 135 - 26 briars can bleed a body out without a remedy
+  ---
+  duration_ms: 2.164673
+  type: 'test'
+  ...
+# Subtest: dependency graph has no hard gates
+ok 136 - dependency graph has no hard gates
+  ---
+  duration_ms: 0.28979
+  type: 'test'
+  ...
+# Subtest: spoken lines are present and contain no lesson jargon
+ok 137 - spoken lines are present and contain no lesson jargon
+  ---
+  duration_ms: 0.474393
+  type: 'test'
+  ...
+# Subtest: player-facing source avoids lecture words
+ok 138 - player-facing source avoids lecture words
+  ---
+  duration_ms: 0.766943
+  type: 'test'
+  ...
+# Subtest: spacing, the first pass
+    # Subtest: mb-crow middle is 0 in 0.733s on both models
+    ok 1 - mb-crow middle is 0 in 0.733s on both models
+      ---
+      duration_ms: 5.428103
+      type: 'test'
+      ...
+    # Subtest: mb-bob middle is 0 in 1.167s on both models
+    ok 2 - mb-bob middle is 0 in 1.167s on both models
+      ---
+      duration_ms: 0.682872
+      type: 'test'
+      ...
+    # Subtest: mb-fisher middle is 0 in 1.1s on both models
+    ok 3 - mb-fisher middle is 0 in 1.1s on both models
+      ---
+      duration_ms: 1.236569
+      type: 'test'
+      ...
+    # Subtest: vg-wraith middle is 0 in 1.217s on both models
+    ok 4 - vg-wraith middle is 0 in 1.217s on both models
+      ---
+      duration_ms: 0.454863
+      type: 'test'
+      ...
+    # Subtest: solo-wraiths middle is 0 in 4.667s on both models
+    ok 5 - solo-wraiths middle is 0 in 4.667s on both models
+      ---
+      duration_ms: 3.314672
+      type: 'test'
+      ...
+    # Subtest: br-fisher-bear middle is 0 in 4.067s on both models
+    ok 6 - br-fisher-bear middle is 0 in 4.067s on both models
+      ---
+      duration_ms: 2.439946
+      type: 'test'
+      ...
+    # Subtest: br-bear middle is 0 in 2.2s on both models
+    ok 7 - br-bear middle is 0 in 2.2s on both models
+      ---
+      duration_ms: 1.237532
+      type: 'test'
+      ...
+    # Subtest: quarry-sentinel-first early is 0 in 2.817s on both models
+    ok 8 - quarry-sentinel-first early is 0 in 2.817s on both models
+      ---
+      duration_ms: 0.860827
+      type: 'test'
+      ...
+    # Subtest: quarry-sentinel-return middle is 0 in 2.983s on both models
+    ok 9 - quarry-sentinel-return middle is 0 in 2.983s on both models
+      ---
+      duration_ms: 2.215072
+      type: 'test'
+      ...
+    # Subtest: quarry-sentinel-late late is 0 in 2.867s on both models
+    ok 10 - quarry-sentinel-late late is 0 in 2.867s on both models
+      ---
+      duration_ms: 1.219645
+      type: 'test'
+      ...
+    # Subtest: soloverse-sentinel sphere is 0 in 3.1s on both models
+    ok 11 - soloverse-sentinel sphere is 0 in 3.1s on both models
+      ---
+      duration_ms: 1.997897
+      type: 'test'
+      ...
+    1..11
+ok 139 - spacing, the first pass
+  ---
+  duration_ms: 22.367261
+  type: 'suite'
+  ...
+# Subtest: planted and late, the second pass
+    # Subtest: a planter kills the bear and the first sentinel without a bite
+    ok 1 - a planter kills the bear and the first sentinel without a bite
+      ---
+      duration_ms: 1.571551
+      type: 'test'
+      ...
+    # Subtest: late hands die to the bear and the sentinel
+    ok 2 - late hands die to the bear and the sentinel
+      ---
+      duration_ms: 4.624893
+      type: 'test'
+      ...
+    # Subtest: bobcat and fisher catch a planter; the crow does not
+    ok 3 - bobcat and fisher catch a planter; the crow does not
+      ---
+      duration_ms: 2.918289
+      type: 'test'
+      ...
+    # Subtest: a shove of 4 is a study: spacing still takes nothing, a planter loses the bear
+    ok 4 - a shove of 4 is a study: spacing still takes nothing, a planter loses the bear
+      ---
+      duration_ms: 2.228465
+      type: 'test'
+      ...
+    1..4
+ok 140 - planted and late, the second pass
+  ---
+  duration_ms: 11.614472
+  type: 'suite'
+  ...
+# Subtest: the shove ledger
+    # Subtest: anything at or under 45.5px/s cannot walk a 10px shove back in 0.22s
+    ok 1 - anything at or under 45.5px/s cannot walk a 10px shove back in 0.22s
+      ---
+      duration_ms: 0.216609
+      type: 'test'
+      ...
+    1..1
+ok 141 - the shove ledger
+  ---
+  duration_ms: 0.288497
+  type: 'suite'
+  ...
+# Subtest: the patch does not buff the county
+    # Subtest: combat tuning is empty and recovery does not change numbers
+    ok 1 - combat tuning is empty and recovery does not change numbers
+      ---
+      duration_ms: 0.78374
+      type: 'test'
+      ...
+    1..1
+ok 142 - the patch does not buff the county
+  ---
+  duration_ms: 0.855218
+  type: 'suite'
+  ...
+# Subtest: three plates connect every post to the fallback
+ok 143 - three plates connect every post to the fallback
+  ---
+  duration_ms: 10.298621
+  type: 'test'
+  ...
+# Subtest: at least twelve role activities actually move
+ok 144 - at least twelve role activities actually move
+  ---
+  duration_ms: 0.948391
+  type: 'test'
+  ...
+# Subtest: no authored beat is a long wait
+ok 145 - no authored beat is a long wait
+  ---
+  duration_ms: 0.3162
+  type: 'test'
+  ...
+# Subtest: same seedless inputs stay identical
+ok 146 - same seedless inputs stay identical
+  ---
+  duration_ms: 8.940621
+  type: 'test'
+  ...
+# Subtest: era substitution changes the seat, not the routine
+ok 147 - era substitution changes the seat, not the routine
+  ---
+  duration_ms: 1.248923
+  type: 'test'
+  ...
+# Subtest: missing successor becomes a shuttered post
+ok 148 - missing successor becomes a shuttered post
+  ---
+  duration_ms: 1.987501
+  type: 'test'
+  ...
+# Subtest: duplicate actor id keeps one post
+ok 149 - duplicate actor id keeps one post
+  ---
+  duration_ms: 0.643784
+  type: 'test'
+  ...
+# Subtest: quest conflict keeps the higher priority and still answers
+ok 150 - quest conflict keeps the higher priority and still answers
+  ---
+  duration_ms: 0.967346
+  type: 'test'
+  ...
+# Subtest: polite talk can be deferred a few ticks; essential talk cannot
+ok 151 - polite talk can be deferred a few ticks; essential talk cannot
+  ---
+  duration_ms: 0.7991
+  type: 'test'
+  ...
+# Subtest: a blocked lane is walked around and never entered
+ok 152 - a blocked lane is walked around and never entered
+  ---
+  duration_ms: 1.958731
+  type: 'test'
+  ...
+# Subtest: a sealed path recovers to the fallback instead of stalling
+ok 153 - a sealed path recovers to the fallback instead of stalling
+  ---
+  duration_ms: 1.212493
+  type: 'test'
+  ...
+# Subtest: loading during a routine continues identically
+ok 154 - loading during a routine continues identically
+  ---
+  duration_ms: 7.572659
+  type: 'test'
+  ...
+# Subtest: a missing station on load or mid-walk falls back
+ok 155 - a missing station on load or mid-walk falls back
+  ---
+  duration_ms: 0.287085
+  type: 'test'
+  ...
+# Subtest: clearing a blocker lets a stranded worker resume the same post
+ok 156 - clearing a blocker lets a stranded worker resume the same post
+  ---
+  duration_ms: 1.279208
+  type: 'test'
+  ...
+# Subtest: turning quests off resumes the routine
+ok 157 - turning quests off resumes the routine
+  ---
+  duration_ms: 1.848825
+  type: 'test'
+  ...
+# Subtest: fresh install leaves storage empty and a new life readable
+ok 158 - fresh install leaves storage empty and a new life readable
+  ---
+  duration_ms: 1.951333
+  type: 'test'
+  ...
+# Subtest: previous-version update migrates v7 through the engine and keeps a raw backup
+ok 159 - previous-version update migrates v7 through the engine and keeps a raw backup
+  ---
+  duration_ms: 0.672549
+  type: 'test'
+  ...
+# Subtest: rollback to a supported version restores the pre-migration life and refuses a bare v8
+ok 160 - rollback to a supported version restores the pre-migration life and refuses a bare v8
+  ---
+  duration_ms: 0.322554
+  type: 'test'
+  ...
+# Subtest: interrupted launch does not touch the save
+ok 161 - interrupted launch does not touch the save
+  ---
+  duration_ms: 0.244428
+  type: 'test'
+  ...
+# Subtest: damaged import, future save, and duplicate import
+ok 162 - damaged import, future save, and duplicate import
+  ---
+  duration_ms: 2.443772
+  type: 'test'
+  ...
+# Subtest: import keeps an existing backup when the slot is empty
+ok 163 - import keeps an existing backup when the slot is empty
+  ---
+  duration_ms: 0.309016
+  type: 'test'
+  ...
+# Subtest: unavailable storage rolls back the import
+ok 164 - unavailable storage rolls back the import
+  ---
+  duration_ms: 0.48778
+  type: 'test'
+  ...
+# Subtest: boot guard quarantines a future life and snapshots an older one
+ok 165 - boot guard quarantines a future life and snapshots an older one
+  ---
+  duration_ms: 1.146095
+  type: 'test'
+  ...
+# Subtest: engine v1 coordinates are migrated and a garbage blob does not throw
+ok 166 - engine v1 coordinates are migrated and a garbage blob does not throw
+  ---
+  duration_ms: 0.481236
+  type: 'test'
+  ...
+# Subtest: export round-trips the strange-device bytes
+ok 167 - export round-trips the strange-device bytes
+  ---
+  duration_ms: 0.946578
+  type: 'test'
+  ...
+# Subtest: emitted browser save contract matches the engine migrate
+ok 168 - emitted browser save contract matches the engine migrate
+  ---
+  duration_ms: 585.927001
+  type: 'test'
+  ...
+# Subtest: update check stays quiet offline and does not claim currency
+ok 169 - update check stays quiet offline and does not claim currency
+  ---
+  duration_ms: 0.246388
+  type: 'test'
+  ...
+# Subtest: asset rewrite is idempotent and headers refuse a mixed generation
+ok 170 - asset rewrite is idempotent and headers refuse a mixed generation
+  ---
+  duration_ms: 1.77264
+  type: 'test'
+  ...
+# Subtest: only the shell worker registration is a known service worker
+ok 171 - only the shell worker registration is a known service worker
+  ---
+  duration_ms: 0.303239
+  type: 'test'
+  ...
+# Subtest: reference library
+    # Subtest: reserves the full id plan and does not claim the library is written
+    ok 1 - reserves the full id plan and does not claim the library is written
+      ---
+      duration_ms: 1.945631
+      type: 'test'
+      ...
+    # Subtest: rejects a cycled graph, a one-discipline cross, a zero cost, and a duplicate id
+    ok 2 - rejects a cycled graph, a one-discipline cross, a zero cost, and a duplicate id
+      ---
+      duration_ms: 0.399129
+      type: 'test'
+      ...
+    # Subtest: rejects an unknown slot and a death-shaped source
+    ok 3 - rejects an unknown slot and a death-shaped source
+      ---
+      duration_ms: 3.703768
+      type: 'test'
+      ...
+    1..3
+ok 172 - reference library
+  ---
+  duration_ms: 6.918049
+  type: 'suite'
+  ...
+# Subtest: witness, duplicates, and the suicide purse
+    # Subtest: banks campaign discoveries once and never pays for death itself
+    ok 1 - banks campaign discoveries once and never pays for death itself
+      ---
+      duration_ms: 0.831196
+      type: 'test'
+      ...
+    # Subtest: voids a hollow release and will not farm the road wraith
+    ok 2 - voids a hollow release and will not farm the road wraith
+      ---
+      duration_ms: 0.606637
+      type: 'test'
+      ...
+    # Subtest: caps the whole repeatable purse
+    ok 3 - caps the whole repeatable purse
+      ---
+      duration_ms: 0.306963
+      type: 'test'
+      ...
+    1..3
+ok 173 - witness, duplicates, and the suicide purse
+  ---
+  duration_ms: 2.069665
+  type: 'suite'
+  ...
+# Subtest: purchases, prereqs, incompatibilities, caps
+    # Subtest: allows several purchases in one afterlife and blocks them while alive
+    ok 1 - allows several purchases in one afterlife and blocks them while alive
+      ---
+      duration_ms: 9.925554
+      type: 'test'
+      ...
+    # Subtest: enforces prereqs, sources, eras, and unwritten slots
+    ok 2 - enforces prereqs, sources, eras, and unwritten slots
+      ---
+      duration_ms: 0.439088
+      type: 'test'
+      ...
+    # Subtest: refuses incompatible effects and the equip caps
+    ok 3 - refuses incompatible effects and the equip caps
+      ---
+      duration_ms: 1.667524
+      type: 'test'
+      ...
+    # Subtest: keeps a bound gift through respec and allows only one vow and one capstone
+    ok 4 - keeps a bound gift through respec and allows only one vow and one capstone
+      ---
+      duration_ms: 1.943716
+      type: 'test'
+      ...
+    1..4
+ok 174 - purchases, prereqs, incompatibilities, caps
+  ---
+  duration_ms: 14.467903
+  type: 'suite'
+  ...
+# Subtest: saves and the game bind
+    # Subtest: refuses inflated banks, skipped prereqs, duplicate rewards, and bad shapes
+    ok 1 - refuses inflated banks, skipped prereqs, duplicate rewards, and bad shapes
+      ---
+      duration_ms: 9.585604
+      type: 'test'
+      ...
+    # Subtest: mirrors a game save without spending skill points or paying for the death
+    ok 2 - mirrors a game save without spending skill points or paying for the death
+      ---
+      duration_ms: 0.372053
+      type: 'test'
+      ...
+    1..2
+ok 175 - saves and the game bind
+  ---
+  duration_ms: 10.083026
+  type: 'suite'
+  ...
+# Subtest: traversal challenges
+    # Subtest: keeps 24 courses and strictly measured medals
+    ok 1 - keeps 24 courses and strictly measured medals
+      ---
+      duration_ms: 5.162715
+      type: 'test'
+      ...
+    # Subtest: rejects a teleport and a forged replay
+    ok 2 - rejects a teleport and a forged replay
+      ---
+      duration_ms: 43.160186
+      type: 'test'
+      ...
+    # Subtest: ignores checkpoints taken out of order and a finish that skipped them
+    ok 3 - ignores checkpoints taken out of order and a finish that skipped them
+      ---
+      duration_ms: 2.767291
+      type: 'test'
+      ...
+    # Subtest: does not count pause, focus loss, or a device change
+    ok 4 - does not count pause, focus loss, or a device change
+      ---
+      duration_ms: 0.512183
+      type: 'test'
+      ...
+    # Subtest: resets a false start and keeps the clock at zero until go
+    ok 5 - resets a false start and keeps the clock at zero until go
+      ---
+      duration_ms: 0.50982
+      type: 'test'
+      ...
+    # Subtest: respawns a death without finishing or writing a best
+    ok 6 - respawns a death without finishing or writing a best
+      ---
+      duration_ms: 0.445671
+      type: 'test'
+      ...
+    # Subtest: never lets a ghost move the body or plant a rod
+    ok 7 - never lets a ghost move the body or plant a rod
+      ---
+      duration_ms: 0.892163
+      type: 'test'
+      ...
+    # Subtest: moves left on A and right on D
+    ok 8 - moves left on A and right on D
+      ---
+      duration_ms: 1.231616
+      type: 'test'
+      ...
+    # Subtest: stores assist apart from ranked medals
+    ok 9 - stores assist apart from ranked medals
+      ---
+      duration_ms: 0.487745
+      type: 'test'
+      ...
+    # Subtest: reaches the sugar bell on the measured line
+    ok 10 - reaches the sugar bell on the measured line
+      ---
+      duration_ms: 18.937764
+      type: 'test'
+      ...
+    1..10
+ok 176 - traversal challenges
+  ---
+  duration_ms: 75.574451
+  type: 'suite'
+  ...
+# Subtest: festivals
+    # Subtest: ships six programs with four heats, hosts, access, and both eras
+    ok 1 - ships six programs with four heats, hosts, access, and both eras
+      ---
+      duration_ms: 1.848278
+      type: 'test'
+      ...
+    1..1
+ok 177 - festivals
+  ---
+  duration_ms: 2.564433
+  type: 'suite'
+  ...
+# Subtest: rivals
+    # Subtest: keeps twelve distinct people whose generations do not share a script
+    ok 1 - keeps twelve distinct people whose generations do not share a script
+      ---
+      duration_ms: 0.744303
+      type: 'test'
+      ...
+    # Subtest: moves stance when a heat changes the bond
+    ok 2 - moves stance when a heat changes the bond
+      ---
+      duration_ms: 0.168438
+      type: 'test'
+      ...
+    1..2
+ok 178 - rivals
+  ---
+  duration_ms: 1.056266
+  type: 'suite'
+  ...
+# Subtest: adapters
+    # Subtest: labels a missing module as a fixture and never as live play
+    ok 1 - labels a missing module as a fixture and never as live play
+      ---
+      duration_ms: 1.097425
+      type: 'test'
+      ...
+    # Subtest: uses a registered module without substituting a fixture
+    ok 2 - uses a registered module without substituting a fixture
+      ---
+      duration_ms: 0.37653
+      type: 'test'
+      ...
+    # Subtest: does not let a seated choice launder a bad boil, and Agnes changes with the era
+    ok 3 - does not let a seated choice launder a bad boil, and Agnes changes with the era
+      ---
+      duration_ms: 0.438498
+      type: 'test'
+      ...
+    1..3
+ok 179 - adapters
+  ---
+  duration_ms: 2.225307
+  type: 'suite'
+  ...
+# Subtest: schedule and optionality
+    # Subtest: opens Sap Night immediately and never waits on a clock
+    ok 1 - opens Sap Night immediately and never waits on a clock
+      ---
+      duration_ms: 0.281086
+      type: 'test'
+      ...
+    # Subtest: lets a life skip every gathering and still pass fourteen years
+    ok 2 - lets a life skip every gathering and still pass fourteen years
+      ---
+      duration_ms: 0.599938
+      type: 'test'
+      ...
+    # Subtest: abandons a partial gathering without filing or keeping the bond swing
+    ok 3 - abandons a partial gathering without filing or keeping the bond swing
+      ---
+      duration_ms: 0.444197
+      type: 'test'
+      ...
+    1..3
+ok 180 - schedule and optionality
+  ---
+  duration_ms: 1.498421
+  type: 'suite'
+  ...
+# Subtest: playthrough
+    # Subtest: files an honest Sap Night, pays the tin, and carries Marigold into the return
+    ok 1 - files an honest Sap Night, pays the tin, and carries Marigold into the return
+      ---
+      duration_ms: 0.875604
+      type: 'test'
+      ...
+    # Subtest: withholds prizes when every heat is declined inside the door
+    ok 2 - withholds prizes when every heat is declined inside the door
+      ---
+      duration_ms: 0.438049
+      type: 'test'
+      ...
+    1..2
+ok 181 - playthrough
+  ---
+  duration_ms: 1.417809
+  type: 'suite'
+  ...
+# Subtest: memory
+    # Subtest: only hangs what was earned, once, in the right kind of place
+    ok 1 - only hangs what was earned, once, in the right kind of place
+      ---
+      duration_ms: 0.816216
+      type: 'test'
+      ...
+    1..1
+ok 182 - memory
+  ---
+  duration_ms: 0.897079
+  type: 'suite'
+  ...
+# Subtest: save
+    # Subtest: round-trips, rejects corrupt files, and keeps a backup
+    ok 1 - round-trips, rejects corrupt files, and keeps a backup
+      ---
+      duration_ms: 1.334706
+      type: 'test'
+      ...
+    1..1
+ok 183 - save
+  ---
+  duration_ms: 1.419354
+  type: 'suite'
+  ...
+# Subtest: prizes stay narrative
+    # Subtest: does not invent a currency
+    ok 1 - does not invent a currency
+      ---
+      duration_ms: 0.260228
+      type: 'test'
+      ...
+    1..1
+ok 184 - prizes stay narrative
+  ---
+  duration_ms: 0.32957
+  type: 'suite'
+  ...
+# Subtest: Fourteen Winters catalog
+    # Subtest: seats every card, places every object, reads every paper, and walks every hunt
+    ok 1 - seats every card, places every object, reads every paper, and walks every hunt
+      ---
+      duration_ms: 50.457505
+      type: 'test'
+      ...
+    1..1
+ok 185 - Fourteen Winters catalog
+  ---
+  duration_ms: 51.21164
+  type: 'suite'
+  ...
+# Subtest: ledger limits
+    # Subtest: refuses a fourth common and a second rare
+    ok 1 - refuses a fourth common and a second rare
+      ---
+      duration_ms: 0.88753
+      type: 'test'
+      ...
+    # Subtest: rejects a deck that breaks the bond, the kin count, or the weather cap
+    ok 2 - rejects a deck that breaks the bond, the kin count, or the weather cap
+      ---
+      duration_ms: 0.478642
+      type: 'test'
+      ...
+    1..2
+ok 186 - ledger limits
+  ---
+  duration_ms: 1.531096
+  type: 'suite'
+  ...
+# Subtest: quest evidence
+    # Subtest: does not come out of the desk
+    ok 1 - does not come out of the desk
+      ---
+      duration_ms: 0.336096
+      type: 'test'
+      ...
+    1..1
+ok 187 - quest evidence
+  ---
+  duration_ms: 0.444042
+  type: 'suite'
+  ...
+# Subtest: duplicates and surplus
+    # Subtest: records a second watch without a second object
+    ok 1 - records a second watch without a second object
+      ---
+      duration_ms: 0.561102
+      type: 'test'
+      ...
+    1..1
+ok 188 - duplicates and surplus
+  ---
+  duration_ms: 0.791577
+  type: 'suite'
+  ...
+# Subtest: save
+    # Subtest: migrates an unversioned card map and restores a round trip
+    ok 1 - migrates an unversioned card map and restores a round trip
+      ---
+      duration_ms: 0.795931
+      type: 'test'
+      ...
+    1..1
+ok 189 - save
+  ---
+  duration_ms: 0.975305
+  type: 'suite'
+  ...
+# Subtest: keeping math
+    # Subtest: adds weather tax to the burden and not to the stoke
+    ok 1 - adds weather tax to the burden and not to the stoke
+      ---
+      duration_ms: 0.530868
+      type: 'test'
+      ...
+    1..1
+ok 190 - keeping math
+  ---
+  duration_ms: 0.61757
+  type: 'suite'
+  ...
+# Subtest: tonight
+    # Subtest: sends a new keeping room to the unread sugar ridge map
+    ok 1 - sends a new keeping room to the unread sugar ridge map
+      ---
+      duration_ms: 0.446717
+      type: 'test'
+      ...
+    # Subtest: stays with an open winter until the table is left
+    ok 2 - stays with an open winter until the table is left
+      ---
+      duration_ms: 0.449908
+      type: 'test'
+      ...
+    1..2
+ok 191 - tonight
+  ---
+  duration_ms: 1.084932
+  type: 'suite'
+  ...
+# Subtest: authored placement seals: twelve districts, sixteen dungeons, no duplicate uniques
+ok 192 - authored placement seals: twelve districts, sixteen dungeons, no duplicate uniques
+  ---
+  duration_ms: 56.665689
+  type: 'test'
+  ...
+# Subtest: windfalls spoil into leather when fourteen years pass in the pocket
+ok 193 - windfalls spoil into leather when fourteen years pass in the pocket
+  ---
+  duration_ms: 0.348436
+  type: 'test'
+  ...
+# Subtest: Ruth refuses the crock; the winter apples are never loot
+ok 194 - Ruth refuses the crock; the winter apples are never loot
+  ---
+  duration_ms: 0.18491
+  type: 'test'
+  ...
+# Subtest: the ferry token waits for the chart and is not a first-life yield
+ok 195 - the ferry token waits for the chart and is not a first-life yield
+  ---
+  duration_ms: 0.244087
+  type: 'test'
+  ...
+# Subtest: leaving the chapel coin and taking it are different returns
+ok 196 - leaving the chapel coin and taking it are different returns
+  ---
+  duration_ms: 0.411149
+  type: 'test'
+  ...
+# Subtest: an empty yield does not close the situation
+ok 197 - an empty yield does not close the situation
+  ---
+  duration_ms: 0.182588
+  type: 'test'
+  ...
+# Subtest: the brand stays held until the invoice ages into a closed order
+ok 198 - the brand stays held until the invoice ages into a closed order
+  ---
+  duration_ms: 0.256433
+  type: 'test'
+  ...
+# Subtest: Ruth notices the marble once, and only in the kitchen of the first life
+ok 199 - Ruth notices the marble once, and only in the kitchen of the first life
+  ---
+  duration_ms: 0.240646
+  type: 'test'
+  ...
+# Subtest: no situation places powder
+ok 200 - no situation places powder
+  ---
+  duration_ms: 1.187597
+  type: 'test'
+  ...
+# Subtest: county book
+    # Subtest: authors a closed economy
+    ok 1 - authors a closed economy
+      ---
+      duration_ms: 8.875283
+      type: 'test'
+      ...
+    # Subtest: passes the ledger simulations
+    ok 2 - passes the ledger simulations
+      ---
+      duration_ms: 162.700024
+      type: 'test'
+      ...
+    # Subtest: gives every stall a successor, a place, and a posted specialty
+    ok 3 - gives every stall a successor, a place, and a posted specialty
+      ---
+      duration_ms: 0.320066
+      type: 'test'
+      ...
+    # Subtest: does not move marks when a quote is refused
+    ok 4 - does not move marks when a quote is refused
+      ---
+      duration_ms: 0.1699
+      type: 'test'
+      ...
+    1..4
+ok 201 - county book
+  ---
+  duration_ms: 173.090014
+  type: 'suite'
+  ...
+# Subtest: principal eras are the six openings, and later years continue
+ok 202 - principal eras are the six openings, and later years continue
+  ---
+  duration_ms: 1.018006
+  type: 'test'
+  ...
+# Subtest: renewal rules are explicit and do not tax age
+ok 203 - renewal rules are explicit and do not tax age
+  ---
+  duration_ms: 0.411152
+  type: 'test'
+  ...
+# Subtest: the demonstration keeps every disposition across deaths past year 70
+ok 204 - the demonstration keeps every disposition across deaths past year 70
+  ---
+  duration_ms: 21.729758
+  type: 'test'
+  ...
+# Subtest: repeated deaths do not fork the compass or clear unique consumption
+ok 205 - repeated deaths do not fork the compass or clear unique consumption
+  ---
+  duration_ms: 1.050678
+  type: 'test'
+  ...
+# Subtest: thirty-six stories cover the five consequences without forking instances
+ok 206 - thirty-six stories cover the five consequences without forking instances
+  ---
+  duration_ms: 7.058729
+  type: 'test'
+  ...
+# Subtest: migration cases are the ones the loader actually runs
+ok 207 - migration cases are the ones the loader actually runs
+  ---
+  duration_ms: 12.545558
+  type: 'test'
+  ...
+# Subtest: fixture files for older saves and building loss reload the same way
+ok 208 - fixture files for older saves and building loss reload the same way
+  ---
+  duration_ms: 1.287254
+  type: 'test'
+  ...
+# Subtest: quest-bound, heirloom, and unfinished dismantle cannot be destroyed by a transaction or a death
+ok 209 - quest-bound, heirloom, and unfinished dismantle cannot be destroyed by a transaction or a death
+  ---
+  duration_ms: 0.78174
+  type: 'test'
+  ...
+# Subtest: a line with no successor keeps the object on the historical record
+ok 210 - a line with no successor keeps the object on the historical record
+  ---
+  duration_ms: 0.4434
+  type: 'test'
+  ...
+# Subtest: food is not spoiled by the return, and commons do not swallow a lineage
+ok 211 - food is not spoiled by the return, and commons do not swallow a lineage
+  ---
+  duration_ms: 0.948794
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.001 Middlebury Winding Bird
+ok 212 - loot.expansion.gadget.001 Middlebury Winding Bird
+  ---
+  duration_ms: 5.380126
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.002 Otter Creek Minute Reel
+ok 213 - loot.expansion.gadget.002 Otter Creek Minute Reel
+  ---
+  duration_ms: 0.729501
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.003 Vergennes Escapement Pallet
+ok 214 - loot.expansion.gadget.003 Vergennes Escapement Pallet
+  ---
+  duration_ms: 0.639182
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.004 Bread Loaf Cam Walker
+ok 215 - loot.expansion.gadget.004 Bread Loaf Cam Walker
+  ---
+  duration_ms: 0.512697
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.005 Snake Mountain Repeater
+ok 216 - loot.expansion.gadget.005 Snake Mountain Repeater
+  ---
+  duration_ms: 0.847199
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.006 Dead Creek Tally Wheel
+ok 217 - loot.expansion.gadget.006 Dead Creek Tally Wheel
+  ---
+  duration_ms: 0.930109
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.007 Shoreham Let-off Screw
+ok 218 - loot.expansion.gadget.007 Shoreham Let-off Screw
+  ---
+  duration_ms: 0.611988
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.008 Bristol Sector Gear
+ok 219 - loot.expansion.gadget.008 Bristol Sector Gear
+  ---
+  duration_ms: 0.501004
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.009 Weybridge Bell Dial
+ok 220 - loot.expansion.gadget.009 Weybridge Bell Dial
+  ---
+  duration_ms: 0.791488
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.010 Panton Pawl Bit
+ok 221 - loot.expansion.gadget.010 Panton Pawl Bit
+  ---
+  duration_ms: 0.781299
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.011 Monkton Line Beetle
+ok 222 - loot.expansion.gadget.011 Monkton Line Beetle
+  ---
+  duration_ms: 1.54089
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.012 Cornwall Silence Lever
+ok 223 - loot.expansion.gadget.012 Cornwall Silence Lever
+  ---
+  duration_ms: 0.490828
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.013 Lincoln Fusee Cone
+ok 224 - loot.expansion.gadget.013 Lincoln Fusee Cone
+  ---
+  duration_ms: 0.359925
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.014 Goshen Trip Pin
+ok 225 - loot.expansion.gadget.014 Goshen Trip Pin
+  ---
+  duration_ms: 0.377566
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.015 Ripton Weekday Orrery
+ok 226 - loot.expansion.gadget.015 Ripton Weekday Orrery
+  ---
+  duration_ms: 0.384624
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.016 Ferrisburgh Maintaining Spring
+ok 227 - loot.expansion.gadget.016 Ferrisburgh Maintaining Spring
+  ---
+  duration_ms: 0.483876
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.017 Bridport Hand Prism
+ok 228 - loot.expansion.gadget.017 Bridport Hand Prism
+  ---
+  duration_ms: 0.596282
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.018 Button Bay Reading Lens
+ok 229 - loot.expansion.gadget.018 Button Bay Reading Lens
+  ---
+  duration_ms: 0.489006
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.019 Chimney Point Polarizer
+ok 230 - loot.expansion.gadget.019 Chimney Point Polarizer
+  ---
+  duration_ms: 0.373507
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.020 Crown Point Lucida Arm
+ok 231 - loot.expansion.gadget.020 Crown Point Lucida Arm
+  ---
+  duration_ms: 0.408461
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.021 Lake Dunmore Dark Slide
+ok 232 - loot.expansion.gadget.021 Lake Dunmore Dark Slide
+  ---
+  duration_ms: 0.439139
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.022 Addison Green Reader
+ok 233 - loot.expansion.gadget.022 Addison Green Reader
+  ---
+  duration_ms: 0.35648
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.023 Whiting Collimator
+ok 234 - loot.expansion.gadget.023 Whiting Collimator
+  ---
+  duration_ms: 0.397116
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.024 Orwell Flame Slit
+ok 235 - loot.expansion.gadget.024 Orwell Flame Slit
+  ---
+  duration_ms: 0.352707
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.025 Panton Coincidence Finder
+ok 236 - loot.expansion.gadget.025 Panton Coincidence Finder
+  ---
+  duration_ms: 0.353323
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.026 New Haven Stereo Pair
+ok 237 - loot.expansion.gadget.026 New Haven Stereo Pair
+  ---
+  duration_ms: 0.454344
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.027 Starksboro Smoke Glass
+ok 238 - loot.expansion.gadget.027 Starksboro Smoke Glass
+  ---
+  duration_ms: 0.331903
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.028 Lincoln Dew Mirror
+ok 239 - loot.expansion.gadget.028 Lincoln Dew Mirror
+  ---
+  duration_ms: 0.454619
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.029 Granville Cross-Staff
+ok 240 - loot.expansion.gadget.029 Granville Cross-Staff
+  ---
+  duration_ms: 0.380019
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.030 Leicester Gnomon Card
+ok 241 - loot.expansion.gadget.030 Leicester Gnomon Card
+  ---
+  duration_ms: 0.401198
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.031 Waltham Loupe
+ok 242 - loot.expansion.gadget.031 Waltham Loupe
+  ---
+  duration_ms: 1.200343
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.032 Vergennes Broken Arc
+ok 243 - loot.expansion.gadget.032 Vergennes Broken Arc
+  ---
+  duration_ms: 0.392788
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.033 Ripton Folding Resonator
+ok 244 - loot.expansion.gadget.033 Ripton Folding Resonator
+  ---
+  duration_ms: 0.705131
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.034 Ferrisburgh Wax Recorder
+ok 245 - loot.expansion.gadget.034 Ferrisburgh Wax Recorder
+  ---
+  duration_ms: 0.955627
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.035 Middlebury Pitch Pipe
+ok 246 - loot.expansion.gadget.035 Middlebury Pitch Pipe
+  ---
+  duration_ms: 0.48837
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.036 Basin Conch
+ok 247 - loot.expansion.gadget.036 Basin Conch
+  ---
+  duration_ms: 0.633955
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.037 Bristol Beat Clip
+ok 248 - loot.expansion.gadget.037 Bristol Beat Clip
+  ---
+  duration_ms: 1.104687
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.038 Vergennes Window Reed
+ok 249 - loot.expansion.gadget.038 Vergennes Window Reed
+  ---
+  duration_ms: 0.51559
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.039 Shoreham Sounding Lead
+ok 250 - loot.expansion.gadget.039 Shoreham Sounding Lead
+  ---
+  duration_ms: 0.412736
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.040 Cornwall Bell Strop
+ok 251 - loot.expansion.gadget.040 Cornwall Bell Strop
+  ---
+  duration_ms: 0.498639
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.041 Dead Creek Goose Call
+ok 252 - loot.expansion.gadget.041 Dead Creek Goose Call
+  ---
+  duration_ms: 0.520112
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.042 Monkton Reference Fork
+ok 253 - loot.expansion.gadget.042 Monkton Reference Fork
+  ---
+  duration_ms: 0.431871
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.043 New Haven Rain Drum
+ok 254 - loot.expansion.gadget.043 New Haven Rain Drum
+  ---
+  duration_ms: 0.451163
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.044 Addison Scarer Cord
+ok 255 - loot.expansion.gadget.044 Addison Scarer Cord
+  ---
+  duration_ms: 0.490799
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.045 Whiting Ear Trumpet
+ok 256 - loot.expansion.gadget.045 Whiting Ear Trumpet
+  ---
+  duration_ms: 0.420019
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.046 Panton Echo Cup
+ok 257 - loot.expansion.gadget.046 Panton Echo Cup
+  ---
+  duration_ms: 0.432955
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.047 Lincoln Two-Note Pipe
+ok 258 - loot.expansion.gadget.047 Lincoln Two-Note Pipe
+  ---
+  duration_ms: 0.422413
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.048 Goshen Friction Drum
+ok 259 - loot.expansion.gadget.048 Goshen Friction Drum
+  ---
+  duration_ms: 0.523486
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.049 Traveler's Counterweight
+ok 260 - loot.expansion.gadget.049 Traveler's Counterweight
+  ---
+  duration_ms: 0.598894
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.050 Sash Sheave
+ok 261 - loot.expansion.gadget.050 Sash Sheave
+  ---
+  duration_ms: 0.454703
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.051 Shutter Dog
+ok 262 - loot.expansion.gadget.051 Shutter Dog
+  ---
+  duration_ms: 0.403038
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.052 Bed-Bolt Wrench
+ok 263 - loot.expansion.gadget.052 Bed-Bolt Wrench
+  ---
+  duration_ms: 0.539732
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.053 Three-Square Clock Key
+ok 264 - loot.expansion.gadget.053 Three-Square Clock Key
+  ---
+  duration_ms: 0.489216
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.054 Peg Gauge
+ok 265 - loot.expansion.gadget.054 Peg Gauge
+  ---
+  duration_ms: 0.43131
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.055 Pocket Turnbuckle
+ok 266 - loot.expansion.gadget.055 Pocket Turnbuckle
+  ---
+  duration_ms: 0.350522
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.056 Cotter Trio
+ok 267 - loot.expansion.gadget.056 Cotter Trio
+  ---
+  duration_ms: 0.405793
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.057 Spout Spike
+ok 268 - loot.expansion.gadget.057 Spout Spike
+  ---
+  duration_ms: 0.375793
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.058 Parliament Hinge Pair
+ok 269 - loot.expansion.gadget.058 Parliament Hinge Pair
+  ---
+  duration_ms: 0.417737
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.059 Brad Gimlet
+ok 270 - loot.expansion.gadget.059 Brad Gimlet
+  ---
+  duration_ms: 0.382979
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.060 Turn Catch
+ok 271 - loot.expansion.gadget.060 Turn Catch
+  ---
+  duration_ms: 0.397293
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.061 Keyhole Cover
+ok 272 - loot.expansion.gadget.061 Keyhole Cover
+  ---
+  duration_ms: 0.33831
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.062 Jack Chain
+ok 273 - loot.expansion.gadget.062 Jack Chain
+  ---
+  duration_ms: 0.393401
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.063 Short Penny Set
+ok 274 - loot.expansion.gadget.063 Short Penny Set
+  ---
+  duration_ms: 0.32702
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.064 Felt Clock Pads
+ok 275 - loot.expansion.gadget.064 Felt Clock Pads
+  ---
+  duration_ms: 0.43022
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.065 Half-Chain
+ok 276 - loot.expansion.gadget.065 Half-Chain
+  ---
+  duration_ms: 0.466212
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.066 Pocket Alidade
+ok 277 - loot.expansion.gadget.066 Pocket Alidade
+  ---
+  duration_ms: 0.485095
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.067 Short Auger
+ok 278 - loot.expansion.gadget.067 Short Auger
+  ---
+  duration_ms: 0.427475
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.068 Pendulum Clinometer
+ok 279 - loot.expansion.gadget.068 Pendulum Clinometer
+  ---
+  duration_ms: 0.506233
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.069 Dry Compass
+ok 280 - loot.expansion.gadget.069 Dry Compass
+  ---
+  duration_ms: 0.404362
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.070 Aneroid Capsule
+ok 281 - loot.expansion.gadget.070 Aneroid Capsule
+  ---
+  duration_ms: 0.529759
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.071 Spirit Thermometer
+ok 282 - loot.expansion.gadget.071 Spirit Thermometer
+  ---
+  duration_ms: 0.42882
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.072 Boiling Cup
+ok 283 - loot.expansion.gadget.072 Boiling Cup
+  ---
+  duration_ms: 1.135785
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.073 Orchard Calipers
+ok 284 - loot.expansion.gadget.073 Orchard Calipers
+  ---
+  duration_ms: 0.502969
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.074 Increment Borer
+ok 285 - loot.expansion.gadget.074 Increment Borer
+  ---
+  duration_ms: 0.485821
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.075 Locke Hand Level
+ok 286 - loot.expansion.gadget.075 Locke Hand Level
+  ---
+  duration_ms: 0.342403
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.076 Tally Book
+ok 287 - loot.expansion.gadget.076 Tally Book
+  ---
+  duration_ms: 0.408981
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.077 Grain Probe
+ok 288 - loot.expansion.gadget.077 Grain Probe
+  ---
+  duration_ms: 0.388369
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.078 Cider Refractor
+ok 289 - loot.expansion.gadget.078 Cider Refractor
+  ---
+  duration_ms: 0.484694
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.079 Pin and Flagging
+ok 290 - loot.expansion.gadget.079 Pin and Flagging
+  ---
+  duration_ms: 0.402453
+  type: 'test'
+  ...
+# Subtest: loot.expansion.gadget.080 Offset Level Book
+ok 291 - loot.expansion.gadget.080 Offset Level Book
+  ---
+  duration_ms: 0.414853
+  type: 'test'
+  ...
+# Subtest: pack validation, chains, and reports
+ok 292 - pack validation, chains, and reports
+  ---
+  duration_ms: 50.943046
+  type: 'test'
+  ...
+# Subtest: catalog is eighty distinct household objects
+ok 293 - catalog is eighty distinct household objects
+  ---
+  duration_ms: 1.774287
+  type: 'test'
+  ...
+# Subtest: every object runs its behavior record
+ok 294 - every object runs its behavior record
+  ---
+  duration_ms: 694.027534
+  type: 'test'
+  ...
+# Subtest: room integrity: exits, controls, supports, eras, duplicates, save
+ok 295 - room integrity: exits, controls, supports, eras, duplicates, save
+  ---
+  duration_ms: 32.382975
+  type: 'test'
+  ...
+1..295
+# tests 497
+# suites 94
+# pass 497
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11545.472534

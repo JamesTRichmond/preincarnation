@@ -28,6 +28,9 @@ D-013 | L-0005 | The install shell is one progressive web app. `public/manifest.
 
 D-014 | L-0006 | The theme map lists every live relic plus walk, speak, die, and drink. A missing line fails theme.test.ts. P4-3 is not scored. The creek bench is not in this map.
 
+D-015 | L-0007 | The four rooms are Addison after the Vein goes quiet. The seam still opens back to Middlebury. "Release the universe" and "Bind it as a Crown" are a second plot and are not the job. No rooms were added. The persistence pack's observed save version was still pinned at 8 after the live save moved to 9. The pin now reads 9. The save format was not changed.
+
+
 
 
 

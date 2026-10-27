@@ -8,6 +8,7 @@ One person. The Marble Vein is the only plot. Death is fourteen winters, and the
 | speak | One voice answers. There is no party and no one to send. |
 | die | Death is a chapter of fourteen winters. You come back as yourself. |
 | drink | A county bite restores the body you already have. It is not a hunger economy. |
+| fold | The four rooms are Addison after the Vein goes quiet. They are not a second world, and they do not get new rooms. |
 | sword | The short iron sparks on cracked marble. It does not open the Vein. |
 | shovel | A grave is a year you already lived. Digging reads it. It does not mint a new plot. |
 | hookshot | The sugar-line crosses a gap. It is not a second road to the Vein. |
@@ -22,3 +23,10 @@ One person. The Marble Vein is the only plot. Death is fourteen winters, and the
 | bow | The ash bow reaches. It is still one shot from one person. |
 | ipod | The device plays other people's music. It is not a voice in the party. |
 | bombs | Powder opens a true vein. A decoy face stays shut. |
+
+## Dissonance
+
+The sphere is the county after the Vein goes quiet. Fact is still a Green that thinks it is Middlebury. The seam still opens back. That part is the plot.
+
+Release the universe and Bind it as a Crown turn Vermont into furniture for a next empire. That is a second plot. The rooms stay. Those choices are not the job. Do not add rooms.
+
