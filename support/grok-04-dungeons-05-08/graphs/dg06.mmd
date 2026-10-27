@@ -1,0 +1,54 @@
+flowchart TD
+  dg06_r01["Mill Race Door"]
+  dg06_r02["Sluice Hall"]
+  dg06_r03["Dry Dock"]
+  dg06_r04["Gauge House"]
+  dg06_r05["Lower Flume"]
+  dg06_r06["Ratchet Chamber"]
+  dg06_r07["Penstock Walk"]
+  dg06_r08["Upper Loft"]
+  dg06_r09["Staff Gallery"]
+  dg06_r10["Valve Choir"]
+  dg06_r11["Sounding Lock"]
+  dg06_r12["The Surface That Isn't"]
+  dg06_r13["Creekfin Chapel"]
+  dg06_r14["Long Bank"]
+  dg06_r15["Surveyor's Landing"]
+  dg06_r16["The Drowned Surveyor"]
+  dg06_r17["Unsounded Cistern"]
+  dg06_r01 -->|N| dg06_r02
+  dg06_r02 -->|S| dg06_r01
+  dg06_r02 -->|W| dg06_r03
+  dg06_r02 -->|E| dg06_r04
+  dg06_r02 -->|N dg06.ratchet| dg06_r08
+  dg06_r03 -->|E| dg06_r02
+  dg06_r04 -->|W| dg06_r02
+  dg06_r04 -->|N| dg06_r05
+  dg06_r05 -->|S| dg06_r04
+  dg06_r05 -->|W| dg06_r06
+  dg06_r06 -->|E| dg06_r05
+  dg06_r06 -->|N dg06.ratchet| dg06_r07
+  dg06_r07 -->|S dg06.ratchet| dg06_r06
+  dg06_r07 -->|N| dg06_r09
+  dg06_r07 -->|E| dg06_r08
+  dg06_r08 -->|W| dg06_r07
+  dg06_r08 -->|S dg06.ratchet| dg06_r02
+  dg06_r09 -->|S| dg06_r07
+  dg06_r09 -->|N dg06.gauge| dg06_r10
+  dg06_r10 -->|S| dg06_r09
+  dg06_r10 -->|E dg06.valves dg06.sk.penstock| dg06_r11
+  dg06_r11 -->|W| dg06_r10
+  dg06_r11 -->|E| dg06_r12
+  dg06_r11 -->|S fins| dg06_r17
+  dg06_r12 -->|W| dg06_r11
+  dg06_r12 -->|N| dg06_r13
+  dg06_r13 -->|S| dg06_r12
+  dg06_r13 -->|E| dg06_r14
+  dg06_r13 -->|N fins| dg06_r15
+  dg06_r14 -->|W| dg06_r13
+  dg06_r14 -->|E| dg06_r15
+  dg06_r15 -->|W| dg06_r14
+  dg06_r15 -->|N dg06.bk.surveyor| dg06_r16
+  dg06_r15 -->|S fins| dg06_r13
+  dg06_r16 -->|S| dg06_r15
+  dg06_r17 -->|N| dg06_r11

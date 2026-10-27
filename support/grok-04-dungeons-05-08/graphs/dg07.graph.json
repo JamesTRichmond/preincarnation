@@ -1,0 +1,608 @@
+{
+  "dungeon": "dg07",
+  "nodes": [
+    {
+      "id": "dg07.r01",
+      "name": "Intervale Door",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r02",
+      "name": "Nave of Beams",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r03",
+      "name": "West Mow",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r04",
+      "name": "Rope Walk",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r05",
+      "name": "Counterweight Choir",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r06",
+      "name": "Grain Pit Bridge",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r07",
+      "name": "The Bailer's Run",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r08",
+      "name": "East Mow",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r09",
+      "name": "Threshing Antechamber",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r10",
+      "name": "Hay Elevator",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r11",
+      "name": "Saint's Ledger",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r12",
+      "name": "Iron Weather",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r13",
+      "name": "Powder Loft",
+      "optional": true,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r14",
+      "name": "Rod Gallery",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r15",
+      "name": "Saint's Door",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg07.r16",
+      "name": "The Thresher Saint",
+      "optional": false,
+      "requiresOptionalTool": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "dg07.r01",
+      "to": "dg07.r02",
+      "id": "to-nave",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r02",
+      "to": "dg07.r01",
+      "id": "to-door",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r02",
+      "to": "dg07.r03",
+      "id": "to-mow",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r02",
+      "to": "dg07.r09",
+      "id": "shortcut-to-ante",
+      "dir": "E",
+      "requiresFlags": [
+        "dg07.mow",
+        "dg07.choir",
+        "dg07.bridge",
+        "dg07.bailer",
+        "dg07.east"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg07.r03",
+      "to": "dg07.r02",
+      "id": "to-nave",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r03",
+      "to": "dg07.r04",
+      "id": "to-rope",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.mow"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r04",
+      "to": "dg07.r03",
+      "id": "to-mow",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r04",
+      "to": "dg07.r05",
+      "id": "to-choir",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r05",
+      "to": "dg07.r04",
+      "id": "to-rope",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r05",
+      "to": "dg07.r06",
+      "id": "to-bridge",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.choir"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r06",
+      "to": "dg07.r05",
+      "id": "to-choir",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r06",
+      "to": "dg07.r07",
+      "id": "to-bailer",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.bridge"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r07",
+      "to": "dg07.r06",
+      "id": "to-bridge",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r07",
+      "to": "dg07.r08",
+      "id": "to-east",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.bailer"
+      ],
+      "requiresKeys": [
+        "dg07.sk.mow"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r08",
+      "to": "dg07.r07",
+      "id": "to-bailer",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r08",
+      "to": "dg07.r09",
+      "id": "to-ante",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.east"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r09",
+      "to": "dg07.r08",
+      "id": "to-east",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r09",
+      "to": "dg07.r10",
+      "id": "to-elevator",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r09",
+      "to": "dg07.r02",
+      "id": "shortcut-to-nave",
+      "dir": "W",
+      "requiresFlags": [
+        "dg07.mow",
+        "dg07.choir",
+        "dg07.bridge",
+        "dg07.bailer",
+        "dg07.east"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg07.r10",
+      "to": "dg07.r09",
+      "id": "to-ante",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r10",
+      "to": "dg07.r11",
+      "id": "to-ledger",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r11",
+      "to": "dg07.r10",
+      "id": "to-elevator",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r11",
+      "to": "dg07.r12",
+      "id": "to-weather",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.shapes"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r12",
+      "to": "dg07.r11",
+      "id": "to-ledger",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r12",
+      "to": "dg07.r14",
+      "id": "to-rod",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.fan"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r12",
+      "to": "dg07.r13",
+      "id": "to-powder",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r13",
+      "to": "dg07.r12",
+      "id": "back-weather",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r14",
+      "to": "dg07.r12",
+      "id": "to-weather",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r14",
+      "to": "dg07.r15",
+      "id": "to-door",
+      "dir": "N",
+      "requiresFlags": [
+        "dg07.rod"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r15",
+      "to": "dg07.r14",
+      "id": "to-rod",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r15",
+      "to": "dg07.r16",
+      "id": "to-saint",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [
+        "dg07.bk.saint"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg07.r16",
+      "to": "dg07.r15",
+      "id": "to-door",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    }
+  ],
+  "flags": [
+    {
+      "flag": "dg07.practice",
+      "setIn": "dg07.r01",
+      "by": "solve-practice"
+    },
+    {
+      "flag": "dg07.mow",
+      "setIn": "dg07.r03",
+      "by": "solve-mow"
+    },
+    {
+      "flag": "dg07.choir",
+      "setIn": "dg07.r05",
+      "by": "solve-choir"
+    },
+    {
+      "flag": "dg07.bridge",
+      "setIn": "dg07.r06",
+      "by": "solve-bridge"
+    },
+    {
+      "flag": "dg07.bailer",
+      "setIn": "dg07.r07",
+      "by": "defeat-bailer"
+    },
+    {
+      "flag": "dg07.east",
+      "setIn": "dg07.r08",
+      "by": "solve-east"
+    },
+    {
+      "flag": "dg07.shapes",
+      "setIn": "dg07.r11",
+      "by": "solve-shapes"
+    },
+    {
+      "flag": "dg07.fan",
+      "setIn": "dg07.r12",
+      "by": "cut-fan"
+    },
+    {
+      "flag": "dg07.fan",
+      "setIn": "dg07.r12",
+      "by": "boots-cross"
+    },
+    {
+      "flag": "dg07.rod",
+      "setIn": "dg07.r14",
+      "by": "solve-rod"
+    },
+    {
+      "flag": "dg07.boss",
+      "setIn": "dg07.r16",
+      "by": "defeat-saint"
+    }
+  ]
+}

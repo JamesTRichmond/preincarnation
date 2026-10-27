@@ -1,0 +1,35 @@
+{
+  "nodes": [
+    "dg05",
+    "dg06",
+    "dg07",
+    "dg08",
+    "integration.secondCrown"
+  ],
+  "edges": [
+    {
+      "from": "dg05",
+      "to": "dg06",
+      "when": "dg05.boss",
+      "kind": "proposed"
+    },
+    {
+      "from": "dg06",
+      "to": "dg07",
+      "when": "dg06.boss",
+      "kind": "proposed"
+    },
+    {
+      "from": "dg07",
+      "to": "dg08",
+      "when": "dg07.boss",
+      "kind": "proposed"
+    },
+    {
+      "from": "dg08",
+      "to": "integration.secondCrown",
+      "when": "dg08.boss+dg08.record+evidence",
+      "kind": "proposed-event"
+    }
+  ]
+}

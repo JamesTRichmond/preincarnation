@@ -1,0 +1,627 @@
+{
+  "dungeon": "dg05",
+  "nodes": [
+    {
+      "id": "dg05.r01",
+      "name": "Ledger Stair",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r02",
+      "name": "Public Catalog",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r03",
+      "name": "The Scraped Dates",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r04",
+      "name": "Index Hall",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r05",
+      "name": "Suppression Stacks",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r06",
+      "name": "Ink Stair",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r07",
+      "name": "The Quiet Carrel",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r08",
+      "name": "Mezzanine of Book-Trucks",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r09",
+      "name": "Gallery of Suppressed Names",
+      "optional": true,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r10",
+      "name": "The Marginal Hand",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r11",
+      "name": "Aisle of Corrections",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r12",
+      "name": "Sealed Carrel",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r13",
+      "name": "The White Well",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r14",
+      "name": "Bindery",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r15",
+      "name": "Erratum Door",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg05.r16",
+      "name": "The Erratum",
+      "optional": false,
+      "requiresOptionalTool": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "dg05.r01",
+      "to": "dg05.r02",
+      "id": "to-catalog",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r02",
+      "to": "dg05.r01",
+      "id": "to-stair",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r02",
+      "to": "dg05.r03",
+      "id": "to-dates",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r03",
+      "to": "dg05.r02",
+      "id": "to-catalog",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r03",
+      "to": "dg05.r04",
+      "id": "to-index",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.wheels"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r04",
+      "to": "dg05.r03",
+      "id": "to-dates",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r04",
+      "to": "dg05.r05",
+      "id": "to-stacks",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.shelves"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r04",
+      "to": "dg05.r12",
+      "id": "shortcut-to-carrel",
+      "dir": "E",
+      "requiresFlags": [
+        "dg05.books"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg05.r05",
+      "to": "dg05.r04",
+      "id": "to-index",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r05",
+      "to": "dg05.r06",
+      "id": "to-stair",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r05",
+      "to": "dg05.r09",
+      "id": "to-gallery",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r05",
+      "to": "dg05.r11",
+      "id": "hammer-to-aisle",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [
+        "hammer"
+      ],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": true
+    },
+    {
+      "from": "dg05.r06",
+      "to": "dg05.r05",
+      "id": "to-stacks",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r06",
+      "to": "dg05.r07",
+      "id": "to-carrel",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [
+        "dg05.sk.shelf"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r07",
+      "to": "dg05.r06",
+      "id": "to-stair",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r07",
+      "to": "dg05.r08",
+      "id": "to-mezzanine",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.baffles"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r08",
+      "to": "dg05.r07",
+      "id": "to-carrel",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r08",
+      "to": "dg05.r10",
+      "id": "to-hand",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.truck"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r09",
+      "to": "dg05.r05",
+      "id": "back-stacks",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r10",
+      "to": "dg05.r08",
+      "id": "to-mezzanine",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r10",
+      "to": "dg05.r11",
+      "id": "to-aisle",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.miniboss"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r11",
+      "to": "dg05.r10",
+      "id": "to-hand",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r11",
+      "to": "dg05.r12",
+      "id": "to-sealed",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.aisle"
+      ],
+      "requiresKeys": [
+        "dg05.sk.margin"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r11",
+      "to": "dg05.r05",
+      "id": "from-hammer",
+      "dir": "W",
+      "requiresFlags": [
+        "dg05.hammerWall"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": true
+    },
+    {
+      "from": "dg05.r12",
+      "to": "dg05.r11",
+      "id": "to-aisle",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r12",
+      "to": "dg05.r13",
+      "id": "to-well",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.books"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r12",
+      "to": "dg05.r04",
+      "id": "shortcut-to-index",
+      "dir": "W",
+      "requiresFlags": [
+        "dg05.books"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg05.r13",
+      "to": "dg05.r12",
+      "id": "to-sealed",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r13",
+      "to": "dg05.r14",
+      "id": "to-bindery",
+      "dir": "N",
+      "requiresFlags": [
+        "dg05.well"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r14",
+      "to": "dg05.r13",
+      "id": "to-well",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r14",
+      "to": "dg05.r15",
+      "id": "to-door",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r15",
+      "to": "dg05.r14",
+      "id": "to-bindery",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r15",
+      "to": "dg05.r16",
+      "id": "to-erratum",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [
+        "dg05.bk.erratum"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg05.r16",
+      "to": "dg05.r15",
+      "id": "to-door",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    }
+  ],
+  "flags": [
+    {
+      "flag": "dg05.wheels",
+      "setIn": "dg05.r03",
+      "by": "solve-wheels"
+    },
+    {
+      "flag": "dg05.shelves",
+      "setIn": "dg05.r04",
+      "by": "solve-shelves"
+    },
+    {
+      "flag": "dg05.baffles",
+      "setIn": "dg05.r07",
+      "by": "solve-baffles"
+    },
+    {
+      "flag": "dg05.truck",
+      "setIn": "dg05.r08",
+      "by": "solve-truck"
+    },
+    {
+      "flag": "dg05.miniboss",
+      "setIn": "dg05.r10",
+      "by": "defeat-hand"
+    },
+    {
+      "flag": "dg05.aisle",
+      "setIn": "dg05.r11",
+      "by": "solve-aisle"
+    },
+    {
+      "flag": "dg05.books",
+      "setIn": "dg05.r12",
+      "by": "solve-books"
+    },
+    {
+      "flag": "dg05.well",
+      "setIn": "dg05.r13",
+      "by": "solve-well"
+    },
+    {
+      "flag": "dg05.bindery",
+      "setIn": "dg05.r14",
+      "by": "solve-bindery"
+    },
+    {
+      "flag": "dg05.boss",
+      "setIn": "dg05.r16",
+      "by": "defeat-erratum"
+    }
+  ]
+}
