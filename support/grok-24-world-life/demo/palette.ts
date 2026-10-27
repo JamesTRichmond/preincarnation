@@ -1,0 +1,21 @@
+/** Atlas plate colors. Canvas cannot read the CSS tokens, so they live once here. */
+export const plate = {
+  paper: "#f3ead7",
+  paperDeep: "#e7dcc4",
+  ink: "#1c1914",
+  muted: "#6b6458",
+  meadow: "#5e7044",
+  meadowDeep: "#3f4e2e",
+  lake: "#3e5c66",
+  lakeDeep: "#2c434a",
+  brick: "#8c3d2f",
+  brass: "#a56b2b",
+  plaster: "#f4ecdc",
+  timber: "#6a4b38",
+  stone: "#8a877e",
+  road: "#d2c09a",
+  soil: "#c4a36a",
+  roof: "#6e3830",
+  straw: "#c6a15a",
+  ember: "#c45a28",
+} as const;
