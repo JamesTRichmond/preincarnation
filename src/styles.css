@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../support/grok-19-input";
+@source "../support/grok-54-inventory";
 
 @theme {
   --color-bg: #070b18;
