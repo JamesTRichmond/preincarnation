@@ -3,6 +3,8 @@
   --motion-fast: 250ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --shadow-sheet: 0 -12px 32px color-mix(in srgb, var(--color-bg) 72%, transparent);
+  /* Gold stays on this bench. The score desk owns the moss --color-accent. */
+  --color-accent: #e8c36a;
 }
 
 .input-bench .safe-pad {
