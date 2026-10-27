@@ -24,5 +24,8 @@ D-011 | L-0003 | The marble tell keeps the lantern gate. A dark quarry still ref
 
 D-012 | L-0004 | Enemy max HP does not grow with save.cycle. The old term was `1 + cycle * 0.12`. Tropoverse still multiplies once by 1.35 because it is a place, not a stack of deaths. Player ribcage was already free of a cycle term.
 
+D-013 | L-0005 | The install shell is one progressive web app. `public/manifest.webmanifest` is standalone at `/`. `public/sw.js` caches that document, the manifest, the icons, and art it has already fetched. It does not cache `/api`, `/auth`, or the save. The preview host keeps `/__grok/manifest.webmanifest`. The release pack allows this one registration and no other.
+
+
 
 

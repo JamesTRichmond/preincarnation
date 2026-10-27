@@ -29,7 +29,7 @@ Then check **Check for a new build**.
 - If the site cannot be reached, you are offline. That does not mean you are up to date. Your life is still on the device. This build cannot play the world without the network the first time, and it does not keep an offline copy.
 - If the page and the site name different builds, download the life before you keep playing. The check does not swap files and does not delete the life.
 
-A new build must not be mixed with pictures cached from an older one. This package stamps every `/game/...` picture URL with `?b=web-c737e42eb188-save8`. The page itself is marked not to be kept. There is no service worker.
+A new build must not be mixed with pictures cached from an older one. This package stamps every `/game/...` picture URL with `?b=web-c737e42eb188-save8`. The page itself is marked not to be kept by the host cache. One shell worker may keep `/`, the manifest, the icons, and pictures it has already fetched. It does not keep the save.
 
 ## Bring a life back
 

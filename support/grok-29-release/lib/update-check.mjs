@@ -1,5 +1,5 @@
 /**
- * Update check for the web build. There is no service worker and no store updater.
+ * Update check for the web build. The shell worker may keep the page. This check does not.
  * A failed fetch is offline, not "up to date". Saves are never cleared here.
  */
 
@@ -9,7 +9,7 @@ export function checkUpdate({ localBuildId, localSaveMax, remote, offline }) {
       status: "offline",
       action: "keep-local",
       message:
-        "No network. This build has no offline shell. The save on this device was left untouched. Try again when the manifest can be fetched.",
+        "No network. The shell on this device is not proof of a newer build. The save was left untouched. Try again when the release manifest can be fetched.",
     };
   }
   if (!remote.buildId || !remote.save) {

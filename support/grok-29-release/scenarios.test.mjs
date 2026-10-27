@@ -8,6 +8,7 @@ import {
   applyVercelOutputHeaders,
   auditAssetReferences,
   cacheHeaderRoutes,
+  isKnownShellRegistration,
   mergeVercelOutputHeaders,
   rewriteAssetUrls,
   rewriteTreeAssetUrls,
@@ -326,4 +327,10 @@ test("asset rewrite is idempotent and headers refuse a mixed generation", () => 
   writeFileSync(join(staleDir, "old.js"), 'x="/game/crow/snes.png"');
   const stale = auditAssetReferences(staleDir, buildId);
   assert.equal(stale.stale.length, 1);
+});
+
+test("only the shell worker registration is a known service worker", () => {
+  assert.equal(isKnownShellRegistration('navigator.serviceWorker.register("/sw.js")'), true);
+  assert.equal(isKnownShellRegistration('navigator.serviceWorker.register("/other.js")'), false);
+  assert.equal(isKnownShellRegistration("caches.open('x')"), false);
 });
