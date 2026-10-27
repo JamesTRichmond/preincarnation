@@ -7,7 +7,7 @@ export function createAudio() {
   let sfx: GainNode | null = null;
   let music: GainNode | null = null;
   let muted = false;
-  const voices: { osc: OscillatorNode; gain: GainNode }[] = [];
+  const voices: { osc: OscillatorNode; gain: GainNode; lfo?: OscillatorNode }[] = [];
 
   const ensure = () => {
     if (ctx) {
@@ -62,7 +62,10 @@ export function createAudio() {
     beep(220, 0.4, "sine", 0.12, -160);
     setTimeout(() => beep(110, 0.6, "triangle", 0.1, -40), 120);
   };
-  const talk = () => beep(520 + Math.random() * 80, 0.05, "triangle", 0.05);
+  const talk = () => {
+    beep(480 + Math.random() * 30, 0.045, "triangle", 0.045);
+    setTimeout(() => beep(620 + Math.random() * 24, 0.04, "triangle", 0.03), 68);
+  };
   const crown = () => {
     beep(523, 0.18, "sine", 0.1, 0);
     setTimeout(() => beep(659, 0.2, "sine", 0.1), 90);
@@ -76,7 +79,7 @@ export function createAudio() {
   };
   document.addEventListener("visibilitychange", onVis);
 
-  const stopVoice = (v: { osc: OscillatorNode; gain: GainNode }) => {
+  const stopVoice = (v: { osc: OscillatorNode; gain: GainNode; lfo?: OscillatorNode }) => {
     try {
       v.osc.stop();
     } catch {
@@ -92,6 +95,17 @@ export function createAudio() {
     } catch {
       /* already disconnected */
     }
+    if (!v.lfo) return;
+    try {
+      v.lfo.stop();
+    } catch {
+      /* already stopped */
+    }
+    try {
+      v.lfo.disconnect();
+    } catch {
+      /* already disconnected */
+    }
   };
 
   const stopDrone = () => {
@@ -99,7 +113,7 @@ export function createAudio() {
     voices.length = 0;
   };
 
-  const addVoice = (type: OscillatorType, freq: number, target: number, tau: number) => {
+  const addVoice = (type: OscillatorType, freq: number, target: number, tau: number, wobble = 0) => {
     if (!ctx || !music) return;
     const o = ctx.createOscillator();
     const g = ctx.createGain();
@@ -110,7 +124,17 @@ export function createAudio() {
     o.connect(g);
     g.connect(music);
     o.start();
-    voices.push({ osc: o, gain: g });
+    let lfo: OscillatorNode | undefined;
+    if (wobble > 0) {
+      lfo = ctx.createOscillator();
+      const depth = ctx.createGain();
+      lfo.frequency.value = 0.07;
+      depth.gain.value = wobble;
+      lfo.connect(depth);
+      depth.connect(o.frequency);
+      lfo.start();
+    }
+    voices.push({ osc: o, gain: g, lfo });
   };
 
   const tell = () => beep(740, 0.06, "square", 0.05, 80);
@@ -132,8 +156,8 @@ export function createAudio() {
     const bed: AudioBed = typeof limboOrBed === "boolean" ? (limboOrBed ? "limbo" : "county") : limboOrBed;
     const spec = bedSpec(bed);
     stopDrone();
-    addVoice(spec.limbo ? "sine" : "triangle", spec.root, spec.limbo ? 0.08 : 0.04, 0.4);
-    if (spec.fifth) addVoice("sine", spec.fifth, 0.02, 0.8);
+    addVoice(spec.limbo ? "sine" : "triangle", spec.root, spec.limbo ? 0.08 : 0.04, 0.4, spec.wobble);
+    if (spec.fifth) addVoice("sine", spec.fifth, 0.02, 0.8, spec.wobble * 0.5);
   };
 
   const setDuck = (on: boolean) => {

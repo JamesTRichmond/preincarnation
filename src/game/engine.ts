@@ -22,7 +22,7 @@ import { liveObjective } from "./quest";
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
+import { applyUpgrade, bodyStats, countyAgainNode, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -771,7 +771,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const interactWith = (p: PropSpec) => {
     if (p.kind === "npc") {
-      if (!save.flags.talked.includes(p.id)) save.flags.talked = [...save.flags.talked, p.id];
+      const known = save.flags.talked.includes(p.id);
+      if (!known) save.flags.talked = [...save.flags.talked, p.id];
       save.flags.returnedFromDeath = false;
       if (p.npc === "elder") {
         if (save.flags.elderFate) openDialogue(save.flags.elderFate === "release" ? "elder_release" : "elder_bind");
@@ -818,7 +819,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           else openDialogue("heart_1");
         }
       } else if (p.npc && NPC_NODE[p.npc]) {
-        openDialogue(NPC_NODE[p.npc]);
+        openDialogue(countyAgainNode(p.npc, known) ?? NPC_NODE[p.npc]);
       }
     } else if (p.kind === "sheep") {
       openDialogue("sheep_1");

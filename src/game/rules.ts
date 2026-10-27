@@ -195,6 +195,34 @@ export function cycleReturnNode(who: "elder" | "farmer" | "mayor" | "heart", cyc
   return null;
 }
 
+/** County people who are not the Vein. A second talk is a person, not a quest. */
+const COUNTY_SIDE = new Set([
+  "hunter",
+  "ferry",
+  "rokeby",
+  "camper",
+  "conductor",
+  "cartog",
+  "creemee",
+  "prof",
+  "bud",
+  "hippie",
+  "artist",
+  "ranger",
+  "vmayor",
+  "millwright",
+  "lockkeep",
+  "legislator",
+  "intern",
+  "coolidge",
+  "spectrum",
+]);
+
+export function countyAgainNode(npc: string, alreadyTalked: boolean): string | null {
+  if (!alreadyTalked || !COUNTY_SIDE.has(npc)) return null;
+  return npc + "_again";
+}
+
 export function signedKarmaLabel(n: number): string {
   return (n >= 0 ? "+" : "") + n;
 }
