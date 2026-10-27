@@ -1,36 +1,36 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~03:10 UTC, after merge of PR #90. Main at `b2d93df` (squash merge of PR #90)._
+_Updated Tue 2026-10-27, ~03:15 UTC, after merge of PR #104. Main at `7e2b19d` (squash merge of PR #104)._
 
-## Health of main (`b2d93df`)
+## Health of main (`7e2b19d`)
 
 | Gate | Result |
 |---|---|
-| `npm test` | **234 pass, 0 fail** (per PR #90 evidence; world-life tests 68–82) |
+| `npm test` | **257 pass, 0 fail** (per PR #104 evidence; includes place underfoot / county tell + stepSentinel) |
 | `npm run typecheck` | exit 0 |
 | `npm run build` | exit 0 |
-| browser smoke (dev + prod preview) | exit 0; title, canvas, no errors, no overflow |
+| browser smoke (dev + prod preview, desktop + mobile) | exit 0; title, canvas, no errors, no overflow |
 | SAVE_VERSION | remains 8 |
-| Engine / live route / county save touch | none |
-| Own save key | `preincarnation-world-life-v1` unused until import |
+| Engine touch | intentional, isolated: new `place.ts` + targeted AI/draw in `engine.ts` (non-sentinel only) |
+| Sentinel path | from #86 preserved (countyTell early-returns, no ring) |
 
-Prior health inherited. CI verify green on the PR head before merge.
+Prior health inherited from post-#90/#94. CI verify green on PR head `9c01da5` before squash. Lint failures pre-existing (untouched files).
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #90 | Isolated world-life plate under `support/grok-24-world-life/`: three Addison hubs (Middlebury mill street, the intervale, Otter landing) with deterministic routines, activities, quest overrides, era/lineage substitution, safe fallbacks. Unmounted demo. Own save key unused. Not a hunger/job/weather/economy sim. | merged by James; main at `b2d93df` |
+| #104 | Place-underfoot plate under hearts (path/green/meadow/bridge/pines/lip/**The Vein** on quarry marble). County tell for non-sentinel creatures: hold + pale ring/broken line (0.4s) before close/bite; warning clears past leave range. Sentinel keeps #86 gold telegraph. Save untouched; warned runtime-only. | squash-merged by James; main at `7e2b19d` |
 
-Vision Checklist satisfied: Marble Vein remains the sole plot; death advances ~14 winters as a chapter; one person (no party); no romance/party/crafting systems; 320×240 Canvas and SNES-coat preserved; localStorage and SAVE_VERSION=8 respected; support pack does not touch live engine, routes, or county save. Tests green. Explicitly not mounted on `/` to avoid replacing the Green.
+Vision Checklist satisfied: Marble Vein remains the sole plot (Vein name only on quarry marble; no second map). Death advances ~14 winters as a chapter (untouched). One person; no party. No romance/party/crafting systems. 320×240 Canvas and SNES-coat preserved (short ink plate + pixel ring). localStorage and SAVE_VERSION=8 respected. Intentional live engine touch is isolated and preserves Sentinel path. Tests green (257).
 
 ## Durable facts
 
-- World-life plate is optional support material only. Does not cover the walk. Green stays one person on Canvas 2D.
+- Ground plate and county bite tell are now on the live walk. Sentinel gold tell from #86 unchanged.
 - Skill on death remains capped (from #83). SAVE_VERSION stays 8.
-- Node ≥ 22.12 required. Tests by glob.
+- Node ≥ 22.12 required. Tests by glob (`src/**/*.test.ts`).
 - Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
-- Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
+- Process: PRs authored as JamesTRichmond; merges after verify; no force-push. Squash preferred for history.
 
 ## Issue Factory
 
@@ -48,24 +48,23 @@ Vision Checklist satisfied: Marble Vein remains the sole plot; death advances ~1
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#90, ~03:10 UTC)
+## Open PR ledger (post-#104, ~03:15 UTC)
 
 | Bucket | PRs |
 |---|---|
-| STATUS updates (rebase/close) | #81 (after #80), #82 (after #76) |
+| STATUS updates (rebase/close) | #81, #82, #91, #92 (stale relative to current main) |
 | Superseded | #38 (skill cap predecessor; close in favor of #83) |
-| Support / unmounted | #59 buried-history, #49 waterside finds, #42 quarry rules, #52 marble tell, #87 witness-mastery, #88 county-book, #89 community-gatherings |
-| Live features | #15 weapon compare, #36 item search, #86 marble tell (engine touch) |
-| Other | remaining from prior ledger pending rebase |
+| Support / unmounted | #59 buried-history, #49 waterside, #42 quarry rules, #87 witness-mastery, #88 county-book, #89 community-gatherings, #95 env-art, #96 lemon-fair, #97 item-inheritance, #98 household, #99 overworld, #100 persistence, #101 gadgets, #102 dungeons-05-08, #105 ashwick, #106 satchel, #108 last-four-dungeons, #109 county-kitchen |
+| Live features (engine touch likely) | #15 kit-compare, #36 item search, #93 bag-and-grave, #107 no-cycle-hp |
+| Other | remaining pending rebase |
 
 ## Next priorities
 
-1. Close #38 as superseded by #83 (same intent, landed).
-2. Rebase or close stale STATUS PRs #81 and #82; prefer this update as the current STATUS.
-3. Continue bot-ready rebase of remaining PRs (#71-#73); verify vision and tests before merge.
-4. Review open support packs (#59, #87, #88, #89, etc.) for vision alignment; none unblocked by #90 specifically (isolated pack, no file overlap).
-5. #86 (Marble Vein tell, live engine) remains a candidate once CI green and vision confirmed; do not treat world-life as that tell.
-6. Full CI smoke on main post-#90 to confirm no regression.
-7. Repo hygiene: large artifacts/screenshots still inflate .git.
+1. Close #38 as superseded by #83.
+2. Rebase or close stale STATUS PRs (#81, #82, #91, #92); this update is current.
+3. Rebase PRs that touch `src/game/engine.ts` (#36, #38, #93, #107 and any others) onto current main; verify no conflict with place.ts / countyTell path.
+4. Continue bot-ready rebase of remaining support packs; verify vision + tests before merge. Isolated packs (own keys, unmounted) preferred.
+5. Full CI smoke on main post-#104 to confirm no regression.
+6. Repo hygiene: large artifacts/screenshots still inflate .git.
 
-No new risks. World-life does not affect QQ-VGEF pillars beyond optional support readiness.
+No new risks. County tell is a feel improvement on the walk; does not affect QQ-VGEF pillars beyond live engine fidelity. Sentinel path intact.
