@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { SAVE_VERSION } from "../../src/game/save.ts";
 import {
   HOST_VERBS,
   SAMPLE_OVERLAYS,
@@ -461,7 +462,7 @@ describe("saves and the game bind", () => {
 
   it("mirrors a game save without spending skill points or paying for the death", () => {
     const game = {
-      version: 8,
+      version: SAVE_VERSION,
       cycle: 1,
       karma: -3,
       incarnation: "wanderer" as const,
@@ -480,7 +481,7 @@ describe("saves and the game bind", () => {
     assert.equal(died.game.host, "devil");
     assert.equal(died.witnessBank, 0);
     assert.equal(died.phase, "afterlife");
-    assert.equal(died.game.saveVersion, 8);
+    assert.equal(died.game.saveVersion, SAVE_VERSION);
 
     const again = deathFromGame(died, { ...game, cycle: 2 }, { cause: "combat", deathSiteKey: "quarry:4,4" }, catalog);
     assert.equal(again.ok, false);

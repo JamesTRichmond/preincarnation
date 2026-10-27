@@ -1,5 +1,5 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
-import { graveSnapshot } from "./bag.ts";
+import { graveSnapshot, sipIndex } from "./bag.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import { T } from "./tile-ids.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
@@ -250,6 +250,101 @@ export function chapterSkillAward(save: SaveData): number {
 
 export function wintersPassed(_rand: () => number = Math.random): number {
   return 14;
+}
+
+/** Cardinal lunge stays 12. A diagonal bobcat or Sentinel coat is 3px tighter. */
+export const LUNGE_REACH = 12;
+export const DIAGONAL_COAT_PX = 3;
+
+export function lungeReach(kind: string, dx: number, dy: number): number {
+  if (kind !== "bobcat" && kind !== "sentinel") return LUNGE_REACH;
+  const ax = Math.abs(dx);
+  const ay = Math.abs(dy);
+  if (ax < 1 || ay < 1) return LUNGE_REACH;
+  const ratio = Math.max(ax, ay) / Math.min(ax, ay);
+  if (ratio > 1.6) return LUNGE_REACH;
+  return LUNGE_REACH - DIAGONAL_COAT_PX;
+}
+
+export function lungeHits(kind: string, dx: number, dy: number): boolean {
+  return Math.hypot(dx, dy) < lungeReach(kind, dx, dy);
+}
+
+/** Full blood, and the bottle in hand would not fill a dry well. */
+export function sipRefusedAtFullHp(
+  bottles: readonly string[],
+  hp: number,
+  maxHp: number,
+  mp: number,
+  maxMp: number,
+): boolean {
+  if (!(hp >= maxHp - 0.05)) return false;
+  const i = sipIndex(bottles as readonly ("empty" | "syrup" | "creemee" | "deluxe")[], hp, maxHp, mp, maxMp);
+  if (i < 0) return false;
+  const k = bottles[i];
+  const dry = mp < maxMp - 0.05;
+  if (dry && (k === "creemee" || k === "deluxe")) return false;
+  return true;
+}
+
+/** Two lines on the mound. Only the first return. Not a banner across the Green. */
+export function firstReturnStone(cycle: number, name: string): readonly [string, string] | null {
+  if (cycle !== 1) return null;
+  const who = (name.trim() || "Unknown").slice(0, 12);
+  return [who, "Fourteen winters."];
+}
+
+export const PAUSE_GRAVE_NOTE =
+  "A grave returns the numbered steel. Skill does not mint once every rank but a Crown is paid.";
+
+const HIGH_TIER = new Set(["bear", "bobcat", "fisher", "wraith"]);
+export const SEAM_MERCY = 0.65;
+
+/**
+ * The east screen of Middlebury, then the first screen of the Vein.
+ * The Green (west Middlebury) and the Sentinel are not in this set.
+ */
+export function veinSeamScreen(mapId: string, tileX: number): number | null {
+  if (mapId === "middlebury" && tileX >= 20) return 0;
+  if (mapId === "quarry" && tileX < 20) return 1;
+  return null;
+}
+
+export function graveSteelStanding(
+  graves: readonly { id: string; excavated: boolean; weapons: readonly { id: string; dmg?: number }[] }[],
+  inventoryIds: readonly string[],
+  passedIds: readonly string[],
+): "none" | "in-dirt" | "recovered" | "passed" {
+  const open = [...graves].reverse().find((g) => !g.excavated && g.weapons.some((w) => typeof w.dmg === "number"));
+  if (!open) return "none";
+  const numbered = open.weapons.filter((w) => typeof w.dmg === "number");
+  if (numbered.every((w) => inventoryIds.includes(w.id))) return "recovered";
+  if (passedIds.includes(open.id)) return "passed";
+  return "in-dirt";
+}
+
+export function seamSpawnWeight(
+  base: number,
+  kind: string,
+  mapId: string,
+  tileX: number,
+  cycle: number,
+  steel: "none" | "in-dirt" | "recovered" | "passed",
+): number {
+  if (!(base > 0)) return 0;
+  if (cycle < 1 || steel !== "in-dirt") return base;
+  if (kind === "sentinel" || !HIGH_TIER.has(kind)) return base;
+  const screen = veinSeamScreen(mapId, tileX);
+  if (screen == null || screen > 1) return base;
+  return base * SEAM_MERCY;
+}
+
+/** Stable skip. Weight 0.65 keeps about two of three. The same id does not flicker. */
+export function seamSkips(id: string, cycle: number, weight: number): boolean {
+  if (!(weight < 1)) return false;
+  let h = cycle * 17;
+  for (let i = 0; i < id.length; i++) h = (Math.imul(h, 33) + id.charCodeAt(i)) >>> 0;
+  return (h % 1000) / 1000 >= weight;
 }
 
 export function bondKeepsake(bondId: string): RelicId | null {

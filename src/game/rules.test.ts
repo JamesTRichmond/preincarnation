@@ -30,6 +30,16 @@ import {
   spinDamage,
   stepSouthOffStoop,
   wintersPassed,
+  lungeReach,
+  lungeHits,
+  sipRefusedAtFullHp,
+  firstReturnStone,
+  PAUSE_GRAVE_NOTE,
+  veinSeamScreen,
+  graveSteelStanding,
+  seamSpawnWeight,
+  seamSkips,
+  SEAM_MERCY,
 } from "./rules.ts";
 import type { Grave } from "./items.ts";
 import type { SaveData } from "./types.ts";
@@ -118,6 +128,54 @@ describe("wintersPassed", () => {
     assert.equal(wintersPassed(() => 0), 14);
     assert.equal(wintersPassed(() => 0.99), 14);
     assert.equal(wintersPassed(), 14);
+  });
+});
+
+describe("coat, glass, stone, seam", () => {
+  it("tightens only a diagonal bobcat or Sentinel lunge", () => {
+    assert.equal(lungeReach("bobcat", 10, 0), 12);
+    assert.equal(lungeReach("sentinel", 0, 10), 12);
+    assert.equal(lungeReach("bobcat", 8, 8), 9);
+    assert.equal(lungeReach("sentinel", 6, 7), 9);
+    assert.equal(lungeReach("fisher", 8, 8), 12);
+    assert.equal(lungeHits("bobcat", 8, 8), false);
+    assert.equal(lungeHits("bobcat", 6, 6), true);
+    assert.equal(lungeHits("bear", 11, 0), true);
+  });
+
+  it("refuses a sip at full blood unless the bottle is mana", () => {
+    assert.equal(sipRefusedAtFullHp(["syrup", "empty"], 6, 6, 2, 8), true);
+    assert.equal(sipRefusedAtFullHp(["creemee", "empty"], 6, 6, 2, 8), false);
+    assert.equal(sipRefusedAtFullHp(["syrup", "empty"], 4, 6, 8, 8), false);
+    assert.equal(sipRefusedAtFullHp(["empty", "empty"], 6, 6, 8, 8), false);
+  });
+
+  it("writes two lines on the first return and one pause line", () => {
+    assert.deepEqual(firstReturnStone(1, "Ellis Perch"), ["Ellis Perch", "Fourteen winters."]);
+    assert.equal(firstReturnStone(0, "Ellis"), null);
+    assert.equal(firstReturnStone(2, "Ellis"), null);
+    assert.equal(PAUSE_GRAVE_NOTE.includes("14-18"), false);
+    assert.match(PAUSE_GRAVE_NOTE, /numbered steel/);
+    assert.match(PAUSE_GRAVE_NOTE, /Crown/);
+  });
+
+  it("scales high-tier weight on the two seam screens until the steel is back or passed", () => {
+    assert.equal(veinSeamScreen("middlebury", 8), null);
+    assert.equal(veinSeamScreen("middlebury", 36), 0);
+    assert.equal(veinSeamScreen("quarry", 4), 1);
+    assert.equal(veinSeamScreen("quarry", 28), null);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "in-dirt"), SEAM_MERCY);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 8, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "sentinel", "quarry", 4, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "crow", "middlebury", 36, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "recovered"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "passed"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 0, "in-dirt"), 1);
+    const graves = [{ id: "g", excavated: false, weapons: [{ id: "axe", dmg: 2 }] }];
+    assert.equal(graveSteelStanding(graves, [], []), "in-dirt");
+    assert.equal(graveSteelStanding(graves, ["axe"], []), "recovered");
+    assert.equal(graveSteelStanding(graves, [], ["g"]), "passed");
+    assert.equal(seamSkips("never", 1, 1), false);
   });
 });
 

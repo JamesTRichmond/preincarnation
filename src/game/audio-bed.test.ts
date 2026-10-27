@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { T } from "./tile-ids.ts";
-import { bedFor, bedSpec, clampVolume, groundOf, stepDue, stepVoice, strikeVoice } from "./audio-bed.ts";
+import { bedFor, bedSpec, clampVolume, glassClink, groundOf, stepDue, stepVoice, strikeVoice } from "./audio-bed.ts";
 
 describe("audio beds", () => {
   it("changes the drone with the room and the fight, not with a new system", () => {
@@ -28,7 +28,11 @@ describe("audio beds", () => {
     assert.equal(freqs.size, kinds.length);
     assert.equal(strikeVoice("bomb").freq, strikeVoice("").freq);
     assert.ok(strikeVoice("bear").freq < strikeVoice("crow").freq);
-    assert.ok(strikeVoice("fisher").freq > strikeVoice("bobcat").freq);
+    assert.equal(strikeVoice("bobcat").freq, 340);
+    assert.equal(strikeVoice("sentinel").freq, 68);
+    const clink = glassClink();
+    assert.ok(clink.freq > 1000);
+    assert.notEqual(clink.freq, strikeVoice("bobcat").freq);
   });
 
   it("changes the step with the ground and waits a stride", () => {

@@ -20,6 +20,7 @@ import type { UiSnapshot } from "@/game/types";
 import { EMPTY_KIT } from "@/game/kit-compare";
 import { attackEdge, picturePixels, readA11y, writeA11y, type A11ySettings } from "@/game/a11y";
 import { FIRST_LIFE } from "@/game/onboarding";
+import { PAUSE_GRAVE_NOTE } from "@/game/rules";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
 
 const EMPTY: UiSnapshot = {
@@ -563,6 +564,7 @@ function Pause({
           cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
           shovel in fourteen winters. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
+        <p className="mt-1 text-sm text-fg-subtle">{PAUSE_GRAVE_NOTE}</p>
 
         <h3 className="mt-5 font-display text-xl">The kitchen</h3>
         <p className="mt-1 text-sm text-fg-muted">

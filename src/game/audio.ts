@@ -1,5 +1,5 @@
 /** Procedural mixer — unlocked on the first gesture. */
-import { bedSpec, clampVolume, stepVoice, strikeVoice, type AudioBed } from "./audio-bed.ts";
+import { bedSpec, clampVolume, glassClink, stepVoice, strikeVoice, type AudioBed } from "./audio-bed.ts";
 
 export function createAudio() {
   let ctx: AudioContext | null = null;
@@ -56,6 +56,11 @@ export function createAudio() {
     const v = strikeVoice(kind);
     beep(v.freq, v.dur, v.type, kind === "fisher" ? 0.07 : 0.14, v.slide);
     if (kind === "bear" || kind === "sentinel") beep(Math.max(40, v.freq * 0.5), v.dur, "square", 0.07, -16);
+  };
+  const clink = () => {
+    const v = glassClink();
+    beep(v.freq, v.dur, v.type, 0.028, v.slide);
+    setTimeout(() => beep(v.freq * 1.48, 0.02, "sine", 0.014, 30), 26);
   };
   const pickup = () => beep(660, 0.14, "triangle", 0.09, 220);
   let stepLeft = false;
@@ -189,5 +194,5 @@ export function createAudio() {
     if (c) void c.close();
   };
 
-  return { unlock, slash, hit, step, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
+  return { unlock, slash, hit, step, clink, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
 }
