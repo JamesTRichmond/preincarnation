@@ -11,6 +11,8 @@ describe("audio beds", () => {
     assert.equal(bedFor({ mode: "limbo", mapId: "middlebury", fighting: false }), "limbo");
     assert.notEqual(bedSpec("kitchen").root, bedSpec("county").root);
     assert.equal(bedSpec("death").limbo, true);
+    assert.ok(bedSpec("county").wobble > bedSpec("combat").wobble);
+    assert.ok(bedSpec("limbo").wobble > 0);
   });
 
   it("keeps a volume inside the dial", () => {

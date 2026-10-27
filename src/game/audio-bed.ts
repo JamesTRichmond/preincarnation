@@ -8,12 +8,12 @@ export function bedFor(state: { mode: string; mapId: string; fighting: boolean }
   return "county";
 }
 
-export function bedSpec(bed: AudioBed): { limbo: boolean; root: number; fifth: number | null } {
-  if (bed === "limbo" || bed === "death") return { limbo: true, root: 55, fifth: null };
-  if (bed === "combat") return { limbo: false, root: 73, fifth: 110 };
-  if (bed === "kitchen") return { limbo: false, root: 196, fifth: 247 };
-  if (bed === "quarry") return { limbo: false, root: 82, fifth: 123 };
-  return { limbo: false, root: 98, fifth: 147 };
+export function bedSpec(bed: AudioBed): { limbo: boolean; root: number; fifth: number | null; wobble: number } {
+  if (bed === "limbo" || bed === "death") return { limbo: true, root: 55, fifth: null, wobble: 0.35 };
+  if (bed === "combat") return { limbo: false, root: 73, fifth: 110, wobble: 0.12 };
+  if (bed === "kitchen") return { limbo: false, root: 196, fifth: 247, wobble: 0.55 };
+  if (bed === "quarry") return { limbo: false, root: 82, fifth: 123, wobble: 0.22 };
+  return { limbo: false, root: 98, fifth: 147, wobble: 1.1 };
 }
 
 export function clampVolume(n: number): number {

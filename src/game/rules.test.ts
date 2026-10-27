@@ -2,12 +2,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { defaultSave } from "./save.ts";
+import { DIALOGUE } from "./content.ts";
 import {
   applyUpgrade,
   bodyStats,
   bondKeepsake,
   chapterSkillAward,
   cycleLedger,
+  countyAgainNode,
   cycleReturnNode,
   devilThreshold,
   enemyMaxHp,
@@ -431,6 +433,47 @@ describe("second-cycle memory", () => {
     assert.equal(cycleReturnNode("heart", 1), null);
     assert.equal(cycleReturnNode("heart", 2), "heart_second");
     assert.equal(cycleReturnNode("farmer", 0), null);
+  });
+});
+
+describe("county people, second talk", () => {
+  const side = [
+    "hunter",
+    "ferry",
+    "rokeby",
+    "camper",
+    "conductor",
+    "cartog",
+    "creemee",
+    "prof",
+    "bud",
+    "hippie",
+    "artist",
+    "ranger",
+    "vmayor",
+    "millwright",
+    "lockkeep",
+    "legislator",
+    "intern",
+    "coolidge",
+    "spectrum",
+  ];
+
+  it("gives a side person a second line and leaves the Vein alone", () => {
+    for (const npc of side) {
+      assert.equal(countyAgainNode(npc, false), null);
+      const id = countyAgainNode(npc, true);
+      assert.equal(id, npc + "_again");
+      const node = DIALOGUE[id ?? ""];
+      assert.ok(node, id ?? npc);
+      assert.ok(node.text.length >= 40, id ?? npc);
+      assert.equal(node.choices?.some((c) => c.flag || c.karma || c.crowns) ?? false, false);
+      assert.doesNotMatch(node.text, /14[–-]18/);
+      assert.doesNotMatch(node.text, /come with me|my party|second quest/i);
+    }
+    for (const plot of ["elder", "farmer", "mayor", "sentinel", "resident", "sugar", "heart"]) {
+      assert.equal(countyAgainNode(plot, true), null);
+    }
   });
 });
 
