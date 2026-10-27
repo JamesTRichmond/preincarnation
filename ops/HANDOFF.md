@@ -1,7 +1,7 @@
 # HANDOFF
 
 Cycle: L-0004   Step: 10 checkpoint   Time: 2026-10-27
-Branch/commit: integrate/no-cycle-hp (hash after commit)
+Branch/commit: integrate/no-cycle-hp @ 153f420
 Uncommitted work: none after this checkpoint
 Failing tests: none. 255/255 game tests pass.
 Final Score per platform: PWA 20.0   Points to Gate: 78.0
