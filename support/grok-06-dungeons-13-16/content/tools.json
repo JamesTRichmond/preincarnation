@@ -1,0 +1,66 @@
+{
+  "mappingStatus": "PENDING",
+  "note": "Semantic tool roles used by this packet. runtimeToolId stays null until the earlier field-kit packet is mapped. Puzzles call these roles by name.",
+  "tools": [
+    {
+      "id": "field-chain",
+      "runtimeToolId": null,
+      "use": "Measure a posted length, latch a gap, pull along a straight line, couple wheels, bind the seam shut."
+    },
+    {
+      "id": "range-rod",
+      "runtimeToolId": null,
+      "use": "Hold a gate, jam a press, bridge a posted gap, turn a gear, plant a path in imagination."
+    },
+    {
+      "id": "transit-glass",
+      "runtimeToolId": null,
+      "use": "See which door the reflection omits, align two marks, show a wish-state floor."
+    },
+    {
+      "id": "plumb-bob",
+      "runtimeToolId": null,
+      "use": "Find the true vertical among false landings, falls, wax lives, and a stamped plot."
+    },
+    {
+      "id": "office-lamp",
+      "runtimeToolId": null,
+      "use": "Show gouged names, thaw one ice face, light a stove, reveal overflow ticks."
+    },
+    {
+      "id": "field-knife",
+      "runtimeToolId": null,
+      "use": "Cut red tape, a ribbon, a page-thick film, or one corner of a controlled page."
+    },
+    {
+      "id": "field-book",
+      "runtimeToolId": null,
+      "use": "Copy what is already written in the room. The book is how discoveries persist as text. It is not a riddle journal."
+    },
+    {
+      "id": "county-bell",
+      "runtimeToolId": null,
+      "use": "Call a posted civic role, still a shore, speak a fiction aloud, ring a distributed seam."
+    },
+    {
+      "id": "office-seal",
+      "runtimeToolId": null,
+      "use": "Stamp a warrant, a false charter, or the seam itself. Using it is remembered. It is never required to finish the dungeons."
+    },
+    {
+      "id": "marble-needle",
+      "runtimeToolId": null,
+      "use": "Point across water or void inside the final quarter only. It is not an overworld quest marker."
+    },
+    {
+      "id": "sounding-lead",
+      "runtimeToolId": null,
+      "use": "Read depth. Marks safe ice, void, and fords. Required together with the needle for embryonic crossing."
+    },
+    {
+      "id": "borrowed-coat",
+      "runtimeToolId": null,
+      "use": "The current body's coat. Hung, it is an anchor or a presence. It is not a second character."
+    }
+  ]
+}

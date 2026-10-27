@@ -1,0 +1,120 @@
+{
+  "id": "EPILOGUE.PORCH",
+  "dungeon": "EPILOGUE",
+  "name": "Epilogue Porch",
+  "environment": null,
+  "region": "epilogue",
+  "checkpoint": true,
+  "purpose": "Where a completed save wakes. No lectern. No boss. The county is the one the ending already walked.",
+  "layoutNote": "A porch, three steps, a view of a road. No exits back into the seam.",
+  "tileset": "county-porch",
+  "bounds": {
+    "w": 18,
+    "h": 11,
+    "unit": "tile"
+  },
+  "walls": [
+    {
+      "x": 4,
+      "y": 3,
+      "w": 10,
+      "h": 1
+    }
+  ],
+  "tiles": [],
+  "exits": [],
+  "actors": [
+    {
+      "id": "porch-post",
+      "name": "Porch post",
+      "kind": "fixture",
+      "pos": {
+        "x": 6,
+        "y": 6
+      },
+      "solid": true,
+      "joinsParty": false,
+      "dialogue": [
+        {
+          "id": "porch-post.line1",
+          "text": "The choice is already in the wood. Sitting here does not reopen it."
+        }
+      ],
+      "onDeathReset": "return-to-start",
+      "start": {
+        "x": 6,
+        "y": 6
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "road-view",
+      "name": "Road view",
+      "kind": "view",
+      "pos": {
+        "x": 12,
+        "y": 7
+      },
+      "blocksMovement": false,
+      "tool": null,
+      "inscription": "ADDISON COUNTY, AFTER.",
+      "text": null,
+      "textByDecision": null,
+      "note": null
+    }
+  ],
+  "transitions": [],
+  "persistence": {
+    "visitedFlag": "visited.EPILOGUE.PORCH",
+    "survivesDeath": [],
+    "resetsOnDeath": [],
+    "checkpoint": true,
+    "region": "epilogue",
+    "onLeave": [],
+    "note": "Death is disabled after credits. This room is a spawn, not a dungeon."
+  },
+  "solution": {
+    "id": "main",
+    "when": {
+      "op": "always"
+    },
+    "steps": []
+  },
+  "alternates": [],
+  "solutionTrace": [
+    "1. The completed save places you here. There is no puzzle and no return to the lectern."
+  ],
+  "death": {
+    "hazards": []
+  },
+  "orderPuzzle": null,
+  "produces": [],
+  "exemptFromGraph": true,
+  "legend": {
+    "#": "wall",
+    ".": "floor",
+    "D": "door",
+    "~": "water",
+    "V": "void",
+    "=": "ice",
+    ",": "snow",
+    ":": "bridge",
+    "+": "marked-station"
+  },
+  "layout": {
+    "rows": [
+      "##################",
+      "#................#",
+      "#................#",
+      "#...##########...#",
+      "#................#",
+      "#................#",
+      "#................#",
+      "#................#",
+      "#................#",
+      "#................#",
+      "##################"
+    ]
+  }
+}

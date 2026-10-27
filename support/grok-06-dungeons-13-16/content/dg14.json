@@ -1,0 +1,5280 @@
+{
+  "id": "DG14",
+  "name": "Snow Under the Lake",
+  "mappingStatus": "PENDING",
+  "rooms": [
+    {
+      "id": "DG14.R01",
+      "dungeon": "DG14",
+      "name": "Champlain Cut",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": true,
+      "purpose": "Teach the lead and the glass lesson before any reflection can lie to you.",
+      "layoutNote": "Shore at the south, ice north. Three posts stand on floor. Thin-ice tiles sit off the aisle. The sign is the tell.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "lake-ice",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#....=...........#",
+          "#................#",
+          "#...=.........=..#",
+          "#................#",
+          "#.###........###.#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R16",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R02",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.iceMarked",
+            "dg14.glassLesson"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "cut-tender",
+          "name": "Cut tender",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "cut-tender.line1",
+              "text": "Sound the three posts. Then read the glass rule. The ice off the posts is a rumor."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "ice-sign",
+          "name": "Ice sign",
+          "kind": "sign",
+          "pos": {
+            "x": 3,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "SOUND THE THREE POSTS. THE GLASS OMITS THE TRUE DOOR.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "post-a",
+          "name": "Sounding post A",
+          "kind": "post",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "post-b",
+          "name": "Sounding post B",
+          "kind": "post",
+          "pos": {
+            "x": 7,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "post-c",
+          "name": "Sounding post C",
+          "kind": "post",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R01.interact.ice-sign",
+          "kind": "interact",
+          "target": "ice-sign",
+          "tool": null,
+          "sets": [
+            "dg14.glassLesson"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R01.use-tool.post-a",
+          "kind": "use-tool",
+          "target": "post-a",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.postA"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R01.use-tool.post-b",
+          "kind": "use-tool",
+          "target": "post-b",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.postB"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R01.use-tool.post-c",
+          "kind": "use-tool",
+          "target": "post-c",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.iceMarked"
+          ],
+          "requires": [
+            "dg14.postA",
+            "dg14.postB"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R01.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.iceMarked"
+              },
+              {
+                "op": "flag",
+                "flag": "dg14.glassLesson"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R02",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R01",
+        "survivesDeath": [
+          "dg14.glassLesson",
+          "dg14.postA",
+          "dg14.postB",
+          "dg14.iceMarked",
+          "cleared.DG14.R01",
+          "visited.DG14.R01"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R01",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R01"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the sign. It states the glass rule you will use next door.",
+            "target": "ice-sign",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.glassLesson"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound post A. It marks a safe tile.",
+            "target": "post-a",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.postA"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound post B.",
+            "target": "post-b",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.postB"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound post C. The safe path to the north door is marked.",
+            "target": "post-c",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.postA",
+              "dg14.postB"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.iceMarked"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Walk the marked ice.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.iceMarked",
+              "dg14.glassLesson"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the sign. It states the glass rule you will use next door. | action=interact | target=ice-sign | tool=none | requires=none | sets=dg14.glassLesson",
+        "2. Sound post A. It marks a safe tile. | action=use-tool | target=post-a | tool=sounding-lead | requires=none | sets=dg14.postA",
+        "3. Sound post B. | action=use-tool | target=post-b | tool=sounding-lead | requires=none | sets=dg14.postB",
+        "4. Sound post C. The safe path to the north door is marked. | action=use-tool | target=post-c | tool=sounding-lead | requires=dg14.postA & dg14.postB | sets=dg14.iceMarked",
+        "5. Walk the marked ice. | action=traverse | exit=north | tool=none | requires=dg14.iceMarked & dg14.glassLesson | sets=none",
+        "6. Room clear is recorded as cleared.DG14.R01. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "thin-ice",
+            "tiles": [
+              {
+                "x": 4,
+                "y": 5
+              },
+              {
+                "x": 14,
+                "y": 5
+              },
+              {
+                "x": 5,
+                "y": 3
+              }
+            ],
+            "tell": "ice-sign",
+            "fatal": true,
+            "effect": "fall-through-ice"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.glassLesson",
+        "dg14.postA",
+        "dg14.postB",
+        "dg14.iceMarked",
+        "cleared.DG14.R01",
+        "visited.DG14.R01"
+      ]
+    },
+    {
+      "id": "DG14.R02",
+      "dungeon": "DG14",
+      "name": "First Reflection",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Two doors. The glass does not draw the true one. The rule was on the sign you already read.",
+      "layoutNote": "Twin doorframes painted east and west, but the real exits are the map doors north and south. The false frame is an object, not an exit.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#..#..........#..#",
+          "#..#..........#..#",
+          "#..#..........#..#",
+          "#..#..........#..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R01",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R03",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.trueDoorSeen"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "reflection",
+          "name": "Your reflection",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "reflection.line1",
+              "text": "I am the door you can see. That is how you know I am not it."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "false-frame",
+          "name": "Bright doorframe",
+          "kind": "decoy",
+          "pos": {
+            "x": 13,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THIS DOOR IS EASY TO SEE.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "dim-frame",
+          "name": "Undrawn frame",
+          "kind": "doorframe",
+          "pos": {
+            "x": 5,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The glass leaves this frame out."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R02.use-tool.dim-frame",
+          "kind": "use-tool",
+          "target": "dim-frame",
+          "tool": "transit-glass",
+          "sets": [
+            "dg14.trueDoorSeen"
+          ],
+          "requires": [
+            "dg14.glassLesson"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R02.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.trueDoorSeen"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R03",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R02",
+        "survivesDeath": [
+          "dg14.trueDoorSeen",
+          "cleared.DG14.R02",
+          "visited.DG14.R02"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R02",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R02"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Raise the glass. It omits the dim frame, which the sign said is the true door.",
+            "target": "dim-frame",
+            "tool": "transit-glass",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.glassLesson"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.trueDoorSeen"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Take the omitted door.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.trueDoorSeen"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Raise the glass. It omits the dim frame, which the sign said is the true door. | action=use-tool | target=dim-frame | tool=transit-glass | requires=dg14.glassLesson | sets=dg14.trueDoorSeen",
+        "2. Take the omitted door. | action=traverse | exit=north | tool=none | requires=dg14.trueDoorSeen | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R02. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.trueDoorSeen",
+        "cleared.DG14.R02",
+        "visited.DG14.R02"
+      ]
+    },
+    {
+      "id": "DG14.R03",
+      "dungeon": "DG14",
+      "name": "Ferrisburgh Shed",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "A preserved shed under ice. The lamp thaws three marked faces. Any order works. The third thaw opens the door.",
+      "layoutNote": "Shed interior. Three ice faces on the west and east. The door is north.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..=..=......=...#",
+          "#................#",
+          "#..........####..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R02",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R04",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.shedThawed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "shed-keep",
+          "name": "Shed keep",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "shed-keep.line1",
+              "text": "Three faces. The lamp does one at a time. They stay thawed."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "face-a",
+          "name": "Ice face A",
+          "kind": "ice",
+          "pos": {
+            "x": 4,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Stands beside ice tile (3,4)."
+        },
+        {
+          "id": "face-b",
+          "name": "Ice face B",
+          "kind": "ice",
+          "pos": {
+            "x": 7,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "face-c",
+          "name": "Ice face C",
+          "kind": "ice",
+          "pos": {
+            "x": 14,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R03.use-tool.face-a",
+          "kind": "use-tool",
+          "target": "face-a",
+          "tool": "office-lamp",
+          "sets": [
+            "dg14.thawA"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R03.use-tool.face-b",
+          "kind": "use-tool",
+          "target": "face-b",
+          "tool": "office-lamp",
+          "sets": [
+            "dg14.thawB"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R03.use-tool.face-c",
+          "kind": "use-tool",
+          "target": "face-c",
+          "tool": "office-lamp",
+          "sets": [
+            "dg14.shedThawed"
+          ],
+          "requires": [
+            "dg14.thawA",
+            "dg14.thawB"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R03.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.shedThawed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R04",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R03",
+        "survivesDeath": [
+          "dg14.thawA",
+          "dg14.thawB",
+          "dg14.shedThawed",
+          "cleared.DG14.R03",
+          "visited.DG14.R03"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R03",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R03"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Thaw face A. It stays thawed.",
+            "target": "face-a",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.thawA"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Thaw face B.",
+            "target": "face-b",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.thawB"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Thaw face C. The shed door opens.",
+            "target": "face-c",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.thawA",
+              "dg14.thawB"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.shedThawed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the shed.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.shedThawed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Thaw face A. It stays thawed. | action=use-tool | target=face-a | tool=office-lamp | requires=none | sets=dg14.thawA",
+        "2. Thaw face B. | action=use-tool | target=face-b | tool=office-lamp | requires=none | sets=dg14.thawB",
+        "3. Thaw face C. The shed door opens. | action=use-tool | target=face-c | tool=office-lamp | requires=dg14.thawA & dg14.thawB | sets=dg14.shedThawed",
+        "4. Leave the shed. | action=traverse | exit=north | tool=none | requires=dg14.shedThawed | sets=none",
+        "5. Room clear is recorded as cleared.DG14.R03. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.thawA",
+        "dg14.thawB",
+        "dg14.shedThawed",
+        "cleared.DG14.R03",
+        "visited.DG14.R03"
+      ]
+    },
+    {
+      "id": "DG14.R04",
+      "dungeon": "DG14",
+      "name": "Inverted Otter",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "The creek runs on the ceiling. Cross it in the embryonic form. A body that walks the ceiling falls.",
+      "layoutNote": "Floor is a bank. Ceiling-water is represented as water tiles in a band you must not walk. The anchor peg is on the bank. The far station is also on the bank, past the band, at x=14,y=3.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.......~~~......#",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R03",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R05",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.otterCrossed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "otter-sign",
+          "name": "Painted warning",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "otter-sign.line1",
+              "text": "The coat stays. The unfinished life crosses. The finished body falls."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "ceiling-sign",
+          "name": "Ceiling warning",
+          "kind": "sign",
+          "pos": {
+            "x": 5,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE COAT STAYS. THE UNFINISHED LIFE CROSSES.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "bank-peg",
+          "name": "Bank peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "far-station",
+          "name": "Far station",
+          "kind": "station",
+          "pos": {
+            "x": 14,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Reached only in the embryonic form."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R04.use-tool.bank-peg",
+          "kind": "use-tool",
+          "target": "bank-peg",
+          "tool": "borrowed-coat",
+          "sets": [
+            "dg14.otterAnchor"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R04.use-tool.far-station",
+          "kind": "use-tool",
+          "target": "far-station",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.otterNeedle",
+            "meta.embryonic"
+          ],
+          "requires": [
+            "dg14.otterAnchor"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R04.use-tool.far-station",
+          "kind": "use-tool",
+          "target": "far-station",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.otterCrossed"
+          ],
+          "requires": [
+            "dg14.otterNeedle"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R04.interact.bank-peg",
+          "kind": "interact",
+          "target": "bank-peg",
+          "tool": null,
+          "sets": [
+            "dg14.otterCoatBack"
+          ],
+          "requires": [
+            "dg14.otterCrossed"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R04.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.otterCrossed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R05",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R04",
+        "survivesDeath": [
+          "dg14.otterAnchor",
+          "dg14.otterNeedle",
+          "dg14.otterCrossed",
+          "dg14.otterCoatBack",
+          "cleared.DG14.R04",
+          "visited.DG14.R04"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R04",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R04"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Hang the coat as the anchor.",
+            "target": "bank-peg",
+            "tool": "borrowed-coat",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.otterAnchor"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "With the anchor set, take the needle across. The form begins.",
+            "target": "far-station",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otterAnchor"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.otterNeedle",
+              "meta.embryonic"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound the far station and finish the cross.",
+            "target": "far-station",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otterNeedle"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.otterCrossed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "The cross returns you to the peg. Take the coat. The form ends.",
+            "target": "bank-peg",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otterCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.otterCoatBack"
+            ],
+            "clears": [
+              "meta.embryonic"
+            ],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go on along the bank.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otterCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Hang the coat as the anchor. | action=use-tool | target=bank-peg | tool=borrowed-coat | requires=none | sets=dg14.otterAnchor",
+        "2. With the anchor set, take the needle across. The form begins. | action=use-tool | target=far-station | tool=marble-needle | requires=dg14.otterAnchor | sets=dg14.otterNeedle & meta.embryonic",
+        "3. Sound the far station and finish the cross. | action=use-tool | target=far-station | tool=sounding-lead | requires=dg14.otterNeedle | sets=dg14.otterCrossed",
+        "4. The cross returns you to the peg. Take the coat. The form ends. | action=interact | target=bank-peg | tool=none | requires=dg14.otterCrossed | sets=dg14.otterCoatBack",
+        "5. Go on along the bank. | action=traverse | exit=north | tool=none | requires=dg14.otterCrossed | sets=none",
+        "6. Room clear is recorded as cleared.DG14.R04. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "ceiling-water",
+            "tiles": [
+              {
+                "x": 8,
+                "y": 4
+              },
+              {
+                "x": 9,
+                "y": 4
+              },
+              {
+                "x": 10,
+                "y": 4
+              }
+            ],
+            "tell": "ceiling-sign",
+            "fatal": true,
+            "effect": "fall-from-ceiling",
+            "unless": "meta.embryonic"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.otterAnchor",
+        "dg14.otterNeedle",
+        "meta.embryonic",
+        "dg14.otterCrossed",
+        "dg14.otterCoatBack",
+        "cleared.DG14.R04",
+        "visited.DG14.R04"
+      ]
+    },
+    {
+      "id": "DG14.R05",
+      "dungeon": "DG14",
+      "name": "Snow Archive",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "A preserved case. The lamp thaws the film of ice on its label. The mill decision changes the label and not the door.",
+      "layoutNote": "Cases along the west. One case is the interact. The aisle is open.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#.####...........#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R04",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R06",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.archiveRead"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "archivist-ice",
+          "name": "Frozen archivist",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "archivist-ice.line1",
+              "text": "Thaw the label. Do not thaw me."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "case",
+          "name": "Ice case",
+          "kind": "case",
+          "pos": {
+            "x": 12,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "mill",
+            "prepared": "A mill stone you helped seat is under the ice, still in its collar.",
+            "neglected": "A mill stone sits here with no collar. Nothing records your hand.",
+            "opposed": "The stone is stamped with the office mark you sided with.",
+            "unknown": "A mill stone with no history attached."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R05.use-tool.case",
+          "kind": "use-tool",
+          "target": "case",
+          "tool": "office-lamp",
+          "sets": [
+            "dg14.archiveRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R05.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.archiveRead"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R06",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R05",
+        "survivesDeath": [
+          "dg14.archiveRead",
+          "cleared.DG14.R05",
+          "visited.DG14.R05"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R05",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R05"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Thaw the label and read it into the book.",
+            "target": "case",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.archiveRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the archive.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.archiveRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Thaw the label and read it into the book. | action=use-tool | target=case | tool=office-lamp | requires=none | sets=dg14.archiveRead",
+        "2. Leave the archive. | action=traverse | exit=north | tool=none | requires=dg14.archiveRead | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R05. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.archiveRead",
+        "cleared.DG14.R05",
+        "visited.DG14.R05"
+      ]
+    },
+    {
+      "id": "DG14.R06",
+      "dungeon": "DG14",
+      "name": "Doubled Bridge",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Two bridges. The lead at the near post says which shore holds. The chain latches only there.",
+      "layoutNote": "Two bridge decks of ':' tiles, west and east of the aisle. The near post is south of both.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.......#........#",
+          "#...:::.#...:::..#",
+          "#.......#........#",
+          "#.......#........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R05",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R07",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.bridgeLatched"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "bridge-keep",
+          "name": "Bridge keep",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "bridge-keep.line1",
+              "text": "One deck is a reflection. The lead is rude enough to say which."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "near-post",
+          "name": "Near post",
+          "kind": "post",
+          "pos": {
+            "x": 6,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "SOUND. THE HOLDING SHORE IS THE EAST DECK.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "east-deck",
+          "name": "East deck hook",
+          "kind": "hook",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "west-deck",
+          "name": "West deck hook",
+          "kind": "hook",
+          "pos": {
+            "x": 4,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The chain does not latch here."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R06.use-tool.near-post",
+          "kind": "use-tool",
+          "target": "near-post",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.bearingShore"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R06.use-tool.east-deck",
+          "kind": "use-tool",
+          "target": "east-deck",
+          "tool": "field-chain",
+          "sets": [
+            "dg14.bridgeLatched"
+          ],
+          "requires": [
+            "dg14.bearingShore"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R06.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.bridgeLatched"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R07",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R06",
+        "survivesDeath": [
+          "dg14.bearingShore",
+          "dg14.bridgeLatched",
+          "cleared.DG14.R06",
+          "visited.DG14.R06"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R06",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R06"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Sound the post. It names the east deck.",
+            "target": "near-post",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.bearingShore"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Latch the chain to the east hook.",
+            "target": "east-deck",
+            "tool": "field-chain",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.bearingShore"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.bridgeLatched"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Cross the latched deck.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.bridgeLatched"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Sound the post. It names the east deck. | action=use-tool | target=near-post | tool=sounding-lead | requires=none | sets=dg14.bearingShore",
+        "2. Latch the chain to the east hook. | action=use-tool | target=east-deck | tool=field-chain | requires=dg14.bearingShore | sets=dg14.bridgeLatched",
+        "3. Cross the latched deck. | action=traverse | exit=north | tool=none | requires=dg14.bridgeLatched | sets=none",
+        "4. Room clear is recorded as cleared.DG14.R06. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.bearingShore",
+        "dg14.bridgeLatched",
+        "cleared.DG14.R06",
+        "visited.DG14.R06"
+      ]
+    },
+    {
+      "id": "DG14.R07",
+      "dungeon": "DG14",
+      "name": "Farmhouse Under Ice",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "The front door is a reflection. The glass shows the summer-kitchen door. The farm decision furnishes the kitchen.",
+      "layoutNote": "Two door objects. The kitchen door is west. A false front is east. Ice tiles do not block the aisle.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.......#........#",
+          "#.......#........#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R06",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R08",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.kitchenPassed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "house-cold",
+          "name": "Cold in the hall",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "house-cold.line1",
+              "text": "The handsome door is the copy."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "front-door",
+          "name": "Handsome front door",
+          "kind": "decoy",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "FRONT",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "kitchen-door",
+          "name": "Summer kitchen door",
+          "kind": "door",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "farm",
+            "prepared": "The summer kitchen is furnished the way you helped them keep it.",
+            "neglected": "The summer kitchen is bare. The door is still a door.",
+            "opposed": "The kitchen is boarded the way the office boards a disputed acre.",
+            "unknown": "The kitchen has furniture no decision has claimed."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R07.use-tool.kitchen-door",
+          "kind": "use-tool",
+          "target": "kitchen-door",
+          "tool": "transit-glass",
+          "sets": [
+            "dg14.kitchenPassed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R07.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.kitchenPassed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R08",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R07",
+        "survivesDeath": [
+          "dg14.kitchenPassed",
+          "cleared.DG14.R07",
+          "visited.DG14.R07"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R07",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R07"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "The glass omits the kitchen door, so it is the true one.",
+            "target": "kitchen-door",
+            "tool": "transit-glass",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.kitchenPassed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave by the kitchen.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.kitchenPassed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. The glass omits the kitchen door, so it is the true one. | action=use-tool | target=kitchen-door | tool=transit-glass | requires=none | sets=dg14.kitchenPassed",
+        "2. Leave by the kitchen. | action=traverse | exit=north | tool=none | requires=dg14.kitchenPassed | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R07. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.kitchenPassed",
+        "cleared.DG14.R07",
+        "visited.DG14.R07"
+      ]
+    },
+    {
+      "id": "DG14.R08",
+      "dungeon": "DG14",
+      "name": "Window with No County Door",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Critical witness of the Quiet Household. Looking is what thaws the north door. You do not enter the household here.",
+      "layoutNote": "A dark window occupies the west wall as an object. Three bowls are visible in the glass and are not pickups.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R07",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R09",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "disc.quiet.windowUnderIce"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "window-voice",
+          "name": "Someone beyond the glass",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "window-voice.line1",
+              "text": "Three bowls. No door on your side. Do not invent us a fourth."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "quiet-window",
+          "name": "Unmapped window",
+          "kind": "window",
+          "pos": {
+            "x": 4,
+            "y": 5
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "A KITCHEN. THREE BOWLS. NO COUNTY DOOR.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R08.use-tool.quiet-window",
+          "kind": "use-tool",
+          "target": "quiet-window",
+          "tool": "field-book",
+          "sets": [
+            "disc.quiet.windowUnderIce"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R08.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "disc.quiet.windowUnderIce"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R09",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R08",
+        "survivesDeath": [
+          "disc.quiet.windowUnderIce",
+          "cleared.DG14.R08",
+          "visited.DG14.R08"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R08",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R08"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Look, and write what the window already shows. The north ice thaws.",
+            "target": "quiet-window",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "disc.quiet.windowUnderIce"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go north. You still cannot enter that kitchen.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.quiet.windowUnderIce"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Look, and write what the window already shows. The north ice thaws. | action=use-tool | target=quiet-window | tool=field-book | requires=none | sets=disc.quiet.windowUnderIce",
+        "2. Go north. You still cannot enter that kitchen. | action=traverse | exit=north | tool=none | requires=disc.quiet.windowUnderIce | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R08. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "disc.quiet.windowUnderIce",
+        "cleared.DG14.R08",
+        "visited.DG14.R08"
+      ]
+    },
+    {
+      "id": "DG14.R09",
+      "dungeon": "DG14",
+      "name": "Night Shift Barracks",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Critical witness of the erased Otter night shift. The lamp thaws the beam and the names are on the beam.",
+      "layoutNote": "Bunks as low walls west. A frozen beam lies across the north approach but not on the door tile. The beam object is beside it.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R08",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R10",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "disc.erased.otterNightShift"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "bunk",
+          "name": "Empty bunk",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "bunk.line1",
+              "text": "We were a shift, not a story. The beam has the only sentence."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "frozen-beam",
+          "name": "Frozen beam",
+          "kind": "beam",
+          "pos": {
+            "x": 12,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "OTTER NIGHT SHIFT / NO LEDGER LINE",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R09.use-tool.frozen-beam",
+          "kind": "use-tool",
+          "target": "frozen-beam",
+          "tool": "office-lamp",
+          "sets": [
+            "disc.erased.otterNightShift"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R09.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "disc.erased.otterNightShift"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R10",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R09",
+        "survivesDeath": [
+          "disc.erased.otterNightShift",
+          "cleared.DG14.R09",
+          "visited.DG14.R09"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R09",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R09"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Thaw the beam. The shift sentence is copied into the book and the north stair opens.",
+            "target": "frozen-beam",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "disc.erased.otterNightShift"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Climb the stair.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.erased.otterNightShift"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Thaw the beam. The shift sentence is copied into the book and the north stair opens. | action=use-tool | target=frozen-beam | tool=office-lamp | requires=none | sets=disc.erased.otterNightShift",
+        "2. Climb the stair. | action=traverse | exit=north | tool=none | requires=disc.erased.otterNightShift | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R09. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "disc.erased.otterNightShift",
+        "cleared.DG14.R09",
+        "visited.DG14.R09"
+      ]
+    },
+    {
+      "id": "DG14.R10",
+      "dungeon": "DG14",
+      "name": "Three Falls",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Three preserved falls. The plumb finds the vertical one. The others push you back to the south door.",
+      "layoutNote": "Three waterfall marks. A sign states the test. False falls are soft hazards.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#...~..~.....~...#",
+          "#................#",
+          "#................#",
+          "#.......#........#",
+          "#.......#........#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R09",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R11",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.trueFall"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "falls-sign",
+          "name": "Falls sign",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "falls-sign.line1",
+              "text": "Hang the bob. Water that is only a picture will not take a vertical."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "fall-sign",
+          "name": "Posted test",
+          "kind": "sign",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE TRUE FALL TAKES THE BOB. THE OTHERS RETURN YOU HERE.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "fall-a",
+          "name": "West fall",
+          "kind": "fall",
+          "pos": {
+            "x": 4,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "fall-b",
+          "name": "Mid fall",
+          "kind": "fall",
+          "pos": {
+            "x": 7,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "fall-true",
+          "name": "East fall",
+          "kind": "fall",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R10.interact.fall-sign",
+          "kind": "interact",
+          "target": "fall-sign",
+          "tool": null,
+          "sets": [
+            "dg14.fallSign"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R10.use-tool.fall-true",
+          "kind": "use-tool",
+          "target": "fall-true",
+          "tool": "plumb-bob",
+          "sets": [
+            "dg14.trueFall"
+          ],
+          "requires": [
+            "dg14.fallSign"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R10.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.trueFall"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R11",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R10",
+        "survivesDeath": [
+          "dg14.fallSign",
+          "dg14.trueFall",
+          "cleared.DG14.R10",
+          "visited.DG14.R10"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R10",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R10"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the test.",
+            "target": "fall-sign",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.fallSign"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "The bob hangs square on the east fall.",
+            "target": "fall-true",
+            "tool": "plumb-bob",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.fallSign"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.trueFall"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Pass the true fall.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.trueFall"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the test. | action=interact | target=fall-sign | tool=none | requires=none | sets=dg14.fallSign",
+        "2. The bob hangs square on the east fall. | action=use-tool | target=fall-true | tool=plumb-bob | requires=dg14.fallSign | sets=dg14.trueFall",
+        "3. Pass the true fall. | action=traverse | exit=north | tool=none | requires=dg14.trueFall | sets=none",
+        "4. Room clear is recorded as cleared.DG14.R10. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "false-falls",
+            "tiles": [
+              {
+                "x": 4,
+                "y": 4
+              },
+              {
+                "x": 7,
+                "y": 4
+              }
+            ],
+            "tell": "fall-sign",
+            "fatal": false,
+            "effect": "push-to-south"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.fallSign",
+        "dg14.trueFall",
+        "cleared.DG14.R10",
+        "visited.DG14.R10"
+      ]
+    },
+    {
+      "id": "DG14.R11",
+      "dungeon": "DG14",
+      "name": "Void Pilings",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Cross three pilings in the embryonic form. Plant the rod as a mast on the second. The lead has to admit there is no bottom before the first cross.",
+      "layoutNote": "Three piling caps on floor tiles. Void sits between them, off the door column so the north door stays a floor landing.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.......V........#",
+          "#................#",
+          "#.....V...V......#",
+          "#................#",
+          "#.###............#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R10",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R12",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.pilingsCrossed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "piling-mark",
+          "name": "Piling paint",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "piling-mark.line1",
+              "text": "Anchor, sound, mast on the second, then the third."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "piling-sign",
+          "name": "Piling sign",
+          "kind": "sign",
+          "pos": {
+            "x": 12,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "ANCHOR, SOUND, MAST ON THE SECOND, THEN THE THIRD.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "piling-1",
+          "name": "Piling 1",
+          "kind": "piling",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "piling-2",
+          "name": "Piling 2",
+          "kind": "piling",
+          "pos": {
+            "x": 8,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "piling-3",
+          "name": "Piling 3",
+          "kind": "piling",
+          "pos": {
+            "x": 14,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "anchor-peg",
+          "name": "Anchor peg",
+          "kind": "peg",
+          "pos": {
+            "x": 6,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R11.use-tool.anchor-peg",
+          "kind": "use-tool",
+          "target": "anchor-peg",
+          "tool": "borrowed-coat",
+          "sets": [
+            "dg14.pilingAnchor"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.use-tool.piling-1",
+          "kind": "use-tool",
+          "target": "piling-1",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.voidSounded"
+          ],
+          "requires": [
+            "dg14.pilingAnchor"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.use-tool.piling-1",
+          "kind": "use-tool",
+          "target": "piling-1",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.piling1",
+            "meta.embryonic"
+          ],
+          "requires": [
+            "dg14.voidSounded"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.use-tool.piling-2",
+          "kind": "use-tool",
+          "target": "piling-2",
+          "tool": "range-rod",
+          "sets": [
+            "dg14.rodMast"
+          ],
+          "requires": [
+            "dg14.piling1"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.use-tool.piling-2",
+          "kind": "use-tool",
+          "target": "piling-2",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.piling2",
+            "meta.embryonic"
+          ],
+          "requires": [
+            "dg14.rodMast"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.use-tool.piling-3",
+          "kind": "use-tool",
+          "target": "piling-3",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.pilingsCrossed"
+          ],
+          "requires": [
+            "dg14.piling2"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.interact.anchor-peg",
+          "kind": "interact",
+          "target": "anchor-peg",
+          "tool": null,
+          "sets": [
+            "dg14.pilingCoatBack"
+          ],
+          "requires": [
+            "dg14.pilingsCrossed"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R11.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.pilingsCrossed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R12",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R11",
+        "survivesDeath": [
+          "dg14.pilingAnchor",
+          "dg14.voidSounded",
+          "dg14.piling1",
+          "dg14.rodMast",
+          "dg14.piling2",
+          "dg14.pilingsCrossed",
+          "dg14.pilingCoatBack",
+          "cleared.DG14.R11",
+          "visited.DG14.R11"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R11",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R11"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Hang the anchor coat.",
+            "target": "anchor-peg",
+            "tool": "borrowed-coat",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.pilingAnchor"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "The lead reports no bottom.",
+            "target": "piling-1",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.pilingAnchor"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.voidSounded"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Cross to piling 1 in the embryonic form.",
+            "target": "piling-1",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.voidSounded"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.piling1",
+              "meta.embryonic"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Plant the rod as a mast on piling 2. The form can carry the rod only as far as the plant; the mast then stands.",
+            "target": "piling-2",
+            "tool": "range-rod",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.piling1"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.rodMast"
+            ],
+            "clears": [
+              "meta.embryonic"
+            ],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Cross to the mast.",
+            "target": "piling-2",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.rodMast"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.piling2",
+              "meta.embryonic"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Cross to piling 3.",
+            "target": "piling-3",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.piling2"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.pilingsCrossed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Return and take the coat.",
+            "target": "anchor-peg",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.pilingsCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.pilingCoatBack"
+            ],
+            "clears": [
+              "meta.embryonic"
+            ],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the pilings.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.pilingsCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Hang the anchor coat. | action=use-tool | target=anchor-peg | tool=borrowed-coat | requires=none | sets=dg14.pilingAnchor",
+        "2. The lead reports no bottom. | action=use-tool | target=piling-1 | tool=sounding-lead | requires=dg14.pilingAnchor | sets=dg14.voidSounded",
+        "3. Cross to piling 1 in the embryonic form. | action=use-tool | target=piling-1 | tool=marble-needle | requires=dg14.voidSounded | sets=dg14.piling1 & meta.embryonic",
+        "4. Plant the rod as a mast on piling 2. The form can carry the rod only as far as the plant; the mast then stands. | action=use-tool | target=piling-2 | tool=range-rod | requires=dg14.piling1 | sets=dg14.rodMast",
+        "5. Cross to the mast. | action=use-tool | target=piling-2 | tool=marble-needle | requires=dg14.rodMast | sets=dg14.piling2 & meta.embryonic",
+        "6. Cross to piling 3. | action=use-tool | target=piling-3 | tool=marble-needle | requires=dg14.piling2 | sets=dg14.pilingsCrossed",
+        "7. Return and take the coat. | action=interact | target=anchor-peg | tool=none | requires=dg14.pilingsCrossed | sets=dg14.pilingCoatBack",
+        "8. Leave the pilings. | action=traverse | exit=north | tool=none | requires=dg14.pilingsCrossed | sets=none",
+        "9. Room clear is recorded as cleared.DG14.R11. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "piling-void",
+            "tiles": [
+              {
+                "x": 6,
+                "y": 5
+              },
+              {
+                "x": 10,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 3
+              }
+            ],
+            "tell": "piling-sign",
+            "fatal": true,
+            "effect": "void-fall",
+            "unless": "meta.embryonic"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.pilingAnchor",
+        "dg14.voidSounded",
+        "dg14.piling1",
+        "meta.embryonic",
+        "dg14.rodMast",
+        "dg14.piling2",
+        "dg14.pilingsCrossed",
+        "dg14.pilingCoatBack",
+        "cleared.DG14.R11",
+        "visited.DG14.R11"
+      ]
+    },
+    {
+      "id": "DG14.R12",
+      "dungeon": "DG14",
+      "name": "Backwards Clerk",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "A reflected clerk. Reading the backwards board is the main path. If you filed the DG13 copy, the glass opens a shortcut to the antechamber.",
+      "layoutNote": "A cage mirrored from the town office. The shortcut door is east and is not on the main aisle.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#...........#....#",
+          "#...........#....#",
+          "#...........#....#",
+          "#...........#....D",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R11",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R13",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.backwardsRead"
+          ],
+          "kind": "door"
+        },
+        {
+          "id": "east",
+          "facing": "east",
+          "tile": {
+            "x": 17,
+            "y": 5
+          },
+          "landing": {
+            "room": "DG14.R15",
+            "x": 1,
+            "y": 5
+          },
+          "requires": [
+            "dg14.shortcutOpen"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "backwards-clerk",
+          "name": "Backwards clerk",
+          "kind": "npc",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "backwards-clerk.line1",
+              "text": "The board is the sentence. Your copy, if you have it, only argues."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 3
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "backwards-board",
+          "name": "Backwards board",
+          "kind": "board",
+          "pos": {
+            "x": 4,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "STNEMTNIOPPA — the letters face the wrong way, and the act of reading turns them.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "copy-ledge",
+          "name": "Copy ledge",
+          "kind": "ledge",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Compares the filed DG13 copy when it exists."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R12.use-tool.backwards-board",
+          "kind": "use-tool",
+          "target": "backwards-board",
+          "tool": "field-book",
+          "sets": [
+            "dg14.backwardsRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R12.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.backwardsRead"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R13",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R12",
+        "survivesDeath": [
+          "dg14.backwardsRead",
+          "dg14.shortcutOpen",
+          "cleared.DG14.R12",
+          "visited.DG14.R12"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R12",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R12"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Read the board into the book. The north door opens.",
+            "target": "backwards-board",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.backwardsRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Continue to the orchard.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.backwardsRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "shortcut",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Read the board.",
+              "target": "backwards-board",
+              "tool": "field-book",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg14.backwardsRead"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "use-tool",
+              "note": "Compare the filed copy. The east shortcut opens onto the antechamber.",
+              "target": "copy-ledge",
+              "tool": "transit-glass",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg13.copyFiled",
+                "dg14.backwardsRead"
+              ],
+              "requiresAbsent": [],
+              "sets": [
+                "dg14.shortcutOpen"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Take the shortcut.",
+              "target": null,
+              "tool": null,
+              "exit": "east",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg14.shortcutOpen"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Read the board into the book. The north door opens. | action=use-tool | target=backwards-board | tool=field-book | requires=none | sets=dg14.backwardsRead",
+        "2. Continue to the orchard. | action=traverse | exit=north | tool=none | requires=dg14.backwardsRead | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R12. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.backwardsRead",
+        "dg14.shortcutOpen",
+        "cleared.DG14.R12",
+        "visited.DG14.R12"
+      ]
+    },
+    {
+      "id": "DG14.R13",
+      "dungeon": "DG14",
+      "name": "Ice Orchard",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Cross the flooded orchard. The embryonic path always works. A prepared crossing also launches the preserved scow.",
+      "layoutNote": "Trees as posts. Water tiles in a side channel. The scow sits on the east bank if you need it. The main stations are on floor.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#..#.........#...#",
+          "#................#",
+          "#................#",
+          "#.....#.~.~......#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R12",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R14",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.orchardCrossed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "orchard",
+          "name": "Orchard post",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "orchard.line1",
+              "text": "Launch the scow only if it was kept. Otherwise cross unfinished."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "orchard-sign",
+          "name": "Orchard sign",
+          "kind": "sign",
+          "pos": {
+            "x": 6,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "UNFINISHED CROSS, OR THE SCOW IF IT WAS KEPT.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "orchard-peg",
+          "name": "Orchard peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "far-orchard",
+          "name": "Far tree",
+          "kind": "station",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "scow",
+          "name": "Preserved scow",
+          "kind": "boat",
+          "pos": {
+            "x": 13,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "crossing",
+            "prepared": "The scow you helped keep is frozen upright and can be launched.",
+            "neglected": "The scow is a ribcage of ice. It will not launch.",
+            "opposed": "The scow was hauled for the office and is chained to a post.",
+            "unknown": "A scow-shaped absence. The embryonic path is still marked."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R13.use-tool.orchard-peg",
+          "kind": "use-tool",
+          "target": "orchard-peg",
+          "tool": "borrowed-coat",
+          "sets": [
+            "dg14.orchardAnchor"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R13.use-tool.far-orchard",
+          "kind": "use-tool",
+          "target": "far-orchard",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.orchardNeedle",
+            "meta.embryonic"
+          ],
+          "requires": [
+            "dg14.orchardAnchor"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R13.use-tool.far-orchard",
+          "kind": "use-tool",
+          "target": "far-orchard",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg14.orchardCrossed"
+          ],
+          "requires": [
+            "dg14.orchardNeedle"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R13.interact.orchard-peg",
+          "kind": "interact",
+          "target": "orchard-peg",
+          "tool": null,
+          "sets": [
+            "dg14.orchardCoatBack"
+          ],
+          "requires": [
+            "dg14.orchardCrossed"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R13.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.orchardCrossed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R14",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R13",
+        "survivesDeath": [
+          "dg14.orchardAnchor",
+          "dg14.orchardNeedle",
+          "dg14.orchardCrossed",
+          "dg14.orchardCoatBack",
+          "dg14.usedPreparedCrossing",
+          "cleared.DG14.R13",
+          "visited.DG14.R13"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R13",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R13"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Anchor the coat.",
+            "target": "orchard-peg",
+            "tool": "borrowed-coat",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.orchardAnchor"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Start the embryonic cross.",
+            "target": "far-orchard",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.orchardAnchor"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.orchardNeedle",
+              "meta.embryonic"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound the far tree and finish.",
+            "target": "far-orchard",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.orchardNeedle"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.orchardCrossed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Take the coat back.",
+            "target": "orchard-peg",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.orchardCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.orchardCoatBack"
+            ],
+            "clears": [
+              "meta.embryonic"
+            ],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the orchard.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.orchardCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "launch-scow",
+          "when": {
+            "op": "decision",
+            "decision": "crossing",
+            "in": [
+              "prepared"
+            ]
+          },
+          "steps": [
+            {
+              "action": "interact",
+              "note": "Launch the scow you helped keep. It crosses without the form.",
+              "target": "scow",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg14.orchardCrossed",
+                "dg14.usedPreparedCrossing"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Ride to the next bank.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg14.orchardCrossed"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Anchor the coat. | action=use-tool | target=orchard-peg | tool=borrowed-coat | requires=none | sets=dg14.orchardAnchor",
+        "2. Start the embryonic cross. | action=use-tool | target=far-orchard | tool=marble-needle | requires=dg14.orchardAnchor | sets=dg14.orchardNeedle & meta.embryonic",
+        "3. Sound the far tree and finish. | action=use-tool | target=far-orchard | tool=sounding-lead | requires=dg14.orchardNeedle | sets=dg14.orchardCrossed",
+        "4. Take the coat back. | action=interact | target=orchard-peg | tool=none | requires=dg14.orchardCrossed | sets=dg14.orchardCoatBack",
+        "5. Leave the orchard. | action=traverse | exit=north | tool=none | requires=dg14.orchardCrossed | sets=none",
+        "6. Room clear is recorded as cleared.DG14.R13. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "orchard-flood",
+            "tiles": [
+              {
+                "x": 8,
+                "y": 6
+              },
+              {
+                "x": 10,
+                "y": 6
+              }
+            ],
+            "tell": "orchard-sign",
+            "fatal": true,
+            "unless": "meta.embryonic",
+            "effect": "drown"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.orchardAnchor",
+        "dg14.orchardNeedle",
+        "meta.embryonic",
+        "dg14.orchardCrossed",
+        "dg14.orchardCoatBack",
+        "dg14.usedPreparedCrossing",
+        "cleared.DG14.R13",
+        "visited.DG14.R13"
+      ]
+    },
+    {
+      "id": "DG14.R14",
+      "dungeon": "DG14",
+      "name": "Table Under Snow",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "The family decision sets the table. You only have to witness it. Hanging a coat is optional and is not a gate.",
+      "layoutNote": "A table west. Chairs as small walls. The aisle remains.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..###...........#",
+          "#................#",
+          "#..###...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R13",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R15",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.tableWitnessed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "table-quiet",
+          "name": "No one sitting",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "table-quiet.line1",
+              "text": "Do not appoint us. Look, then go."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "snow-table",
+          "name": "Table under snow",
+          "kind": "table",
+          "pos": {
+            "x": 4,
+            "y": 5
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "family",
+            "reunited": "Places are set for the household you helped bring back to one table.",
+            "scattered": "One place is set. The other bowls are stacked in a corner.",
+            "estranged": "The chairs are turned to the walls.",
+            "unknown": "The table is dusty and unassigned."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R14.use-tool.snow-table",
+          "kind": "use-tool",
+          "target": "snow-table",
+          "tool": "field-book",
+          "sets": [
+            "dg14.tableWitnessed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R14.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.tableWitnessed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R15",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R14",
+        "survivesDeath": [
+          "dg14.tableWitnessed",
+          "dg14.familyChairMarked",
+          "cleared.DG14.R14",
+          "visited.DG14.R14"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R14",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R14"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Record the table as it is.",
+            "target": "snow-table",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.tableWitnessed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go to the antechamber.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.tableWitnessed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "mark-chair",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Leave the coat on a chair, then take it back. The table remembers the gesture.",
+              "target": "snow-table",
+              "tool": "borrowed-coat",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg14.familyChairMarked"
+              ],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Record the table as it is. | action=use-tool | target=snow-table | tool=field-book | requires=none | sets=dg14.tableWitnessed",
+        "2. Go to the antechamber. | action=traverse | exit=north | tool=none | requires=dg14.tableWitnessed | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R14. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.tableWitnessed",
+        "dg14.familyChairMarked",
+        "cleared.DG14.R14",
+        "visited.DG14.R14"
+      ]
+    },
+    {
+      "id": "DG14.R15",
+      "dungeon": "DG14",
+      "name": "Antechamber of Shores",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": true,
+      "purpose": "The ice lists the three things the boss door still needs if you somehow skipped them. On the main path they are already done.",
+      "layoutNote": "A wide ice wall with one line of text as an object. Both shores are painted on the floor as snow, not as a second exit.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#...,........,...#",
+          "#................#",
+          "#..#####.........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R14",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R16",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.antechamberReady"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "ice-text",
+          "name": "Ice text",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "ice-text.line1",
+              "text": "The door says what it is missing. It does not mark a map."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "ice-door",
+          "name": "Ice door text",
+          "kind": "inscription",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "NEEDS: THE WINDOW LOOKED AT, THE NIGHT SHIFT READ, THE PILINGS CROSSED.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R15.interact.ice-door",
+          "kind": "interact",
+          "target": "ice-door",
+          "tool": null,
+          "sets": [
+            "dg14.antechamberReady"
+          ],
+          "requires": [
+            "disc.quiet.windowUnderIce",
+            "disc.erased.otterNightShift",
+            "dg14.pilingsCrossed"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R15.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.antechamberReady"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R16",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R15",
+        "survivesDeath": [
+          "dg14.antechamberReady",
+          "cleared.DG14.R15",
+          "visited.DG14.R15"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R15",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R15"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the ice. It confirms the three acts and unlatches.",
+            "target": "ice-door",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.quiet.windowUnderIce",
+              "disc.erased.otterNightShift",
+              "dg14.pilingsCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.antechamberReady"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the arena.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.antechamberReady"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the ice. It confirms the three acts and unlatches. | action=interact | target=ice-door | tool=none | requires=disc.quiet.windowUnderIce & disc.erased.otterNightShift & dg14.pilingsCrossed | sets=dg14.antechamberReady",
+        "2. Enter the arena. | action=traverse | exit=north | tool=none | requires=dg14.antechamberReady | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R15. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.antechamberReady",
+        "cleared.DG14.R15",
+        "visited.DG14.R15"
+      ]
+    },
+    {
+      "id": "DG14.R16",
+      "dungeon": "DG14",
+      "name": "Arena of the Other Shore",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Boss. Name the far shore as other so it cannot be the original.",
+      "layoutNote": "West bank and east bank with void between, off the north-south landing column. Peg, bell, and book are on the banks.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#......,....,....#",
+          "#.......V.V......#",
+          "#................#",
+          "#...###..........#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R15",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R17",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.otherShoreNamed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "other-shore",
+          "name": "The Lake's Other Shore",
+          "kind": "boss",
+          "pos": {
+            "x": 13,
+            "y": 6
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "other-shore.line1",
+              "text": "I am the landing you walked in on."
+            },
+            {
+              "id": "other-shore.line2",
+              "text": "Stop drawing a difference."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 13,
+            "y": 6
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "true-peg",
+          "name": "True-shore peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "bell-post",
+          "name": "Bell post",
+          "kind": "post",
+          "pos": {
+            "x": 5,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "center-void",
+          "name": "Center mark",
+          "kind": "mark",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Where the lead is sounded during the void phase."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R16.boss.other-shore",
+          "kind": "boss",
+          "target": "other-shore",
+          "tool": null,
+          "sets": [
+            "dg14.otherShoreNamed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R16.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.otherShoreNamed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R17",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R16",
+        "survivesDeath": [
+          "dg14.otherShoreNamed",
+          "cleared.DG14.R16",
+          "visited.DG14.R16"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R16",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R16"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "boss",
+            "note": "Name the other shore.",
+            "target": "other-shore",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": [
+              {
+                "event": "raise-glass",
+                "tool": "transit-glass",
+                "note": "Raise the glass. The true shore is the one the glass stops drawing."
+              },
+              {
+                "event": "step-true-shore",
+                "note": "Step onto that shore."
+              },
+              {
+                "event": "use-lamp",
+                "tool": "office-lamp",
+                "note": "Thaw the snow packed in the bell."
+              },
+              {
+                "event": "ring-bell",
+                "tool": "county-bell",
+                "note": "Ring. The near shore answers and the reflection stops walking."
+              },
+              {
+                "event": "anchor-coat",
+                "tool": "borrowed-coat",
+                "note": "Hang the coat on the true-shore peg."
+              },
+              {
+                "event": "enter-embryonic",
+                "note": "Cross as an unfinished life. Needle and lead are both required by the machine."
+              },
+              {
+                "event": "sound-lead",
+                "tool": "sounding-lead",
+                "note": "Sound the center. It says this is the other shore."
+              },
+              {
+                "event": "write-other",
+                "tool": "field-book",
+                "note": "Write the word already spoken by the lead: other."
+              }
+            ],
+            "machine": "boss.other-shore",
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.otherShoreNamed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Take the thaw stair.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otherShoreNamed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Name the other shore. | action=boss | target=other-shore | tool=none | requires=none | sets=dg14.otherShoreNamed",
+        "  1.raise-glass: Raise the glass. The true shore is the one the glass stops drawing. tool=transit-glass",
+        "  1.step-true-shore: Step onto that shore. tool=none",
+        "  1.use-lamp: Thaw the snow packed in the bell. tool=office-lamp",
+        "  1.ring-bell: Ring. The near shore answers and the reflection stops walking. tool=county-bell",
+        "  1.anchor-coat: Hang the coat on the true-shore peg. tool=borrowed-coat",
+        "  1.enter-embryonic: Cross as an unfinished life. Needle and lead are both required by the machine. tool=none",
+        "  1.sound-lead: Sound the center. It says this is the other shore. tool=sounding-lead",
+        "  1.write-other: Write the word already spoken by the lead: other. tool=field-book",
+        "2. Take the thaw stair. | action=traverse | exit=north | tool=none | requires=dg14.otherShoreNamed | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R16. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.otherShoreNamed",
+        "cleared.DG14.R16",
+        "visited.DG14.R16"
+      ]
+    },
+    {
+      "id": "DG14.R17",
+      "dungeon": "DG14",
+      "name": "Thaw Stair",
+      "environment": null,
+      "region": "dg14.lake",
+      "checkpoint": false,
+      "purpose": "Leave the lake. The needle points at a chimney that was surveyed and never chartered.",
+      "layoutNote": "A stair of floor with snow in the corners. The north door is open air toward the foundry.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#.##..........##.#",
+          "#.##..........##.#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..,..........,..#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R16",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R01",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg14.otherShoreNamed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "thaw",
+          "name": "Thaw",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "thaw.line1",
+              "text": "The chimney ahead has no charter. You can see it from here."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "chimney-sight",
+          "name": "Chimney sight",
+          "kind": "sight",
+          "pos": {
+            "x": 13,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "UNCHARTERED STACK, COUNTY SIDE.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG14.R17.use-tool.chimney-sight",
+          "kind": "use-tool",
+          "target": "chimney-sight",
+          "tool": "marble-needle",
+          "sets": [
+            "dg14.needleToStack"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG14.R17.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg14.otherShoreNamed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R01",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG14.R17",
+        "survivesDeath": [
+          "dg14.needleToStack",
+          "cleared.DG14.R17",
+          "visited.DG14.R17"
+        ],
+        "resetsOnDeath": [
+          "strike.dg14.lake",
+          "hazard.DG14.R17",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg14.lake",
+        "onLeave": [
+          "visited.DG14.R17"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "The needle confirms the stack.",
+            "target": "chimney-sight",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg14.needleToStack"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Approach the foundry.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg14.otherShoreNamed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. The needle confirms the stack. | action=use-tool | target=chimney-sight | tool=marble-needle | requires=none | sets=dg14.needleToStack",
+        "2. Approach the foundry. | action=traverse | exit=north | tool=none | requires=dg14.otherShoreNamed | sets=none",
+        "3. Room clear is recorded as cleared.DG14.R17. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg14.needleToStack",
+        "cleared.DG14.R17",
+        "visited.DG14.R17"
+      ]
+    }
+  ]
+}

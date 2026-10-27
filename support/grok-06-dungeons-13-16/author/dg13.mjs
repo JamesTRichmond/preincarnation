@@ -1,0 +1,680 @@
+import { actor, N, obj, room, S, step } from "./lib.mjs";
+
+const knife = [
+  { flag: "dg13.constableOpen", value: true },
+  { flag: "dg13.constableMethod", value: "knife" },
+];
+const seal = [
+  { flag: "dg13.constableOpen", value: true },
+  { flag: "dg13.constableMethod", value: "seal" },
+];
+
+const mayorScript = [
+  { event: "sit", note: "Sit in the empty chair. A ribbon pins the current body." },
+  { event: "cut-ribbon", tool: "field-knife", note: "Cut the appointment ribbon." },
+  { event: "leave-dais", note: "Step off the dais without a name in the chair." },
+  { event: "ring", door: 1, tool: "county-bell", note: "Ring the first door on the roll board." },
+  { event: "ring", door: 2, tool: "county-bell", note: "Ring the second door." },
+  { event: "ring", door: 3, tool: "county-bell", note: "Ring the third door. The roll closes." },
+  { event: "write-vacant", tool: "field-book", note: "Write the ordinance line already printed: vacant." },
+];
+
+export const dg13 = [
+  room({
+    id: "DG13.R01",
+    dungeon: "DG13",
+    name: "Road of Appointments",
+    region: "dg13.house",
+    checkpoint: true,
+    purpose: "The house ahead is built of civic roles. Read the three plates that are physically here. Nothing outside this road is required.",
+    layoutNote: "A straight approach. Four fence posts split the verges. Three plates stand in the south half. The north door is the house.",
+    tileset: "civic-gravel",
+    walls: [
+      { x: 3, y: 4, w: 1, h: 1 },
+      { x: 6, y: 4, w: 1, h: 1 },
+      { x: 12, y: 4, w: 1, h: 1 },
+      { x: 15, y: 4, w: 1, h: 1 },
+    ],
+    exits: [N("DG13.R02", ["dg13.platesRead"])],
+    actors: [actor("road-clerk", "A plate-painter", 14, 8, "npc", ["The doors inside are offices. If a role has no plate, it has no floor."])],
+    objects: [
+      obj("plate-clerk", "Clerk plate", 3, 7, "nameplate", { inscription: "CLERK" }),
+      obj("plate-lister", "Lister plate", 6, 7, "nameplate", { inscription: "LISTER" }),
+      obj("plate-fence", "Fence-viewer plate", 13, 7, "nameplate", { inscription: "FENCE VIEWER" }),
+      obj("milestone", "House milestone", 12, 2, "marker", { inscription: "THE HOUSE ADMITS WHO HAS READ THE THREE PLATES." }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "plate-clerk", note: "Read the clerk plate on the west verge.", sets: ["dg13.plate.clerk"] }),
+        step({ action: "interact", target: "plate-lister", note: "Read the lister plate.", sets: ["dg13.plate.lister"] }),
+        step({ action: "interact", target: "plate-fence", note: "Read the fence-viewer plate.", sets: ["dg13.plate.fence"] }),
+        step({
+          action: "interact",
+          target: "milestone",
+          note: "Touch the milestone once all three plates are read. The north door unlatches.",
+          requires: ["dg13.plate.clerk", "dg13.plate.lister", "dg13.plate.fence"],
+          sets: ["dg13.platesRead"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Enter the house.", requires: ["dg13.platesRead"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R02",
+    dungeon: "DG13",
+    name: "Vestibule of Offices",
+    region: "dg13.house",
+    purpose: "Only the clerk's door is an office yet. The other labels are painted on plaster and do not open.",
+    layoutNote: "A counter broken at the center aisle. The clerk plate is east of the aisle. North is the cage. South returns to the road.",
+    walls: [
+      { x: 2, y: 4, w: 5, h: 1 },
+      { x: 11, y: 4, w: 5, h: 1 },
+    ],
+    exits: [S("DG13.R01"), N("DG13.R03", ["dg13.clerkPlate"])],
+    actors: [actor("vestibule-voice", "Speaking tube", 14, 8, "fixture", ["State the office you are entering. The tube only answers to the plate."], { solid: false })],
+    objects: [obj("clerk-plate", "Vestibule clerk plate", 12, 6, "nameplate", { inscription: "CLERK — CAGE NORTH" })],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "clerk-plate", note: "Read the vestibule plate. The north door opens.", sets: ["dg13.clerkPlate"] }),
+        step({ action: "traverse", exit: "north", note: "Go to the clerk's cage.", requires: ["dg13.clerkPlate"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R03",
+    dungeon: "DG13",
+    name: "Clerk's Cage",
+    region: "dg13.house",
+    purpose: "Copy the day's appointments into the field book. The book, not memory, is what later rooms check.",
+    layoutNote: "A cage of bars occupies the east. The book-ledge is west of the bars. The appointment board is fixed to the south of the cage.",
+    walls: [
+      { x: 12, y: 2, w: 1, h: 6 },
+      { x: 13, y: 2, w: 3, h: 1 },
+    ],
+    exits: [S("DG13.R02"), N("DG13.R04", ["dg13.appointmentsCopied"])],
+    actors: [actor("clerk", "The Clerk", 14, 3, "npc", ["Copy the board. I do not repeat names that are not on it."])],
+    objects: [
+      obj("appointment-board", "Appointment board", 4, 3, "board", {
+        inscription: "TODAY: CLERK, LISTER, FENCE VIEWER, CONSTABLE, SELECTBOARD, ROAD COMMISSIONER, OVERSEER, TRUSTEE, MILL AGENT, FERRY TENDER.",
+      }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "appointment-board",
+          tool: "field-book",
+          note: "Copy the board into the field book. The action copies the inscription; it does not ask you to retype it.",
+          sets: ["dg13.appointmentsCopied"],
+        }),
+        step({ action: "traverse", exit: "north", note: "The cage gate opens onto the listers.", requires: ["dg13.appointmentsCopied"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R04",
+    dungeon: "DG13",
+    name: "Listers' Gallery",
+    region: "dg13.house",
+    purpose: "A disputed lot line is drawn on the floor. Measure it with the chain. The length is painted on the wall of this room.",
+    layoutNote: "A long gallery. A false wall stands west of the aisle. The painted length is on the east plaster. The lot line runs along y=6 from x=3 to x=7.",
+    walls: [{ x: 3, y: 3, w: 4, h: 1 }],
+    tiles: [
+      { x: 3, y: 6, tile: "+" },
+      { x: 4, y: 6, tile: "+" },
+      { x: 5, y: 6, tile: "+" },
+      { x: 6, y: 6, tile: "+" },
+      { x: 7, y: 6, tile: "+" },
+    ],
+    exits: [S("DG13.R03"), N("DG13.R05", ["dg13.lotMeasured"])],
+    actors: [actor("lister", "A Lister", 14, 8, "npc", ["The paint says four rods. Your chain agrees or the false wall stays."])],
+    objects: [
+      obj("length-paint", "Painted length", 13, 3, "inscription", { inscription: "DISPUTED LINE: 4 RODS" }),
+      obj("lot-line", "Disputed lot line", 5, 6, "measure-target", { note: "The chain latches only at the painted length of 4." }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "length-paint", note: "Read the painted length. It says 4 rods.", sets: ["dg13.lengthRead"] }),
+        step({
+          action: "use-tool",
+          target: "lot-line",
+          tool: "field-chain",
+          note: "Stretch the chain along the marked line to the painted length. The false wall drops.",
+          requires: ["dg13.lengthRead"],
+          sets: ["dg13.lotMeasured"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Pass the dropped wall.", requires: ["dg13.lotMeasured"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R05",
+    dungeon: "DG13",
+    name: "Fence Viewers' Walk",
+    region: "dg13.house",
+    purpose: "The legal width of the walk is one coat less than a body. Hang the coat, then hold the gate with the rod.",
+    layoutNote: "A narrow stile. The west wall thickens into a passage one tile wide at x=7,y=5..7, leaving x=8 open beside the center aisle's neighbor. Peg and gate are south of the stile.",
+    walls: [
+      { x: 2, y: 5, w: 5, h: 3 },
+      { x: 11, y: 5, w: 5, h: 1 },
+    ],
+    exits: [S("DG13.R04"), N("DG13.R06", ["dg13.fenceHeld"])],
+    actors: [actor("viewer", "Fence Viewer", 14, 2, "npc", ["A body with its coat on does not fit the viewer's width."])],
+    objects: [
+      obj("stile-peg", "Stile peg", 4, 3, "peg", { note: "Holds the current coat." }),
+      obj("viewer-gate", "Viewer gate", 13, 7, "gate", { note: "Falls shut unless a range rod is planted in the socket." }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "use-tool", target: "stile-peg", tool: "borrowed-coat", note: "Hang the coat. The stile admits you.", sets: ["dg13.fence.slim"] }),
+        step({
+          action: "use-tool",
+          target: "viewer-gate",
+          tool: "range-rod",
+          note: "Plant the rod so the gate stays open.",
+          requires: ["dg13.fence.slim"],
+          sets: ["dg13.fenceHeld"],
+        }),
+        step({
+          action: "interact",
+          target: "stile-peg",
+          note: "Take the coat back. The gate remains held.",
+          requires: ["dg13.fenceHeld"],
+          sets: ["dg13.fence.coatBack"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Leave through the held gate.", requires: ["dg13.fenceHeld"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R06",
+    dungeon: "DG13",
+    name: "Constable's Lock",
+    region: "dg13.house",
+    purpose: "A filled warrant is tied to the lock with red tape. Cut the tape or stamp the warrant. Either opens the lock. The method is remembered and does not gate the house.",
+    layoutNote: "A lockup bench against the west wall. The warrant hangs east. The aisle stays open.",
+    walls: [{ x: 2, y: 3, w: 4, h: 2 }],
+    exits: [S("DG13.R05"), N("DG13.R07", ["dg13.constableOpen"])],
+    actors: [actor("constable", "The Constable", 14, 8, "npc", ["The tape is the lock. The seal is also the lock. I accept either."])],
+    objects: [obj("warrant", "Filled warrant", 13, 4, "document", { inscription: "WARRANT ALREADY NAMED. TAPE IS RED. SEAL BOX IS OPEN." })],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "warrant",
+          tool: "field-knife",
+          note: "Cut the red tape. The lock opens.",
+          sets: knife,
+        }),
+        step({ action: "traverse", exit: "north", note: "Leave the lockup.", requires: ["dg13.constableOpen"] }),
+      ],
+    },
+    alternates: [
+      {
+        id: "seal-warrant",
+        when: { op: "always" },
+        steps: [
+          step({
+            action: "use-tool",
+            target: "warrant",
+            tool: "office-seal",
+            note: "Stamp the warrant instead of cutting it.",
+            sets: seal,
+          }),
+          step({ action: "traverse", exit: "north", note: "Leave the lockup.", requires: ["dg13.constableOpen"] }),
+        ],
+      },
+    ],
+  }),
+  room({
+    id: "DG13.R07",
+    dungeon: "DG13",
+    name: "Selectboard Horseshoe",
+    region: "dg13.house",
+    purpose: "Three chairs. The roll board lists the ring order. Ring each marked spot once, in that order. A repeat before the next name stands the member back up.",
+    layoutNote: "Horseshoe of benches leaving the center aisle. Three bell spots sit on the inner curve. The board is north of them.",
+    walls: [
+      { x: 3, y: 6, w: 3, h: 1 },
+      { x: 12, y: 6, w: 3, h: 1 },
+    ],
+    exits: [S("DG13.R06"), N("DG13.R08", ["dg13.boardSeated"])],
+    actors: [actor("chair-voice", "Empty chairs", 4, 8, "fixture", ["We sit when the bell hits the right spot in the right order."], { solid: false })],
+    objects: [
+      obj("roll-board", "Roll board", 13, 3, "board", { inscription: "ORDER: SPOT A, SPOT B, SPOT C." }),
+      obj("spot-a", "Bell spot A", 4, 4, "bell-spot"),
+      obj("spot-b", "Bell spot B", 7, 4, "bell-spot"),
+      obj("spot-c", "Bell spot C", 13, 5, "bell-spot"),
+    ],
+    orderPuzzle: {
+      id: "selectboard",
+      sequence: ["spot-a", "spot-b", "spot-c"],
+      completeFlag: "dg13.boardSeated",
+      resetOnMismatch: true,
+      deathAt: 3,
+    },
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "roll-board", note: "Read the order: A, then B, then C.", sets: ["dg13.rollRead"] }),
+        step({
+          action: "use-tool",
+          target: "spot-a",
+          tool: "county-bell",
+          note: "Ring spot A.",
+          requires: ["dg13.rollRead"],
+          sets: ["dg13.sel.1"],
+        }),
+        step({
+          action: "use-tool",
+          target: "spot-b",
+          tool: "county-bell",
+          note: "Ring spot B.",
+          requires: ["dg13.sel.1"],
+          sets: ["dg13.sel.2"],
+        }),
+        step({
+          action: "use-tool",
+          target: "spot-c",
+          tool: "county-bell",
+          note: "Ring spot C. The board votes the road door open.",
+          requires: ["dg13.sel.2"],
+          sets: ["dg13.boardSeated"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Take the road commissioner's door.", requires: ["dg13.boardSeated"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R08",
+    dungeon: "DG13",
+    name: "Commissioner's Cut",
+    region: "dg13.house",
+    purpose: "The floor road is broken by a gap of the length painted beside it. The chain bridges that posted length and no other.",
+    layoutNote: "Center aisle interrupted by void at (9,5). Side floors let you stand at the near post (9 is void, so the post is at x=7,y=5 and the far hook at x=11,y=5).",
+    walls: [
+      { x: 4, y: 3, w: 2, h: 1 },
+      { x: 12, y: 7, w: 3, h: 1 },
+    ],
+    tiles: [{ x: 9, y: 5, tile: "V" }],
+    exits: [S("DG13.R07"), N("DG13.R09", ["dg13.gapBridged"])],
+    actors: [actor("commissioner", "Road Commissioner", 14, 8, "npc", ["The paint says the gap is one chain-length, marked 4. I will not tell you a second number."])],
+    objects: [
+      obj("gap-paint", "Gap paint", 4, 2, "inscription", { inscription: "GAP: 4 LINKS" }),
+      obj("near-post", "Near post", 7, 5, "post"),
+    ],
+    death: {
+      hazards: [
+        {
+          id: "commissioner-gap",
+          tiles: [{ x: 9, y: 5 }],
+          tell: "gap-paint",
+          fatal: true,
+          effect: "fall",
+          note: "Walking the void tile without the bridge is a fall.",
+        },
+      ],
+    },
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "gap-paint", note: "Read the gap length.", sets: ["dg13.gapRead"] }),
+        step({
+          action: "use-tool",
+          target: "near-post",
+          tool: "field-chain",
+          note: "Latch the chain from the near post across the painted gap.",
+          requires: ["dg13.gapRead"],
+          sets: ["dg13.gapBridged"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Cross and leave north.", requires: ["dg13.gapBridged"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R09",
+    dungeon: "DG13",
+    name: "Overseer's Bench",
+    region: "dg13.house",
+    purpose: "Critical witness. The bench looks blank until the lamp shows gouged names. Reading them is the same act as opening the north door.",
+    layoutNote: "A waiting room. The bench fills the west. The north door is dark until the scratches are lit.",
+    walls: [{ x: 2, y: 6, w: 6, h: 1 }],
+    exits: [S("DG13.R08"), N("DG13.R10", ["disc.erased.overseerBench"])],
+    actors: [actor("overseer", "Overseer of the Poor", 14, 8, "npc", ["If the bench is blank, you have not lit it. I do not keep a second list."])],
+    objects: [
+      obj("waiting-bench", "Gouged bench", 4, 7, "bench", {
+        inscription: "UNDER THE LAMP: OTTER CREW, NIGHT, NO LINE ON THE LIST.",
+        note: "The inscription is not visible until the lamp is used. The use writes it into the field book.",
+      }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "waiting-bench",
+          tool: "office-lamp",
+          note: "Lamp the bench. The scratches become readable and are copied into the field book.",
+          sets: ["disc.erased.overseerBench"],
+        }),
+        step({ action: "traverse", exit: "north", note: "The north door opens because the names were seen.", requires: ["disc.erased.overseerBench"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R10",
+    dungeon: "DG13",
+    name: "Trustee's Landings",
+    region: "dg13.house",
+    purpose: "Three landings pretend to be the stair. The plumb shows the vertical one. The other two return you to the bottom without a death.",
+    layoutNote: "Three pads at y=4. Only the center-east pad is true. A sign at the bottom states that the bob, not the banister, is the stair.",
+    walls: [
+      { x: 3, y: 6, w: 2, h: 2 },
+      { x: 13, y: 6, w: 2, h: 2 },
+    ],
+    tiles: [
+      { x: 4, y: 4, tile: "+" },
+      { x: 7, y: 4, tile: "+" },
+      { x: 13, y: 4, tile: "+" },
+    ],
+    exits: [S("DG13.R09"), N("DG13.R11", ["dg13.landingTrue"])],
+    actors: [actor("trustee", "School Trustee", 14, 8, "npc", ["Children are not in this stair. Grades are landings. Only one is vertical."])],
+    objects: [
+      obj("sign-landings", "Landing sign", 4, 8, "sign", { inscription: "THE BOB NAMES THE TRUE LANDING. FALSE LANDINGS PUT YOU BACK AT THIS SIGN." }),
+      obj("landing-west", "West landing", 4, 4, "landing", { note: "False. Returns you to the sign." }),
+      obj("landing-mid", "Mid landing", 7, 4, "landing", { note: "False. Returns you to the sign." }),
+      obj("landing-true", "True landing", 13, 4, "landing", { note: "The plumb hangs square only here." }),
+    ],
+    death: {
+      hazards: [
+        {
+          id: "false-landings",
+          tiles: [
+            { x: 4, y: 4 },
+            { x: 7, y: 4 },
+          ],
+          tell: "sign-landings",
+          fatal: false,
+          effect: "return-to-bottom",
+        },
+      ],
+    },
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "sign-landings", note: "Read the sign.", sets: ["dg13.landingSign"] }),
+        step({
+          action: "use-tool",
+          target: "landing-true",
+          tool: "plumb-bob",
+          note: "Hang the plumb over the true landing. It squares. The north stair opens.",
+          requires: ["dg13.landingSign"],
+          sets: ["dg13.landingTrue"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Climb the true landing.", requires: ["dg13.landingTrue"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R11",
+    dungeon: "DG13",
+    name: "Mill Agent's Desk",
+    region: "dg13.house",
+    purpose: "Align the glass on the two posts whose numbers match. The mill decision changes the desk's papers and never the door.",
+    layoutNote: "A desk west. Two numbered posts stand east of the aisle, off the landing column.",
+    walls: [{ x: 2, y: 3, w: 4, h: 2 }],
+    exits: [S("DG13.R10"), N("DG13.R12", ["dg13.millAligned"])],
+    actors: [actor("agent", "Mill Agent", 4, 6, "npc", ["I file whatever the mill became. The posts are the door, not my papers."])],
+    objects: [
+      obj("post-4", "Post marked 4", 12, 3, "post", { inscription: "4" }),
+      obj("post-9", "Post marked 9", 14, 3, "post", { inscription: "9" }),
+      obj("desk-mill", "Agent desk", 3, 6, "desk", {
+        textByDecision: {
+          domain: "mill",
+          prepared: "The settlement you helped the mill keep is copied here, unsigned by the office.",
+          neglected: "The desk's mill page is blank. No one wrote that you helped.",
+          opposed: "The page records you with the office against the mill's unlisted race.",
+          unknown: "The mill page has no record yet. The posts still work.",
+        },
+      }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({ action: "interact", target: "post-4", note: "Read post 4.", sets: ["dg13.post4"] }),
+        step({ action: "interact", target: "post-9", note: "Read post 9. The glass wants the pair.", sets: ["dg13.post9"] }),
+        step({
+          action: "use-tool",
+          target: "post-4",
+          tool: "transit-glass",
+          note: "Sight from post 4 to post 9. The line is the door.",
+          requires: ["dg13.post4", "dg13.post9"],
+          sets: ["dg13.millAligned"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Take the aligned door.", requires: ["dg13.millAligned"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R12",
+    dungeon: "DG13",
+    name: "Ferry Tender's Window",
+    region: "dg13.house",
+    purpose: "A window onto water that is not there. The lead reports snow waiting. That report opens the archive.",
+    layoutNote: "The north wall is mostly window. A dry sill projects at x=12,y=3. No water tiles yet.",
+    walls: [{ x: 3, y: 6, w: 4, h: 1 }],
+    exits: [S("DG13.R11"), N("DG13.R13", ["dg13.noWaterYet"])],
+    actors: [actor("tender", "Ferry Tender", 14, 8, "npc", ["Don't step through. Sound it. I already know it is not water."])],
+    objects: [obj("dry-sill", "Dry sill", 12, 3, "window", { inscription: "SOUND BEFORE YOU TRUST A WINDOW." })],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "dry-sill",
+          tool: "sounding-lead",
+          note: "Drop the lead through the window. It reports: no water, snow waiting.",
+          sets: ["dg13.noWaterYet"],
+        }),
+        step({ action: "traverse", exit: "north", note: "The archive door opens on the report.", requires: ["dg13.noWaterYet"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R13",
+    dungeon: "DG13",
+    name: "Archive of Appointments",
+    region: "dg13.house",
+    purpose: "File the copy you made in the clerk's cage. The archive does not accept a retelling.",
+    layoutNote: "Shelves west and east leave the aisle. The filing slot is on the east shelf.",
+    walls: [
+      { x: 2, y: 3, w: 3, h: 4 },
+      { x: 13, y: 3, w: 3, h: 2 },
+    ],
+    exits: [S("DG13.R12"), N("DG13.R14", ["dg13.copyFiled"])],
+    actors: [actor("archivist", "Archivist", 4, 8, "npc", ["The slot takes the copy in the book. It does not take a speech."])],
+    objects: [obj("file-slot", "Filing slot", 14, 6, "slot", { note: "Accepts dg13.appointmentsCopied and nothing handwritten fresh." })],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "file-slot",
+          tool: "field-book",
+          note: "File the copied appointments. The slot latches.",
+          requires: ["dg13.appointmentsCopied"],
+          sets: ["dg13.copyFiled"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Go on to the antechamber.", requires: ["dg13.copyFiled"] }),
+      ],
+    },
+  }),
+  room({
+    id: "DG13.R14",
+    dungeon: "DG13",
+    name: "Antechamber of the Empty Chair",
+    region: "dg13.house",
+    checkpoint: true,
+    purpose: "The mayor's peg will lock the next door if you hang a coat on it. Leave it empty on purpose.",
+    layoutNote: "A row of office pegs along the west. The mayor peg is marked EMPTY and stands apart at x=13,y=4. The aisle is clear.",
+    walls: [{ x: 2, y: 6, w: 5, h: 1 }],
+    persistenceNote: "Choosing the empty peg survives death. A coat hung here and not retrieved remains as a previous body after death and still blocks the door until taken off.",
+    exits: [S("DG13.R13"), N("DG13.R15", ["dg13.pegLeftEmpty"])],
+    actors: [actor("usher", "Usher", 4, 8, "npc", ["Every office has a peg. The mayor's peg is the one that must stay empty."])],
+    objects: [
+      obj("mayor-peg", "Mayor peg", 13, 4, "peg", { inscription: "MAYOR — LEAVE EMPTY" }),
+      obj("other-pegs", "Office pegs", 3, 7, "peg", { inscription: "CLERK, LISTER, FENCE VIEWER, CONSTABLE. NONE OF THESE IS THE DOOR." }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "interact",
+          target: "mayor-peg",
+          note: "Confirm the mayor peg is empty. Do not hang the coat.",
+          requiresAbsent: ["dg13.mayorPegFilled"],
+          sets: ["dg13.pegLeftEmpty"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Enter the mayor's chamber.", requires: ["dg13.pegLeftEmpty"] }),
+      ],
+    },
+    alternates: [
+      {
+        id: "hang-then-remove",
+        when: { op: "always" },
+        steps: [
+          step({
+            action: "use-tool",
+            target: "mayor-peg",
+            tool: "borrowed-coat",
+            note: "Hang the coat. The north door locks, which the usher states aloud.",
+            sets: ["dg13.mayorPegFilled"],
+          }),
+          step({
+            action: "interact",
+            target: "mayor-peg",
+            note: "Take the coat off. The peg is empty again.",
+            requires: ["dg13.mayorPegFilled"],
+            sets: ["dg13.pegLeftEmpty"],
+            clears: ["dg13.mayorPegFilled"],
+          }),
+          step({ action: "traverse", exit: "north", note: "Enter once the peg is empty.", requires: ["dg13.pegLeftEmpty"] }),
+        ],
+      },
+    ],
+  }),
+  room({
+    id: "DG13.R15",
+    dungeon: "DG13",
+    name: "Chamber of the Empty Mayor",
+    region: "dg13.house",
+    purpose: "Boss. Adjourn the vacancy. Do not become it.",
+    layoutNote: "A horseshoe dais. The chair is north of center but off the door column, at x=6,y=3. Three roll doors are painted on the east wall as objects. The ordinance lectern is west.",
+    walls: [
+      { x: 3, y: 6, w: 3, h: 1 },
+      { x: 12, y: 6, w: 4, h: 1 },
+    ],
+    exits: [S("DG13.R14"), N("DG13.R16", ["dg13.emptyMayorAdjourned"])],
+    actors: [
+      actor("empty-mayor", "The Empty Mayor", 6, 3, "boss", [
+        "Motion: that a body be assigned the chair.",
+        "The roll is open.",
+        "Ordinance: a mayor must be a name.",
+      ]),
+    ],
+    objects: [
+      obj("chair", "Empty chair", 7, 3, "chair"),
+      obj("ribbon", "Appointment ribbon", 6, 4, "ribbon", { note: "Appears if you sit. The knife cuts it." }),
+      obj("roll-doors", "Roll board", 13, 3, "board", { inscription: "1 EAST DOOR, 2 MIDDLE DOOR, 3 WEST DOOR." }),
+      obj("ordinance", "Ordinance sheet", 4, 4, "document", { inscription: "A MAYOR MUST BE A NAME. WRITE: VACANT. OR STAMP: VACANT." }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "boss",
+          target: "empty-mayor",
+          machine: "boss.empty-mayor",
+          script: mayorScript,
+          note: "Adjourn the Empty Mayor by the posted roll and by writing vacant.",
+          sets: ["dg13.emptyMayorAdjourned"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Climb to the roof of names.", requires: ["dg13.emptyMayorAdjourned"] }),
+      ],
+    },
+    alternates: [
+      {
+        id: "stamp-vacant",
+        when: { op: "always" },
+        steps: [
+          step({
+            action: "boss",
+            target: "empty-mayor",
+            machine: "boss.empty-mayor",
+            script: [
+              { event: "leave-dais", note: "Leave the dais without sitting." },
+              { event: "ring", door: 1, tool: "county-bell", note: "Ring 1." },
+              { event: "ring", door: 2, tool: "county-bell", note: "Ring 2." },
+              { event: "ring", door: 3, tool: "county-bell", note: "Ring 3." },
+              { event: "stamp-vacant", tool: "office-seal", note: "Stamp the ordinance vacant." },
+            ],
+            note: "Alternate adjournment by seal. Sets mayorSealedVacant inside the machine.",
+          }),
+          step({ action: "traverse", exit: "north", note: "Leave.", requires: ["dg13.emptyMayorAdjourned"] }),
+        ],
+      },
+    ],
+  }),
+  room({
+    id: "DG13.R16",
+    dungeon: "DG13",
+    name: "Roof of Names",
+    region: "dg13.house",
+    purpose: "The needle wakes and points toward the lake. A plaque names a house that was never appointed. Reading it is optional and is not a Refuse requirement.",
+    layoutNote: "Open roof, low parapet walls at the corners. The lake side is the north door.",
+    walls: [
+      { x: 2, y: 2, w: 2, h: 1 },
+      { x: 14, y: 2, w: 2, h: 1 },
+    ],
+    exits: [S("DG13.R15"), N("DG14.R01", ["dg13.emptyMayorAdjourned"])],
+    actors: [actor("wind", "Roof wind", 14, 8, "fixture", ["The needle was stone. It is trying to be a direction."], { solid: false })],
+    objects: [
+      obj("needle-peg", "Needle peg", 4, 3, "peg", { note: "The marble needle lifts off the peg when touched." }),
+      obj("unappointed-plaque", "Unappointed plaque", 13, 7, "plaque", {
+        inscription: "THERE IS A HOUSE THAT WAS NEVER APPOINTED. IT IS NOT THIS ONE.",
+      }),
+    ],
+    solution: {
+      when: { op: "always" },
+      steps: [
+        step({
+          action: "use-tool",
+          target: "needle-peg",
+          tool: "marble-needle",
+          note: "Lift the needle. It points to the lake cut.",
+          sets: ["dg13.needleToLake"],
+        }),
+        step({ action: "traverse", exit: "north", note: "Leave toward the lake.", requires: ["dg13.emptyMayorAdjourned"] }),
+      ],
+    },
+    alternates: [
+      {
+        id: "read-plaque",
+        when: { op: "always" },
+        steps: [
+          step({
+            action: "interact",
+            target: "unappointed-plaque",
+            note: "Read the plaque. Optional corroboration, not a required witness.",
+            sets: ["disc.quiet.unappointedPlaque"],
+          }),
+        ],
+      },
+    ],
+  }),
+];

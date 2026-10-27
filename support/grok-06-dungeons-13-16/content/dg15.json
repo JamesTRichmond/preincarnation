@@ -1,0 +1,5037 @@
+{
+  "id": "DG15",
+  "name": "The Unborn Foundry",
+  "mappingStatus": "PENDING",
+  "rooms": [
+    {
+      "id": "DG15.R01",
+      "dungeon": "DG15",
+      "name": "Charterless Gate",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": true,
+      "purpose": "There is no charter. Cut the latch. Stamping a false charter also opens it and is remembered.",
+      "layoutNote": "A gatehouse. The latch is east. The charter nail is empty.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "foundry-brick",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG14.R17",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R02",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.entered"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "gate-clerk",
+          "name": "No clerk",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "gate-clerk.line1",
+              "text": "The nail is empty. That is the charter."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "latch",
+          "name": "Gate latch",
+          "kind": "latch",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "NO CHARTER ON THE NAIL.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R01.use-tool.latch",
+          "kind": "use-tool",
+          "target": "latch",
+          "tool": "field-knife",
+          "sets": [
+            {
+              "flag": "dg15.entered",
+              "value": true
+            },
+            {
+              "flag": "dg15.cutLatch",
+              "value": true
+            }
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R01.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.entered"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R02",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R01",
+        "survivesDeath": [
+          "dg15.entered",
+          "dg15.cutLatch",
+          "dg15.falseCharter",
+          "cleared.DG15.R01",
+          "visited.DG15.R01"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R01",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R01"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Cut the latch.",
+            "target": "latch",
+            "tool": "field-knife",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              {
+                "flag": "dg15.entered",
+                "value": true
+              },
+              {
+                "flag": "dg15.cutLatch",
+                "value": true
+              }
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the foundry.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.entered"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "false-charter",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Stamp a false charter. The gate accepts the office and remembers it.",
+              "target": "latch",
+              "tool": "office-seal",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                {
+                  "flag": "dg15.entered",
+                  "value": true
+                },
+                {
+                  "flag": "dg15.falseCharter",
+                  "value": true
+                }
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Enter.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg15.entered"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Cut the latch. | action=use-tool | target=latch | tool=field-knife | requires=none | sets=[object Object] & [object Object]",
+        "2. Enter the foundry. | action=traverse | exit=north | tool=none | requires=dg15.entered | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R01. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.entered",
+        "dg15.cutLatch",
+        "dg15.falseCharter",
+        "cleared.DG15.R01",
+        "visited.DG15.R01"
+      ]
+    },
+    {
+      "id": "DG15.R02",
+      "dungeon": "DG15",
+      "name": "Intake of Years",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Cast blocks of fourteen years. Jam the press with the rod. Riding a block is a stated hazard, not the path.",
+      "layoutNote": "A press occupies the west. The aisle is east of it. Blocks are marked on the floor.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#.####......+++..#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R01",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R03",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.pressJammed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "press-boss",
+          "name": "Press",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "press-boss.line1",
+              "text": "Each block is fourteen years. The rod in the socket stops the ram."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "press-socket",
+          "name": "Press socket",
+          "kind": "socket",
+          "pos": {
+            "x": 6,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "year-blocks",
+          "name": "Year blocks",
+          "kind": "blocks",
+          "pos": {
+            "x": 13,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "14 / 14 / 14",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R02.use-tool.press-socket",
+          "kind": "use-tool",
+          "target": "press-socket",
+          "tool": "range-rod",
+          "sets": [
+            "dg15.pressJammed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R02.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.pressJammed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R03",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R02",
+        "survivesDeath": [
+          "dg15.pressJammed",
+          "cleared.DG15.R02",
+          "visited.DG15.R02"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R02",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R02"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Jam the ram. The blocks stop.",
+            "target": "press-socket",
+            "tool": "range-rod",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.pressJammed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Walk the stilled aisle.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.pressJammed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Jam the ram. The blocks stop. | action=use-tool | target=press-socket | tool=range-rod | requires=none | sets=dg15.pressJammed",
+        "2. Walk the stilled aisle. | action=traverse | exit=north | tool=none | requires=dg15.pressJammed | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R02. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "ram",
+            "tiles": [
+              {
+                "x": 12,
+                "y": 4
+              },
+              {
+                "x": 13,
+                "y": 4
+              },
+              {
+                "x": 14,
+                "y": 4
+              }
+            ],
+            "tell": "year-blocks",
+            "fatal": true,
+            "effect": "crushed",
+            "unless": "dg15.pressJammed"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.pressJammed",
+        "cleared.DG15.R02",
+        "visited.DG15.R02"
+      ]
+    },
+    {
+      "id": "DG15.R03",
+      "dungeon": "DG15",
+      "name": "Mold of Bodies",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Coats on forms. The needle spins because too many futures are present. Reading the mold tags is the door.",
+      "layoutNote": "Three forms west. The aisle is clear. Tags hang on the east.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.###............#",
+          "#................#",
+          "#................#",
+          "#.###............#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R02",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R04",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.moldsRead"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "forms",
+          "name": "Unpoured forms",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "forms.line1",
+              "text": "We are sizes, not people."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 4
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "mold-tags",
+          "name": "Mold tags",
+          "kind": "tags",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "COAT, COAT, COAT. NO NAMES.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "needle-hook",
+          "name": "Needle hook",
+          "kind": "hook",
+          "pos": {
+            "x": 14,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R03.use-tool.needle-hook",
+          "kind": "use-tool",
+          "target": "needle-hook",
+          "tool": "marble-needle",
+          "sets": [
+            "dg15.needleSpun"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R03.use-tool.mold-tags",
+          "kind": "use-tool",
+          "target": "mold-tags",
+          "tool": "field-book",
+          "sets": [
+            "dg15.moldsRead"
+          ],
+          "requires": [
+            "dg15.needleSpun"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R03.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.moldsRead"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R04",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R03",
+        "survivesDeath": [
+          "dg15.needleSpun",
+          "dg15.moldsRead",
+          "cleared.DG15.R03",
+          "visited.DG15.R03"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R03",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R03"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Hang the needle. It spins and does not point.",
+            "target": "needle-hook",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.needleSpun"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Copy the tags.",
+            "target": "mold-tags",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.needleSpun"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.moldsRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the molds.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.moldsRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Hang the needle. It spins and does not point. | action=use-tool | target=needle-hook | tool=marble-needle | requires=none | sets=dg15.needleSpun",
+        "2. Copy the tags. | action=use-tool | target=mold-tags | tool=field-book | requires=dg15.needleSpun | sets=dg15.moldsRead",
+        "3. Leave the molds. | action=traverse | exit=north | tool=none | requires=dg15.moldsRead | sets=none",
+        "4. Room clear is recorded as cleared.DG15.R03. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.needleSpun",
+        "dg15.moldsRead",
+        "cleared.DG15.R03",
+        "visited.DG15.R03"
+      ]
+    },
+    {
+      "id": "DG15.R04",
+      "dungeon": "DG15",
+      "name": "Pipe Valves",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Open the valves in the order on the work ticket. A wrong valve vents steam. Three vents kill.",
+      "layoutNote": "Three valves along the west. The ticket is posted east. Steam grates are tiles.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#...+..+.........#",
+          "#...........###..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R03",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R05",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.valvesOpen"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "pipe",
+          "name": "Pipe",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "pipe.line1",
+              "text": "The ticket is the order. Steam is the correction."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "ticket",
+          "name": "Work ticket",
+          "kind": "ticket",
+          "pos": {
+            "x": 13,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "ORDER: VALVE 1, VALVE 2, VALVE 3.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "valve-1",
+          "name": "Valve 1",
+          "kind": "valve",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "valve-2",
+          "name": "Valve 2",
+          "kind": "valve",
+          "pos": {
+            "x": 7,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "valve-3",
+          "name": "Valve 3",
+          "kind": "valve",
+          "pos": {
+            "x": 4,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R04.interact.ticket",
+          "kind": "interact",
+          "target": "ticket",
+          "tool": null,
+          "sets": [
+            "dg15.ticketRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R04.use-tool.valve-1",
+          "kind": "use-tool",
+          "target": "valve-1",
+          "tool": "county-bell",
+          "sets": [
+            "dg15.valve1"
+          ],
+          "requires": [
+            "dg15.ticketRead"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R04.use-tool.valve-2",
+          "kind": "use-tool",
+          "target": "valve-2",
+          "tool": "county-bell",
+          "sets": [
+            "dg15.valve2"
+          ],
+          "requires": [
+            "dg15.valve1"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R04.use-tool.valve-3",
+          "kind": "use-tool",
+          "target": "valve-3",
+          "tool": "county-bell",
+          "sets": [
+            "dg15.valvesOpen"
+          ],
+          "requires": [
+            "dg15.valve2"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R04.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.valvesOpen"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R05",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R04",
+        "survivesDeath": [
+          "dg15.ticketRead",
+          "dg15.valve1",
+          "dg15.valve2",
+          "dg15.valvesOpen",
+          "cleared.DG15.R04",
+          "visited.DG15.R04"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R04",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R04"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the order.",
+            "target": "ticket",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.ticketRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring valve 1. The bell is how a valve is called in this room.",
+            "target": "valve-1",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.ticketRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.valve1"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring valve 2.",
+            "target": "valve-2",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.valve1"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.valve2"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring valve 3. The steam settles and the door opens.",
+            "target": "valve-3",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.valve2"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.valvesOpen"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go on.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.valvesOpen"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the order. | action=interact | target=ticket | tool=none | requires=none | sets=dg15.ticketRead",
+        "2. Ring valve 1. The bell is how a valve is called in this room. | action=use-tool | target=valve-1 | tool=county-bell | requires=dg15.ticketRead | sets=dg15.valve1",
+        "3. Ring valve 2. | action=use-tool | target=valve-2 | tool=county-bell | requires=dg15.valve1 | sets=dg15.valve2",
+        "4. Ring valve 3. The steam settles and the door opens. | action=use-tool | target=valve-3 | tool=county-bell | requires=dg15.valve2 | sets=dg15.valvesOpen",
+        "5. Go on. | action=traverse | exit=north | tool=none | requires=dg15.valvesOpen | sets=none",
+        "6. Room clear is recorded as cleared.DG15.R04. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "steam",
+            "tiles": [
+              {
+                "x": 4,
+                "y": 5
+              },
+              {
+                "x": 7,
+                "y": 5
+              }
+            ],
+            "tell": "ticket",
+            "fatal": false,
+            "effect": "steam-strike",
+            "note": "The third steam strike is fatal. Fatal threshold lives on the order puzzle."
+          }
+        ]
+      },
+      "orderPuzzle": {
+        "id": "valves",
+        "sequence": [
+          "valve-1",
+          "valve-2",
+          "valve-3"
+        ],
+        "completeFlag": "dg15.valvesOpen",
+        "resetOnMismatch": true,
+        "deathAt": 3
+      },
+      "produces": [
+        "dg15.ticketRead",
+        "dg15.valve1",
+        "dg15.valve2",
+        "dg15.valvesOpen",
+        "cleared.DG15.R04",
+        "visited.DG15.R04"
+      ]
+    },
+    {
+      "id": "DG15.R05",
+      "dungeon": "DG15",
+      "name": "Blueprint Gallery",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "The glass clicks only on the station whose number is also painted on the floor. You match what you see.",
+      "layoutNote": "Three stations. The floor paint is an object you read. The matching station is marked 4, same as the paint.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R04",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R06",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.blueprintAligned"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "drawer",
+          "name": "Drawer",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "drawer.line1",
+              "text": "Don't remember a number from town. Read the floor."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "floor-paint",
+          "name": "Floor paint",
+          "kind": "paint",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "STATION 4",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "station-2",
+          "name": "Station 2",
+          "kind": "station",
+          "pos": {
+            "x": 12,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "2",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "station-4",
+          "name": "Station 4",
+          "kind": "station",
+          "pos": {
+            "x": 14,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "4",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "station-7",
+          "name": "Station 7",
+          "kind": "station",
+          "pos": {
+            "x": 13,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "7",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R05.interact.floor-paint",
+          "kind": "interact",
+          "target": "floor-paint",
+          "tool": null,
+          "sets": [
+            "dg15.floor4"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R05.use-tool.station-4",
+          "kind": "use-tool",
+          "target": "station-4",
+          "tool": "transit-glass",
+          "sets": [
+            "dg15.blueprintAligned"
+          ],
+          "requires": [
+            "dg15.floor4"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R05.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.blueprintAligned"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R06",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R05",
+        "survivesDeath": [
+          "dg15.floor4",
+          "dg15.blueprintAligned",
+          "cleared.DG15.R05",
+          "visited.DG15.R05"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R05",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R05"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the floor. It says station 4.",
+            "target": "floor-paint",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.floor4"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sight station 4. The glass clicks and the blueprint seats.",
+            "target": "station-4",
+            "tool": "transit-glass",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.floor4"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.blueprintAligned"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the gallery.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.blueprintAligned"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the floor. It says station 4. | action=interact | target=floor-paint | tool=none | requires=none | sets=dg15.floor4",
+        "2. Sight station 4. The glass clicks and the blueprint seats. | action=use-tool | target=station-4 | tool=transit-glass | requires=dg15.floor4 | sets=dg15.blueprintAligned",
+        "3. Leave the gallery. | action=traverse | exit=north | tool=none | requires=dg15.blueprintAligned | sets=none",
+        "4. Room clear is recorded as cleared.DG15.R05. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.floor4",
+        "dg15.blueprintAligned",
+        "cleared.DG15.R05",
+        "visited.DG15.R05"
+      ]
+    },
+    {
+      "id": "DG15.R06",
+      "dungeon": "DG15",
+      "name": "Punch Clock",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Critical witness. Moving the clock off the door exposes the names burned inside the glass.",
+      "layoutNote": "The clock stands in front of the north approach, on a floor tile beside the aisle, not on the door.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..####..........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R05",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R07",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "disc.erased.foundryClock"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "clock-hand",
+          "name": "Minute hand",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "clock-hand.line1",
+              "text": "I was filed as a hand. Move the case."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "punch-clock",
+          "name": "Punch clock",
+          "kind": "clock",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "INSIDE THE GLASS, AFTER IT MOVES: NAMES WITH NO CARDS.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R06.interact.punch-clock",
+          "kind": "interact",
+          "target": "punch-clock",
+          "tool": null,
+          "sets": [
+            "disc.erased.foundryClock",
+            "dg15.clockMoved"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R06.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "disc.erased.foundryClock"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R07",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R06",
+        "survivesDeath": [
+          "disc.erased.foundryClock",
+          "dg15.clockMoved",
+          "cleared.DG15.R06",
+          "visited.DG15.R06"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R06",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R06"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Shove the clock off the door. The names inside the glass are copied into the book.",
+            "target": "punch-clock",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "disc.erased.foundryClock",
+              "dg15.clockMoved"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Pass where the clock stood.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.erased.foundryClock"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Shove the clock off the door. The names inside the glass are copied into the book. | action=interact | target=punch-clock | tool=none | requires=none | sets=disc.erased.foundryClock & dg15.clockMoved",
+        "2. Pass where the clock stood. | action=traverse | exit=north | tool=none | requires=disc.erased.foundryClock | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R06. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "disc.erased.foundryClock",
+        "dg15.clockMoved",
+        "cleared.DG15.R06",
+        "visited.DG15.R06"
+      ]
+    },
+    {
+      "id": "DG15.R07",
+      "dungeon": "DG15",
+      "name": "Rejected Pattern",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Critical witness of the Quiet Household. The pattern is stamped NOT A FUTURE. Copying the rejection slip opens the next door.",
+      "layoutNote": "A mold no machine will pour: three bowl-shapes in the floor paint, and a slip on a nail.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#...+.+.+........#",
+          "#................#",
+          "#.#####..........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R06",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R08",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "disc.quiet.rejectedPattern"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "pattern",
+          "name": "Rejected pattern",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "pattern.line1",
+              "text": "We are not a future the foundry will pour."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "rejection-slip",
+          "name": "Rejection slip",
+          "kind": "slip",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "NOT A FUTURE. THREE BOWLS. DO NOT POUR.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R07.use-tool.rejection-slip",
+          "kind": "use-tool",
+          "target": "rejection-slip",
+          "tool": "field-book",
+          "sets": [
+            "disc.quiet.rejectedPattern"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R07.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "disc.quiet.rejectedPattern"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R08",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R07",
+        "survivesDeath": [
+          "disc.quiet.rejectedPattern",
+          "cleared.DG15.R07",
+          "visited.DG15.R07"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R07",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R07"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Copy the rejection slip. It is not a loot key. The door reads the book.",
+            "target": "rejection-slip",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "disc.quiet.rejectedPattern"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The next door opens.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.quiet.rejectedPattern"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Copy the rejection slip. It is not a loot key. The door reads the book. | action=use-tool | target=rejection-slip | tool=field-book | requires=none | sets=disc.quiet.rejectedPattern",
+        "2. The next door opens. | action=traverse | exit=north | tool=none | requires=disc.quiet.rejectedPattern | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R07. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "disc.quiet.rejectedPattern",
+        "cleared.DG15.R07",
+        "visited.DG15.R07"
+      ]
+    },
+    {
+      "id": "DG15.R08",
+      "dungeon": "DG15",
+      "name": "Family Molds",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Three molds echo the family decision. The catwalk is broken for everyone and the chain repairs it.",
+      "layoutNote": "Three molds off the aisle. A gap in the catwalk is a void tile at x=12,y=5, with posts on either side.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.###............#",
+          "#.###............#",
+          "#.###.......V....#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R07",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R09",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.familyArchPassed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "molds",
+          "name": "Family molds",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 7
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "molds.line1",
+              "text": "Warm or cold is not the door. The gap is the door."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 7
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "mold-row",
+          "name": "Mold row",
+          "kind": "molds",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "family",
+            "reunited": "The reunited mold is warm. The other two are cold.",
+            "scattered": "All three molds are half-poured and cooling.",
+            "estranged": "The molds face away from each other.",
+            "unknown": "The molds have no tags from your household."
+          },
+          "note": null
+        },
+        {
+          "id": "catwalk-post",
+          "name": "Catwalk post",
+          "kind": "post",
+          "pos": {
+            "x": 11,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R08.use-tool.catwalk-post",
+          "kind": "use-tool",
+          "target": "catwalk-post",
+          "tool": "field-chain",
+          "sets": [
+            "dg15.familyArchPassed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R08.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.familyArchPassed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R09",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R08",
+        "survivesDeath": [
+          "dg15.familyArchPassed",
+          "cleared.DG15.R08",
+          "visited.DG15.R08"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R08",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R08"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Bridge the catwalk gap. The painted length on the post is 2 links.",
+            "target": "catwalk-post",
+            "tool": "field-chain",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.familyArchPassed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Cross.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.familyArchPassed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Bridge the catwalk gap. The painted length on the post is 2 links. | action=use-tool | target=catwalk-post | tool=field-chain | requires=none | sets=dg15.familyArchPassed",
+        "2. Cross. | action=traverse | exit=north | tool=none | requires=dg15.familyArchPassed | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R08. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "catwalk-gap",
+            "tiles": [
+              {
+                "x": 12,
+                "y": 5
+              }
+            ],
+            "tell": "mold-row",
+            "fatal": true,
+            "effect": "fall",
+            "unless": "dg15.familyArchPassed"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.familyArchPassed",
+        "cleared.DG15.R08",
+        "visited.DG15.R08"
+      ]
+    },
+    {
+      "id": "DG15.R09",
+      "dungeon": "DG15",
+      "name": "Tray Fields",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Future fields in trays. The lamp shows the safe catwalk. The farm decision changes which tray is green.",
+      "layoutNote": "Trays west. Catwalk stations east. Steam tiles between.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.###............#",
+          "#.###...+........#",
+          "#.........+......#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R08",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R10",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.traysPassed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "tray-hand",
+          "name": "Tray hand",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "tray-hand.line1",
+              "text": "Green is not safe. Lit is safe."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "trays",
+          "name": "Field trays",
+          "kind": "trays",
+          "pos": {
+            "x": 4,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "farm",
+            "prepared": "The tray you helped the farm keep is the one with a real fence.",
+            "neglected": "Every tray is the same thin green.",
+            "opposed": "The fenced tray is marked OFFICE.",
+            "unknown": "The trays are unlabeled."
+          },
+          "note": null
+        },
+        {
+          "id": "lit-catwalk",
+          "name": "Lit catwalk",
+          "kind": "catwalk",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The lamp makes this rail visible."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R09.use-tool.lit-catwalk",
+          "kind": "use-tool",
+          "target": "lit-catwalk",
+          "tool": "office-lamp",
+          "sets": [
+            "dg15.traysPassed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R09.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.traysPassed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R10",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R09",
+        "survivesDeath": [
+          "dg15.traysPassed",
+          "cleared.DG15.R09",
+          "visited.DG15.R09"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R09",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R09"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Light the catwalk and walk it.",
+            "target": "lit-catwalk",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.traysPassed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the trays.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.traysPassed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Light the catwalk and walk it. | action=use-tool | target=lit-catwalk | tool=office-lamp | requires=none | sets=dg15.traysPassed",
+        "2. Leave the trays. | action=traverse | exit=north | tool=none | requires=dg15.traysPassed | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R09. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.traysPassed",
+        "cleared.DG15.R09",
+        "visited.DG15.R09"
+      ]
+    },
+    {
+      "id": "DG15.R10",
+      "dungeon": "DG15",
+      "name": "Uncoupled Wheels",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Two wheels with no water. The chain couples them. A prepared mill has a side gate; it is a shortcut, not the only path.",
+      "layoutNote": "Two wheel pits west and east, shown as floor hooks. A side gate is north-east as an object.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#..##........##..#",
+          "#..##........##..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R09",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R11",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.wheelsCoupled"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "wheel-note",
+          "name": "Wheel note",
+          "kind": "fixture",
+          "pos": {
+            "x": 7,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "wheel-note.line1",
+              "text": "Couple them. Water is not coming."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 7,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "wheel-a",
+          "name": "West wheel",
+          "kind": "wheel",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "wheel-b",
+          "name": "East wheel",
+          "kind": "wheel",
+          "pos": {
+            "x": 12,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "mill-gate",
+          "name": "Prepared gate",
+          "kind": "gate",
+          "pos": {
+            "x": 14,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "mill",
+            "prepared": "The gate you helped the mill keep is already unlatched.",
+            "neglected": "The side gate is latched and has no mill behind it.",
+            "opposed": "The side gate is nailed by the office.",
+            "unknown": "The side gate has no record."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R10.use-tool.wheel-a",
+          "kind": "use-tool",
+          "target": "wheel-a",
+          "tool": "field-chain",
+          "sets": [
+            "dg15.wheelsCoupled"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R10.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.wheelsCoupled"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R11",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R10",
+        "survivesDeath": [
+          "dg15.wheelsCoupled",
+          "dg15.usedPreparedMill",
+          "cleared.DG15.R10",
+          "visited.DG15.R10"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R10",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R10"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Couple west wheel to east wheel.",
+            "target": "wheel-a",
+            "tool": "field-chain",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.wheelsCoupled"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The coupled wheels lift the north door.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.wheelsCoupled"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "prepared-gate",
+          "when": {
+            "op": "decision",
+            "decision": "mill",
+            "in": [
+              "prepared"
+            ]
+          },
+          "steps": [
+            {
+              "action": "interact",
+              "note": "Take the already unlatched mill gate.",
+              "target": "mill-gate",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg15.wheelsCoupled",
+                "dg15.usedPreparedMill"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Go through.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg15.wheelsCoupled"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Couple west wheel to east wheel. | action=use-tool | target=wheel-a | tool=field-chain | requires=none | sets=dg15.wheelsCoupled",
+        "2. The coupled wheels lift the north door. | action=traverse | exit=north | tool=none | requires=dg15.wheelsCoupled | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R10. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.wheelsCoupled",
+        "dg15.usedPreparedMill",
+        "cleared.DG15.R10",
+        "visited.DG15.R10"
+      ]
+    },
+    {
+      "id": "DG15.R11",
+      "dungeon": "DG15",
+      "name": "Cooling Ferry",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "A ferry is cooling. The walkway always passes. If the crossing was prepared, you may take the casting; Distribute does not require the casting.",
+      "layoutNote": "A mold of a scow in the west pit. A walkway of bridge tiles runs east of the aisle.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#.####......:::..#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R10",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R12",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.ferryFloorPassed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "cooler",
+          "name": "Cooler",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "cooler.line1",
+              "text": "The walkway is poured solid. The scow is optional."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "walkway",
+          "name": "Solid walkway",
+          "kind": "walk",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "ferry-casting",
+          "name": "Ferry casting",
+          "kind": "casting",
+          "pos": {
+            "x": 6,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "crossing",
+            "prepared": "The casting will hold if you take it. The crossing you helped can use it later.",
+            "neglected": "The casting cracks if you lift it. Leave it.",
+            "opposed": "The casting is stamped OFFICE and will not leave the pit.",
+            "unknown": "The casting has no crossing to belong to."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R11.interact.walkway",
+          "kind": "interact",
+          "target": "walkway",
+          "tool": null,
+          "sets": [
+            "dg15.ferryFloorPassed"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R11.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.ferryFloorPassed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R12",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R11",
+        "survivesDeath": [
+          "dg15.ferryFloorPassed",
+          "item.preparedFerryCasting",
+          "cleared.DG15.R11",
+          "visited.DG15.R11"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R11",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R11"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Take the solid walkway.",
+            "target": "walkway",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.ferryFloorPassed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go on.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.ferryFloorPassed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "take-casting",
+          "when": {
+            "op": "decision",
+            "decision": "crossing",
+            "in": [
+              "prepared"
+            ]
+          },
+          "steps": [
+            {
+              "action": "interact",
+              "note": "Take the casting. It is a diegetic proof, not a Distribute requirement.",
+              "target": "ferry-casting",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "item.preparedFerryCasting",
+                "dg15.ferryFloorPassed"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Leave with or without using it yet.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg15.ferryFloorPassed"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Take the solid walkway. | action=interact | target=walkway | tool=none | requires=none | sets=dg15.ferryFloorPassed",
+        "2. Go on. | action=traverse | exit=north | tool=none | requires=dg15.ferryFloorPassed | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R11. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.ferryFloorPassed",
+        "item.preparedFerryCasting",
+        "cleared.DG15.R11",
+        "visited.DG15.R11"
+      ]
+    },
+    {
+      "id": "DG15.R12",
+      "dungeon": "DG15",
+      "name": "Unlicensed Stack",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "The plumb shows the vein under the stack. The rod bridges a two-tile gap whose length is painted on the rim.",
+      "layoutNote": "A shaft rail. Void at (12,5). Rim paint at the south of the shaft.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#..##............#",
+          "#..##............#",
+          "#..##.......VV...#",
+          "#..##............#",
+          "#..##............#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R11",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R13",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.stackCrossed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "stack",
+          "name": "Stack",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "stack.line1",
+              "text": "Two tiles. The paint says so. The bob only looks down."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "rim-paint",
+          "name": "Rim paint",
+          "kind": "paint",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "GAP 2",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "stack-rim",
+          "name": "Stack rim",
+          "kind": "rim",
+          "pos": {
+            "x": 11,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R12.use-tool.stack-rim",
+          "kind": "use-tool",
+          "target": "stack-rim",
+          "tool": "plumb-bob",
+          "sets": [
+            "dg15.stackSounded"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R12.use-tool.stack-rim",
+          "kind": "use-tool",
+          "target": "stack-rim",
+          "tool": "range-rod",
+          "sets": [
+            "dg15.stackCrossed"
+          ],
+          "requires": [
+            "dg15.stackSounded"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R12.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.stackCrossed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R13",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R12",
+        "survivesDeath": [
+          "dg15.stackSounded",
+          "dg15.stackCrossed",
+          "cleared.DG15.R12",
+          "visited.DG15.R12"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R12",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R12"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "The bob shows a vein under the county, not a second world.",
+            "target": "stack-rim",
+            "tool": "plumb-bob",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.stackSounded"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Bridge the painted gap of 2.",
+            "target": "stack-rim",
+            "tool": "range-rod",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.stackSounded"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.stackCrossed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Cross the rim.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.stackCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. The bob shows a vein under the county, not a second world. | action=use-tool | target=stack-rim | tool=plumb-bob | requires=none | sets=dg15.stackSounded",
+        "2. Bridge the painted gap of 2. | action=use-tool | target=stack-rim | tool=range-rod | requires=dg15.stackSounded | sets=dg15.stackCrossed",
+        "3. Cross the rim. | action=traverse | exit=north | tool=none | requires=dg15.stackCrossed | sets=none",
+        "4. Room clear is recorded as cleared.DG15.R12. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "stack-gap",
+            "tiles": [
+              {
+                "x": 12,
+                "y": 5
+              },
+              {
+                "x": 13,
+                "y": 5
+              }
+            ],
+            "tell": "rim-paint",
+            "fatal": true,
+            "effect": "fall",
+            "unless": "dg15.stackCrossed"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.stackSounded",
+        "dg15.stackCrossed",
+        "cleared.DG15.R12",
+        "visited.DG15.R12"
+      ]
+    },
+    {
+      "id": "DG15.R13",
+      "dungeon": "DG15",
+      "name": "Ordering Room",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "The work order says: manufacture one Ellis. Write an objection or stamp the order. Either opens the cooling floor. Neither locks an ending.",
+      "layoutNote": "A row of desks. The order is on the center desk, off the aisle.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.#####..........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R12",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R14",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.orderAddressed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "order-clerk",
+          "name": "Order clerk",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "order-clerk.line1",
+              "text": "The form has two answers I will file. It does not have your ending."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "work-order",
+          "name": "Work order",
+          "kind": "order",
+          "pos": {
+            "x": 12,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "MANUFACTURE ONE ELLIS.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R13.use-tool.work-order",
+          "kind": "use-tool",
+          "target": "work-order",
+          "tool": "field-book",
+          "sets": [
+            "dg15.orderAddressed",
+            "disc.surveyor.objectionFiled"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R13.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.orderAddressed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R14",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R13",
+        "survivesDeath": [
+          "dg15.orderAddressed",
+          "disc.surveyor.objectionFiled",
+          "dg15.authorizedManufacture",
+          "cleared.DG15.R13",
+          "visited.DG15.R13"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R13",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R13"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Write the objection in the book and file it on the order.",
+            "target": "work-order",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.orderAddressed",
+              "disc.surveyor.objectionFiled"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The cooling floor opens.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.orderAddressed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "stamp-order",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Stamp the order. This does not select Keep, Close, or Distribute.",
+              "target": "work-order",
+              "tool": "office-seal",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg15.orderAddressed",
+                "dg15.authorizedManufacture"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Go on.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg15.orderAddressed"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Write the objection in the book and file it on the order. | action=use-tool | target=work-order | tool=field-book | requires=none | sets=dg15.orderAddressed & disc.surveyor.objectionFiled",
+        "2. The cooling floor opens. | action=traverse | exit=north | tool=none | requires=dg15.orderAddressed | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R13. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.orderAddressed",
+        "disc.surveyor.objectionFiled",
+        "dg15.authorizedManufacture",
+        "cleared.DG15.R13",
+        "visited.DG15.R13"
+      ]
+    },
+    {
+      "id": "DG15.R14",
+      "dungeon": "DG15",
+      "name": "Unpoured Floor",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Void of unpoured metal. Cross it embryonic. The coat anchors on the near lip.",
+      "layoutNote": "A lip of floor, then void, then a far lip. Door landings stay floor.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#......VV.VV.....#",
+          "#................#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R13",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R15",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.unpouredCrossed"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "lip-sign",
+          "name": "Lip sign",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "lip-sign.line1",
+              "text": "Anchor. Needle. Lead. Then the coat comes back."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "near-lip",
+          "name": "Near lip peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "far-lip",
+          "name": "Far lip",
+          "kind": "station",
+          "pos": {
+            "x": 14,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R14.use-tool.near-lip",
+          "kind": "use-tool",
+          "target": "near-lip",
+          "tool": "borrowed-coat",
+          "sets": [
+            "dg15.lipAnchor"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R14.use-tool.far-lip",
+          "kind": "use-tool",
+          "target": "far-lip",
+          "tool": "marble-needle",
+          "sets": [
+            "dg15.lipNeedle",
+            "meta.embryonic"
+          ],
+          "requires": [
+            "dg15.lipAnchor"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R14.use-tool.far-lip",
+          "kind": "use-tool",
+          "target": "far-lip",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg15.unpouredCrossed"
+          ],
+          "requires": [
+            "dg15.lipNeedle"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R14.interact.near-lip",
+          "kind": "interact",
+          "target": "near-lip",
+          "tool": null,
+          "sets": [
+            "dg15.lipCoatBack"
+          ],
+          "requires": [
+            "dg15.unpouredCrossed"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R14.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.unpouredCrossed"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R15",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R14",
+        "survivesDeath": [
+          "dg15.lipAnchor",
+          "dg15.lipNeedle",
+          "dg15.unpouredCrossed",
+          "dg15.lipCoatBack",
+          "cleared.DG15.R14",
+          "visited.DG15.R14"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R14",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R14"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Anchor the coat.",
+            "target": "near-lip",
+            "tool": "borrowed-coat",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.lipAnchor"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Enter the form and start across.",
+            "target": "far-lip",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.lipAnchor"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.lipNeedle",
+              "meta.embryonic"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sound the far lip. It holds.",
+            "target": "far-lip",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.lipNeedle"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.unpouredCrossed"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Take the coat. End the form.",
+            "target": "near-lip",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.unpouredCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.lipCoatBack"
+            ],
+            "clears": [
+              "meta.embryonic"
+            ],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the antechamber.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.unpouredCrossed"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Anchor the coat. | action=use-tool | target=near-lip | tool=borrowed-coat | requires=none | sets=dg15.lipAnchor",
+        "2. Enter the form and start across. | action=use-tool | target=far-lip | tool=marble-needle | requires=dg15.lipAnchor | sets=dg15.lipNeedle & meta.embryonic",
+        "3. Sound the far lip. It holds. | action=use-tool | target=far-lip | tool=sounding-lead | requires=dg15.lipNeedle | sets=dg15.unpouredCrossed",
+        "4. Take the coat. End the form. | action=interact | target=near-lip | tool=none | requires=dg15.unpouredCrossed | sets=dg15.lipCoatBack",
+        "5. Enter the antechamber. | action=traverse | exit=north | tool=none | requires=dg15.unpouredCrossed | sets=none",
+        "6. Room clear is recorded as cleared.DG15.R14. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "unpoured",
+            "tiles": [
+              {
+                "x": 7,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 5
+              },
+              {
+                "x": 10,
+                "y": 5
+              },
+              {
+                "x": 11,
+                "y": 5
+              }
+            ],
+            "tell": "near-lip",
+            "fatal": true,
+            "unless": "meta.embryonic",
+            "effect": "sink"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.lipAnchor",
+        "dg15.lipNeedle",
+        "meta.embryonic",
+        "dg15.unpouredCrossed",
+        "dg15.lipCoatBack",
+        "cleared.DG15.R14",
+        "visited.DG15.R14"
+      ]
+    },
+    {
+      "id": "DG15.R15",
+      "dungeon": "DG15",
+      "name": "Antechamber of One Ellis",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": true,
+      "purpose": "The plaques say what the foundry will try to do. Reading them opens the floor. They do not choose your ending.",
+      "layoutNote": "Three plaques on the west wall. Open floor to the north door.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#.#..............#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R14",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R16",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.anteReady"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "plaque-voice",
+          "name": "Plaque voice",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "plaque-voice.line1",
+              "text": "One body, filed. That is the offer on the other side of the door."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "plaque-keepish",
+          "name": "Plaque",
+          "kind": "plaque",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "A LIFE CAN BE KEPT OPEN.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "plaque-closeish",
+          "name": "Plaque",
+          "kind": "plaque",
+          "pos": {
+            "x": 4,
+            "y": 5
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "A LIFE CAN BE CLOSED.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "plaque-dist",
+          "name": "Plaque",
+          "kind": "plaque",
+          "pos": {
+            "x": 4,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "A LIFE CAN BE HANDED TO WHAT WAS PREPARED.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R15.interact.plaque-keepish",
+          "kind": "interact",
+          "target": "plaque-keepish",
+          "tool": null,
+          "sets": [
+            "dg15.plaque1"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R15.interact.plaque-closeish",
+          "kind": "interact",
+          "target": "plaque-closeish",
+          "tool": null,
+          "sets": [
+            "dg15.plaque2"
+          ],
+          "requires": [
+            "dg15.plaque1"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R15.interact.plaque-dist",
+          "kind": "interact",
+          "target": "plaque-dist",
+          "tool": null,
+          "sets": [
+            "dg15.anteReady"
+          ],
+          "requires": [
+            "dg15.plaque2"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R15.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.anteReady"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R16",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R15",
+        "survivesDeath": [
+          "dg15.plaque1",
+          "dg15.plaque2",
+          "dg15.anteReady",
+          "cleared.DG15.R15",
+          "visited.DG15.R15"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R15",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R15"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the first plaque.",
+            "target": "plaque-keepish",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.plaque1"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Read the second.",
+            "target": "plaque-closeish",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.plaque1"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.plaque2"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Read the third. The floor door opens. You have not chosen.",
+            "target": "plaque-dist",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.plaque2"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.anteReady"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the Surveyor's floor.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.anteReady"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the first plaque. | action=interact | target=plaque-keepish | tool=none | requires=none | sets=dg15.plaque1",
+        "2. Read the second. | action=interact | target=plaque-closeish | tool=none | requires=dg15.plaque1 | sets=dg15.plaque2",
+        "3. Read the third. The floor door opens. You have not chosen. | action=interact | target=plaque-dist | tool=none | requires=dg15.plaque2 | sets=dg15.anteReady",
+        "4. Enter the Surveyor's floor. | action=traverse | exit=north | tool=none | requires=dg15.anteReady | sets=none",
+        "5. Room clear is recorded as cleared.DG15.R15. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.plaque1",
+        "dg15.plaque2",
+        "dg15.anteReady",
+        "cleared.DG15.R15",
+        "visited.DG15.R15"
+      ]
+    },
+    {
+      "id": "DG15.R16",
+      "dungeon": "DG15",
+      "name": "Floor of the Surveyor",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "Boss. Stop the pour and leave it unfinished.",
+      "layoutNote": "A dais, a ladle rail, and a ring of floor ticks. The Surveyor stands off the aisle.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..####.....###..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R15",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG15.R17",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.surveyorUnfinished"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "surveyor",
+          "name": "The Surveyor of Ellis",
+          "kind": "boss",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "surveyor.line1",
+              "text": "The county will fit you if you stop changing."
+            },
+            {
+              "id": "surveyor.line2",
+              "text": "I poured a life the office can file."
+            },
+            {
+              "id": "surveyor.line3",
+              "text": "Keep it, close it, or hand it to what you have prepared. Those are the words on my form."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 13,
+            "y": 4
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "ladle",
+          "name": "Ladle",
+          "kind": "ladle",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "plot",
+          "name": "Plot marks",
+          "kind": "plot",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE GLASS SHOWS THIS PLOT PAST THE COUNTY LINE.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "ticks",
+          "name": "Overflow ticks",
+          "kind": "ticks",
+          "pos": {
+            "x": 12,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R16.boss.surveyor",
+          "kind": "boss",
+          "target": "surveyor",
+          "tool": null,
+          "sets": [
+            "dg15.surveyorUnfinished"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R16.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.surveyorUnfinished"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG15.R17",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R16",
+        "survivesDeath": [
+          "dg15.surveyorUnfinished",
+          "cleared.DG15.R16",
+          "visited.DG15.R16"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R16",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R16"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "boss",
+            "note": "Leave the Surveyor of Ellis unfinished.",
+            "target": "surveyor",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": [
+              {
+                "event": "step-off",
+                "note": "Step off the dais. The poured copies start walking."
+              },
+              {
+                "event": "pull-ladle",
+                "tool": "field-chain",
+                "note": "Pull the ladle off its mark with the chain."
+              },
+              {
+                "event": "record-overflow",
+                "tool": "field-book",
+                "note": "The glass shows the plot overflowing the county. Record that."
+              },
+              {
+                "event": "lamp-ticks",
+                "tool": "office-lamp",
+                "note": "The lamp shows the overflow ticks on the floor."
+              },
+              {
+                "event": "stand-outside",
+                "note": "Stand on the tick outside the seal."
+              },
+              {
+                "event": "leave-unfinished",
+                "note": "Leave the poured Ellis unfinished. The drain opens."
+              }
+            ],
+            "machine": "boss.surveyor-of-ellis",
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.surveyorUnfinished"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The drain is open.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.surveyorUnfinished"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "stamp-then-plumb",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "boss",
+              "note": "Recover from stamping the plot by cracking it with the plumb.",
+              "target": "surveyor",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": [
+                {
+                  "event": "step-off",
+                  "note": "Step off the dais."
+                },
+                {
+                  "event": "pull-ladle",
+                  "tool": "field-chain",
+                  "note": "Pull the ladle."
+                },
+                {
+                  "event": "stamp-as-drawn",
+                  "tool": "office-seal",
+                  "note": "Mistake: stamp the plot as drawn."
+                },
+                {
+                  "event": "plumb-crack",
+                  "tool": "plumb-bob",
+                  "note": "The plumb cracks the false boundary."
+                },
+                {
+                  "event": "leave-unfinished",
+                  "note": "Leave the pouring unfinished."
+                }
+              ],
+              "machine": "boss.surveyor-of-ellis",
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Leave.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg15.surveyorUnfinished"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Leave the Surveyor of Ellis unfinished. | action=boss | target=surveyor | tool=none | requires=none | sets=dg15.surveyorUnfinished",
+        "  1.step-off: Step off the dais. The poured copies start walking. tool=none",
+        "  1.pull-ladle: Pull the ladle off its mark with the chain. tool=field-chain",
+        "  1.record-overflow: The glass shows the plot overflowing the county. Record that. tool=field-book",
+        "  1.lamp-ticks: The lamp shows the overflow ticks on the floor. tool=office-lamp",
+        "  1.stand-outside: Stand on the tick outside the seal. tool=none",
+        "  1.leave-unfinished: Leave the poured Ellis unfinished. The drain opens. tool=none",
+        "2. The drain is open. | action=traverse | exit=north | tool=none | requires=dg15.surveyorUnfinished | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R16. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.surveyorUnfinished",
+        "cleared.DG15.R16",
+        "visited.DG15.R16"
+      ]
+    },
+    {
+      "id": "DG15.R17",
+      "dungeon": "DG15",
+      "name": "The Drain",
+      "environment": null,
+      "region": "dg15.foundry",
+      "checkpoint": false,
+      "purpose": "The foundry drains into the Marble Vein. The needle points down. This is not a new mythology. It is the unfinished county under the surveyed one.",
+      "layoutNote": "A sloping floor. A round drain off the aisle. The north door is the drop into the hub, represented as a door.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#...###..........#",
+          "#................#",
+          "#................#",
+          "#............V...#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG15.R16",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG16.HUB",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg15.surveyorUnfinished"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "drain-voice",
+          "name": "Drain",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "drain-voice.line1",
+              "text": "Below this is not a god's country. It is the lives the list did not pour."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "drain-rim",
+          "name": "Drain rim",
+          "kind": "rim",
+          "pos": {
+            "x": 12,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE NEEDLE POINTS DOWN.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG15.R17.use-tool.drain-rim",
+          "kind": "use-tool",
+          "target": "drain-rim",
+          "tool": "marble-needle",
+          "sets": [
+            "dg15.needleDown"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG15.R17.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg15.surveyorUnfinished"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG16.HUB",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG15.R17",
+        "survivesDeath": [
+          "dg15.needleDown",
+          "cleared.DG15.R17",
+          "visited.DG15.R17"
+        ],
+        "resetsOnDeath": [
+          "strike.dg15.foundry",
+          "hazard.DG15.R17",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg15.foundry",
+        "onLeave": [
+          "visited.DG15.R17"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "The needle points down, toward the vein.",
+            "target": "drain-rim",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg15.needleDown"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Descend to the threshold well.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg15.surveyorUnfinished"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. The needle points down, toward the vein. | action=use-tool | target=drain-rim | tool=marble-needle | requires=none | sets=dg15.needleDown",
+        "2. Descend to the threshold well. | action=traverse | exit=north | tool=none | requires=dg15.surveyorUnfinished | sets=none",
+        "3. Room clear is recorded as cleared.DG15.R17. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "open-drain",
+            "tiles": [
+              {
+                "x": 13,
+                "y": 6
+              }
+            ],
+            "tell": "drain-rim",
+            "fatal": true,
+            "effect": "fall",
+            "note": "The door is the way down. The void tile is not."
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg15.needleDown",
+        "cleared.DG15.R17",
+        "visited.DG15.R17"
+      ]
+    }
+  ]
+}

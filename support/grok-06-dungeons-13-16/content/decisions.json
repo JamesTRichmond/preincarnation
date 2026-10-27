@@ -1,0 +1,42 @@
+{
+  "mappingStatus": "PENDING",
+  "note": "Semantic outcomes of the major county decisions. The earlier campaign sets these. Until mapped, the runtime must pass 'unknown', which keeps every dungeon solvable and makes Distribute ineligible.",
+  "domains": {
+    "farm": {
+      "values": [
+        "prepared",
+        "neglected",
+        "opposed",
+        "unknown"
+      ],
+      "preparedMeans": "The player helped the farm hold its own seed, fences, and books so the place can bear a share without the office."
+    },
+    "mill": {
+      "values": [
+        "prepared",
+        "neglected",
+        "opposed",
+        "unknown"
+      ],
+      "preparedMeans": "The player helped the mill keep its race, wheel, and settlement so the mill can bear a share."
+    },
+    "crossing": {
+      "values": [
+        "prepared",
+        "neglected",
+        "opposed",
+        "unknown"
+      ],
+      "preparedMeans": "The player helped the ford or ferry keep a crossing that answers to its tenders, not only to the survey."
+    },
+    "family": {
+      "values": [
+        "reunited",
+        "scattered",
+        "estranged",
+        "unknown"
+      ],
+      "preparedMeans": "Reunited is the only family value that can hold a share. Scattered and estranged cannot."
+    }
+  }
+}
