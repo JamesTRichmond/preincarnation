@@ -32,14 +32,7 @@ The P0 crash (`paintSheep16 is not defined`) is fixed.
 
 Each merged PR has a verification comment: typecheck, build, game tests, smoke dev + built, desktop + mobile, console, overflow.
 
-**Held:** #45 (death as a chapter). Blocker comment posted:
-- `engine.ts` +85/-6 with a new `chapter` mode;
-- new persisted `save.flags.pendingChapter` without a `SAVE_VERSION` bump;
-- death-cause string matching;
-- the 14 vs 14–18 winters question;
-- stale base with a `package.json` conflict.
-
-It needs J R sign-off; see #66.
+**Held, then closed under ruling #66:** #45. A played chapter is the right shape. That branch is not: no `pendingChapter` without a `SAVE_VERSION` bump, no death-cause string matching, winters are exactly 14.
 
 **Blocked (comment, not closed):**
 - #18 crafting resolver → #62.
@@ -52,22 +45,24 @@ It needs J R sign-off; see #66.
 - **Tests are discovered by glob.** PRs must **not** edit `package.json` to add tests. Name files `*.test.ts` under `src/` or `support/`, or `*.test.mjs` under `support/`. `.js` tests are not discovered.
 - `npm run test:platform` runs the App Builder template tests in `scripts/`. They need the sandbox `.grok/` dir and skip cleanly without it.
 - **Save:** `preincarnation.save.v1`, `SAVE_VERSION = 8`; `writeSave` keeps `<key>.bak`. Since #46, an unreadable/newer save is refused, not overwritten.
-- **Death math:** `wintersPassed()` = 14 + floor(rand*5), i.e. 14–18 (`rules.ts`). The README says 14. Question for J R: #70.
+- **Death math:** `wintersPassed()` returns 14. The line and the year agree. No live geolocation, no forecast, no weather speed tax. Ruling #70, on `improve/authored-county`.
 - **CI:** `concurrency` cancels superseded main runs, so "cancelled" on an older main SHA is expected. `actions/checkout@v4`/`setup-node@v4` emit a Node 20 deprecation warning; bump them to v5 later.
 - **Process:** every PR is authored as `JamesTRichmond` (worker bots on J R's account). Merges go PR → verify → merge commit. No force-push, no direct pushes to main.
 
 ## Issue Factory
 
-**james-human (decisions for J R):**
-- #62 crafting/loot/bench line
-- #63 food vs hunger
-- #64 second games/modes
-- #65 photo art, audio, animation vs SNES coat
-- #66 what carries across a death
-- #67 core loop and seam gating
-- #68 Vermont authenticity (#21)
-- #69 localization (#25)
-- #70 the 14–18 winter variance and the real location/weather fetch
+**james-human rulings, applied 2026-10-26 (issues left open; the comment is the law):**
+- #62 support only. No craft, loot, bench, or storage on the live surface. Closed #18 #19 #27 #28 #31 #32 #33 #39 #40 #43 #55 #56.
+- #63 food may be named. Hunger does not exist.
+- #64 no second game. Closed #16 #23 #34.
+- #65 the coat is the medium. Closed #20 #26 #29 #44.
+- #66 keep yourself, the lantern, the shovel, and the waking iron. Closed #13 #14 #30 #45 #47.
+- #67 no new gate. Closed #22 #24 #50.
+- #68 real Addison County, or labeled fiction. Closed #21.
+- #69 English only for v1. Closed #25.
+- #70 exactly 14 winters. No geo, no forecast, no weather speed tax. This branch.
+
+#59 may stay as an unmounted support archive. It does not mount.
 
 **bot-ready (mechanical, verify then merge):**
 - #71 support/unmounted PRs, `package.json`-only conflicts: #27, #39, #42, #48, #49, #55. Merging #27/#39/#55 waits on #62. #42's tests need renaming to `.test.mjs`.
