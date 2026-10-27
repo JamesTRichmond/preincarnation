@@ -1,4 +1,6 @@
 /** Procedural mixer — unlocked on the first gesture. */
+import { bedSpec, clampVolume, type AudioBed } from "./audio-bed.ts";
+
 export function createAudio() {
   let ctx: AudioContext | null = null;
   let master: GainNode | null = null;
@@ -111,12 +113,27 @@ export function createAudio() {
     voices.push({ osc: o, gain: g });
   };
 
-  const startDrone = (limbo: boolean) => {
+  const tell = () => beep(740, 0.06, "square", 0.05, 80);
+  const winter = () => {
+    beep(392, 0.22, "sine", 0.08, -40);
+    setTimeout(() => beep(330, 0.28, "triangle", 0.07, -20), 140);
+  };
+  const kitchen = () => beep(520, 0.08, "triangle", 0.05, 40);
+
+  const setVolumes = (musicLevel: number, sfxLevel: number) => {
+    if (!ctx || !music || !sfx) return;
+    music.gain.setTargetAtTime(muted ? 0.0001 : 0.18 * clampVolume(musicLevel), ctx.currentTime, 0.05);
+    sfx.gain.setTargetAtTime(muted ? 0.0001 : 0.5 * clampVolume(sfxLevel), ctx.currentTime, 0.05);
+  };
+
+  const startDrone = (limboOrBed: boolean | AudioBed = false) => {
     ensure();
     if (!music || !ctx) return;
+    const bed: AudioBed = typeof limboOrBed === "boolean" ? (limboOrBed ? "limbo" : "county") : limboOrBed;
+    const spec = bedSpec(bed);
     stopDrone();
-    addVoice(limbo ? "sine" : "triangle", limbo ? 55 : 98, limbo ? 0.08 : 0.04, 0.4);
-    if (!limbo) addVoice("sine", 147, 0.02, 0.8);
+    addVoice(spec.limbo ? "sine" : "triangle", spec.root, spec.limbo ? 0.08 : 0.04, 0.4);
+    if (spec.fifth) addVoice("sine", spec.fifth, 0.02, 0.8);
   };
 
   const setDuck = (on: boolean) => {
@@ -141,5 +158,5 @@ export function createAudio() {
     if (c) void c.close();
   };
 
-  return { unlock, slash, hit, pickup, hurt, die, talk, crown, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
+  return { unlock, slash, hit, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
 }

@@ -28,5 +28,5 @@ One person. The Marble Vein is the only plot. Death is fourteen winters, and the
 
 The sphere is the county after the Vein goes quiet. Fact is still a Green that thinks it is Middlebury. The seam still opens back. That part is the plot.
 
-Release the universe and Bind it as a Crown turn Vermont into furniture for a next empire. That is a second plot. The rooms stay. Those choices are not the job. Do not add rooms.
+Release the universe and Bind it as a Crown are gone from the Heart. The test fails if either choice returns. The old sentences stay in the file so a life that already chose can still be read. Do not add rooms.
 

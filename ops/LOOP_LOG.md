@@ -76,6 +76,28 @@ Decisions: D-015
 Blockers: none
 Next: take the Crown fate off the Heart. Leave walk. Do not add rooms. Do not merge.
 
+L-0008 | 2026-10-27 | Phase: P0
+Goal: land the bot-ready must-fixes without a second plot.
+Done: status writer, comfort, audio beds, tell length, first-life line, particle cap, kitchen only from pause, save export/import, coat tile check. Density path recorded and not mounted.
+Verified: ops/EVIDENCE/L-0008-test-game.txt — 510 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-016
+Blockers: density path is james-human. ops/DENSITY.md.
+Next: take the Crown fate off the Heart. Leave walk. Do not add rooms. Do not merge.
+
+L-0009 | 2026-10-27 | Phase: P0
+Goal: take the second plot off the Heart, and make the job say the next step.
+Done: fate choices removed. HUD objective and pause job share liveObjective and refresh. First-life order is tested.
+Verified: ops/EVIDENCE/L-0009-test-game.txt — 513 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged; builder does not score)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-017
+Blockers: a recorded 50 would be the builder grading its own work. That is not allowed.
+Next: check in. Do not write 50. Do not merge.
+
+
+
 
 
 

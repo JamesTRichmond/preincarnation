@@ -1,5 +1,8 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
+import { boneFlashAlpha } from "./a11y";
+import { bedFor, type AudioBed } from "./audio-bed";
+import { FLOAT_CAP, PARTICLE_CAP, SLASH_CAP, trimCapped, unstickSpot } from "./fx";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
@@ -15,6 +18,7 @@ import {
 } from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
+import { liveObjective } from "./quest";
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
@@ -40,7 +44,7 @@ import {
   paintLock16,
   paintCave16,
 } from "./pix";
-import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
 import { applyDeath } from "./cooking/reduce.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
@@ -198,6 +202,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let probeYaw = 0;
   let playerStoned = 0;
   let flash = 0;
+  let reducedFlash = false;
+  let audioBed: AudioBed = "county";
   const images = new Map<string, HTMLImageElement>();
   let ready = false;
   let showControls = false;
@@ -348,6 +354,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const enterLimbo = (_reason: string) => {
     audio.die();
+    audio.winter();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
     save.kitchen = applyDeath(save.kitchen);
     mode = "limbo";
@@ -512,27 +519,23 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     lastUi = "";
   };
 
-  const objective = () => {
-    if (mode === "limbo") return OBJECTIVES.limbo;
-    if (mapId === "soloverse") return OBJECTIVES.spectrum;
-    if (mapId === "quarry") {
-      if (!save.flags.relics.includes("lantern")) return "TAKE the lamp by the door. The Vein is blind without it.";
-      if (!save.flags.lanternOn) return "OPEN the lamp. The hammer does not land in the dark.";
-      if (!save.flags.chests.includes("q-key")) return "TAKE the key in the west alcove.";
-      if (!save.flags.chests.includes("q-lock-a")) return "USE the key on the north lock.";
-      if (!save.flags.relics.includes("hammer")) return "TAKE the marble hammer past the lock.";
-      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null)
-        return "SMASH the cracked marble — lamp open — then FACE the Sentinel.";
-      return "WALK west, or die here and come back with the shovel.";
-    }
-    if (!save.flags.talked.includes("elder") && mapId === "middlebury") return OBJECTIVES.start;
-    if (!save.flags.relics.includes("shovel")) return "TAKE the shovel by the stone.";
-    if (mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save))
-      return OBJECTIVES.seam;
-    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
-    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "DIG the grave of your last skin. The shovel is the verb.";
-    return OBJECTIVES.county;
-  };
+  const objective = () =>
+    liveObjective({
+      mode,
+      mapId,
+      talkedElder: save.flags.talked.includes("elder"),
+      hasShovel: save.flags.relics.includes("shovel"),
+      hasLantern: save.flags.relics.includes("lantern"),
+      lanternOn: !!save.flags.lanternOn,
+      hasKey: save.flags.chests.includes("q-key"),
+      lockOpen: save.flags.chests.includes("q-lock-a"),
+      hasHammer: save.flags.relics.includes("hammer"),
+      quarryQuiet: save.flags.townsCleared.includes("quarry"),
+      sentinelFaced: save.flags.sentinelFate != null,
+      cycle: save.cycle,
+      seamThin: mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save),
+      graveWaiting: (save.flags.graves ?? []).some((g) => !g.excavated),
+    });
 
   const atProp = (p: PropSpec, label: string) => ({ x: p.x * TILE + 8, y: p.y * TILE + 8, label });
 
@@ -972,42 +975,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return false;
   };
 
-  const unstick = (px: number, py: number) => {
-    if (!blocked(px, py, 4)) return { x: px, y: py };
-    const tx0 = Math.floor(px / TILE);
-    const ty0 = Math.floor(py / TILE);
-    const prefer = [
-      [0, 1],
-      [1, 1],
-      [-1, 1],
-      [1, 0],
-      [-1, 0],
-      [2, 1],
-      [-2, 1],
-      [0, 2],
-      [1, 2],
-      [-1, 2],
-      [0, -1],
-      [1, -1],
-      [-1, -1],
-    ];
-    for (const [dx, dy] of prefer) {
-      const x = (tx0 + dx) * TILE + 8;
-      const y = (ty0 + dy) * TILE + 8;
-      if (!blocked(x, y, 4)) return { x, y };
-    }
-    for (let r = 1; r <= 16; r++) {
-      for (let dy = -r; dy <= r; dy++) {
-        for (let dx = -r; dx <= r; dx++) {
-          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
-          const x = (tx0 + dx) * TILE + 8;
-          const y = (ty0 + dy) * TILE + 8;
-          if (!blocked(x, y, 4)) return { x, y };
-        }
-      }
-    }
-    return { x: px, y: py };
-  };
+  const unstick = (px: number, py: number) => unstickSpot(px, py, (x, y) => blocked(x, y, 4));
 
   const plantSouthOfStoop = () => {
     const tx = Math.floor(player.x / TILE);
@@ -1753,9 +1721,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             e.hurt = 0.4;
           }
         } else {
+          const beforeTell = e.tell;
           const step = countyTell(e.kind, dist, e.tell, e.warned, dt);
           e.tell = step.tell;
           e.warned = step.warned;
+          if (beforeTell === 0 && step.step === "tell") audio.tell();
           if (Math.abs(dx) > Math.abs(dy)) e.dir = dx < 0 ? 1 : 2;
           else e.dir = dy < 0 ? 3 : 0;
           if (step.step === "tell") {
@@ -1841,8 +1811,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       return f.t > 0;
     });
 
+    const fighting = enemies.some((e) => e.alive && Math.hypot(e.x - player.x, e.y - player.y) < 78);
+    const nextBed = bedFor({ mode, mapId, fighting });
+    if (nextBed !== audioBed) {
+      audioBed = nextBed;
+      audio.startDrone(nextBed);
+    }
+
     beacon = questBeacon();
-    if (!reduced && particles.length < 240 && mapId !== "soloverse") {
+    trimCapped(slashes, SLASH_CAP);
+    trimCapped(particles, PARTICLE_CAP);
+    trimCapped(floats, FLOAT_CAP);
+    if (particles.length < PARTICLE_CAP && !reduced && mapId !== "soloverse") {
       const moving = Math.abs(mx) + Math.abs(my) > 0.2;
       if (moving) {
         stepAcc += dt;
@@ -2225,7 +2205,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillText(f.text, Math.round((f.x - viewX) * zoom) - 10, Math.round((f.y - viewY) * zoom));
     }
 
-    if (flash > 0) {
+    if (boneFlashAlpha(flash, reducedFlash) > 0) {
       bctx.fillStyle = "rgba(244,239,226,0.25)";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
     }
@@ -2448,7 +2428,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       character: save.character,
       afterlifeHost: save.flags.afterlifeHost,
       introBeat,
-      job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
+      job: objective(),
       beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
@@ -2462,8 +2442,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycle,
       snap.incarnation,
       snap.bombs,
+      snap.objective,
+      snap.job,
       snap.interactHint,
       snap.message,
+      snap.job,
       dialogue?.id,
       endingBeat,
       showHelp,
@@ -2813,6 +2796,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     setShake: (v: boolean) => {
       shakeOn = v;
     },
+    setReducedFlash: (v: boolean) => {
+      reducedFlash = v;
+    },
+    setVolumes: (music: number, sfx: number) => audio.setVolumes(music, sfx),
+    exportLife: () => exportLifeBlob(save),
+    importLife: (raw: string) => {
+      const next = importLifeBlob(raw);
+      if (!next) return false;
+      writeSave(next);
+      return true;
+    },
     toggleMute: () => audio.setMuted(!audio.muted),
     dismissHelp: () => {
       showHelp = false;
@@ -2836,11 +2830,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (mode === "play") mode = "pause";
     },
     openKitchen: () => {
-      if (mode === "pause" || mode === "play") {
-        mode = "kitchen";
-        showHelp = false;
-        lastUi = "";
-      }
+      if (mode !== "pause") return;
+      mode = "kitchen";
+      showHelp = false;
+      lastUi = "";
+      audio.kitchen();
     },
     closeKitchen: () => {
       if (mode === "kitchen") {

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { T } from "./tile-ids.ts";
-import { BITE, countyTell, placeUnderfoot, tellPixels, TELL_S } from "./place.ts";
+import { BITE, countyTell, placeUnderfoot, tellHold, tellPixels, TELL_S } from "./place.ts";
 
 describe("place underfoot", () => {
   it("names the creek, the bridge, and the Vein", () => {
@@ -51,5 +51,13 @@ describe("county tell", () => {
     const pts = tellPixels(0, 0, 30, 0, TELL_S);
     assert.equal(pts.length, 11);
     assert.ok(pts.every((p) => Number.isFinite(p[0]) && Number.isFinite(p[1])));
+  });
+
+  it("holds a bear longer than a crow, and leaves the fisher on the old clock", () => {
+    assert.equal(tellHold("fisher"), TELL_S);
+    assert.ok(tellHold("bear") > TELL_S);
+    assert.ok(tellHold("crow") < TELL_S);
+    assert.equal(countyTell("bear", 18, 0, false, 0.016).tell, tellHold("bear"));
+    assert.equal(countyTell("sentinel", 8, 0, false, 0.016).step, "walk");
   });
 });

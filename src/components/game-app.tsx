@@ -18,6 +18,8 @@ import {
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
 import { EMPTY_KIT } from "@/game/kit-compare";
+import { attackEdge, picturePixels, readA11y, writeA11y, type A11ySettings } from "@/game/a11y";
+import { FIRST_LIFE } from "@/game/onboarding";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
 
 const EMPTY: UiSnapshot = {
@@ -81,6 +83,7 @@ export function GameApp() {
   const gameRef = useRef<GameHandle | null>(null);
   const [ui, setUi] = useState<UiSnapshot>(EMPTY);
   const [hasSave, setHasSave] = useState(false);
+  const [comfort, setComfort] = useState<A11ySettings>(() => readA11y());
   const stickRef = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
 
@@ -89,6 +92,7 @@ export function GameApp() {
     if (!el) return;
     const g = createGame(el, setUi);
     gameRef.current = g;
+    g.setReducedFlash(readA11y().reducedFlashing);
     setHasSave(g.hasSave());
     return () => g.dispose();
   }, []);
@@ -172,14 +176,31 @@ export function GameApp() {
   };
 
   const playing = ui.mode === "play";
+  const frame = picturePixels(typeof window === "undefined" ? 320 : window.innerWidth, typeof window === "undefined" ? 240 : window.innerHeight, comfort.pictureScale);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
+    <main
+      className="relative h-dvh w-full overflow-auto bg-bg text-fg"
+      data-contrast={comfort.highContrast ? "high" : "low"}
+      data-stick={comfort.stickSide}
+    >
+      <p className="sr-only" aria-live="polite">
+        {ui.mode === "play" ? ui.job : ""}
+      </p>
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 h-full w-full touch-none"
-        style={{ imageRendering: "pixelated", cursor: "crosshair" }}
-        aria-label="PREINCARNATION game world"
+        className="touch-none"
+        width={320}
+        height={240}
+        style={{
+          imageRendering: "pixelated",
+          cursor: "crosshair",
+          width: comfort.pictureScale === 1 ? "100%" : frame.w,
+          height: comfort.pictureScale === 1 ? "100%" : frame.h,
+          position: "absolute",
+          inset: 0,
+        }}
+        aria-label="Preincarnation. 320 by 240. The Marble Vein is east of the Green."
       />
 
       {ui.mode === "title" && (
@@ -241,6 +262,26 @@ export function GameApp() {
             setHasSave(false);
           }}
           onKitchen={() => gameRef.current?.openKitchen()}
+          comfort={comfort}
+          onComfort={(patch) => {
+            const next = writeA11y(patch);
+            setComfort(next);
+            if (patch.reducedFlashing != null) gameRef.current?.setReducedFlash(next.reducedFlashing);
+            if (patch.shakeStrength != null) gameRef.current?.setShake(next.shakeStrength > 0);
+          }}
+          onExport={() => {
+            const raw = gameRef.current?.exportLife();
+            if (!raw) return;
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob([raw], { type: "application/json" }));
+            a.download = "preincarnation-life.json";
+            a.click();
+          }}
+          onImport={(raw) => {
+            const ok = gameRef.current?.importLife(raw) ?? false;
+            if (ok) gameRef.current?.continueGame();
+            return ok;
+          }}
         />
       )}
 
@@ -339,7 +380,7 @@ function Title({
           </button>
         )}
       </div>
-      <p className="mt-8 max-w-md text-sm text-fg-subtle">First you make the person. Then the county tells you the job.</p>
+      <p className="mt-8 max-w-md text-sm text-fg-subtle">{FIRST_LIFE}</p>
     </section>
   );
 }
@@ -353,6 +394,10 @@ function Pause({
   onControls,
   onReset,
   onKitchen,
+  comfort,
+  onComfort,
+  onExport,
+  onImport,
 }: {
   ui: UiSnapshot;
   onResume: () => void;
@@ -362,11 +407,15 @@ function Pause({
   onControls: (v: boolean) => void;
   onReset: () => void;
   onKitchen: () => void;
+  comfort: A11ySettings;
+  onComfort: (patch: Partial<A11ySettings>) => void;
+  onExport: () => void;
+  onImport: (raw: string) => boolean;
 }) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4">
-      <div className="max-h-[min(92dvh,44rem)] w-full max-w-lg overflow-y-auto rounded-[28px] bg-bg-elevated p-6 ring-1 ring-border">
-        <h2 className="font-display text-3xl">{ui.showHelp ? "How to play" : "Paused"}</h2>
+    <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+      <div className="max-h-[min(92dvh,44rem)] w-full max-w-lg overflow-y-auto rounded-[28px] bg-bg-elevated p-6 ring-1 ring-border" style={{ zoom: comfort.textScale }}>
+        <h2 id="pause-title" className="font-display text-3xl">{ui.showHelp ? "How to play" : "Paused"}</h2>
         <p className="mt-1 text-sm text-fg-muted">
           {ui.character.name} · {traitById(BACKGROUNDS, ui.character.backgroundId).name} · {ui.townName} · Cycle {ui.cycle}
         </p>
@@ -489,12 +538,12 @@ function Pause({
         <p className="mt-3 text-sm text-fg-muted">
           Space is always the sword — even with the lamp in hand. Y uses the tool in the HUD (shovel, lamp, hammer,
           cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
-          shovel in 14–18 years. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
+          shovel in fourteen winters. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
 
         <h3 className="mt-5 font-display text-xl">The kitchen</h3>
         <p className="mt-1 text-sm text-fg-muted">
-          A county kitchen. Cards, a pot, and two fictional seats. They do not change a fight, and this is not a second life.
+          Pause, then open the kitchen. It is optional. It does not join a fight, and it does not decide a death.
         </p>
         {!ui.showHelp && (
           <button type="button" className="mt-2 h-11 w-full rounded-[12px] bg-primary font-semibold text-primary-fg" onClick={onKitchen}>
@@ -517,6 +566,39 @@ function Pause({
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onShake(!ui.shake)}>
             Screen shake {ui.shake ? "on" : "off"}
           </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onComfort({ pictureScale: comfort.pictureScale >= 2 ? 1 : ((comfort.pictureScale + 0.25) as A11ySettings["pictureScale"]) })}>
+            Picture {comfort.pictureScale}×
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onComfort({ textScale: comfort.textScale >= 2 ? 1 : ((comfort.textScale + 0.25) as A11ySettings["textScale"]) })}>
+            Text {comfort.textScale}×
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onComfort({ highContrast: !comfort.highContrast })}>
+            High contrast {comfort.highContrast ? "on" : "off"}
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onComfort({ reducedFlashing: !comfort.reducedFlashing })}>
+            Flashing {comfort.reducedFlashing ? "off" : "on"}
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onComfort({ stickSide: comfort.stickSide === "left" ? "right" : "left" })}>
+            Walk stick {comfort.stickSide}. Attack {attackEdge(comfort.stickSide)}.
+          </button>
+          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onExport}>
+            Export this life
+          </button>
+          <label className="flex h-11 cursor-pointer items-center justify-center rounded-[12px] ring-1 ring-border">
+            Import a life
+            <input
+              type="file"
+              accept="application/json,.json"
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                void file.text().then((raw) => {
+                  onImport(raw);
+                });
+              }}
+            />
+          </label>
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onMute}>
             Sound {ui.muted ? "muted" : "on"}
           </button>
@@ -542,7 +624,7 @@ function DialoguePanel({
 }) {
   const choices = node.choices ?? [{ label: "Continue", next: "end" as const }];
   return (
-    <div className="absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+    <div className="absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]" role="dialog" aria-label={node.speaker}>
       <div className="mx-auto max-w-2xl rounded-[28px] bg-bg-elevated p-5 ring-1 ring-border">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="font-display text-2xl text-fg">{node.speaker}</h2>
@@ -556,6 +638,7 @@ function DialoguePanel({
             <button
               key={c.label}
               type="button"
+              autoFocus={choices.indexOf(c) === 0}
               onClick={() => onChoose(choices.indexOf(c))}
               className="min-h-12 rounded-[12px] bg-bg px-4 py-3 text-left text-base text-fg ring-1 ring-border hover:ring-primary"
             >

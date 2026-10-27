@@ -30,6 +30,12 @@ D-014 | L-0006 | The theme map lists every live relic plus walk, speak, die, and
 
 D-015 | L-0007 | The four rooms are Addison after the Vein goes quiet. The seam still opens back to Middlebury. "Release the universe" and "Bind it as a Crown" are a second plot and are not the job. No rooms were added. The persistence pack's observed save version was still pinned at 8 after the live save moved to 9. The pin now reads 9. The save format was not changed.
 
+D-016 | L-0008 | Ten bot-ready passes landed on integrate/vanguard-must: status rewrite, comfort settings, audio beds, tell length by creature, first-life line, particle cap, kitchen only from pause, export/import of the save blob, and a coat check that every live tile is painted. The density path is not mounted. That call is James's. ops/DENSITY.md records it. No score.
+
+D-017 | L-0009 | The Heart no longer offers Release the universe or Bind it as a Crown. Just walk remains. A life that already chose can still read the old sentence. The HUD job is the next step of the one plot, and it refreshes when that step changes. The builder does not write 50. The recorded score stays 20.0.
+
+
+
 
 
 
