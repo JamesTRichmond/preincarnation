@@ -939,7 +939,7 @@ function Ending({ beat, onWalk }: { beat: number; onWalk: () => void }) {
     <section className="absolute inset-0 flex flex-col items-center justify-center bg-bg px-6 text-center">
       <p className="font-mono text-xs tracking-[0.28em] text-primary uppercase">Vermont · never ending</p>
       <h1 className="mt-4 max-w-xl font-display text-3xl leading-snug text-fg sm:text-5xl">{line}</h1>
-      <p className="mt-6 text-sm text-fg-subtle">This is not an ending. It is a door. Power stacks. The county is still under your feet.</p>
+      <p className="mt-6 text-sm text-fg-subtle">This is not a coronation. The county is still under your feet.</p>
       <div className="mt-8 w-full max-w-sm">
         <GoldButton onClick={onWalk}>Keep walking — louder</GoldButton>
       </div>

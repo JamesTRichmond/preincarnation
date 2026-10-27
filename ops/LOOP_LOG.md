@@ -96,6 +96,17 @@ Decisions: D-017
 Blockers: a recorded 50 would be the builder grading its own work. That is not allowed.
 Next: check in. Do not write 50. Do not merge.
 
+L-0010 | 2026-10-27 | Phase: P0
+Goal: remove the cosmology ending so a grade of the playable game can be fair.
+Done: ending lines stay one person in Addison. The fold keeps you a person. The job chimes when the step changes.
+Verified: ops/EVIDENCE/L-0010-test-game.txt — 514 pass, 0 fail. tsc clean.
+Score: Final 20.0 (held for James to grade)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-017
+Blockers: none for a grade. Density path remains unmounted.
+Next: James grades. Do not write 50. Do not merge.
+
+
 
 
 

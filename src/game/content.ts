@@ -667,12 +667,12 @@ export function afterlifeCopy(
 }
 
 export const ENDING_LINES = [
-  "You die on purpose, and the county folds like a map.",
-  "Addison's hills become vertebrae. Rutland's square, a pupil.",
-  "Every farmhand, mill, ewe, and wraith you touched is still here — a weather system.",
-  "The embryo inhales. Galaxies are a habit. Entropy is a lullaby.",
-  "You are a universe that remembers being a person in Vermont.",
-  "PREINCARNATION. The Soloverse is yours to walk. There is no last life.",
+  "The marble answers. You are still one person.",
+  "Addison does not fold into a crown. The Green is still a green.",
+  "Maeve, the shovel, the lamp, the Vein. That was the job.",
+  "Fourteen winters pass when you fall. The same hands come back.",
+  "Walk the county. There is no second world waiting in the credits.",
+  "The Vein is quiet. You keep walking.",
 ];
 
 export const NPC_NODE: Record<string, string> = {

@@ -203,6 +203,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let playerStoned = 0;
   let flash = 0;
   let reducedFlash = false;
+  let voicedJob = "";
   let audioBed: AudioBed = "county";
   const images = new Map<string, HTMLImageElement>();
   let ready = false;
@@ -379,7 +380,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       audio.startDrone(true);
       persist();
       lastUi = "";
-      say("Vermont folds. The job followed you. The Heart is the middle.");
+      say("The county folded. You are still one person. The Heart is the middle of Addison.");
       return;
     }
     birthIntoWorld();
@@ -2476,6 +2477,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycleLedger.theGround,
     ].join("|");
     if (sig === lastUi) return;
+    if (mode === "play" && snap.job !== voicedJob) {
+      voicedJob = snap.job;
+      if (voicedJob) audio.talk();
+    }
     lastUi = sig;
     onUi(snap);
   };

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { DIALOGUE } from "./content.ts";
+import { DIALOGUE, ENDING_LINES } from "./content.ts";
 import { firstLifeSteps, liveObjective } from "./quest.ts";
 
 const FATE = /Release the universe|Bind it as a Crown/;
@@ -41,5 +41,12 @@ describe("the one job", () => {
     });
     assert.match(line, /Vein is quiet/);
     assert.equal(FATE.test(line), false);
+  });
+
+  it("does not end by turning the player into a universe", () => {
+    const joined = ENDING_LINES.join(" ");
+    assert.equal(/universe|galax|embryo|Soloverse is yours/i.test(joined), false);
+    assert.match(joined, /one person/);
+    assert.match(joined, /Fourteen winters/);
   });
 });
