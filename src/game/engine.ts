@@ -31,7 +31,6 @@ import {
   paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
-import type { PreincarnationSaveSlice } from "./item-search/adapter.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -2364,6 +2363,21 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       tempF: weather?.tempF ?? null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
+      bag: [
+        ...save.inventory.map((weapon) => weapon.name),
+        ...save.flags.relics
+          .filter((id) => id !== "sword")
+          .map((id) => RELIC_BY_ID[id]?.name)
+          .filter((name): name is string => !!name),
+        ...save.flags.bottles
+          .filter((bottle) => bottle !== "empty")
+          .map((bottle) =>
+            bottle === "deluxe" ? "Deluxe creemee" : bottle === "creemee" ? "Creemee" : "Syrup",
+          ),
+        ...(save.flags.arrows > 0 ? [`Arrows ×${save.flags.arrows}`] : []),
+        ...(save.flags.bombs > 0 ? [`Powder kegs ×${save.flags.bombs}`] : []),
+        ...(save.flags.keys > 0 ? [`Keys ×${save.flags.keys}`] : []),
+      ].join(" · ") || "Nothing",
       geoLine: save.flags.geoTown
         ? save.flags.geoTown === mapId
           ? "You are here"
@@ -2413,6 +2427,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.townName,
       snap.weatherName,
       snap.weaponName,
+      snap.bag,
       snap.showControls,
       snap.tropoverse,
       snap.spectrumReady,
@@ -2765,42 +2780,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       showHelp = false;
       void deck.hydrate(EMPTY_DECK);
     },
-    knownSlice: (): PreincarnationSaveSlice => ({
-      version: save.version,
-      cycle: save.cycle,
-      inventory: save.inventory.map((weapon) => ({
-        id: weapon.id,
-        name: weapon.name,
-        kind: weapon.kind,
-        flavor: weapon.flavor,
-        affixes: weapon.affixes.map((affix) => ({ id: affix.id, name: affix.name, magic: affix.magic })),
-      })),
-      equippedId: save.equippedId,
-      character: { name: save.character.name, bondId: save.character.bondId },
-      flags: {
-        relics: save.flags.relics.slice(),
-        ySlot: save.flags.ySlot,
-        arrows: save.flags.arrows,
-        bombs: save.flags.bombs,
-        bottles: save.flags.bottles.slice(),
-        keys: save.flags.keys,
-        caches: save.flags.caches.slice(),
-        year: save.flags.year,
-        lifePath: save.flags.lifePath,
-        returnedFromDeath: save.flags.returnedFromDeath,
-        graves: (save.flags.graves ?? []).map((grave) => ({
-          id: grave.id,
-          excavated: grave.excavated,
-          weapons: grave.weapons.map((weapon) => ({
-            id: weapon.id,
-            name: weapon.name,
-            magic: weapon.magic,
-            kind: weapon.kind,
-          })),
-          relics: grave.relics.slice(),
-        })),
-      },
-    }),
     pause: () => {
       if (mode === "play") mode = "pause";
     },

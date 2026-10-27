@@ -199,6 +199,7 @@ export type UiSnapshot = {
   tempF: number | null;
   weaponName: string;
   weaponTags: string;
+  bag: string;
   geoLine: string | null;
   bottles: BottleKind[];
   tropoverse: boolean;
