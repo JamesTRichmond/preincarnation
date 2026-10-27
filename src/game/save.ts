@@ -44,6 +44,11 @@ export function defaultSave(): SaveData {
   };
 }
 
+/** Same numbers as skillAwardForDeath. This file is emitted alone; it cannot import rules. */
+function awardAlreadyPaid(idealId: string, townsCleared: readonly string[]): number {
+  return 2 + (idealId === "the_job" && !townsCleared.includes("quarry") ? 1 : 0);
+}
+
 export function migrate(save: SaveData): SaveData {
   const base = defaultSave();
   const s: SaveData = {
@@ -99,6 +104,13 @@ export function migrate(save: SaveData): SaveData {
   if ((save.version ?? 1) < 8) {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
+  }
+  if (typeof save.flags?.lastSkillAward === "number") {
+    s.flags.lastSkillAward = save.flags.lastSkillAward;
+  } else {
+    s.flags.lastSkillAward = s.flags.returnedFromDeath
+      ? awardAlreadyPaid(s.character.idealId, s.flags.townsCleared ?? [])
+      : 0;
   }
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
