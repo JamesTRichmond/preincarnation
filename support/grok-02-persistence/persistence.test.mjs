@@ -31,7 +31,7 @@ describe("grok-02 persistence pack", () => {
     assert.equal(summary.liveSave.bound, false);
     assert.equal(summary.liveSave.imported, true);
     const seen = summary.liveSave.observations;
-    assert.equal(seen.saveVersion, 8);
+    assert.equal(seen.saveVersion, 9);
     assert.equal(seen.defaultName, "Ellis Perch");
     assert.equal(seen.defaultCycle, 0);
     assert.equal(seen.defaultYear, 2026);
@@ -45,7 +45,7 @@ describe("grok-02 persistence pack", () => {
     assert.equal(seen.forgetName, "Ellis Perch");
     assert.equal(seen.forgetCycle, 0);
     assert.equal(seen.forgetLeavesBackup, true);
-    assert.equal(seen.v7MigratedVersion, 8);
+    assert.equal(seen.v7MigratedVersion, 9);
     assert.equal(seen.v7MigratedName, "Ira Fenn");
     assert.equal(seen.v7Talked, "elder");
     assert.equal(seen.winters, 14);
