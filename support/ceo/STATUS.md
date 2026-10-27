@@ -1,26 +1,28 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~02:45 UTC, after merge of PR #83. Main at `a50c270` (merge of PR #83)._
+_Updated Tue 2026-10-27, ~03:00 UTC, after merge of PR #85. Main at `679de6f` (merge of #85). #83 skill-cap landed at `6fce268` (squash of head `a50c270`)._
 
-## Health of main (`a50c270`)
+## Health of main (`679de6f`)
 
 | Gate | Result |
 |---|---|
-| `npm run test:game` | **219 pass, 0 fail** (per PR #83 evidence) |
+| `npm run test:game` | **219 pass, 0 fail** (per PR #83 evidence; inherited) |
 | `tsc --noEmit` | clean (per PR #83) |
 | eslint on touched files | clean (per PR #83) |
 | SAVE_VERSION | remains 8 |
 | Engine touch | none |
+| Docs-only STATUS | corrected SHA; prior claim of a50c270 as main was the pre-merge head |
 
-Prior health (typecheck, build, smoke) inherited from previous main. Full re-smoke recommended on next CI cycle.
+Prior health (typecheck, build, smoke) inherited from previous main. Full re-smoke recommended on next CI cycle. PR #85 CI was green.
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #83 | Skill cap on death: `chapterSkillAward` pays only remaining unbought non-crown ranks minus points in hand (ceiling 12). Prevents infinite skill minting. Migration fills missing `lastSkillAward`. Ledger notes full purse. No engine, no bottles, SAVE_VERSION=8. | merged by James; head `a50c270` |
+| #83 | Skill cap on death: `chapterSkillAward` pays only remaining unbought non-crown ranks minus points in hand (ceiling 12). Prevents infinite skill minting. Migration fills missing `lastSkillAward`. Ledger notes full purse. No engine, no bottles, SAVE_VERSION=8. | merged by James; squash `6fce268` (head was `a50c270`) |
+| #85 | Docs-only CEO STATUS update recording #83. Contained incorrect main SHA (claimed a50c270). | merged by James at `679de6f`; SHA now corrected in this follow-up |
 
-Vision Checklist satisfied: Marble Vein sole plot; death ~14 winters chapter; one person; no romance/party/crafting core; 320x240 preserved; localStorage/SAVE_VERSION respected; support packs optional; tests green. Closes empty-grinding path (P1A-3).
+Vision Checklist satisfied: Marble Vein sole plot; death ~14 winters chapter; one person; no romance/party/crafting core; 320x240 preserved; localStorage/SAVE_VERSION respected; support packs optional; tests green. Closes empty-grinding path (P1A-3). No live engine or save impact.
 
 ## Durable facts
 
@@ -29,6 +31,7 @@ Vision Checklist satisfied: Marble Vein sole plot; death ~14 winters chapter; on
 - Node ≥ 22.12 required. Tests by glob. No package.json edits for tests.
 - Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
 - Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
+- Main SHA tracking must use the merge commit on main, not the pre-merge branch head.
 
 ## Issue Factory
 
@@ -46,21 +49,21 @@ Vision Checklist satisfied: Marble Vein sole plot; death ~14 winters chapter; on
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#83, ~02:45 UTC)
+## Open PR ledger (post-#85, ~03:00 UTC)
 
 | Bucket | PRs |
 |---|---|
 | STATUS updates (rebase/close) | #81 (after #80), #82 (after #76) |
 | Superseded | #38 (skill cap predecessor; close in favor of #83) |
-| Support / unmounted | #59 buried-history, #49 waterside finds, #42 quarry rules, #52 marble tell |
+| Support / unmounted | #59 buried-history, #49 waterside finds, #42 quarry rules, #52 marble tell, #86 marble tell (integrate) |
 | Live features | #15 weapon compare, #36 item search |
 | Other | remaining from prior ledger pending rebase |
 
 ## Next priorities
 
 1. Close #38 as superseded by #83 (same intent, landed).
-2. Rebase or close stale STATUS PRs #81 and #82; prefer this update as the current STATUS.
+2. Rebase or close stale STATUS PRs #81 and #82; prefer corrected STATUS as current.
 3. Continue bot-ready rebase of remaining PRs (#71-#73); verify vision and tests before merge.
-4. Full CI smoke on main post-#83 to confirm no regression.
-5. Review open support packs for vision alignment and conflicts.
+4. Full CI smoke on main post-#83/#85 to confirm no regression.
+5. Review open support packs and #86 (Marble Vein tell) for vision alignment; engine touch requires explicit approval.
 6. Repo hygiene: large artifacts/screenshots still inflate .git.
