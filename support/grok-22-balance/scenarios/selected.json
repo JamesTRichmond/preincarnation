@@ -1,0 +1,50 @@
+{
+  "note": "Real placements only. Bears are called minibosses here because they are the only repeated elite block (hp 7, contact 1.5). The game has no miniboss type. Major rows are four campaign checkpoints of the one placed boss, the Sentinel. Resident is defined in ENEMY_HP and is not placed.",
+  "ordinary": [
+    "middlebury crow-1",
+    "middlebury bob-chipman",
+    "middlebury fisher-1",
+    "vergennes v-crow",
+    "vergennes v-wraith",
+    "vergennes v-fisher",
+    "bristol b-bob",
+    "bristol b-fisher",
+    "ferrisburgh f-bob",
+    "whiteriver w-crow",
+    "addison ow-bob",
+    "rutland crow-1",
+    "soloverse wraith a+b+c (placed once cycle >= 1)"
+  ],
+  "overlappingGroups": [
+    "middlebury crow-1 + bob-chipman (36px)",
+    "vergennes v-crow + v-fisher (107px)",
+    "bristol b-fisher + b-bear (116px)",
+    "ferrisburgh f-bob + f-bear (101px)",
+    "soloverse wraith-a + sentinel (72px)"
+  ],
+  "minibossBears": [
+    "bristol b-bear",
+    "ferrisburgh f-bear",
+    "salisbury s-bear1",
+    "salisbury s-bear2",
+    "addison ow-bear",
+    "chittenden c-bear",
+    "windsor w-bear",
+    "soloverse solo-bear"
+  ],
+  "majorCheckpoints": [
+    "quarry sentinel, cycle 0, wanderer, no upgrades",
+    "quarry sentinel, cycle 2, vitality 1 / edge 1 / stride 1, boots",
+    "quarry sentinel, cycle 5, vitality 3 / edge 3 / stride 3, shadow step, wraith bond",
+    "soloverse sentinel, cycle 5, same ranks, tropoverse HP ×1.35 and slash ×1.2"
+  ],
+  "builds": {
+    "early": "cycle 0 wanderer, flaw cannot_rest, starter iron, no dash, no bottle",
+    "middle": "cycle 2 wanderer, one rank in vitality edge stride, boots, one syrup in the assisted policy only",
+    "late": "cycle 5 wanderer, ranks capped on vitality edge stride, shadow step, wraith bond"
+  },
+  "policies": {
+    "standard": "Hold about 20px, face the target, slash when the 0.22s hurt gate is open. No sip, no bomb, no spin.",
+    "assisted": "Retreat a little earlier, dash if boots or the form allow, sip syrup when HP is at or under the next contact hit."
+  }
+}

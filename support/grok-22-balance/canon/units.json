@@ -1,0 +1,90 @@
+{
+  "source": {
+    "repo": "JamesTRichmond/preincarnation",
+    "sha": "c737e42eb188148291438dfb8a5993d6ce2b77fa",
+    "note": "Pinned from src/game. This file is a citation snapshot for the balance model, not a replacement roster."
+  },
+  "tile": 16,
+  "contactRadius": 12,
+  "playerInvuln": 0.85,
+  "enemyHurtOnHit": 0.22,
+  "enemyHurtOnContact": 0.4,
+  "attackRecovery": 0.1,
+  "attackMoveMul": 0.55,
+  "spinWindup": 0.45,
+  "spinRadius": 28,
+  "slashOrigin": 12,
+  "hitSlack": 6,
+  "knockback": 10,
+  "dashDistance": 26,
+  "dashCooldownBoots": 0.28,
+  "dashCooldownBare": 0.55,
+  "aggro": { "bear": 64, "resident": 52, "default": 78 },
+  "forms": {
+    "wanderer": { "hp": 3, "speed": 76, "damage": 1, "walksWater": false, "walksVoid": false },
+    "smuggler": { "hp": 3, "speed": 96, "damage": 1, "innateDash": true, "walksWater": false, "walksVoid": false },
+    "officer": { "hp": 5, "speed": 70, "damage": 1.35, "walksWater": false, "walksVoid": false },
+    "embryo": { "hp": 6, "speed": 82, "damage": 2, "walksWater": true, "walksVoid": true }
+  },
+  "embryoSolidLive": ["pine", "wall", "marbleWall"],
+  "embryoBlurbAllowsOpen": ["water", "void"],
+  "othersSolid": ["pine", "wall", "marbleWall", "void", "water", "cracked", "cliff"],
+  "upgrades": {
+    "vitality": { "max": 3, "hp": 1, "mp": 1 },
+    "edge": { "max": 3, "slashMulPerRank": 0.18, "spinAddPerRank": 0.3 },
+    "stride": { "max": 3, "speedMulPerRank": 0.12 },
+    "shadowStep": { "max": 1 },
+    "wraithBond": { "max": 1, "wraithSpeedMul": 0.65 },
+    "sight": { "max": 1 },
+    "echo": { "max": 1 },
+    "soloverseKey": { "max": 1 }
+  },
+  "flaws": {
+    "cannot_rest": { "speedMul": 1.1, "damageMul": 1 },
+    "the_blade": { "speedMul": 1, "damageMul": 1.15 },
+    "pride": { "speedMul": 1, "damageMul": 1 },
+    "the_other_voice": { "speedMul": 1, "damageMul": 1 }
+  },
+  "starterIron": { "dmg": 1, "reach": 14, "speed": 0.16, "combo": 2, "projectile": false },
+  "enemies": {
+    "crow": { "hp": 2, "speed": 40, "contact": 1, "weave": false },
+    "wraith": { "hp": 3, "speed": 32, "contact": 1, "weave": false },
+    "sentinel": { "hp": 10, "speed": 22, "contact": 1, "dormantUntilDamaged": true },
+    "bear": { "hp": 7, "speed": 26, "contact": 1.5, "weave": false },
+    "bobcat": { "hp": 3, "speed": 58, "contact": 1, "weave": false },
+    "fisher": { "hp": 3, "speed": 68, "contact": 1, "weave": true, "weaveAmp": 0.45, "weaveX": 8, "weaveY": 6 },
+    "resident": { "hp": 12, "speed": 30, "contact": 1.2, "weave": false, "placed": false }
+  },
+  "hpScale": { "perCycle": 0.12, "tropoverse": 1.35 },
+  "playerTropoSlash": 1.2,
+  "syrupHeal": 4,
+  "bottleSlots": 2,
+  "winters": { "base": 14, "extra": 4 },
+  "erosion": {
+    "mundaneKeepAt12": 0.22,
+    "mundaneKeepAt6": 0.55,
+    "mundaneKeepElse": 0.8,
+    "arrowsZeroAtYear": 8,
+    "bombsAlwaysZero": true
+  },
+  "skillOnDeath": { "base": 2, "jobBonusWhileQuarryOpen": 1 },
+  "tools": [
+    "shovel", "hookshot", "boots", "flippers", "lantern", "hammer",
+    "net", "mirror", "cape", "cane", "bow", "bombs"
+  ],
+  "notCombatTools": ["ipod", "sword"],
+  "enemyProjectiles": 0,
+  "playerStun": false,
+  "cites": {
+    "enemyHp": "src/game/engine.ts ENEMY_HP",
+    "contact": "src/game/engine.ts sim enemy loop",
+    "slash": "src/game/rules.ts slashDamage",
+    "spin": "src/game/rules.ts spinDamage",
+    "body": "src/game/rules.ts bodyStats",
+    "death": "src/game/rules.ts resolveDeath",
+    "erosion": "src/game/items.ts erodeGrave",
+    "forms": "src/game/content.ts INCARNATIONS",
+    "solidity": "src/game/maps.ts isSolid",
+    "winters": "src/game/rules.ts wintersPassed"
+  }
+}
