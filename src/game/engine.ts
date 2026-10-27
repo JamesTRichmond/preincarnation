@@ -39,6 +39,7 @@ import {
   paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { readKit, wearNextWeapon } from "./kit-compare";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
@@ -1573,10 +1574,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         save.flags.ySlot = next;
         say(RELIC_BY_ID[next].name + " — " + RELIC_BY_ID[next].verb);
       } else if (save.inventory.length > 1) {
-        const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-        const next = save.inventory[(i + 1) % save.inventory.length];
-        save.equippedId = next.id;
-        say(next.name);
+        const next = wearNextWeapon(save.inventory, save.equippedId);
+        if (next) {
+          save.equippedId = next.id;
+          say(next.name);
+        }
       }
     }
     if (actions.usePressed) sip();
@@ -2311,6 +2313,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
+      kit: readKit(
+        save.inventory,
+        save.equippedId,
+        {
+          incarnationDamage: INCARNATIONS[save.incarnation].damage,
+          edge: save.upgrades.edge,
+          tropoverse: save.flags.tropoverse,
+          flawId: save.character.flawId,
+        },
+        save.flags.ySlot,
+      ),
       geoLine: save.flags.geoTown
         ? save.flags.geoTown === mapId
           ? "You are here"
@@ -2360,6 +2373,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.townName,
       snap.weatherName,
       snap.weaponName,
+      snap.kit.handName,
+      snap.kit.lead,
       snap.showControls,
       snap.tropoverse,
       snap.spectrumReady,
@@ -2735,8 +2750,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     senseWorld: () => senseWorld(),
     cycleWeapon: () => {
       if (save.inventory.length < 2) return;
-      const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-      const next = save.inventory[(i + 1) % save.inventory.length];
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (!next) return;
       save.equippedId = next.id;
       say(next.name);
     },

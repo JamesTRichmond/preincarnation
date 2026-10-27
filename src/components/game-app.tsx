@@ -15,6 +15,7 @@ import {
   ENDING_LINES,
 } from "@/game/content";
 import type { UiSnapshot } from "@/game/types";
+import { EMPTY_KIT } from "@/game/kit-compare";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
 
 const EMPTY: UiSnapshot = {
@@ -44,6 +45,7 @@ const EMPTY: UiSnapshot = {
   tempF: null,
   weaponName: "Short iron",
   weaponTags: "2x",
+  kit: EMPTY_KIT,
   geoLine: null,
   bottles: ["empty", "empty"],
   tropoverse: false,
@@ -370,6 +372,34 @@ function Pause({
           {ui.weaponName}{" "}
           <span className="font-mono text-xs text-primary">{ui.weaponTags}</span>
         </p>
+        <section className="mt-4 text-left" data-testid="kit-compare">
+          <h3 className="font-display text-xl">In the bag</h3>
+          <p className="mt-1 text-sm text-fg" data-testid="kit-lead">
+            {ui.kit.lead}
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <article>
+              <p className="text-xs tracking-wide text-fg-subtle uppercase">In hand</p>
+              <p className="text-sm text-fg">{ui.kit.handName}</p>
+              <p className="font-mono text-xs text-primary">This swing {ui.kit.strikeHand}</p>
+              <p className="text-xs text-fg-muted">Reach {ui.kit.reachHand} · walk {ui.kit.walkHand}</p>
+            </article>
+            <article>
+              <p className="text-xs tracking-wide text-fg-subtle uppercase">Next in the bag</p>
+              <p className="text-sm text-fg">{ui.kit.nextName ?? "—"}</p>
+              <p className="font-mono text-xs text-fg-muted">This swing {ui.kit.strikeNext ?? "—"}</p>
+              <p className="text-xs text-fg-muted">
+                Reach {ui.kit.reachNext ?? "—"} · walk {ui.kit.walkNext ?? "—"}
+              </p>
+            </article>
+          </div>
+          <p className="mt-2 text-xs text-fg-subtle">This swing is the strike for the body you are. It is not a ranking.</p>
+          <p className="mt-2 text-sm text-fg-muted" data-testid="kit-swap">
+            {ui.kit.swap}
+          </p>
+          {ui.kit.missing && <p className="mt-2 text-sm text-fg">{ui.kit.missing}</p>}
+          <p className="mt-2 text-sm text-fg-muted">{ui.kit.yLine}</p>
+        </section>
 
         <h3 className="mt-5 font-display text-xl">Move</h3>
         <ul className="mt-2 space-y-1 text-sm text-fg-muted">
