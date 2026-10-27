@@ -208,3 +208,28 @@ export function clearSave() {
     /* ignore */
   }
 }
+
+/** Put the previous life back. Forget still does not call this. */
+export function undoLastSave(): SaveData | null {
+  try {
+    const bak = localStorage.getItem(SAVE_KEY + ".bak");
+    const current = localStorage.getItem(SAVE_KEY);
+    if (!bak || !current) return null;
+    const restored = readLife(bak);
+    const live = readLife(current);
+    if (!restored || !live) return null;
+    if (
+      restored.character.skillPoints === live.character.skillPoints &&
+      restored.cycle === live.cycle &&
+      restored.equippedId === live.equippedId &&
+      restored.hp === live.hp
+    ) {
+      return null;
+    }
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ ...restored, version: SAVE_VERSION }));
+    localStorage.setItem(SAVE_KEY + ".bak", current);
+    return loadSave();
+  } catch {
+    return null;
+  }
+}

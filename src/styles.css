@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../support/grok-19-input";
+@source "../support/grok-54-inventory";
 @source "../support/grok-75-household-loot";
 
 @theme {

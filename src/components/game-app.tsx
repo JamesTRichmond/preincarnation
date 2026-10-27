@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
 import { createKitchen } from "@/game/cooking";
 import { CountyKitchen } from "@/components/county-kitchen";
@@ -49,6 +49,7 @@ const EMPTY: UiSnapshot = {
   tempF: null,
   weaponName: "Short iron",
   weaponTags: "2x",
+  bag: "Short iron",
   kit: EMPTY_KIT,
   geoLine: null,
   bottles: ["empty", "empty"],
@@ -80,12 +81,24 @@ const EMPTY: UiSnapshot = {
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<GameHandle | null>(null);
   const [ui, setUi] = useState<UiSnapshot>(EMPTY);
   const [hasSave, setHasSave] = useState(false);
   const [comfort, setComfort] = useState<A11ySettings>(() => readA11y());
+  const [stage, setStage] = useState({ w: 320, h: 240 });
   const stickRef = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const box = stageRef.current;
+    if (!box) return;
+    const apply = () => setStage({ w: box.clientWidth, h: box.clientHeight });
+    apply();
+    const watch = new ResizeObserver(apply);
+    watch.observe(box);
+    return () => watch.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = canvasRef.current;
@@ -176,32 +189,36 @@ export function GameApp() {
   };
 
   const playing = ui.mode === "play";
-  const frame = picturePixels(typeof window === "undefined" ? 320 : window.innerWidth, typeof window === "undefined" ? 240 : window.innerHeight, comfort.pictureScale);
+  const frame = picturePixels(stage.w, stage.h, comfort.pictureScale);
+  const fits = frame.w <= stage.w && frame.h <= stage.h;
 
   return (
     <main
-      className="relative h-dvh w-full overflow-auto bg-bg text-fg"
+      className="relative h-dvh w-full overflow-hidden bg-bg text-fg"
       data-contrast={comfort.highContrast ? "high" : "low"}
       data-stick={comfort.stickSide}
     >
       <p className="sr-only" aria-live="polite">
         {ui.mode === "play" ? ui.job : ""}
       </p>
-      <canvas
-        ref={canvasRef}
-        className="touch-none"
-        width={320}
-        height={240}
-        style={{
-          imageRendering: "pixelated",
-          cursor: "crosshair",
-          width: comfort.pictureScale === 1 ? "100%" : frame.w,
-          height: comfort.pictureScale === 1 ? "100%" : frame.h,
-          position: "absolute",
-          inset: 0,
-        }}
-        aria-label="Preincarnation. 320 by 240. The Marble Vein is east of the Green."
-      />
+      <div ref={stageRef} className="absolute inset-0 overflow-auto" data-picture-stage>
+        <canvas
+          ref={canvasRef}
+          className="touch-none"
+          width={320}
+          height={240}
+          style={{
+            imageRendering: "pixelated",
+            cursor: "crosshair",
+            display: "block",
+            width: frame.w,
+            height: frame.h,
+            marginLeft: fits ? "auto" : 0,
+            marginRight: fits ? "auto" : 0,
+          }}
+          aria-label="Preincarnation. 320 by 240. The Marble Vein is east of the Green."
+        />
+      </div>
 
       {ui.mode === "title" && (
         <Title
@@ -433,6 +450,10 @@ function Pause({
         <p className="mt-2 text-sm text-fg">
           {ui.weaponName}{" "}
           <span className="font-mono text-xs text-primary">{ui.weaponTags}</span>
+        </p>
+        <p className="mt-2 text-sm text-fg">
+          <span className="text-fg-subtle">Carrying · </span>
+          {ui.bag}
         </p>
         <section className="mt-4 text-left" data-testid="kit-compare">
           <h3 className="font-display text-xl">In the bag</h3>

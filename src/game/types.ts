@@ -205,6 +205,7 @@ export type UiSnapshot = {
   tempF: number | null;
   weaponName: string;
   weaponTags: string;
+  bag: string;
   kit: KitRead;
   geoLine: string | null;
   bottles: BottleKind[];
