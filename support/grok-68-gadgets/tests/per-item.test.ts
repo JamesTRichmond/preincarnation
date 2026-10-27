@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, sep } from "node:path";
 import test, { after } from "node:test";
 import { fileURLToPath } from "node:url";
 import { RELICS } from "../../../src/game/items.ts";
@@ -221,10 +221,21 @@ test("pack validation, chains, and reports", () => {
   const countyHits = report.nameCollisionsWithExternal.filter((hit) => hit.file.includes(`${join("src", "game")}`));
   assert.equal(countyHits.length, 0, `county files name a gadget: ${JSON.stringify(countyHits)}`);
   mkdirSync(resultsDir, { recursive: true });
+  const rel = (p: string) => (p.startsWith(repoRoot + sep) ? p.slice(repoRoot.length + 1) : p);
   writeFileSync(join(resultsDir, "validation.json"), JSON.stringify(validation, null, 2));
   writeFileSync(
     join(resultsDir, "duplicate-report.json"),
-    JSON.stringify({ ...report, internal: { ok: report.internal.ok, issueCount: report.internal.issues.length } }, null, 2),
+    JSON.stringify(
+      {
+        ...report,
+        searched: report.searched.map(rel),
+        externalCatalogs: report.externalCatalogs.map(rel),
+        nameCollisionsWithExternal: report.nameCollisionsWithExternal.map((hit) => ({ ...hit, file: rel(hit.file) })),
+        internal: { ok: report.internal.ok, issueCount: report.internal.issues.length },
+      },
+      null,
+      2,
+    ),
   );
   writeFileSync(join(resultsDir, "missing-runtime.json"), JSON.stringify({ gaps: HOST_GAPS }, null, 2));
 });

@@ -3,12 +3,12 @@
     {
       "id": "catalog-768",
       "title": "Planned 768-item catalog",
-      "detail": "No prior PREINCARNATION loot catalog was mounted in this workspace. Duplicate judgment against that catalog is impossible. New ids were not treated as proof of new content."
+      "detail": "Other loot-like files exist beside this pack (the traversal catalog, the county relics, src/game/loot). None of them is the planned 768-item catalog. Names were compared; new ids alone were not treated as proof of new content."
     },
     {
       "id": "campaign-inventory",
       "title": "Campaign inventory",
-      "detail": "Discovery sites, weights, and storage rules are data. They are not spawned into a county map or a campaign save schema, because neither schema is in this workspace."
+      "detail": "Discovery sites, weights, and storage rules are data on the gadget. They are not written into a county map or into preincarnation.save.v1."
     },
     {
       "id": "enemy-ai",
@@ -58,7 +58,7 @@
     {
       "id": "base-craft",
       "title": "Cross-pack crafting",
-      "detail": "Restore materials are pack-local names (clock oil, rouge, beeswax). They are not ids from the absent base catalog."
+      "detail": "Restore materials are pack-local names (clock oil, rouge, beeswax). They are not county relic ids."
     }
   ]
 }

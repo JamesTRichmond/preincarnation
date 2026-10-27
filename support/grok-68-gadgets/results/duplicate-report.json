@@ -1,14 +1,14 @@
 {
   "searched": [
-    "/tmp/preincarnation/support",
-    "/tmp/preincarnation/src/game"
+    "support",
+    "src/game"
   ],
   "externalCatalogs": [
-    "/tmp/preincarnation/support/grok-41-traversal/catalog.ts",
-    "/tmp/preincarnation/src/game/items.test.ts",
-    "/tmp/preincarnation/src/game/items.ts",
-    "/tmp/preincarnation/src/game/loot/catalog.ts",
-    "/tmp/preincarnation/src/game/loot/loot.test.ts"
+    "support/grok-41-traversal/catalog.ts",
+    "src/game/items.test.ts",
+    "src/game/items.ts",
+    "src/game/loot/catalog.ts",
+    "src/game/loot/loot.test.ts"
   ],
   "conclusion": "EXTERNAL_FILES_FOUND",
   "internal": {
