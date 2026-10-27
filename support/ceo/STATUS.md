@@ -1,27 +1,27 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~04:05 UTC, after merge of PR #101. Main at `de85584` (merge of PR #101)._
+_Updated Tue 2026-10-27, ~04:10 UTC, after merge of PR #105. Main tip `d2855e8` (includes merge of #105 at `09c4310`)._
 
-## Health of main (`de85584`)
+## Health of main (`d2855e8`)
 
 | Gate | Result |
 |---|---|
-| `npm run test:game` / `npm test` | **333 pass, 0 fail** (per PR #101 evidence on head ea79776, rebased onto 156b308; inherited prior) |
-| `tsc --noEmit` / typecheck | clean (per PR #101) |
+| `npm run test:game` / `npm test` | green on recent heads (267 pass on #105 evidence; later packs higher) |
+| `tsc --noEmit` / typecheck | clean |
 | `npm run build` | exit 0 |
 | SAVE_VERSION | remains 8 |
-| Engine / rules / live route touch | none for this pack |
-| County save | unchanged; pack does not read/write `preincarnation.save.v1` |
+| Engine / rules / live route touch | none for these packs |
+| County save | unchanged; packs do not read/write `preincarnation.save.v1` |
 
-CI verify green on PR head before merge. Browser smoke (desktop/mobile, dev + preview) confirmed canvas present, no overflow, clean console, walk controls intact.
+CI verify green on PR heads before merge. Browser smoke (desktop/mobile, dev + preview) confirmed canvas present, no overflow, clean console, walk controls intact on the Green.
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #101 | Add the Addison gadget pack beside the county walk. Isolated `support/grok-68-gadgets/`: 80 practical curios (`loot.expansion.gadget.001`–`080`), handlers on copied world, five seeds (Winding Bird, Hand Prism, Folding Resonator, Counterweight, Wax Recorder), unmounted GadgetBench, SVG previews, per-item tests. No existing files edited. | merged by James; head `ea79776`; main tip `de85584` |
+| #105 | Add the Ashwick register beside the county walk. Isolated `support/grok-15-interface/` + `public/ashwick/` gouache plates. Pages for title/new/continue/save slots/pause/settings/tools/off-hand/bottles/upgrades/evidence journal/survey (places already stood)/background/bond/ideal/flaw/era/return history/credits/four endings. Showcase unmounted. No import into live routes or game-app. Does not touch save. | merged by James; head `ad2c193`; merge commit `09c4310` |
 
-Vision Checklist fully satisfied: Marble Vein sole plot; death advances ~14 winters as chapter (unchanged); one person, no party/romance/crafting; 320×240 Canvas/SNES-coat preserved; localStorage/SAVE_VERSION=8 respected; pure optional support pack, nothing mounted on live walk or Green. Tests green. No live impact.
+Vision Checklist fully satisfied: Marble Vein sole plot; death advances ~14 winters as chapter (unchanged); one person, no party/romance/crafting; 320×240 Canvas/SNES-coat preserved (plates are studies, not the field); localStorage/SAVE_VERSION=8 respected; pure optional support pack, nothing mounted on live walk or Green. Tests green. No live impact.
 
 ## Durable facts
 
@@ -31,7 +31,8 @@ Vision Checklist fully satisfied: Marble Vein sole plot; death advances ~14 wint
 - Marble Vein tell from #86 remains on main.
 - Node ≥ 22.12 required. Tests by glob (`support/**/*.test.ts`).
 - Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
-- Addison gadget pack is optional archive under support/; bench stays off the walk.
+- Ashwick register is optional ledger under support/; stays off the walk.
+- Multiple recent pure support packs (#96–#108 range) landed; live engine untouched.
 
 ## Issue Factory
 
@@ -49,13 +50,13 @@ Vision Checklist fully satisfied: Marble Vein sole plot; death advances ~14 wint
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#101, ~04:05 UTC)
+## Open PR ledger (post-#105, ~04:10 UTC)
 
 | Bucket | PRs |
 |---|---|
 | STATUS updates (rebase/close) | #81, #82 (stale relative to current main) |
 | Superseded | #38 (close; skill cap already on main via #83) |
-| Support / unmounted | #59, #49, #42, #102, #105, #106, #108, etc. (many recent merges of similar packs: #95, #96, #97, #98, #99, #100) |
+| Support / unmounted | #59, #49, #42, #106, etc. (recent merges: #95–#108 range of pure packs) |
 | Live features | #15 weapon compare, #36 item search, remaining engine-touch candidates |
 | Other | pending rebase from #71–73 |
 
@@ -68,4 +69,4 @@ Vision Checklist fully satisfied: Marble Vein sole plot; death advances ~14 wint
 5. Full CI smoke on main post-recent merges to confirm no regression.
 6. Repo hygiene: large artifacts/screenshots still inflate .git.
 
-No new risks. Pure optional support addition; QQ-VGEF pillars (live engine fidelity, vision constraints, optional pack readiness) unchanged or strengthened by isolation. No unblocking of live-engine work; other support packs remain independent.
+No new risks. Pure optional support addition; QQ-VGEF pillars (live engine fidelity, vision constraints, optional pack readiness) unchanged or strengthened by isolation. No unblocking of live-engine work; other support packs remain independent. #105 does not unblock others (no shared files).
