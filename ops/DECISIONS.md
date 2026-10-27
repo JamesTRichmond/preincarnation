@@ -13,3 +13,13 @@ D-005 | L-0001 | Death pays skill only while a non-crown rank is still unbought.
 D-006 | L-0001 | The same agent built the skill cap and would have scored it. P1A-3 stays 0 this cycle. Evidence is filed. A later cycle's QA pass may raise it.
 
 D-007 | L-0001 | P2B-2 is not marked N/A. That mark needs James (B-001).
+
+D-008 | L-0002 | Quarry row y=5 in QUARRY_SRC is `xxxxxxxx` at columns 14 through 21. Cells (16,5) and (18,5) are cracked marble. `x` is T.cracked. The decoy coordinates in pull 52 name real tiles.
+
+D-009 | L-0003 | James resolved B-001. v1 platform is one progressive web app. Live-service is none. P2B-2 is N/A and leaves the Pillar 2 mean.
+
+D-010 | L-0003 | #83 landed on main as the skill cap only. The weapon sheet was not in that squash. It is replayed on integrate/marble-tell. This loop still does not merge.
+
+D-011 | L-0003 | The marble tell keeps the lantern gate. A dark quarry still refuses the hammer. Decoy faces at (16,5) and (18,5) stay shut for hammer and bomb. A blade only sparks. The Sentinel holds gold for 0.6s before each lunge, and still does not move at full health.
+
+

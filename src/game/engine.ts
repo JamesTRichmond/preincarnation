@@ -14,6 +14,7 @@ import {
   type AxisMem,
 } from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
+import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
@@ -39,6 +40,7 @@ import {
   paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { readKit, wearNextWeapon } from "./kit-compare";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
@@ -59,6 +61,8 @@ type Actor = {
   slow: number;
   burn: number;
   stoned: number;
+  beat: SentinelBeat;
+  tell: number;
 };
 
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
@@ -138,6 +142,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     slow: 0,
     burn: 0,
     stoned: 0,
+    beat: "still",
+    tell: 0,
   };
   let enemies: Actor[] = [];
   let particles: Particle[] = [];
@@ -267,6 +273,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         slow: 0,
         burn: 0,
         stoned: 0,
+        beat: "still",
+        tell: 0,
       });
     }
   };
@@ -1188,9 +1196,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
+  const noteBladeOnMarble = () => {
+    const k = DIRS[player.dir];
+    const tx = Math.floor((player.x + k.x * 12) / TILE);
+    const ty = Math.floor((player.y + k.y * 12) / TILE);
+    if (world.tiles[ty]?.[tx] !== T.cracked) return;
+    say(strikeMarble("blade", crackRole(mapId, tx, ty)).line);
+  };
+
   const startCombo = () => {
     fireSlash();
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.1;
   };
 
@@ -1207,6 +1224,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.18;
     charge = 0;
   };
@@ -1264,6 +1282,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const lands = quarryHammerLands(mapId === "quarry", save.flags.relics.includes("lantern"), save.flags.lanternOn);
     let opened = false;
     let blind = false;
+    let decoy = false;
     for (const [ox, oy] of [
       [0, 0],
       [-1, 0],
@@ -1274,6 +1293,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const x = tx + ox;
       const y = ty + oy;
       if (world.tiles[y]?.[x] !== T.cracked) continue;
+      if (crackRole(mapId, x, y) === "decoy") {
+        decoy = true;
+        continue;
+      }
       if (!lands) {
         blind = true;
         continue;
@@ -1285,11 +1308,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       burst(x * TILE + 8, y * TILE + 8, "#c4bba8", 12);
       opened = true;
     }
-    if (blind && !opened) say("The marble is blind. Open the lamp, then the hammer.");
-    else if (opened) {
-      say("The plug gives. North is open.");
+    if (opened) {
+      say(strikeMarble("hammer", "true").line);
       persist();
-    }
+    } else if (blind) say("The marble is blind. Open the lamp, then the hammer.");
+    else if (decoy) say(strikeMarble("hammer", "decoy").line);
     fireSlash();
     attackT = 0.2;
   };
@@ -1573,10 +1596,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         save.flags.ySlot = next;
         say(RELIC_BY_ID[next].name + " — " + RELIC_BY_ID[next].verb);
       } else if (save.inventory.length > 1) {
-        const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-        const next = save.inventory[(i + 1) % save.inventory.length];
-        save.equippedId = next.id;
-        say(next.name);
+        const next = wearNextWeapon(save.inventory, save.equippedId);
+        if (next) {
+          save.equippedId = next.id;
+          say(next.name);
+        }
       }
     }
     if (actions.usePressed) sip();
@@ -1591,10 +1615,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const tx = Math.floor(bx / TILE);
       const ty = Math.floor(by / TILE);
       if (world.tiles[ty]?.[tx] === T.cracked) {
-        world.tiles[ty][tx] = T.gravel;
-        tileCache.dirty(tx, ty);
-        save.flags.quarryOpen = true;
-        say("The vein gives. The quarry opens.");
+        const verdict = strikeMarble("bomb", crackRole(mapId, tx, ty));
+        if (verdict.open) {
+          world.tiles[ty][tx] = T.gravel;
+          tileCache.dirty(tx, ty);
+          save.flags.quarryOpen = true;
+        }
+        say(verdict.line);
       }
       for (const e of enemies) {
         if (e.alive && Math.hypot(e.x - bx, e.y - by) < 22) hitEnemy(e, 2, player.dir);
@@ -1678,12 +1705,31 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       sp *= bond;
       if (e.slow > 0) sp *= 0.45;
       const aggro = e.kind === "bear" ? 64 : e.kind === "resident" ? 52 : 78;
+      if (e.kind === "sentinel" && dist >= aggro) {
+        e.beat = "still";
+        e.tell = 0;
+      }
       if (e.stoned > 0) {
         e.vx = Math.sin(animT * 2 + e.x) * sp * 0.4;
         e.vy = Math.cos(animT * 1.7 + e.y) * sp * 0.4;
         moveActor(e, e.vx * dt, e.vy * dt);
       } else if (dist < aggro) {
-        if (e.kind === "sentinel" && e.hp >= e.maxHp) {
+        const sentinel =
+          e.kind === "sentinel"
+            ? stepSentinel({
+                hp: e.hp,
+                maxHp: e.maxHp,
+                inRange: true,
+                beat: e.beat,
+                tell: e.tell,
+                dt,
+              })
+            : null;
+        if (sentinel) {
+          e.beat = sentinel.beat;
+          e.tell = sentinel.tell;
+        }
+        if (sentinel && !sentinel.moves) {
           e.vx = 0;
           e.vy = 0;
         } else {
@@ -2069,6 +2115,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             }
           }
           bctx.globalAlpha = 1;
+          if (a.kind === "sentinel" && a.beat === "gold") {
+            bctx.globalAlpha = 0.95;
+            bctx.fillStyle = "#e8c36a";
+            bctx.fillRect(dx + 2, dy + 1, 12, 3);
+            bctx.globalAlpha = 1;
+          }
           if (a.hp < a.maxHp) {
             bctx.fillStyle = "#2a2018";
             bctx.fillRect(dx, dy - 3, 16, 2);
@@ -2311,6 +2363,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
+      kit: readKit(
+        save.inventory,
+        save.equippedId,
+        {
+          incarnationDamage: INCARNATIONS[save.incarnation].damage,
+          edge: save.upgrades.edge,
+          tropoverse: save.flags.tropoverse,
+          flawId: save.character.flawId,
+        },
+        save.flags.ySlot,
+      ),
       geoLine: save.flags.geoTown
         ? save.flags.geoTown === mapId
           ? "You are here"
@@ -2360,6 +2423,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.townName,
       snap.weatherName,
       snap.weaponName,
+      snap.kit.handName,
+      snap.kit.lead,
       snap.showControls,
       snap.tropoverse,
       snap.spectrumReady,
@@ -2735,8 +2800,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     senseWorld: () => senseWorld(),
     cycleWeapon: () => {
       if (save.inventory.length < 2) return;
-      const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-      const next = save.inventory[(i + 1) % save.inventory.length];
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (!next) return;
       save.equippedId = next.id;
       say(next.name);
     },
