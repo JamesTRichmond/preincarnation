@@ -1,0 +1,48 @@
+{
+  "id": "integration.secondCrown",
+  "kind": "proposed-integration-event",
+  "notAnExistingRuntimeApi": true,
+  "doNotCallAsExistingApi": true,
+  "status": "proposed",
+  "eventName": "preincarnation.crown.resolved",
+  "summary": "When the Witness Without a Face adjourns and the playable record plus the docket contradiction are in hand, crown 2 (the Lantern Crown) is resolved. This is a proposal for a later integration. Nothing in this pack is a function the current runtime already exports.",
+  "when": {
+    "flags": [
+      "dg08.boss",
+      "dg08.record",
+      "dg08.crown2.resolved"
+    ],
+    "evidence": [
+      "dg08.ev.playable",
+      "dg08.ev.contradiction"
+    ]
+  },
+  "payload": {
+    "crown": 2,
+    "name": "The Lantern Crown",
+    "holder": "Ellis Perch",
+    "sourceDungeon": "dg08",
+    "town": "Vergennes",
+    "contributesTo": "eligibility.embryonicGod",
+    "grantsEmbryonicGod": false,
+    "doesNotGrantByItself": true
+  },
+  "crown1": {
+    "definedInThisPack": false,
+    "id": "prior.crown.1",
+    "note": "Crown 1 is outside DG05–DG08. This pack must not be read as creating it."
+  },
+  "eligibilityRuleProposed": {
+    "id": "eligibility.embryonicGod",
+    "grantsNow": false,
+    "proposedFormula": "A later system may treat Embryonic God as eligible only when resolved crown count is at least 2, the Marble Vein has been acknowledged as holding unrealized lives, and both the Voice and the Other Voice have been recorded contradicting the Surveyor on the same event. This pack supplies crown 2 and the contradiction evidence dg08.ev.contradiction (the docket in Vergennes) plus the library and reservoir and hayloft as earlier contradictions. It does not flip a global eligibility bit and it does not define the function that would.",
+    "evidenceThisPackContributes": [
+      "dg08.ev.contradiction",
+      "dg08.ev.playable",
+      "dg08.ev.adjourned",
+      "dg05.ev.voiceSplit",
+      "dg06.ev.sermon",
+      "dg07.ev.palm"
+    ]
+  }
+}

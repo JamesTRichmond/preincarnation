@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "designValidation": true,
+  "enginePlaytesting": false,
+  "note": "This report is a static check of the content graph. It is not a playtest of combat, animation, or rendering.",
+  "errorCount": 0,
+  "warningCount": 0,
+  "errors": [],
+  "warnings": [],
+  "stats": {
+    "dungeons": [
+      {
+        "id": "dg05",
+        "name": "The White Library",
+        "rooms": 16,
+        "optionalRooms": [
+          "dg05.r09"
+        ],
+        "finsOnlyRooms": [],
+        "mainSteps": 26,
+        "shortcutSteps": 12,
+        "reachableRequired": 16,
+        "statesRequired": 340
+      },
+      {
+        "id": "dg06",
+        "name": "The Reservoir Without a Surface",
+        "rooms": 17,
+        "optionalRooms": [
+          "dg06.r08",
+          "dg06.r17"
+        ],
+        "finsOnlyRooms": [
+          "dg06.r17"
+        ],
+        "mainSteps": 23,
+        "shortcutSteps": 14,
+        "reachableRequired": 16,
+        "statesRequired": 334
+      },
+      {
+        "id": "dg07",
+        "name": "The Iron Hayloft",
+        "rooms": 16,
+        "optionalRooms": [
+          "dg07.r13"
+        ],
+        "finsOnlyRooms": [],
+        "mainSteps": 25,
+        "shortcutSteps": 13,
+        "reachableRequired": 16,
+        "statesRequired": 322
+      },
+      {
+        "id": "dg08",
+        "name": "The Lantern Court",
+        "rooms": 16,
+        "optionalRooms": [
+          "dg08.r11",
+          "dg08.r13"
+        ],
+        "finsOnlyRooms": [],
+        "mainSteps": 26,
+        "shortcutSteps": 6,
+        "reachableRequired": 16,
+        "statesRequired": 130
+      }
+    ],
+    "puzzles": 30,
+    "rooms": 65
+  }
+}

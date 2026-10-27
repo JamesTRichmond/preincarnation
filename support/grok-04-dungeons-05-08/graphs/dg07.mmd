@@ -1,0 +1,49 @@
+flowchart TD
+  dg07_r01["Intervale Door"]
+  dg07_r02["Nave of Beams"]
+  dg07_r03["West Mow"]
+  dg07_r04["Rope Walk"]
+  dg07_r05["Counterweight Choir"]
+  dg07_r06["Grain Pit Bridge"]
+  dg07_r07["The Bailer's Run"]
+  dg07_r08["East Mow"]
+  dg07_r09["Threshing Antechamber"]
+  dg07_r10["Hay Elevator"]
+  dg07_r11["Saint's Ledger"]
+  dg07_r12["Iron Weather"]
+  dg07_r13["Powder Loft"]
+  dg07_r14["Rod Gallery"]
+  dg07_r15["Saint's Door"]
+  dg07_r16["The Thresher Saint"]
+  dg07_r01 -->|N| dg07_r02
+  dg07_r02 -->|S| dg07_r01
+  dg07_r02 -->|N| dg07_r03
+  dg07_r02 -->|E dg07.mow dg07.choir dg07.bridge dg07.bailer dg07.east| dg07_r09
+  dg07_r03 -->|S| dg07_r02
+  dg07_r03 -->|N dg07.mow| dg07_r04
+  dg07_r04 -->|S| dg07_r03
+  dg07_r04 -->|N| dg07_r05
+  dg07_r05 -->|S| dg07_r04
+  dg07_r05 -->|N dg07.choir| dg07_r06
+  dg07_r06 -->|S| dg07_r05
+  dg07_r06 -->|N dg07.bridge| dg07_r07
+  dg07_r07 -->|S| dg07_r06
+  dg07_r07 -->|N dg07.bailer dg07.sk.mow| dg07_r08
+  dg07_r08 -->|S| dg07_r07
+  dg07_r08 -->|N dg07.east| dg07_r09
+  dg07_r09 -->|S| dg07_r08
+  dg07_r09 -->|N| dg07_r10
+  dg07_r09 -->|W dg07.mow dg07.choir dg07.bridge dg07.bailer dg07.east| dg07_r02
+  dg07_r10 -->|S| dg07_r09
+  dg07_r10 -->|N| dg07_r11
+  dg07_r11 -->|S| dg07_r10
+  dg07_r11 -->|N dg07.shapes| dg07_r12
+  dg07_r12 -->|S| dg07_r11
+  dg07_r12 -->|N dg07.fan| dg07_r14
+  dg07_r12 -->|E| dg07_r13
+  dg07_r13 -->|W| dg07_r12
+  dg07_r14 -->|S| dg07_r12
+  dg07_r14 -->|N dg07.rod| dg07_r15
+  dg07_r15 -->|S| dg07_r14
+  dg07_r15 -->|N dg07.bk.saint| dg07_r16
+  dg07_r16 -->|S| dg07_r15

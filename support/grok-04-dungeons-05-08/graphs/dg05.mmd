@@ -1,0 +1,51 @@
+flowchart TD
+  dg05_r01["Ledger Stair"]
+  dg05_r02["Public Catalog"]
+  dg05_r03["The Scraped Dates"]
+  dg05_r04["Index Hall"]
+  dg05_r05["Suppression Stacks"]
+  dg05_r06["Ink Stair"]
+  dg05_r07["The Quiet Carrel"]
+  dg05_r08["Mezzanine of Book-Trucks"]
+  dg05_r09["Gallery of Suppressed Names"]
+  dg05_r10["The Marginal Hand"]
+  dg05_r11["Aisle of Corrections"]
+  dg05_r12["Sealed Carrel"]
+  dg05_r13["The White Well"]
+  dg05_r14["Bindery"]
+  dg05_r15["Erratum Door"]
+  dg05_r16["The Erratum"]
+  dg05_r01 -->|N| dg05_r02
+  dg05_r02 -->|S| dg05_r01
+  dg05_r02 -->|N| dg05_r03
+  dg05_r03 -->|S| dg05_r02
+  dg05_r03 -->|N dg05.wheels| dg05_r04
+  dg05_r04 -->|S| dg05_r03
+  dg05_r04 -->|N dg05.shelves| dg05_r05
+  dg05_r04 -->|E dg05.books| dg05_r12
+  dg05_r05 -->|S| dg05_r04
+  dg05_r05 -->|N| dg05_r06
+  dg05_r05 -->|W| dg05_r09
+  dg05_r05 -->|E| dg05_r11
+  dg05_r06 -->|S| dg05_r05
+  dg05_r06 -->|N dg05.sk.shelf| dg05_r07
+  dg05_r07 -->|S| dg05_r06
+  dg05_r07 -->|N dg05.baffles| dg05_r08
+  dg05_r08 -->|S| dg05_r07
+  dg05_r08 -->|N dg05.truck| dg05_r10
+  dg05_r09 -->|E| dg05_r05
+  dg05_r10 -->|S| dg05_r08
+  dg05_r10 -->|N dg05.miniboss| dg05_r11
+  dg05_r11 -->|S| dg05_r10
+  dg05_r11 -->|N dg05.aisle dg05.sk.margin| dg05_r12
+  dg05_r11 -->|W dg05.hammerWall| dg05_r05
+  dg05_r12 -->|S| dg05_r11
+  dg05_r12 -->|N dg05.books| dg05_r13
+  dg05_r12 -->|W dg05.books| dg05_r04
+  dg05_r13 -->|S| dg05_r12
+  dg05_r13 -->|N dg05.well| dg05_r14
+  dg05_r14 -->|S| dg05_r13
+  dg05_r14 -->|N| dg05_r15
+  dg05_r15 -->|S| dg05_r14
+  dg05_r15 -->|N dg05.bk.erratum| dg05_r16
+  dg05_r16 -->|S| dg05_r15

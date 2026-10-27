@@ -1,0 +1,602 @@
+{
+  "dungeon": "dg08",
+  "nodes": [
+    {
+      "id": "dg08.r01",
+      "name": "Night Stair",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r02",
+      "name": "Docket Hall",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r03",
+      "name": "Sconce Gallery",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r04",
+      "name": "Shadow Bar",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r05",
+      "name": "Witness Benches",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r06",
+      "name": "Clerk's Well",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r07",
+      "name": "The Bailiff of Shade",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r08",
+      "name": "Evidence Cage",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r09",
+      "name": "Lantern Stairs",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r10",
+      "name": "Cross-Examination",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r11",
+      "name": "Jury Loft",
+      "optional": true,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r12",
+      "name": "The Playable Record",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r13",
+      "name": "Face Gallery",
+      "optional": true,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r14",
+      "name": "Crown Threshold",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r15",
+      "name": "Court is in Session",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg08.r16",
+      "name": "The Witness Without a Face",
+      "optional": false,
+      "requiresOptionalTool": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "dg08.r01",
+      "to": "dg08.r02",
+      "id": "to-docket",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.night"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r02",
+      "to": "dg08.r01",
+      "id": "to-stair",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r02",
+      "to": "dg08.r03",
+      "id": "to-sconces",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r02",
+      "to": "dg08.r14",
+      "id": "shortcut-to-threshold",
+      "dir": "E",
+      "requiresFlags": [
+        "dg08.record"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg08.r03",
+      "to": "dg08.r02",
+      "id": "to-docket",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r03",
+      "to": "dg08.r04",
+      "id": "to-shadow",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.sconces"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r04",
+      "to": "dg08.r03",
+      "id": "to-sconces",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r04",
+      "to": "dg08.r05",
+      "id": "to-benches",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.shadow"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r05",
+      "to": "dg08.r04",
+      "id": "to-shadow",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r05",
+      "to": "dg08.r06",
+      "id": "to-well",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r06",
+      "to": "dg08.r05",
+      "id": "to-benches",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r06",
+      "to": "dg08.r07",
+      "id": "to-bailiff",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.well"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r07",
+      "to": "dg08.r06",
+      "id": "to-well",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r07",
+      "to": "dg08.r08",
+      "id": "to-cage",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.bailiff"
+      ],
+      "requiresKeys": [
+        "dg08.sk.cage"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r08",
+      "to": "dg08.r07",
+      "id": "to-bailiff",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r08",
+      "to": "dg08.r09",
+      "id": "to-lanterns",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.exhibit"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r09",
+      "to": "dg08.r08",
+      "id": "to-cage",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r09",
+      "to": "dg08.r10",
+      "id": "to-cross",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.lanterns"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r10",
+      "to": "dg08.r09",
+      "id": "to-lanterns",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r10",
+      "to": "dg08.r12",
+      "id": "to-record",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.cross"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r10",
+      "to": "dg08.r11",
+      "id": "to-jury",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r11",
+      "to": "dg08.r10",
+      "id": "back-cross",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r12",
+      "to": "dg08.r10",
+      "id": "to-cross",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r12",
+      "to": "dg08.r14",
+      "id": "to-threshold",
+      "dir": "N",
+      "requiresFlags": [
+        "dg08.record"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r13",
+      "to": "dg08.r14",
+      "id": "back-threshold",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r14",
+      "to": "dg08.r12",
+      "id": "to-record",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r14",
+      "to": "dg08.r15",
+      "id": "to-session",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r14",
+      "to": "dg08.r13",
+      "id": "to-faces",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r14",
+      "to": "dg08.r02",
+      "id": "shortcut-to-docket",
+      "dir": "E",
+      "requiresFlags": [
+        "dg08.record"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg08.r15",
+      "to": "dg08.r14",
+      "id": "to-threshold",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r15",
+      "to": "dg08.r16",
+      "id": "to-witness",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [
+        "dg08.bk.lantern"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg08.r16",
+      "to": "dg08.r15",
+      "id": "to-session",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    }
+  ],
+  "flags": [
+    {
+      "flag": "dg08.night",
+      "setIn": "dg08.r01",
+      "by": "solve-night"
+    },
+    {
+      "flag": "dg08.sconces",
+      "setIn": "dg08.r03",
+      "by": "solve-sconces"
+    },
+    {
+      "flag": "dg08.shadow",
+      "setIn": "dg08.r04",
+      "by": "solve-shadow"
+    },
+    {
+      "flag": "dg08.well",
+      "setIn": "dg08.r06",
+      "by": "solve-well"
+    },
+    {
+      "flag": "dg08.bailiff",
+      "setIn": "dg08.r07",
+      "by": "defeat-bailiff"
+    },
+    {
+      "flag": "dg08.exhibit",
+      "setIn": "dg08.r08",
+      "by": "solve-exhibit"
+    },
+    {
+      "flag": "dg08.lanterns",
+      "setIn": "dg08.r09",
+      "by": "solve-lanterns"
+    },
+    {
+      "flag": "dg08.cross",
+      "setIn": "dg08.r10",
+      "by": "solve-cross"
+    },
+    {
+      "flag": "dg08.record",
+      "setIn": "dg08.r12",
+      "by": "solve-record"
+    },
+    {
+      "flag": "dg08.boss",
+      "setIn": "dg08.r16",
+      "by": "defeat-witness"
+    },
+    {
+      "flag": "dg08.crown2.resolved",
+      "setIn": "dg08.r16",
+      "by": "defeat-witness"
+    }
+  ]
+}
