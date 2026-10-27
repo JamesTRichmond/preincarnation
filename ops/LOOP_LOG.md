@@ -56,6 +56,16 @@ Decisions: D-013
 Blockers: none
 Next: write the theme map (every core verb to the Marble Vein) as a spec with a failing test for one dissonance. Do not merge.
 
+L-0006 | 2026-10-27 | Phase: P0
+Goal: map every live verb to the one plot.
+Done: ops/THEME.md and src/game/theme.ts. Eighteen lines. Test fails if a relic or a life-verb has no line. P4-3 left at 0.
+Verified: ops/EVIDENCE/L-0006-test-game.txt — 293 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-014
+Blockers: none
+Next: the spectrum objective still names four rooms and a Heart. Prove whether that is a second plot. Do not merge.
+
 
 
 
