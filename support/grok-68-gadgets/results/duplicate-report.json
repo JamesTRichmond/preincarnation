@@ -1,0 +1,20 @@
+{
+  "searched": [
+    "/tmp/preincarnation/support",
+    "/tmp/preincarnation/src/game"
+  ],
+  "externalCatalogs": [
+    "/tmp/preincarnation/support/grok-41-traversal/catalog.ts",
+    "/tmp/preincarnation/src/game/items.test.ts",
+    "/tmp/preincarnation/src/game/items.ts",
+    "/tmp/preincarnation/src/game/loot/catalog.ts",
+    "/tmp/preincarnation/src/game/loot/loot.test.ts"
+  ],
+  "conclusion": "EXTERNAL_FILES_FOUND",
+  "internal": {
+    "ok": true,
+    "issueCount": 0
+  },
+  "nameCollisionsWithExternal": [],
+  "note": "External files with loot-like names were read for name collisions only. This is not the planned 768-item catalog unless one of those files is that catalog."
+}
