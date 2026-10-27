@@ -1,7 +1,7 @@
 # HANDOFF
 
 Cycle: L-0003   Step: 10 checkpoint   Time: 2026-10-27
-Branch/commit: integrate/marble-tell (hash after this commit)
+Branch/commit: integrate/marble-tell @ 02785a8
 Uncommitted work: none after this checkpoint
 Failing tests: none. 237/237 game tests pass.
 Final Score per platform: PWA 20.0   Points to Gate: 78.0
