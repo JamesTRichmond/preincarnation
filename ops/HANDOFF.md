@@ -1,9 +1,9 @@
 # HANDOFF
 
-Cycle: L-0002   Step: 10 checkpoint   Time: 2026-10-27
-Branch/commit: integrate/preincarnation (kit sheet follows b789c9d; hash after this commit)
+Cycle: L-0003   Step: 10 checkpoint   Time: 2026-10-27
+Branch/commit: integrate/marble-tell (hash after this commit)
 Uncommitted work: none after this checkpoint
-Failing tests: none. 229/229 game tests pass.
-Final Score per platform: web 20.0   Points to Gate: 78.0
-Open blockers: B-001
-NEXT ACTION (exact): On integrate/preincarnation, port src/game/marble.ts and marble.test.ts from pull 52, then the engine hooks for strikeMarble and stepSentinel, onto the current engine (post #80, no weather imports). Do not edit package.json. Do not merge to main. Run tsc and npm run test:game. D-008 already proved quarry cells (16,5) and (18,5) are cracked.
+Failing tests: none. 237/237 game tests pass.
+Final Score per platform: PWA 20.0   Points to Gate: 78.0
+Open blockers: none
+NEXT ACTION (exact): On integrate/marble-tell, write a test that enemy max HP does not grow with save.cycle, then remove the `1 + save.cycle * 0.12` term in spawnEnemies. Keep the tropoverse multiplier only if a test names it as a world state, not as a sponge. Do not edit package.json. Do not merge to main.

@@ -23,3 +23,17 @@ Decisions: none new
 Blockers: B-001 still open
 Next: prove the quarry decoy cells in PR #52 exist in the map source before any marble-tell port. Do not merge.
 
+L-0003 | 2026-10-27 | Phase: P0
+Goal: fold B-001 and teach the Marble Vein its tell.
+Done:
+- B-001 resolved. Platform is one progressive web app. Live-service none. P2B-2 is N/A.
+- Weapon sheet replayed onto current main (it was not in the #83 squash).
+- Blade sparks on cracked marble. Hammer and bomb refuse decoys at (16,5) and (18,5). Lantern gate kept. Sentinel gold tell is 0.6s.
+Verified: ops/EVIDENCE/L-0003-test-game.txt — 237 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-009, D-010, D-011
+Blockers: raised 0 / resolved B-001
+Next: stop enemy HP growing with the cycle. Tests first. Do not merge.
+
+
