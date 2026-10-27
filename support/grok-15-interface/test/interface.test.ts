@@ -13,7 +13,6 @@ import {
   createSession,
   focusItems,
   play,
-  reduce,
   topScreen,
 } from "../src/logic/session.ts";
 import { DEV_SOURCE_LABEL } from "../src/catalog.ts";
