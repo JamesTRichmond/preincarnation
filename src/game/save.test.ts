@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
+import { applyDeath } from "./cooking/reduce.ts";
 import { TILE } from "./snes.ts";
 import { clearSave, defaultSave, loadSave, migrate, writeSave } from "./save.ts";
+import { resolveDeath } from "./rules.ts";
 import { SAVE_KEY, SAVE_VERSION, type SaveData } from "./types.ts";
 
 const mem = new Map<string, string>();
@@ -88,7 +90,7 @@ describe("migrate", () => {
     assert.equal(s.version, SAVE_VERSION);
   });
 
-  it("remembers a death's skill award without raising the save version", () => {
+  it("remembers a death's skill award when the kitchen raises the save", () => {
     const raw = {
       version: 8,
       cycle: 4,
@@ -111,9 +113,10 @@ describe("migrate", () => {
       character: { name: "Ira Fenn", skillPoints: 2, created: true, idealId: "the_job" },
     } as unknown as SaveData;
     const s = migrate(raw);
-    assert.equal(s.version, 8);
-    assert.equal(SAVE_VERSION, 8);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(SAVE_VERSION, 9);
     assert.equal(s.flags.lastSkillAward, 2);
+    assert.ok(s.kitchen.known.length >= 12);
   });
 });
 
@@ -207,5 +210,47 @@ describe("writeSave / loadSave", () => {
     assert.equal(loadSave().cycle, 0);
     const bak = JSON.parse(mem.get(SAVE_KEY + ".bak") ?? "null") as { character?: { name?: string } };
     assert.equal(bak.character?.name, "Ira Fenn");
+  });
+});
+
+describe("county kitchen on the life", () => {
+  it("gives a v8 life a kitchen and keeps the person", () => {
+    const raw = {
+      version: 8,
+      cycle: 4,
+      karma: 1,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: { talked: ["maeve"] },
+      maxHp: 5,
+      hp: 5,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, 9);
+    assert.equal(s.character.name, "Ira Fenn");
+    assert.ok(s.flags.talked.includes("maeve"));
+    assert.ok(s.kitchen.known.includes("spooned-oats"));
+    assert.ok((s.kitchen.pantry.milk ?? 0) > 0);
+    assert.equal(s.kitchen.effects.length, 0);
+  });
+
+  it("a chapter halves fresh food and keeps the cards", () => {
+    const save = defaultSave();
+    const milk = save.kitchen.pantry.milk ?? 0;
+    const dead = resolveDeath(save, { mapId: "middlebury", x: 8, y: 8 });
+    dead.kitchen = applyDeath(dead.kitchen);
+    assert.equal(dead.cycle, 1);
+    assert.equal(dead.kitchen.pantry.milk, Math.floor(milk / 2));
+    assert.equal(dead.kitchen.satchel.length, 0);
+    assert.equal(dead.kitchen.effects.length, 0);
+    assert.ok(dead.kitchen.known.includes("spooned-oats"));
+    assert.ok((dead.kitchen.pantry.oats ?? 0) > 0);
   });
 });

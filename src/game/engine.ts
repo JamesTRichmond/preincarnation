@@ -42,6 +42,7 @@ import {
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
+import { applyDeath } from "./cooking/reduce.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
@@ -348,6 +349,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const enterLimbo = (_reason: string) => {
     audio.die();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
+    save.kitchen = applyDeath(save.kitchen);
     mode = "limbo";
     audio.startDrone(true);
     persist();
@@ -2503,6 +2505,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (mode === "play" && actions.pausePressed) {
       mode = "pause";
       persist();
+    } else if (mode === "kitchen" && actions.pausePressed) {
+      mode = "play";
     } else if (mode === "pause" && actions.pausePressed && !showHelp) {
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
@@ -2830,6 +2834,29 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     },
     pause: () => {
       if (mode === "play") mode = "pause";
+    },
+    openKitchen: () => {
+      if (mode === "pause" || mode === "play") {
+        mode = "kitchen";
+        showHelp = false;
+        lastUi = "";
+      }
+    },
+    closeKitchen: () => {
+      if (mode === "kitchen") {
+        mode = "play";
+        lastUi = "";
+        try {
+          cvs.focus();
+        } catch {
+          /* ignore */
+        }
+      }
+    },
+    getKitchen: () => save.kitchen,
+    setKitchen: (kitchen: SaveData["kitchen"]) => {
+      save.kitchen = kitchen;
+      persist();
     },
     resume: () => {
       if (mode === "pause") {
