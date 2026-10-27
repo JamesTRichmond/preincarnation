@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
 import {
   afterlifeCopy,
@@ -17,6 +17,15 @@ import {
 import type { UiSnapshot } from "@/game/types";
 import { EMPTY_KIT } from "@/game/kit-compare";
 import { DEFAULT_CHARACTER, DEFAULT_FLAGS, DEFAULT_UPGRADES, EMPTY_LEDGER } from "@/game/types";
+import {
+  defaultA11y,
+  picturePixels,
+  readA11y,
+  subscribeA11y,
+  writeA11y,
+  type A11ySettings,
+  type StickSide,
+} from "@/game/a11y";
 
 const EMPTY: UiSnapshot = {
   mode: "title",
@@ -76,11 +85,34 @@ const EMPTY: UiSnapshot = {
 
 export function GameApp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<GameHandle | null>(null);
   const [ui, setUi] = useState<UiSnapshot>(EMPTY);
   const [hasSave, setHasSave] = useState(false);
+  const [comfort, setComfort] = useState<A11ySettings>(defaultA11y);
+  const [frame, setFrame] = useState({ w: 320, h: 240, stageW: 320, stageH: 240 });
   const stickRef = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    setComfort(readA11y());
+    return subscribeA11y(setComfort);
+  }, []);
+
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const apply = () => {
+      const stageW = stage.clientWidth;
+      const stageH = stage.clientHeight;
+      const px = picturePixels(stageW, stageH, comfort.pictureScale);
+      setFrame({ w: px.w, h: px.h, stageW, stageH });
+    };
+    apply();
+    const watch = new ResizeObserver(apply);
+    watch.observe(stage);
+    return () => watch.disconnect();
+  }, [comfort.pictureScale]);
 
   useEffect(() => {
     const el = canvasRef.current;
@@ -170,15 +202,34 @@ export function GameApp() {
   };
 
   const playing = ui.mode === "play";
+  const fits = frame.w <= frame.stageW && frame.h <= frame.stageH;
+  const onComfort = (patch: Partial<A11ySettings>) => {
+    setComfort(writeA11y(patch));
+  };
 
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-bg text-fg">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full touch-none"
-        style={{ imageRendering: "pixelated", cursor: "crosshair" }}
-        aria-label="PREINCARNATION game world"
-      />
+      <div
+        ref={stageRef}
+        className={playing ? "absolute inset-0 overflow-auto" : "absolute inset-0 overflow-hidden"}
+        data-picture-stage
+      >
+        <canvas
+          ref={canvasRef}
+          className="block touch-none"
+          style={{
+            width: frame.w,
+            height: frame.h,
+            marginLeft: fits ? "auto" : 0,
+            marginRight: fits ? "auto" : 0,
+            marginTop: fits ? Math.max(0, Math.floor((frame.stageH - frame.h) / 2)) : 0,
+            imageRendering: "pixelated",
+            cursor: "crosshair",
+            touchAction: comfort.pictureScale > 1 ? "pan-x pan-y" : "none",
+          }}
+          aria-label="PREINCARNATION game world"
+        />
+      </div>
 
       {ui.mode === "title" && (
         <Title
@@ -214,21 +265,40 @@ export function GameApp() {
       )}
 
       {playing && (ui.objective || ui.interactHint || ui.message) && (
-        <div className="pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-10 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 text-center">
+        <div
+          className={
+            comfort.highContrast
+              ? "pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-10 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 rounded-[12px] bg-[#120e09] px-3 py-2 text-center text-[#f7f3ea] ring-2 ring-[#f7f3ea]"
+              : "pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-10 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 text-center"
+          }
+          style={{ zoom: comfort.textScale }}
+        >
           {(ui.message || ui.interactHint) && (
-            <p className="font-mono text-xs tracking-wide text-primary">{ui.message ?? ui.interactHint}</p>
+            <p className={comfort.highContrast ? "font-mono text-xs tracking-wide text-[#f7f3ea]" : "font-mono text-xs tracking-wide text-primary"}>
+              {ui.message ?? ui.interactHint}
+            </p>
           )}
-          {ui.objective && <p className="font-mono text-xs tracking-wide text-fg-subtle">{ui.objective}</p>}
+          {ui.objective && (
+            <p className={comfort.highContrast ? "font-mono text-xs tracking-wide text-[#f7f3ea]" : "font-mono text-xs tracking-wide text-fg-subtle"}>
+              {ui.objective}
+            </p>
+          )}
         </div>
       )}
 
       {ui.mode === "dialogue" && ui.dialogue && (
-        <DialoguePanel node={ui.dialogue} onChoose={(i) => gameRef.current?.choose(i)} />
+        <DialoguePanel
+          node={ui.dialogue}
+          comfort={comfort}
+          onChoose={(i) => gameRef.current?.choose(i)}
+        />
       )}
 
       {(ui.mode === "pause" || ui.showHelp) && ui.mode !== "title" && ui.mode !== "create" && ui.mode !== "intro" && ui.mode !== "limbo" && ui.mode !== "ending" && ui.mode !== "ipod" && (
         <Pause
           ui={ui}
+          comfort={comfort}
+          onComfort={onComfort}
           onResume={() => gameRef.current?.resume()}
           onShake={(v) => gameRef.current?.setShake(v)}
           onMute={() => gameRef.current?.toggleMute()}
@@ -284,6 +354,7 @@ export function GameApp() {
           </button>
           {ui.showControls && (
             <TouchPad
+              stickSide={comfort.stickSide}
               stickRef={stickRef}
               onStick={onStick}
               hold={hold}
@@ -335,6 +406,8 @@ function Title({
 
 function Pause({
   ui,
+  comfort,
+  onComfort,
   onResume,
   onShake,
   onMute,
@@ -343,6 +416,8 @@ function Pause({
   onReset,
 }: {
   ui: UiSnapshot;
+  comfort: A11ySettings;
+  onComfort: (patch: Partial<A11ySettings>) => void;
   onResume: () => void;
   onShake: (v: boolean) => void;
   onMute: () => void;
@@ -491,9 +566,100 @@ function Pause({
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onCycle}>
             Next weapon
           </button>
-          <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={() => onShake(!ui.shake)}>
+          <button
+            type="button"
+            className="h-11 rounded-[12px] ring-1 ring-border"
+            onClick={() => {
+              const next = !ui.shake;
+              onShake(next);
+              if (next && comfort.shakeStrength <= 0) onComfort({ shakeStrength: 1 });
+            }}
+          >
             Screen shake {ui.shake ? "on" : "off"}
           </button>
+          <label className="flex h-11 items-center gap-3 rounded-[12px] px-3 ring-1 ring-border">
+            <span className="w-28 shrink-0 text-left text-sm">Kick {Math.round(comfort.shakeStrength * 100)}%</span>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={25}
+              value={Math.round(comfort.shakeStrength * 100)}
+              aria-label="Shake strength"
+              onChange={(e) => {
+                const shakeStrength = Number(e.target.value) / 100;
+                onComfort({ shakeStrength });
+                onShake(shakeStrength > 0);
+              }}
+              className="h-11 w-full accent-primary"
+            />
+          </label>
+          <label className="flex h-11 items-center gap-3 rounded-[12px] px-3 ring-1 ring-border">
+            <span className="w-28 shrink-0 text-left text-sm">Picture {Math.round(comfort.pictureScale * 100)}%</span>
+            <input
+              type="range"
+              min={100}
+              max={200}
+              step={25}
+              value={Math.round(comfort.pictureScale * 100)}
+              aria-label="Picture size"
+              onChange={(e) => onComfort({ pictureScale: (Number(e.target.value) / 100) as A11ySettings["pictureScale"] })}
+              className="h-11 w-full accent-primary"
+            />
+          </label>
+          <label className="flex h-11 items-center gap-3 rounded-[12px] px-3 ring-1 ring-border">
+            <span className="w-28 shrink-0 text-left text-sm">Reading {Math.round(comfort.textScale * 100)}%</span>
+            <input
+              type="range"
+              min={100}
+              max={200}
+              step={25}
+              value={Math.round(comfort.textScale * 100)}
+              aria-label="Reading size"
+              onChange={(e) => onComfort({ textScale: (Number(e.target.value) / 100) as A11ySettings["textScale"] })}
+              className="h-11 w-full accent-primary"
+            />
+          </label>
+          <p className="text-left text-xs text-fg-muted">
+            Picture magnifies the 320×240 frame and scrolls if it no longer fits. Minus and Equal still move the camera.
+            Neither one marks a door.
+          </p>
+          <button
+            type="button"
+            className="h-11 rounded-[12px] ring-1 ring-border"
+            onClick={() => onComfort({ highContrast: !comfort.highContrast })}
+          >
+            High-contrast plates {comfort.highContrast ? "on" : "off"}
+          </button>
+          <button
+            type="button"
+            className="h-11 rounded-[12px] ring-1 ring-border"
+            onClick={() => onComfort({ reducedFlashing: !comfort.reducedFlashing })}
+          >
+            Full-screen flashes {comfort.reducedFlashing ? "off" : "on"}
+          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              aria-pressed={comfort.stickSide === "left"}
+              className="h-11 flex-1 rounded-[12px] ring-1 ring-border"
+              onClick={() => onComfort({ stickSide: "left" satisfies StickSide })}
+            >
+              Stick left
+            </button>
+            <button
+              type="button"
+              aria-pressed={comfort.stickSide === "right"}
+              className="h-11 flex-1 rounded-[12px] ring-1 ring-border"
+              onClick={() => onComfort({ stickSide: "right" satisfies StickSide })}
+            >
+              Stick right
+            </button>
+          </div>
+          <p className="text-left text-xs text-fg-muted">
+            The stick moves. Slash takes the other edge. Keys stay put. Forget all lives clears the county and leaves
+            these settings.
+          </p>
           <button type="button" className="h-11 rounded-[12px] ring-1 ring-border" onClick={onMute}>
             Sound {ui.muted ? "muted" : "on"}
           </button>
@@ -512,32 +678,51 @@ function Pause({
 
 function DialoguePanel({
   node,
+  comfort,
   onChoose,
 }: {
   node: NonNullable<UiSnapshot["dialogue"]>;
+  comfort: A11ySettings;
   onChoose: (i: number) => void;
 }) {
   const choices = node.choices ?? [{ label: "Continue", next: "end" as const }];
+  const plate = comfort.highContrast
+    ? "mx-auto max-w-2xl rounded-[28px] bg-[#120e09] p-5 text-[#f7f3ea] ring-2 ring-[#f7f3ea]"
+    : "mx-auto max-w-2xl rounded-[28px] bg-bg-elevated p-5 ring-1 ring-border";
   return (
     <div className="absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-      <div className="mx-auto max-w-2xl rounded-[28px] bg-bg-elevated p-5 ring-1 ring-border">
+      <div className={plate} style={{ zoom: comfort.textScale }}>
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="font-display text-2xl text-fg">{node.speaker}</h2>
+          <h2 className={comfort.highContrast ? "font-display text-2xl text-[#f7f3ea]" : "font-display text-2xl text-fg"}>
+            {node.speaker}
+          </h2>
           {node.entropy != null && (
-            <p className="font-mono text-xs text-fg-subtle">Entropy {Math.round(node.entropy * 100)}%</p>
+            <p className={comfort.highContrast ? "font-mono text-xs text-[#f7f3ea]" : "font-mono text-xs text-fg-subtle"}>
+              Entropy {Math.round(node.entropy * 100)}%
+            </p>
           )}
         </div>
-        <p className="mt-3 text-base leading-relaxed text-fg-muted">{node.text}</p>
+        <p className={comfort.highContrast ? "mt-3 text-base leading-relaxed text-[#f7f3ea]" : "mt-3 text-base leading-relaxed text-fg-muted"}>
+          {node.text}
+        </p>
         <div className="mt-4 flex flex-col gap-2">
-          {choices.map((c) => (
+          {choices.map((c, i) => (
             <button
               key={c.label}
               type="button"
-              onClick={() => onChoose(choices.indexOf(c))}
-              className="min-h-12 rounded-[12px] bg-bg px-4 py-3 text-left text-base text-fg ring-1 ring-border hover:ring-primary"
+              onClick={() => onChoose(i)}
+              className={
+                comfort.highContrast
+                  ? "min-h-12 rounded-[12px] bg-[#1c1610] px-4 py-3 text-left text-base text-[#f7f3ea] ring-2 ring-[#f7f3ea]"
+                  : "min-h-12 rounded-[12px] bg-bg px-4 py-3 text-left text-base text-fg ring-1 ring-border hover:ring-primary"
+              }
             >
-              {c.label}
-              {c.note && <span className="ml-2 font-mono text-xs text-primary">{c.note}</span>}
+              {comfort.highContrast ? `${i + 1}. ${c.label}` : c.label}
+              {c.note && (
+                <span className={comfort.highContrast ? "ml-2 font-mono text-xs text-[#f7f3ea]" : "ml-2 font-mono text-xs text-primary"}>
+                  {c.note}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -842,6 +1027,7 @@ function Ending({ beat, onWalk }: { beat: number; onWalk: () => void }) {
 }
 
 function TouchPad({
+  stickSide,
   stickRef,
   onStick,
   hold,
@@ -850,6 +1036,7 @@ function TouchPad({
   onFar,
   onNear,
 }: {
+  stickSide: StickSide;
   stickRef: React.RefObject<HTMLDivElement | null>;
   onStick: (e: React.PointerEvent<HTMLDivElement>) => void;
   hold: (key: "attack" | "interact" | "release" | "bomb" | "dash" | "use", v: boolean) => void;
@@ -877,7 +1064,11 @@ function TouchPad({
     <>
       <div
         ref={stickRef}
-        className="absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-10 h-32 w-32 touch-none rounded-full bg-bg-elevated/40 ring-1 ring-border"
+        className={
+          stickSide === "right"
+            ? "absolute right-4 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-10 h-32 w-32 touch-none rounded-full bg-bg-elevated/40 ring-1 ring-border"
+            : "absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-10 h-32 w-32 touch-none rounded-full bg-bg-elevated/40 ring-1 ring-border"
+        }
         onPointerDown={onStick}
         onPointerMove={onStick}
         onPointerUp={onStick}
@@ -891,7 +1082,13 @@ function TouchPad({
           className="pointer-events-none absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
         />
       </div>
-      <div className="absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-3 z-10 flex max-w-[14rem] flex-wrap justify-end gap-2">
+      <div
+        className={
+          stickSide === "right"
+            ? "absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-3 z-10 flex max-w-[14rem] flex-wrap justify-start gap-2"
+            : "absolute right-3 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-10 flex max-w-[14rem] flex-wrap justify-end gap-2"
+        }
+      >
         {mk("Slash", "attack")}
         {mk("Talk", "interact")}
         {mk("Sip", "use")}

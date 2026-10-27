@@ -17,6 +17,7 @@ import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
+import { boneFlashAlpha, presentationScale, readA11y, shakePixels, subscribeA11y } from "./a11y.ts";
 import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
@@ -191,6 +192,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let running = true;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
+  let comfort = readA11y();
+  if (comfort.shakeStrength <= 0) shakeOn = false;
+  const stopComfort = subscribeA11y((next) => {
+    comfort = next;
+  });
   let probeYaw = 0;
   let playerStoned = 0;
   let flash = 0;
@@ -1964,9 +1970,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     bctx.fillStyle = "#143c28";
     bctx.fillRect(0, 0, SNES_W, SNES_H);
 
-    const shake = trauma * trauma;
-    const ox = shakeOn ? (Math.random() - 0.5) * shake * 8 : 0;
-    const oy = shakeOn ? (Math.random() - 0.5) * shake * 8 : 0;
+    const kicked = shakePixels(trauma, shakeOn, comfort.shakeStrength, Math.random);
+    const ox = kicked.ox;
+    const oy = kicked.oy;
     const visW = SNES_W / zoom;
     const visH = VIEW_H / zoom;
     const maxX = Math.max(0, world.w * TILE - visW);
@@ -2187,8 +2193,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillText(f.text, Math.round((f.x - viewX) * zoom) - 10, Math.round((f.y - viewY) * zoom));
     }
 
-    if (flash > 0) {
-      bctx.fillStyle = "rgba(244,239,226,0.25)";
+    const flashA = boneFlashAlpha(flash, comfort.reducedFlashing);
+    if (flashA > 0) {
+      bctx.fillStyle = `rgba(244,239,226,${flashA})`;
       bctx.fillRect(0, 0, SNES_W, SNES_H);
     }
     const night = localHour < 6 || localHour >= 20;
@@ -2305,8 +2312,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (interactHint) bctx.fillText(interactHint.toUpperCase(), 6, SNES_H - 6);
     else if (message) bctx.fillText(message.slice(0, 52), 6, SNES_H - 6);
 
-    const fit = Math.min(w / SNES_W, h / SNES_H);
-    const scale = Math.max(1, Math.floor(fit));
+    const scale = presentationScale(w, h);
     const dw = SNES_W * scale;
     const dh = SNES_H * scale;
     blit.ox = Math.floor((w - dw) / 2);
@@ -2808,6 +2814,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     sip,
     dispose: () => {
       running = false;
+      stopComfort();
       audio.dispose();
       deck.dispose();
       input.dispose();
