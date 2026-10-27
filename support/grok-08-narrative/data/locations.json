@@ -1,0 +1,338 @@
+[
+  {
+    "id": "loc.new_haven.homestead",
+    "town": "New Haven",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Harrow homestead",
+    "detail": "Intervale house on the river flats north of New Haven village. Kitchen, boot room, south-facing door."
+  },
+  {
+    "id": "loc.new_haven.orchard",
+    "town": "New Haven",
+    "county": "Addison",
+    "state": "VT",
+    "name": "South-block orchard",
+    "detail": "The block that took the 1927 silt. Stake iron still in the third row."
+  },
+  {
+    "id": "loc.new_haven.sugarhouse",
+    "town": "New Haven",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Harrow sugarhouse",
+    "detail": "A cupola sugarhouse at the edge of the maples, ledger nailed above the arch."
+  },
+  {
+    "id": "loc.new_haven.cistern",
+    "town": "New Haven",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Homestead cistern",
+    "detail": "Stone cistern between house and orchard. Flood silt under the frost ring."
+  },
+  {
+    "id": "loc.new_haven.mills_flat",
+    "town": "New Haven",
+    "county": "Addison",
+    "state": "VT",
+    "name": "New Haven Mills flat",
+    "detail": "Hamlet flat where the water has a memory of the old mill seats."
+  },
+  {
+    "id": "loc.middlebury.marble_works",
+    "town": "Middlebury",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Marble Works race",
+    "detail": "The old marble-mill buildings and the race that still argues with Otter Creek."
+  },
+  {
+    "id": "loc.middlebury.survey_office",
+    "town": "Middlebury",
+    "county": "Addison",
+    "state": "VT",
+    "name": "County survey room",
+    "detail": "A rented room off Court Street. Not a throne. A table, a cabinet, the flood book."
+  },
+  {
+    "id": "loc.middlebury.otters_below",
+    "town": "Middlebury",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Below the falls",
+    "detail": "The creek under the village falls, where marble dust and ice go when they are done being useful."
+  },
+  {
+    "id": "loc.middlebury.exchange",
+    "town": "Middlebury",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Saturday exchange yard",
+    "detail": "The yard behind the feed store where scion wood and rumors change hands. No counter quest. A conversation in mud."
+  },
+  {
+    "id": "loc.weybridge.pulp_mill",
+    "town": "Weybridge",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Lower gate at the pulp mill",
+    "detail": "Millrace by the covered bridge. Ansel's wheel. The pin is on the left hand side of the gate."
+  },
+  {
+    "id": "loc.weybridge.hill_barns",
+    "town": "Weybridge",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Hill barns",
+    "detail": "Two barns on the hill road when the town road is shut with mud or ice."
+  },
+  {
+    "id": "loc.weybridge.morgan_fence",
+    "town": "Weybridge",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Neighbor fence to the Morgan farm",
+    "detail": "A private fence line in the horse country. Not the college farm's office. Cora Belden's paddock."
+  },
+  {
+    "id": "loc.vergennes.falls",
+    "town": "Vergennes",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Falls basin",
+    "detail": "Otter Creek at the Vergennes falls. Slick rock, coat-catching eddies, the Rouleau count."
+  },
+  {
+    "id": "loc.vergennes.night_kitchen",
+    "town": "Vergennes",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Rouleau night kitchen",
+    "detail": "A kitchen on South Water Street that feeds the falls crew when the wage meeting runs long."
+  },
+  {
+    "id": "loc.waltham.river_meadow",
+    "town": "Waltham",
+    "county": "Addison",
+    "state": "VT",
+    "name": "March meadow",
+    "detail": "Downstream of the Vergennes works. Henry March's cows. The place the extra water goes."
+  },
+  {
+    "id": "loc.addison.chimney_point",
+    "town": "Addison",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Chimney Point landing",
+    "detail": "Vermont landing of the Lake Champlain Bridge. The log is kept on this shore only."
+  },
+  {
+    "id": "loc.addison.bridge_abutment",
+    "town": "Addison",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Vermont abutment",
+    "detail": "The Vermont abutment of the 1929 bridge, and later the place where the new span meets the same ground."
+  },
+  {
+    "id": "loc.addison.creemee_stand",
+    "town": "Addison",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Lamb's Creemee",
+    "detail": "A pullout stand on Route 17 that lives on bridge traffic and a book of orders."
+  },
+  {
+    "id": "loc.shoreham.larabee",
+    "town": "Shoreham",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Larabee's Point",
+    "detail": "Ferry landing. A bell that is rung for the dead who are not in the water anymore."
+  },
+  {
+    "id": "loc.bristol.quarry_cut",
+    "town": "Bristol",
+    "county": "Addison",
+    "state": "VT",
+    "name": "The overhang cut",
+    "detail": "A limestone cut above Bristol. The Marble Vein is in this stone as a fact of work and of unrealized names."
+  },
+  {
+    "id": "loc.bristol.powder_shack",
+    "town": "Bristol",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Powder shack",
+    "detail": "Off the cut. The key is ordinary. The use is not."
+  },
+  {
+    "id": "loc.bristol.supper_hall",
+    "town": "Bristol",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Quarry supper hall",
+    "detail": "Long tables, limestone in the cuffs, grace said by whoever Elena appoints."
+  },
+  {
+    "id": "loc.lincoln.notch_slide",
+    "town": "Lincoln",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Notch slide",
+    "detail": "A mud and rock slide on the Lincoln gap approach. School-bus road and quarry lane diverge here."
+  },
+  {
+    "id": "loc.starksboro.pellegrin_porch",
+    "town": "Starksboro",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Pellegrin porch",
+    "detail": "Kin porch east of the cut, where envelopes go when the shack is closed."
+  },
+  {
+    "id": "loc.panton.dead_creek",
+    "town": "Panton",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Dead Creek log",
+    "detail": "A sunning log in the Dead Creek marshes. Queen's place."
+  },
+  {
+    "id": "loc.panton.pike_barn",
+    "town": "Panton",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Pike barn",
+    "detail": "Earl Pike's barn at the marsh edge. Hay, stake, dog hair, no museum."
+  },
+  {
+    "id": "loc.panton.wrong_pond",
+    "town": "Panton",
+    "county": "Addison",
+    "state": "VT",
+    "name": "The wrong pond",
+    "detail": "A farm pond Queen can be walked to. She does not prefer it."
+  },
+  {
+    "id": "loc.orwell.quiet_house",
+    "town": "Orwell",
+    "county": "Addison",
+    "state": "VT",
+    "name": "The Quiet Household",
+    "detail": "Waite house. Plates, a stopped clock, an east room that is not for guests."
+  },
+  {
+    "id": "loc.orwell.east_room",
+    "town": "Orwell",
+    "county": "Addison",
+    "state": "VT",
+    "name": "East room",
+    "detail": "The bed made for the life that did not continue."
+  },
+  {
+    "id": "loc.whiting.line_fence",
+    "town": "Whiting",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Whiting line fence",
+    "detail": "The surveyed line between Whiting and Orwell where it crosses Abbott ground."
+  },
+  {
+    "id": "loc.whiting.abbott_grave",
+    "town": "Whiting",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Abbott plot",
+    "detail": "A family plot that the line would move into Orwell if the fair copy wins."
+  },
+  {
+    "id": "loc.cornwall.keene_loft",
+    "town": "Cornwall",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Keene loft",
+    "detail": "Above the Cornwall grange. Choir, stove, sack of unsent letters."
+  },
+  {
+    "id": "loc.cornwall.post_corner",
+    "town": "Cornwall",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Post corner",
+    "detail": "Walter Keene's counter. The rule about the dead is taped to the wood."
+  },
+  {
+    "id": "loc.ripton.notch_turn",
+    "town": "Ripton",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Notch turn",
+    "detail": "A pull-off on the Ripton road where the wind takes a card out of a hand. Not a campus."
+  },
+  {
+    "id": "loc.ferrisburgh.bench_pullout",
+    "town": "Ferrisburgh",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Route 7 pullout bench",
+    "detail": "A memorial bench the state calls a right-of-way problem."
+  },
+  {
+    "id": "loc.leicester.burnham_garden",
+    "town": "Leicester",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Burnham garden",
+    "detail": "Ten feet of garden that a kind survey gave to the wrong woman."
+  },
+  {
+    "id": "loc.goshen.corner_post",
+    "town": "Goshen",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Gray corner post",
+    "detail": "A post one foot inside Alma Gray's dooryard. Goshen does not have many witnesses."
+  },
+  {
+    "id": "loc.salisbury.outlet_shed",
+    "town": "Salisbury",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Outlet shed",
+    "detail": "A shed at the Lake Dunmore outlet used as a dry-store for copies when Middlebury basements flood."
+  },
+  {
+    "id": "loc.bridport.landing_road",
+    "town": "Bridport",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Landing road",
+    "detail": "The road down toward the lake where unlogged crossings get talked about after church."
+  },
+  {
+    "id": "loc.monkton.ridge_box",
+    "town": "Monkton",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Ridge box",
+    "detail": "A newspaper box on Monkton Ridge where Pearl leaves a flavor card when the stand is boarded."
+  },
+  {
+    "id": "loc.hancock.spare_line",
+    "town": "Hancock",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Spare line",
+    "detail": "An old blazed line in Hancock used once, in the oath year, as a place to practice refusing."
+  },
+  {
+    "id": "loc.granville.bed",
+    "town": "Granville",
+    "county": "Addison",
+    "state": "VT",
+    "name": "Granville bed",
+    "detail": "The empty road through Granville. A place the choir does not sing. Used only as a wrong destination someone proposes and Ellis refuses."
+  }
+]

@@ -112,12 +112,46 @@ export function migrate(save: SaveData): SaveData {
   return s;
 }
 
-export function loadSave(): SaveData {
+/** A life the game writes names its version, its town, and where it stands. */
+function stands(parsed: unknown): parsed is SaveData {
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return false;
+  const rec = parsed as Record<string, unknown>;
+  return (
+    typeof rec.version === "number" &&
+    Number.isFinite(rec.version) &&
+    typeof rec.mapId === "string" &&
+    rec.mapId.length > 0 &&
+    typeof rec.x === "number" &&
+    Number.isFinite(rec.x) &&
+    typeof rec.y === "number" &&
+    Number.isFinite(rec.y)
+  );
+}
+
+function readLife(raw: string): SaveData | null {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) return defaultSave();
-    const parsed = JSON.parse(raw) as SaveData;
+    const parsed: unknown = JSON.parse(raw);
+    if (!stands(parsed)) return null;
     return migrate(parsed);
+  } catch {
+    return null;
+  }
+}
+
+export function loadSave(): SaveData {
+  let raw: string | null;
+  try {
+    raw = localStorage.getItem(SAVE_KEY);
+  } catch {
+    return defaultSave();
+  }
+  // A missing key is a new life, or Forget. Do not resurrect the backup.
+  if (!raw) return defaultSave();
+  const primary = readLife(raw);
+  if (primary) return primary;
+  try {
+    const bak = localStorage.getItem(SAVE_KEY + ".bak");
+    return (bak && readLife(bak)) || defaultSave();
   } catch {
     return defaultSave();
   }
@@ -126,7 +160,16 @@ export function loadSave(): SaveData {
 export function writeSave(data: SaveData) {
   try {
     const blob = JSON.stringify({ ...data, version: SAVE_VERSION });
-    localStorage.setItem(SAVE_KEY + ".bak", localStorage.getItem(SAVE_KEY) ?? "");
+    const current = localStorage.getItem(SAVE_KEY);
+    // A stub in the lock must not be copied over the last good life.
+    if (current) {
+      try {
+        const parsed: unknown = JSON.parse(current);
+        if (stands(parsed)) localStorage.setItem(SAVE_KEY + ".bak", current);
+      } catch {
+        /* keep the existing backup */
+      }
+    }
     localStorage.setItem(SAVE_KEY, blob);
   } catch {
     /* private mode */

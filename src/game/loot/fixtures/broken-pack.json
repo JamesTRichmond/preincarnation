@@ -1,0 +1,37 @@
+{
+  "packId": "fixture:broken",
+  "items": [
+    {
+      "id": "fix.one-use",
+      "category": "object",
+      "uses": [{ "op": "salvage", "yields": { "scrap": 1 } }],
+      "source": { "kind": "site", "siteId": "not-a-site" }
+    },
+    {
+      "id": "fix.no-effect",
+      "category": "equipment",
+      "effectAmt": 0,
+      "effectStat": "grip",
+      "uses": [{ "op": "equip" }, { "op": "salvage", "yields": { "scrap": 1 } }],
+      "source": { "kind": "site", "siteId": "middlebury-green" }
+    },
+    {
+      "id": "fix.unread",
+      "category": "evidence",
+      "uses": [{ "op": "present" }, { "op": "present" }],
+      "source": { "kind": "cache", "cacheId": "cache.missing" }
+    },
+    {
+      "id": "fix.not-a-card",
+      "category": "card",
+      "uses": [{ "op": "deck-play" }, { "op": "frobnicate" }],
+      "source": { "kind": "site", "siteId": "ripton-notch" }
+    },
+    {
+      "id": "fix.unplaced",
+      "category": "decoration",
+      "uses": [{ "op": "salvage", "yields": { "scrap": 9 } }, { "op": "barterable" }],
+      "source": { "kind": "site", "siteId": "middlebury-green" }
+    }
+  ]
+}
