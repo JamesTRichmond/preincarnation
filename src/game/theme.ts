@@ -43,7 +43,7 @@ export function missingThemeLines(verbs: readonly string[] = themeVerbs()): stri
 export const THEME_DISSONANCE = [
   {
     id: "heart-fate",
-    line: "Release the universe and Bind it as a Crown turn Vermont into furniture for a next empire. That is a second plot. The rooms stay. Those choices are not the job. Do not add rooms.",
+    line: "Release the universe and Bind it as a Crown are gone from the Heart. The test fails if either choice returns. The old sentences stay in the file so a life that already chose can still be read. Do not add rooms.",
   },
 ] as const;
 

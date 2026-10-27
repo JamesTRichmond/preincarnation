@@ -477,23 +477,17 @@ export const DIALOGUE: Record<string, DialogueNode> = {
   heart_second: {
     id: "heart_second",
     speaker: "Heart of the Spectrum",
-    text: "Cycle {cycle}. The sphere still has your weather in it. Last life: {deed}. History is not a room. It is {graves} graves arguing with Fact. Choose again, or walk.",
+    text: "Cycle {cycle}. The sphere still has your weather in it. Last life: {deed}. History is not a room. It is {graves} graves arguing with Fact. The seam on the Green still opens back. Walk.",
     entropy: 0.62,
-    choices: [
-      { label: "Release the universe. (Fate)", karma: 8, crowns: 1, flag: { spectrumFate: "release" }, next: "heart_release", note: "Heavenly Crown" },
-      { label: "Bind it as a Crown. (Fate)", karma: -8, crowns: 1, flag: { spectrumFate: "bind" }, next: "heart_bind", note: "Heavenly Crown" },
-      { label: "Just walk.", next: "end" },
-    ],
+    choices: [{ label: "Just walk.", next: "end" }],
   },
   heart_1: {
     id: "heart_1",
     speaker: "Heart of the Spectrum",
-    text: "Four rooms. One sphere. Fact is the county as the satellite still insists. Fiction is the hill with a mouth. History is every grave you left. Imagination is the rest of you. You are the weather system now. An Arbiter still chooses.",
+    text: "Four rooms. One sphere. Fact is the county as the satellite still insists. Fiction is the hill with a mouth. History is every grave you left. Imagination is the rest of you. The rooms are Addison after the Vein goes quiet. The seam on the Green still opens back.",
     entropy: 0.5,
     choices: [
       { label: "How did Vermont become a sphere?", next: "heart_how" },
-      { label: "Release the universe. (Fate)", karma: 8, crowns: 1, flag: { spectrumFate: "release" }, next: "heart_release", note: "Heavenly Crown" },
-      { label: "Bind it as a Crown. (Fate)", karma: -8, crowns: 1, flag: { spectrumFate: "bind" }, next: "heart_bind", note: "Heavenly Crown" },
       { label: "Just walk.", next: "end" },
     ],
   },

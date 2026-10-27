@@ -18,6 +18,7 @@ import {
 } from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
+import { liveObjective } from "./quest";
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
@@ -518,27 +519,23 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     lastUi = "";
   };
 
-  const objective = () => {
-    if (mode === "limbo") return OBJECTIVES.limbo;
-    if (mapId === "soloverse") return OBJECTIVES.spectrum;
-    if (mapId === "quarry") {
-      if (!save.flags.relics.includes("lantern")) return "TAKE the lamp by the door. The Vein is blind without it.";
-      if (!save.flags.lanternOn) return "OPEN the lamp. The hammer does not land in the dark.";
-      if (!save.flags.chests.includes("q-key")) return "TAKE the key in the west alcove.";
-      if (!save.flags.chests.includes("q-lock-a")) return "USE the key on the north lock.";
-      if (!save.flags.relics.includes("hammer")) return "TAKE the marble hammer past the lock.";
-      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null)
-        return "SMASH the cracked marble — lamp open — then FACE the Sentinel.";
-      return "WALK west, or die here and come back with the shovel.";
-    }
-    if (!save.flags.talked.includes("elder") && mapId === "middlebury") return OBJECTIVES.start;
-    if (!save.flags.relics.includes("shovel")) return "TAKE the shovel by the stone.";
-    if (mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save))
-      return OBJECTIVES.seam;
-    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
-    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "DIG the grave of your last skin. The shovel is the verb.";
-    return OBJECTIVES.county;
-  };
+  const objective = () =>
+    liveObjective({
+      mode,
+      mapId,
+      talkedElder: save.flags.talked.includes("elder"),
+      hasShovel: save.flags.relics.includes("shovel"),
+      hasLantern: save.flags.relics.includes("lantern"),
+      lanternOn: !!save.flags.lanternOn,
+      hasKey: save.flags.chests.includes("q-key"),
+      lockOpen: save.flags.chests.includes("q-lock-a"),
+      hasHammer: save.flags.relics.includes("hammer"),
+      quarryQuiet: save.flags.townsCleared.includes("quarry"),
+      sentinelFaced: save.flags.sentinelFate != null,
+      cycle: save.cycle,
+      seamThin: mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save),
+      graveWaiting: (save.flags.graves ?? []).some((g) => !g.excavated),
+    });
 
   const atProp = (p: PropSpec, label: string) => ({ x: p.x * TILE + 8, y: p.y * TILE + 8, label });
 
@@ -2431,7 +2428,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       character: save.character,
       afterlifeHost: save.flags.afterlifeHost,
       introBeat,
-      job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
+      job: objective(),
       beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
@@ -2445,8 +2442,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycle,
       snap.incarnation,
       snap.bombs,
+      snap.objective,
+      snap.job,
       snap.interactHint,
       snap.message,
+      snap.job,
       dialogue?.id,
       endingBeat,
       showHelp,
