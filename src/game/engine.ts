@@ -1,7 +1,7 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
 import { boneFlashAlpha } from "./a11y";
-import { bedFor, type AudioBed } from "./audio-bed";
+import { bedFor, stepDue, type AudioBed } from "./audio-bed";
 import { FLOAT_CAP, PARTICLE_CAP, SLASH_CAP, trimCapped, unstickSpot } from "./fx";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { TOWN_BY_ID } from "./geography";
@@ -183,6 +183,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let ritual = 0;
   let dashT = 0;
   let hitstop = 0;
+  let stepCarry = 0;
   let attackQueued = false;
   let faceMem: AxisMem = null;
   let trauma = 0;
@@ -1549,6 +1550,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     player.vx = mx * spd;
     player.vy = my * spd;
     moveActor(player, player.vx * dt, player.vy * dt);
+    const paced = stepDue(stepCarry, Math.hypot(player.vx * dt, player.vy * dt));
+    stepCarry = paced.carry;
+    if (paced.fire) audio.step(tileAt(player.x, player.y));
     const pushing = Math.hypot(mx, my) > 0.25;
     if (pushing && blocked(player.x, player.y, 4)) {
       shoveT += dt;

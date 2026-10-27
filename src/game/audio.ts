@@ -1,5 +1,5 @@
 /** Procedural mixer — unlocked on the first gesture. */
-import { bedSpec, clampVolume, strikeVoice, type AudioBed } from "./audio-bed.ts";
+import { bedSpec, clampVolume, stepVoice, strikeVoice, type AudioBed } from "./audio-bed.ts";
 
 export function createAudio() {
   let ctx: AudioContext | null = null;
@@ -58,6 +58,12 @@ export function createAudio() {
     if (kind === "bear" || kind === "sentinel") beep(Math.max(40, v.freq * 0.5), v.dur, "square", 0.07, -16);
   };
   const pickup = () => beep(660, 0.14, "triangle", 0.09, 220);
+  let stepLeft = false;
+  const step = (tile: number) => {
+    const v = stepVoice(tile);
+    stepLeft = !stepLeft;
+    beep(v.freq * (stepLeft ? 1 : 0.93), v.dur, v.type, 0.032, v.slide);
+  };
   const hurt = () => beep(140, 0.2, "square", 0.12, -90);
   const die = () => {
     beep(220, 0.4, "sine", 0.12, -160);
@@ -183,5 +189,5 @@ export function createAudio() {
     if (c) void c.close();
   };
 
-  return { unlock, slash, hit, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
+  return { unlock, slash, hit, step, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
 }
