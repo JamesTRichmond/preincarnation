@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { defaultSave } from "./save.ts";
 import {
@@ -9,6 +10,7 @@ import {
   cycleLedger,
   cycleReturnNode,
   devilThreshold,
+  enemyMaxHp,
   fillDialogueText,
   grantBondKeepsake,
   groundKeptLine,
@@ -341,6 +343,25 @@ describe("spendSkillPoint", () => {
     s.character.skillPoints = 4;
     assert.equal(spendSkillPoint(s, "soloverseKey"), null);
     assert.equal(spendSkillPoint(s, "echo"), null);
+  });
+});
+
+describe("enemyMaxHp", () => {
+  it("does not fatten a body because you have died before", () => {
+    assert.equal(enemyMaxHp(10, false), 10);
+    assert.equal(enemyMaxHp(7, false), 7);
+    assert.equal(enemyMaxHp(10, false), enemyMaxHp(10, false));
+  });
+
+  it("tropoverse is one world, not a stack of deaths", () => {
+    assert.equal(enemyMaxHp(10, true), 14);
+    assert.equal(enemyMaxHp(2, true), 3);
+  });
+
+  it("the spawn line no longer multiplies by the cycle", () => {
+    const src = readFileSync(new URL("./engine.ts", import.meta.url), "utf8");
+    assert.equal(src.includes("cycle * 0.12"), false);
+    assert.match(src, /enemyMaxHp\(/);
   });
 });
 

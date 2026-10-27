@@ -22,4 +22,7 @@ D-010 | L-0003 | #83 landed on main as the skill cap only. The weapon sheet was 
 
 D-011 | L-0003 | The marble tell keeps the lantern gate. A dark quarry still refuses the hammer. Decoy faces at (16,5) and (18,5) stay shut for hammer and bomb. A blade only sparks. The Sentinel holds gold for 0.6s before each lunge, and still does not move at full health.
 
+D-012 | L-0004 | Enemy max HP does not grow with save.cycle. The old term was `1 + cycle * 0.12`. Tropoverse still multiplies once by 1.35 because it is a place, not a stack of deaths. Player ribcage was already free of a cycle term.
+
+
 
