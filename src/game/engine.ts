@@ -15,6 +15,7 @@ import {
 } from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
 import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
+import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
 import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
@@ -63,6 +64,7 @@ type Actor = {
   stoned: number;
   beat: SentinelBeat;
   tell: number;
+  warned: boolean;
 };
 
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
@@ -144,6 +146,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     stoned: 0,
     beat: "still",
     tell: 0,
+    warned: false,
   };
   let enemies: Actor[] = [];
   let particles: Particle[] = [];
@@ -275,6 +278,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         stoned: 0,
         beat: "still",
         tell: 0,
+        warned: false,
       });
     }
   };
@@ -1710,6 +1714,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         e.tell = 0;
       }
       if (e.stoned > 0) {
+        if (e.kind !== "sentinel") {
+          e.tell = 0;
+          e.warned = false;
+        }
         e.vx = Math.sin(animT * 2 + e.x) * sp * 0.4;
         e.vy = Math.cos(animT * 1.7 + e.y) * sp * 0.4;
         moveActor(e, e.vx * dt, e.vy * dt);
@@ -1732,22 +1740,44 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         if (sentinel && !sentinel.moves) {
           e.vx = 0;
           e.vy = 0;
-        } else {
-          let ix = dx / dist;
-          let iy = dy / dist;
-          if (e.kind === "fisher") {
-            ix += Math.sin(animT * 8) * 0.45;
-            iy += Math.cos(animT * 6) * 0.45;
-          }
+        } else if (sentinel) {
+          const ix = dx / dist;
+          const iy = dy / dist;
           moveActor(e, ix * sp * dt, iy * sp * dt);
           if (Math.abs(ix) > Math.abs(iy)) e.dir = ix < 0 ? 1 : 2;
           else e.dir = iy < 0 ? 3 : 0;
           if (dist < 12 && e.hurt <= 0) {
-            const dmg = e.kind === "bear" ? 1.5 : e.kind === "sentinel" ? 1 : e.kind === "resident" ? 1.2 : 1;
-            hurtPlayer(dmg, e.x, e.y);
+            hurtPlayer(1, e.x, e.y);
             e.hurt = 0.4;
           }
+        } else {
+          const step = countyTell(e.kind, dist, e.tell, e.warned, dt);
+          e.tell = step.tell;
+          e.warned = step.warned;
+          if (Math.abs(dx) > Math.abs(dy)) e.dir = dx < 0 ? 1 : 2;
+          else e.dir = dy < 0 ? 3 : 0;
+          if (step.step === "tell") {
+            e.vx = 0;
+            e.vy = 0;
+          } else {
+            let ix = dx / dist;
+            let iy = dy / dist;
+            if (e.kind === "fisher") {
+              ix += Math.sin(animT * 8) * 0.45;
+              iy += Math.cos(animT * 6) * 0.45;
+            }
+            moveActor(e, ix * sp * dt, iy * sp * dt);
+            if (step.step === "bite" && dist < 12 && e.hurt <= 0) {
+              const dmg = e.kind === "bear" ? 1.5 : e.kind === "resident" ? 1.2 : 1;
+              hurtPlayer(dmg, e.x, e.y);
+              e.hurt = 0.4;
+              e.warned = false;
+            }
+          }
         }
+      } else if (e.kind !== "sentinel") {
+        e.tell = 0;
+        e.warned = false;
       }
     }
 
@@ -2121,6 +2151,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             bctx.fillRect(dx + 2, dy + 1, 12, 3);
             bctx.globalAlpha = 1;
           }
+          if (a.tell > 0 && a.kind !== "sentinel") {
+            bctx.fillStyle = "#f4efe2";
+            for (const [mx, my] of tellPixels(a.x, a.y, player.x, player.y, a.tell, TELL_S)) {
+              bctx.fillRect(worldX(mx), worldY(my), 1, 1);
+            }
+          }
           if (a.hp < a.maxHp) {
             bctx.fillStyle = "#2a2018";
             bctx.fillRect(dx, dy - 3, 16, 2);
@@ -2297,6 +2333,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         bctx.fillStyle = "#f4efe2";
         bctx.fillText(line, tx, ty);
       }
+    }
+
+    if (mode === "play") {
+      const line = placeUnderfoot(tileAt(player.x, player.y), mapId);
+      bctx.font = "8px monospace";
+      const tw = Math.min(140, bctx.measureText(line).width);
+      bctx.fillStyle = "#14100c";
+      bctx.fillRect(4, 40, tw + 4, 9);
+      bctx.fillStyle = "#f4efe2";
+      bctx.fillText(line, 6, 47);
     }
 
     drawHudBar();
