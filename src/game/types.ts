@@ -125,6 +125,7 @@ export type Flags = {
   afterlifeHost: AfterlifeHost | null;
   lastDeed: string;
   returnedFromDeath: boolean;
+  lastSkillAward: number;
 };
 
 export type SaveData = {
@@ -287,4 +288,5 @@ export const DEFAULT_FLAGS: Flags = {
   afterlifeHost: null,
   lastDeed: "",
   returnedFromDeath: false,
+  lastSkillAward: 0,
 };

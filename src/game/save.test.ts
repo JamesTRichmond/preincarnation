@@ -72,6 +72,7 @@ describe("migrate", () => {
     assert.equal(s.version, SAVE_VERSION);
     assert.equal(s.flags.lastDeed, "");
     assert.equal(s.flags.returnedFromDeath, false);
+    assert.equal(s.flags.lastSkillAward, 0);
     assert.equal(s.character.name, "Ira Fenn");
     assert.equal(s.character.bondId, "maeve");
     assert.equal(s.upgrades.vitality, 1);
@@ -84,6 +85,35 @@ describe("migrate", () => {
     const s = migrate(defaultSave());
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
+    assert.equal(s.version, SAVE_VERSION);
+  });
+
+  it("remembers a death's skill award without raising the save version", () => {
+    const raw = {
+      version: 8,
+      cycle: 4,
+      karma: 1,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: { vitality: 0, edge: 0, stride: 0, sight: 0, shadowStep: 0, wraithBond: 0 },
+      flags: {
+        returnedFromDeath: true,
+        townsCleared: ["quarry"],
+        lastDeed: "You spoke with Maeve on the Green",
+      },
+      maxHp: 5,
+      hp: 5,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", skillPoints: 2, created: true, idealId: "the_job" },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, 8);
+    assert.equal(SAVE_VERSION, 8);
+    assert.equal(s.flags.lastSkillAward, 2);
   });
 });
 
