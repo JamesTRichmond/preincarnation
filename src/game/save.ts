@@ -192,6 +192,15 @@ export function writeSave(data: SaveData) {
   }
 }
 
+export function exportLifeBlob(data: SaveData): string {
+  return JSON.stringify({ ...data, version: SAVE_VERSION });
+}
+
+/** A file the player keeps. Garbage is refused. Nothing is uploaded. */
+export function importLifeBlob(raw: string): SaveData | null {
+  return readLife(raw);
+}
+
 export function clearSave() {
   try {
     localStorage.removeItem(SAVE_KEY);

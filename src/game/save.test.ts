@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { applyDeath } from "./cooking/reduce.ts";
 import { TILE } from "./snes.ts";
-import { clearSave, defaultSave, loadSave, migrate, writeSave } from "./save.ts";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, migrate, writeSave } from "./save.ts";
 import { resolveDeath } from "./rules.ts";
 import { SAVE_KEY, SAVE_VERSION, type SaveData } from "./types.ts";
 
@@ -252,5 +252,18 @@ describe("county kitchen on the life", () => {
     assert.equal(dead.kitchen.effects.length, 0);
     assert.ok(dead.kitchen.known.includes("spooned-oats"));
     assert.ok((dead.kitchen.pantry.oats ?? 0) > 0);
+  });
+});
+
+describe("export and import", () => {
+  it("round-trips a life and refuses a file that never stood", () => {
+    const life = defaultSave();
+    life.character.name = "Ira Fenn";
+    const raw = exportLifeBlob(life);
+    const back = importLifeBlob(raw);
+    assert.equal(back?.character.name, "Ira Fenn");
+    assert.equal(back?.version, SAVE_VERSION);
+    assert.equal(importLifeBlob("{"), null);
+    assert.equal(importLifeBlob("{}"), null);
   });
 });

@@ -1,4 +1,4 @@
-# SCORECARD   Cycle: L-0007   Timestamp: 2026-10-27T04:10:00Z
+# SCORECARD   Cycle: L-0008   Timestamp: 2026-10-27T04:25:00Z
 Platform: progressive web app, 320×240   (the only v1 platform)
 
 | ID | Item | Score | Evidence tier | Cap applied | Evidence file | Tag |

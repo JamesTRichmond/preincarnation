@@ -27,6 +27,13 @@ export function placeUnderfoot(tile: number, mapId: string): string {
   return "In the meadow";
 }
 
+export function tellHold(kind: string): number {
+  if (kind === "bear" || kind === "resident") return 0.7;
+  if (kind === "crow") return 0.22;
+  if (kind === "bobcat") return 0.28;
+  return TELL_S;
+}
+
 /**
  * County creatures show a ring before they bite. The Sentinel is not on this
  * clock: the Vein already teaches that tell.
@@ -45,7 +52,7 @@ export function countyTell(
     if (next > 0) return { tell: next, warned: true, step: "tell" };
     return { tell: 0, warned: true, step: dist < BITE ? "bite" : "close" };
   }
-  if (!warned && dist < TELL_RANGE) return { tell: TELL_S, warned: true, step: "tell" };
+  if (!warned && dist < TELL_RANGE) return { tell: tellHold(kind), warned: true, step: "tell" };
   if (dist < BITE) return { tell: 0, warned: true, step: "bite" };
   if (warned) return { tell: 0, warned: true, step: "close" };
   return { tell: 0, warned: false, step: "walk" };

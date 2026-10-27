@@ -49,6 +49,17 @@
   --color-ash-warn: #8c3a2f;
 }
 
+main[data-contrast="high"] {
+  --color-bg: #000000;
+  --color-bg-elevated: #000000;
+  --color-fg: #ffffff;
+  --color-fg-muted: #ffffff;
+  --color-fg-subtle: #ffe08a;
+  --color-primary: #ffe08a;
+  --color-primary-fg: #000000;
+  --color-border: #ffffff;
+}
+
 @layer base {
   html,
   body,

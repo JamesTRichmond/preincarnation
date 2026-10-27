@@ -1,5 +1,8 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
+import { boneFlashAlpha } from "./a11y";
+import { bedFor, type AudioBed } from "./audio-bed";
+import { FLOAT_CAP, PARTICLE_CAP, SLASH_CAP, trimCapped, unstickSpot } from "./fx";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
@@ -40,7 +43,7 @@ import {
   paintLock16,
   paintCave16,
 } from "./pix";
-import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
 import { applyDeath } from "./cooking/reduce.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
@@ -198,6 +201,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let probeYaw = 0;
   let playerStoned = 0;
   let flash = 0;
+  let reducedFlash = false;
+  let audioBed: AudioBed = "county";
   const images = new Map<string, HTMLImageElement>();
   let ready = false;
   let showControls = false;
@@ -348,6 +353,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const enterLimbo = (_reason: string) => {
     audio.die();
+    audio.winter();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
     save.kitchen = applyDeath(save.kitchen);
     mode = "limbo";
@@ -972,42 +978,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return false;
   };
 
-  const unstick = (px: number, py: number) => {
-    if (!blocked(px, py, 4)) return { x: px, y: py };
-    const tx0 = Math.floor(px / TILE);
-    const ty0 = Math.floor(py / TILE);
-    const prefer = [
-      [0, 1],
-      [1, 1],
-      [-1, 1],
-      [1, 0],
-      [-1, 0],
-      [2, 1],
-      [-2, 1],
-      [0, 2],
-      [1, 2],
-      [-1, 2],
-      [0, -1],
-      [1, -1],
-      [-1, -1],
-    ];
-    for (const [dx, dy] of prefer) {
-      const x = (tx0 + dx) * TILE + 8;
-      const y = (ty0 + dy) * TILE + 8;
-      if (!blocked(x, y, 4)) return { x, y };
-    }
-    for (let r = 1; r <= 16; r++) {
-      for (let dy = -r; dy <= r; dy++) {
-        for (let dx = -r; dx <= r; dx++) {
-          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
-          const x = (tx0 + dx) * TILE + 8;
-          const y = (ty0 + dy) * TILE + 8;
-          if (!blocked(x, y, 4)) return { x, y };
-        }
-      }
-    }
-    return { x: px, y: py };
-  };
+  const unstick = (px: number, py: number) => unstickSpot(px, py, (x, y) => blocked(x, y, 4));
 
   const plantSouthOfStoop = () => {
     const tx = Math.floor(player.x / TILE);
@@ -1753,9 +1724,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             e.hurt = 0.4;
           }
         } else {
+          const beforeTell = e.tell;
           const step = countyTell(e.kind, dist, e.tell, e.warned, dt);
           e.tell = step.tell;
           e.warned = step.warned;
+          if (beforeTell === 0 && step.step === "tell") audio.tell();
           if (Math.abs(dx) > Math.abs(dy)) e.dir = dx < 0 ? 1 : 2;
           else e.dir = dy < 0 ? 3 : 0;
           if (step.step === "tell") {
@@ -1841,8 +1814,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       return f.t > 0;
     });
 
+    const fighting = enemies.some((e) => e.alive && Math.hypot(e.x - player.x, e.y - player.y) < 78);
+    const nextBed = bedFor({ mode, mapId, fighting });
+    if (nextBed !== audioBed) {
+      audioBed = nextBed;
+      audio.startDrone(nextBed);
+    }
+
     beacon = questBeacon();
-    if (!reduced && particles.length < 240 && mapId !== "soloverse") {
+    trimCapped(slashes, SLASH_CAP);
+    trimCapped(particles, PARTICLE_CAP);
+    trimCapped(floats, FLOAT_CAP);
+    if (particles.length < PARTICLE_CAP && !reduced && mapId !== "soloverse") {
       const moving = Math.abs(mx) + Math.abs(my) > 0.2;
       if (moving) {
         stepAcc += dt;
@@ -2225,7 +2208,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillText(f.text, Math.round((f.x - viewX) * zoom) - 10, Math.round((f.y - viewY) * zoom));
     }
 
-    if (flash > 0) {
+    if (boneFlashAlpha(flash, reducedFlash) > 0) {
       bctx.fillStyle = "rgba(244,239,226,0.25)";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
     }
@@ -2813,6 +2796,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     setShake: (v: boolean) => {
       shakeOn = v;
     },
+    setReducedFlash: (v: boolean) => {
+      reducedFlash = v;
+    },
+    setVolumes: (music: number, sfx: number) => audio.setVolumes(music, sfx),
+    exportLife: () => exportLifeBlob(save),
+    importLife: (raw: string) => {
+      const next = importLifeBlob(raw);
+      if (!next) return false;
+      writeSave(next);
+      return true;
+    },
     toggleMute: () => audio.setMuted(!audio.muted),
     dismissHelp: () => {
       showHelp = false;
@@ -2836,11 +2830,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (mode === "play") mode = "pause";
     },
     openKitchen: () => {
-      if (mode === "pause" || mode === "play") {
-        mode = "kitchen";
-        showHelp = false;
-        lastUi = "";
-      }
+      if (mode !== "pause") return;
+      mode = "kitchen";
+      showHelp = false;
+      lastUi = "";
+      audio.kitchen();
     },
     closeKitchen: () => {
       if (mode === "kitchen") {
