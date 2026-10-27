@@ -378,9 +378,11 @@ function Title({
   onContinue: () => void;
 }) {
   return (
-    <section className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+    <section className="absolute inset-0 z-20 flex flex-col items-center justify-center overflow-y-auto bg-bg px-6 text-center">
       <p className="mb-3 font-mono text-xs tracking-[0.28em] text-primary uppercase">Vermont · never ending</p>
-      <h1 className="font-display text-5xl font-semibold tracking-tight text-fg sm:text-7xl">PREINCARNATION</h1>
+      <h1 className="max-w-full font-display text-[clamp(1.7rem,7vw,4.5rem)] font-semibold leading-none tracking-tight text-fg">
+        PREINCARNATION
+      </h1>
       <p className="mt-4 max-w-md text-lg text-fg-muted">You will die. God, or the other one, will send you back. The Marble Vein is the job.</p>
       <p className="mt-2 max-w-sm text-sm text-fg-subtle">
         Addison County. One life, one name. Speak with Maeve. Take the shovel. Walk east until the temple answers.
