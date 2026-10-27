@@ -18,7 +18,7 @@ import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marb
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
+import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -260,7 +260,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     enemies = [];
     for (const p of props) {
       if (p.kind !== "enemy" || !p.enemy) continue;
-      const hp = Math.round((ENEMY_HP[p.enemy] ?? 2) * (1 + save.cycle * 0.12) * (save.flags.tropoverse ? 1.35 : 1));
+      const hp = enemyMaxHp(ENEMY_HP[p.enemy] ?? 2, save.flags.tropoverse);
       enemies.push({
         id: p.id,
         x: p.x * TILE + 8,

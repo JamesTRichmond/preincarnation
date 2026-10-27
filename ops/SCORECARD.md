@@ -1,4 +1,4 @@
-# SCORECARD   Cycle: L-0003   Timestamp: 2026-10-27T03:20:00Z
+# SCORECARD   Cycle: L-0004   Timestamp: 2026-10-27T03:20:00Z
 Platform: progressive web app, 320×240   (the only v1 platform)
 
 | ID | Item | Score | Evidence tier | Cap applied | Evidence file | Tag |
@@ -7,7 +7,7 @@ Platform: progressive web app, 320×240   (the only v1 platform)
 | P1A-2 | Game feel | 0 | V partial, builder does not score | 0 | feel tests on main via #80 | REPORTED |
 | P1A-3 | Progression loops | 0 | V for the death-skill cap only | 0 | ops/EVIDENCE/L-0001-test-game.txt | VERIFIED evidence, score held |
 | P1A-4 | Synergy & agency | 0 | none | 0 | — | UNKNOWN |
-| P1A-5 | Difficulty & balance | 0 | telegraph rules exist; not scored by the builder | 0 | ops/EVIDENCE/L-0003-test-game.txt | VERIFIED evidence, score held |
+| P1A-5 | Difficulty & balance | 0 | telegraph plus cycle-HP cut; builder does not score | 0 | ops/EVIDENCE/L-0004-test-game.txt | VERIFIED evidence, score held |
 | P1B-1 | Storytelling | 0 | none | 0 | — | UNKNOWN |
 | P1B-2 | Quest design | 0 | none | 0 | — | UNKNOWN |
 | P1B-3 | Pacing | 0 | none | 0 | — | UNKNOWN |

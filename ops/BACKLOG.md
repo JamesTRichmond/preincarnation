@@ -3,7 +3,7 @@ Ranked by what can move a zero. Sev 1/2: none open. Item scores are 0, so PRV is
 
 | Rank | ID | Work | Why now | Status |
 |---|---|---|---|---|
-| 1 | P1A-5 | Remove `1 + save.cycle * 0.12` from enemy HP. A cycle must not be a sponge. | P1A-5 forbids HP-only scaling. Next cycle. | NEXT |
+| 1 | P1A-5 | Cycle no longer fattens enemy HP. Tropoverse is one place multiplier. | HP-only cycle scaling is the sponge P1A-5 forbids. | BUILT, unscored |
 | 2 | P1A-5 | Marble tell. Blade sparks. Decoys stay shut. Sentinel gold is 0.6s. Lantern gate kept. | Cells (16,5) and (18,5) are real. | BUILT, unscored |
 | 3 | P1A-3 | Skill cap. On main as #83. | Death is not a factory. | ON MAIN, unscored |
 | 4 | P1A-2 | Hitstop/lip/camera landed on main as #80 before this manifest. Re-measure, do not rebuild. | Evidence is the tests, not a feel panel. | REPORTED |

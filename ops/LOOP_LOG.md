@@ -36,4 +36,15 @@ Decisions: D-009, D-010, D-011
 Blockers: raised 0 / resolved B-001
 Next: stop enemy HP growing with the cycle. Tests first. Do not merge.
 
+L-0004 | 2026-10-27 | Phase: P0
+Goal: a later life is not a sponge.
+Done: enemyMaxHp ignores cycle. Tropoverse stays a single 1.35 world multiplier. Branched from main after #86 and #90.
+Verified: ops/EVIDENCE/L-0004-test-game.txt — 255 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged; builder does not score)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-012
+Blockers: none
+Next: PWA install shell is still missing (D-009). Do not merge.
+
+
 

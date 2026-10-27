@@ -161,6 +161,11 @@ export function quarryHammerLands(onQuarry: boolean, hasLantern: boolean, lanter
   return !onQuarry || (hasLantern && lanternOn);
 }
 
+/** A later life is the same fight. Tropoverse is a place, applied once, not a tax on deaths. */
+export function enemyMaxHp(base: number, tropoverse: boolean): number {
+  return Math.round(base * (tropoverse ? 1.35 : 1));
+}
+
 /**
  * Door exits start on the stoop. Walk south until the tile is grass-or-better:
  * not solid, and not rail, path, cliff lip, bridge, or gravel.
