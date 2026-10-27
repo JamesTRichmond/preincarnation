@@ -1,7 +1,7 @@
 # HANDOFF
 
 Cycle: L-0006   Step: 10 checkpoint   Time: 2026-10-27
-Branch/commit: integrate/theme-map (hash after commit)
+Branch/commit: integrate/theme-map @ 88660b1
 Uncommitted work: none after this checkpoint
 Failing tests: see L-0006 evidence
 Final Score per platform: PWA 20.0   Points to Gate: 78.0
