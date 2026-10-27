@@ -1,33 +1,38 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~03:35 UTC, after merge of PR #107. Main at `3beed56` (merge of PR #107)._
+_Updated Tue 2026-10-27, ~04:05 UTC, after merge of PR #99. Main tip `de85584` (includes #99 at `078d55c` and subsequent #100/#101)._
 
-## Health of main (`3beed56`)
+## Health of main (`de85584`)
 
 | Gate | Result |
 |---|---|
-| `npm run test:game` | **255 pass, 0 fail** (per PR #107 evidence log `ops/EVIDENCE/L-0004-test-game.txt`) |
-| `tsc --noEmit` | clean (per PR #107) |
+| `npm run typecheck` | exit 0 on #99 head `a046286` (and prior) |
+| `npm test` | exit 0. 253 pass on #99 head (includes cartogram: 192 screens, era gates, Void Oar). Subsequent merges raise the count; no regressions reported. |
+| `npm run lint` | pre-existing failures only (prefer-const, unused, empty block); none introduced by #99 |
+| `npm run build` | exit 0 |
+| Browser smoke | clean desktop + mobile on #99 (title, canvas, no console/page errors, no overflow, no brand/auth warnings) |
 | SAVE_VERSION | remains 8 |
-| Engine / rules touch | yes: `enemyMaxHp` no longer scales with `save.cycle`; Tropoverse ×1.35 once (place, not deaths) |
-| County save / live route | unchanged |
+| Engine / rules / live route / maps.ts / save.ts | unchanged by #99 |
+| Support pack isolation | `support/grok-07-overworld/` pure addition; no shared files |
 
-Prior typecheck/build/smoke inherited; full re-smoke recommended on next CI cycle. CI verify green on PR head before merge.
+CI verify green on PR head before merge. Full re-smoke on current tip recommended in next cycle.
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #107 | Stop a later life from fattening every enemy. `enemyMaxHp(base, tropoverse)` ignores cycle. Removes `1 + cycle * 0.12` sponge (P1A-5). Test guards against reintroduction. Tropoverse remains a one-time place multiplier. | merged by James; head `eeebd2f`; main tip `3beed56` |
+| #99 | Add the Addison County overworld cartogram beside the walk. Hand-authored cartogram: 12 districts, 192 screens (16 each), 10 hubs, 60 interiors, 16 dungeon mouths, six eras. Validator for reciprocal exits, traps, Void Oar opens. Isolated under `support/grok-07-overworld/`. Explicitly not mounted on `/`; does not replace live 320×240 walk or maps.ts. Own year ledger stays off the Green. | merged by James; merge commit `078d55c`; PR head `a046286`; main tip advanced past it to `de85584` |
 
-Vision Checklist satisfied: Marble Vein sole plot; death advances exactly 14 winters as chapter (unchanged); one person; no romance/party/crafting; 320×240 Canvas/SNES-coat preserved; localStorage/SAVE_VERSION=8 respected; no support-pack live impact. Later lives are the same fight. Tests green. Closes HP-only cycle scaling path.
+Vision Checklist satisfied: Marble Vein remains the sole plot; death advances ~14 winters as a chapter (untouched); one person; no romance/party/crafting systems; 320×240 Canvas/SNES-coat preserved (pack screens are 20×14 tiles, not a replacement raster); localStorage save untouched (nothing reads or writes it); support pack does not break the live game; tests green. See `support/grok-07-overworld/INTEGRATION.md`.
 
 ## Durable facts
 
-- Enemy max HP does not grow with deaths/cycles. Tropoverse is a place (×1.35 once). Player ribcage already free of cycle term.
-- Skill on death remains capped (from #83). SAVE_VERSION stays 8.
+- Addison County cartogram graph lives beside the walk under `support/grok-07-overworld/`. Mouths are thresholds only. Do not import as second game or replacement raster.
+- Enemy max HP does not grow with deaths/cycles (#107). Tropoverse is a place (×1.35 once).
+- Skill on death remains capped (#83). SAVE_VERSION stays 8.
 - Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
-- Marble Vein tell from #86 remains on main (decoy faces, Sentinel telegraph).
+- Marble Vein tell from #86 remains on main.
+- Recent pure additions on main: #95 environment art, #96 Lemon Fair placement, #97 item inheritance, #98 Ash Bend household, #100 persistence pack, #101 gadgets. All isolated support packs.
 - Node ≥ 22.12 required. Tests by glob.
 - Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
 
@@ -47,23 +52,21 @@ Vision Checklist satisfied: Marble Vein sole plot; death advances exactly 14 win
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#107, ~03:35 UTC)
+## Open PR ledger (post-#99 / current tip `de85584`, ~04:05 UTC)
 
 | Bucket | PRs |
 |---|---|
-| STATUS updates (rebase/close) | #81, #82 (stale relative to current main) |
-| Superseded | #38 (close; skill cap already on main via #83) |
-| Support / unmounted | #59, #49, #42, #87, #88, #89, #100, #101, #102, #105, #106, #108, etc. |
-| Live features | #15 weapon compare, #36 item search, remaining engine-touch candidates |
+| STATUS updates (rebase/close — all stale relative to current tip) | #81, #82, #91, #92, #112–#114, #118–#120, etc. |
+| Support / unmounted | #42, #49, #59, #102, #105, #106, #108, #110, #115, etc. |
+| Live / engine-adjacent | #36 item search, #93 bag-and-grave, #111 picture-and-pad (needs rebase + review) |
 | Other | pending rebase from #71–73 |
 
 ## Next priorities
 
-1. Close #38 as superseded by #83.
-2. Rebase or close stale STATUS PRs (#81, #82); this STATUS is current.
-3. Continue bot-ready rebase of remaining open PRs (#71–73); verify vision + tests before any merge. Engine/rules touches require explicit review.
-4. Review open support packs for vision alignment and conflicts with recent main (rules.ts change is narrow).
-5. Full CI smoke on main post-#107 to confirm no regression from HP change.
-6. Repo hygiene: large artifacts/screenshots still inflate .git.
+1. Close or rebase the growing set of stale STATUS PRs; this file is now current for #99 and tip `de85584`.
+2. Continue vision review of open support packs (#108 endgame, #106 satchel, #105 Ashwick, #102 dungeons 05–08, etc.). Confirm isolation before merge.
+3. Engine/rules touches (if any remaining) require explicit review after rebase.
+4. Full CI smoke on current main tip to confirm cumulative pure-addition merges introduced no regressions.
+5. Repo hygiene: large artifacts/screenshots still inflate .git.
 
-No new risks. Removes the P1A-5 sponge. QQ-VGEF pillars (live engine fidelity, vision constraints) strengthened; no impact on optional support readiness.
+No new risks from #99. Pure optional geography graph. QQ-VGEF pillars (live engine fidelity, vision constraints) unaffected; optional support readiness strengthened (cartogram + validator available for future deliberate import only).
