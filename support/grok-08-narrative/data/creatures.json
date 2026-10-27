@@ -1,0 +1,38 @@
+[
+  {
+    "id": "c.queen",
+    "name": "Queen",
+    "kind": "snapping turtle",
+    "sex": "female",
+    "hatchedYear": 1934,
+    "deathYear": null,
+    "notes": "Notched as a juvenile by Ivo Perch when he lifted her out of the lower sluice. She knows mill-gate grease and a two-note whistle. She is an animal, not a magistrate."
+  },
+  {
+    "id": "c.bramble",
+    "name": "Bramble",
+    "kind": "dog",
+    "sex": "male",
+    "hatchedYear": 1983,
+    "deathYear": 1994,
+    "notes": "Cal Voss's dog. Recognizes a stance at the rail. Dies in the oath year no matter what Ellis does."
+  },
+  {
+    "id": "c.march_cow",
+    "name": "the March cow",
+    "kind": "cow",
+    "sex": "female",
+    "hatchedYear": 1948,
+    "deathYear": 1954,
+    "notes": "Henry March's cow that walks to the old grease-salt at the abandoned gate site. Not a symbol on purpose."
+  },
+  {
+    "id": "c.belden_mare",
+    "name": "Invoice",
+    "kind": "Morgan mare",
+    "sex": "female",
+    "hatchedYear": 1971,
+    "deathYear": 1998,
+    "notes": "Cora Belden's mare. Promised to a 4-H girl and also listed against a feed bill."
+  }
+]

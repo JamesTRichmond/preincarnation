@@ -6,8 +6,9 @@ import { gpsOnCounty } from "./raster";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
+import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage } from "./rules";
+import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -16,21 +17,18 @@ import {
 } from "./tileset";
 import {
   makeTileCache,
-  paintBush16,
-  paintRock16,
-  paintBuilding16,
-  paintNpc16,
-  paintWell16,
-  paintChest16,
-  paintGrave16,
-  paintPot16,
-  paintShrine16,
-  paintSheep16,
-  paintLock16,
-  paintKey16,
-  paintCave16,
+  makePropCache,
   paintShadow,
   paintHudALttP,
+  paintBuilding16,
+  paintRock16,
+  paintPot16,
+  paintSheep16,
+  paintNpc16,
+  paintGrave16,
+  paintKey16,
+  paintLock16,
+  paintCave16,
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
@@ -56,7 +54,7 @@ type Actor = {
   stoned: number;
 };
 
-type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number };
+type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
 type SlashFx = { x: number; y: number; dir: Dir; t: number };
 type Floating = { x: number; y: number; t: number; text: string; color: string };
 type Shot = { x: number; y: number; vx: number; vy: number; life: number; dmg: number; burn: number; slow: number; stoned: number };
@@ -146,6 +144,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let attackBuf = 0;
   let charge = 0;
   let zoom = 1;
+  let shoveT = 0;
   let hook: { x: number; y: number; vx: number; vy: number; life: number; latched: boolean } | null = null;
   const vtHour = () => {
     try {
@@ -201,6 +200,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let downY = 0;
   let mouseAttack = false;
   let warpLock = 0;
+  let beacon: { x: number; y: number; label: string } | null = null;
+  let stepAcc = 0;
+  let moteAcc = 0;
 
   const sheets: Record<string, string> = {
     wanderer: "/game/wanderer-walk/snes.png?v=3",
@@ -217,6 +219,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     relics: "/game/relics/snes.png",
   };
   const tileCache = makeTileCache();
+  const propCache = makePropCache();
 
   void Promise.all(
     Object.entries(sheets).map(async ([k, url]) => {
@@ -282,7 +285,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     warpLock = 0.55;
     camX = player.x;
     camY = player.y;
-    tileCache.clear();
+    tileCache.swap(id + ":" + save.cycle);
   };
 
   const say = (text: string) => {
@@ -541,21 +544,109 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (mode === "limbo") return OBJECTIVES.limbo;
     if (mapId === "soloverse") return OBJECTIVES.spectrum;
     if (mapId === "quarry") {
-      if (!save.flags.relics.includes("lantern")) return "The lamp is by the door. The Vein is dark without it.";
-      if (!save.flags.chests.includes("q-key")) return "A key waits in the west alcove.";
-      if (!save.flags.chests.includes("q-lock-a")) return "Use the key on the north lock.";
-      if (!save.flags.relics.includes("hammer")) return "The marble hammer is past the lock.";
+      if (!save.flags.relics.includes("lantern")) return "TAKE the lamp by the door. The Vein is blind without it.";
+      if (!save.flags.lanternOn) return "OPEN the lamp. The hammer does not land in the dark.";
+      if (!save.flags.chests.includes("q-key")) return "TAKE the key in the west alcove.";
+      if (!save.flags.chests.includes("q-lock-a")) return "USE the key on the north lock.";
+      if (!save.flags.relics.includes("hammer")) return "TAKE the marble hammer past the lock.";
       if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null)
-        return "Smash the cracked marble. Face the Sentinel.";
-      return "The Vein is quiet. Walk back west, or die here and return with a shovel.";
+        return "SMASH the cracked marble — lamp open — then FACE the Sentinel.";
+      return "WALK west, or die here and come back with the shovel.";
     }
     if (!save.flags.talked.includes("elder") && mapId === "middlebury") return OBJECTIVES.start;
-    if (!save.flags.relics.includes("shovel")) return OBJECTIVES.start;
+    if (!save.flags.relics.includes("shovel")) return "TAKE the shovel by the stone.";
     if (mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save))
       return OBJECTIVES.seam;
     if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
-    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "A grave of your last skin waits. Bring the shovel.";
+    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "DIG the grave of your last skin. The shovel is the verb.";
     return OBJECTIVES.county;
+  };
+
+  const atProp = (p: PropSpec, label: string) => ({ x: p.x * TILE + 8, y: p.y * TILE + 8, label });
+
+  const questBeacon = () => {
+    const byId = (id: string) => props.find((p) => p.id === id);
+    const byRelic = (id: string) => props.find((p) => p.kind === "relic" && p.relic === id);
+    const exit = () =>
+      props.find((p) => p.kind === "warp" && p.warp?.map === "middlebury") ??
+      props.find((p) => p.kind === "warp" && (p.id === "to-overworld" || p.id.includes("middlebury")));
+
+    if (mapId === "quarry") {
+      if (!save.flags.relics.includes("lantern")) {
+        const p = byRelic("lantern");
+        if (p) return atProp(p, "Lamp");
+      }
+      if (!save.flags.chests.includes("q-key")) {
+        const p = byId("q-key");
+        if (p) return atProp(p, "Key");
+      }
+      if (!save.flags.chests.includes("q-lock-a")) {
+        const p = byId("q-lock-a");
+        if (p) return atProp(p, "Lock");
+      }
+      if (!save.flags.relics.includes("hammer")) {
+        const p = byRelic("hammer");
+        if (p) return atProp(p, "Hammer");
+      }
+      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) {
+        const sen = enemies.find((e) => e.alive && e.kind === "sentinel");
+        if (sen) return { x: sen.x, y: sen.y, label: "Sentinel" };
+        for (let y = 0; y < world.h; y++) {
+          const row = world.tiles[y];
+          for (let x = 0; x < world.w; x++) {
+            if (row?.[x] === T.cracked) return { x: x * TILE + 8, y: y * TILE + 8, label: "Cracked marble" };
+          }
+        }
+      }
+      const back = byId("to-middlebury-q");
+      if (back) return atProp(back, "West");
+      return null;
+    }
+
+    if (mapId === "soloverse") {
+      const heart = props.find((p) => p.npc === "heart" || p.id === "heart");
+      if (heart) return atProp(heart, "Heart");
+      return null;
+    }
+
+    if (!save.flags.talked.includes("elder")) {
+      const p = byId("elder");
+      if (p) return atProp(p, "Maeve");
+      const door = exit();
+      if (door) return atProp(door, "Maeve");
+    }
+    if (!save.flags.relics.includes("shovel")) {
+      const p = byRelic("shovel");
+      if (p) return atProp(p, "Shovel");
+      const door = exit();
+      if (door) return atProp(door, "Shovel");
+    }
+    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) {
+      const q = byId("to-quarry");
+      if (q) return atProp(q, "Marble Vein");
+      const door = exit();
+      if (door) return atProp(door, "Toward the Vein");
+    }
+    if ((save.flags.graves ?? []).some((g) => !g.excavated)) {
+      const gp = props.find((p) => p.kind === "grave");
+      if (gp) return atProp(gp, "Your grave");
+    }
+    return null;
+  };
+
+  const cardinal = (dx: number, dy: number) => {
+    const names = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"];
+    const i = Math.round(Math.atan2(dy, dx) / (Math.PI / 4));
+    return names[((i % 8) + 8) % 8];
+  };
+
+  const beaconLine = () => {
+    if (!beacon || mode !== "play") return null;
+    const dx = beacon.x - player.x;
+    const dy = beacon.y - player.y;
+    const paces = Math.max(0, Math.round(Math.hypot(dx, dy) / TILE));
+    if (paces <= 1) return beacon.label + " · here";
+    return cardinal(dx, dy) + " · " + beacon.label + " · " + paces;
   };
 
   const unlocked = (id: IncarnationId) => isIncarnationUnlocked(id, save.cycle, save.flags, save.crowns);
@@ -571,7 +662,15 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const openDialogue = (id: string) => {
     const node = DIALOGUE[id];
     if (!node) return;
-    const fill = (s: string) => fillDialogueText(s, save.character.name, save.flags.year, save.cycle);
+    const fill = (s: string) =>
+      fillDialogueText(
+        s,
+        save.character.name,
+        save.flags.year,
+        save.cycle,
+        save.flags.lastDeed,
+        (save.flags.graves ?? []).length,
+      );
     dialogue = {
       ...node,
       speaker: fill(node.speaker),
@@ -628,7 +727,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const back = save.flags.returnMap ?? p.warp.map;
       const rx = save.flags.returnX || p.warp.x * TILE + 8;
       const ry = save.flags.returnY || p.warp.y * TILE + 8;
-      loadWorld(back, rx, ry + 6);
+      loadWorld(back, rx, ry);
+      plantSouthOfStoop();
       say("Back to the county air.");
     } else {
       save.flags.returnMap = mapId;
@@ -699,21 +799,30 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.returnedFromDeath = false;
       if (p.npc === "elder") {
         if (save.flags.elderFate) openDialogue(save.flags.elderFate === "release" ? "elder_release" : "elder_bind");
-        else if (save.cycle >= 1) openDialogue("elder_return");
-        else if (save.character.bondId === "maeve") openDialogue("elder_bond");
-        else openDialogue("elder_1");
+        else {
+          const remembered = cycleReturnNode("elder", save.cycle);
+          if (remembered) openDialogue(remembered);
+          else if (save.character.bondId === "maeve") openDialogue("elder_bond");
+          else openDialogue("elder_1");
+        }
         noteDeed("You spoke with Maeve on the Green");
       } else if (p.npc === "farmer") {
         if (save.flags.farmerHelped) openDialogue("farmer_done");
         else if (save.flags.sheepFound) openDialogue("farmer_sheep");
-        else if (save.cycle >= 1) openDialogue("farmer_return");
-        else if (save.character.bondId === "perch") openDialogue("farmer_bond");
-        else openDialogue("farmer_1");
+        else {
+          const remembered = cycleReturnNode("farmer", save.cycle);
+          if (remembered) openDialogue(remembered);
+          else if (save.character.bondId === "perch") openDialogue("farmer_bond");
+          else openDialogue("farmer_1");
+        }
         noteDeed("You spoke with Cal Perch");
       } else if (p.npc === "mayor") {
         if (save.flags.millFate) openDialogue(save.flags.millFate === "spare" ? "mayor_spare" : "mayor_condemn");
-        else if (save.cycle >= 1) openDialogue("mayor_return");
-        else openDialogue("mayor_1");
+        else {
+          const remembered = cycleReturnNode("mayor", save.cycle);
+          if (remembered) openDialogue(remembered);
+          else openDialogue("mayor_1");
+        }
         noteDeed("You stood in Voss's square");
       } else if (p.npc === "shop") {
         openDialogue(save.flags.bombs > 0 ? "shop_buy" : "shop_1");
@@ -727,7 +836,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         openDialogue(save.flags.syrupStash ? "sugar_tin" : "sugar_1");
       } else if (p.npc === "heart") {
         if (save.flags.spectrumFate) openDialogue(save.flags.spectrumFate === "release" ? "heart_release" : "heart_bind");
-        else openDialogue("heart_1");
+        else {
+          const remembered = cycleReturnNode("heart", save.cycle);
+          if (remembered) openDialogue(remembered);
+          else openDialogue("heart_1");
+        }
       } else if (p.npc && NPC_NODE[p.npc]) {
         openDialogue(NPC_NODE[p.npc]);
       }
@@ -787,7 +900,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.chests = [...save.flags.chests, p.id];
       props = props.filter((x) => x.id !== p.id);
       if (world.tiles[p.y]) world.tiles[p.y][p.x] = T.marble;
+      tileCache.dirty(p.x, p.y);
       say("The lock gives.");
+      persist();
+    } else if (p.kind === "wheel") {
+      if (!save.flags.chests.includes(p.id)) save.flags.chests = [...save.flags.chests, p.id];
+      props = props.filter((x) => x.id !== p.id);
+      for (const cell of BELL_SLUICE) {
+        if (world.tiles[cell.y]) world.tiles[cell.y][cell.x] = T.wood;
+      }
+      say("The race turns. The sluice lifts. The clapper is still not yours.");
       persist();
     } else if (p.kind === "grave") {
       if (!save.flags.relics.includes("shovel")) {
@@ -913,6 +1035,50 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
     return { x: px, y: py };
+  };
+
+  const plantSouthOfStoop = () => {
+    const tx = Math.floor(player.x / TILE);
+    const ty = Math.floor(player.y / TILE);
+    const spot = stepSouthOffStoop(
+      tx,
+      ty,
+      (x, y) => world.tiles[y]?.[x],
+      (x, y) => blocked(x * TILE + 8, y * TILE + 8, 4),
+    );
+    if (spot) {
+      player.x = spot.tx * TILE + 8;
+      player.y = spot.ty * TILE + 8;
+    } else {
+      const foot = unstick(player.x, player.y + TILE);
+      player.x = foot.x;
+      player.y = foot.y;
+    }
+    camX = player.x;
+    camY = player.y;
+  };
+
+  const shoveFree = (px: number, py: number, dx: number, dy: number) => {
+    const tx0 = Math.floor(px / TILE);
+    const ty0 = Math.floor(py / TILE);
+    const sx = Math.sign(dx) || 0;
+    const sy = Math.sign(dy) || 1;
+    const tries: [number, number][] = [
+      [sx, sy],
+      [sx, 0],
+      [0, sy],
+      [sx, sy + (sy === 0 ? 1 : 0)],
+      [sx === 0 ? 1 : -sx, sy],
+      [0, 1],
+      [1, 1],
+      [-1, 1],
+    ];
+    for (const [ox, oy] of tries) {
+      const x = (tx0 + ox) * TILE + 8;
+      const y = (ty0 + oy) * TILE + 8;
+      if (!blocked(x, y, 4)) return { x, y };
+    }
+    return unstick(px, py);
   };
 
   const moveActor = (a: Actor, dx: number, dy: number) => {
@@ -1136,7 +1302,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const k = DIRS[player.dir];
     const tx = Math.floor((player.x + k.x * 14) / TILE);
     const ty = Math.floor((player.y + k.y * 14) / TILE);
+    const lands = quarryHammerLands(mapId === "quarry", save.flags.relics.includes("lantern"), save.flags.lanternOn);
     let opened = false;
+    let blind = false;
     for (const [ox, oy] of [
       [0, 0],
       [-1, 0],
@@ -1147,13 +1315,19 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const x = tx + ox;
       const y = ty + oy;
       if (world.tiles[y]?.[x] !== T.cracked) continue;
+      if (!lands) {
+        blind = true;
+        continue;
+      }
       world.tiles[y][x] = T.marble;
+      tileCache.dirty(x, y);
       const cid = "crack-" + mapId + "-" + x + "-" + y;
       if (!save.flags.chests.includes(cid)) save.flags.chests = [...save.flags.chests, cid];
       burst(x * TILE + 8, y * TILE + 8, "#c4bba8", 12);
       opened = true;
     }
-    if (opened) {
+    if (blind && !opened) say("The marble is blind. Open the lamp, then the hammer.");
+    else if (opened) {
       say("The plug gives. North is open.");
       persist();
     }
@@ -1396,6 +1570,21 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     player.vx = mx * spd;
     player.vy = my * spd;
     moveActor(player, player.vx * dt, player.vy * dt);
+    const pushing = Math.hypot(mx, my) > 0.25;
+    if (pushing && blocked(player.x, player.y, 4)) {
+      shoveT += dt;
+      if (shoveT >= 0.4) {
+        shoveT = 0;
+        const place = shoveFree(player.x, player.y, mx, my);
+        if (!blocked(place.x, place.y, 4)) {
+          player.x = place.x;
+          player.y = place.y;
+          say("The ground lets you out.");
+        }
+      }
+    } else {
+      shoveT = 0;
+    }
     if (mapId === "soloverse") {
       const W = world.w * TILE;
       const H = world.h * TILE;
@@ -1435,6 +1624,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const ty = Math.floor(by / TILE);
       if (world.tiles[ty]?.[tx] === T.cracked) {
         world.tiles[ty][tx] = T.gravel;
+        tileCache.dirty(tx, ty);
         save.flags.quarryOpen = true;
         say("The vein gives. The quarry opens.");
       }
@@ -1448,6 +1638,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       ? near.kind === "warp"
         ? near.id.includes("quarry")
           ? "Marble Vein"
+          : near.warp?.map === "bell"
+            ? "The bell"
           : near.id.includes("soloverse") || near.id.includes("seam")
             ? "Soloverse"
             : "Enter"
@@ -1471,6 +1663,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
                   ? "Key"
                   : near.kind === "lock"
                     ? "Unlock"
+                    : near.kind === "wheel"
+                      ? "Turn"
                     : near.kind === "home"
                   ? "The homestead"
                   : "Talk"
@@ -1592,7 +1786,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       p.life -= dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vy += 30 * dt;
+      p.vy += (p.g ?? 30) * dt;
       return p.life > 0;
     });
     floats = floats.filter((f) => {
@@ -1613,6 +1807,70 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           color: weather.label.id === "snow" ? "#f4efe2" : "#8eb4d4",
           size: 1,
         });
+      }
+    }
+
+    beacon = questBeacon();
+    if (!reduced && particles.length < 240 && mapId !== "soloverse") {
+      const moving = Math.abs(mx) + Math.abs(my) > 0.2;
+      if (moving) {
+        stepAcc += dt;
+        if (stepAcc > 0.2) {
+          stepAcc = 0;
+          particles.push({
+            x: player.x + (Math.random() - 0.5) * 4,
+            y: player.y + 5,
+            vx: -mx * 8,
+            vy: -6,
+            life: 0.28,
+            color: "#c4b48a",
+            size: 1,
+            g: 18,
+          });
+        }
+      }
+      const outdoors = !isInterior(mapId) && mapId !== "quarry";
+      if (outdoors) {
+        moteAcc += dt;
+        if (moteAcc > 0.45) {
+          moteAcc = 0;
+          const roofs = props.filter(
+            (p) =>
+              p.kind === "home" ||
+              p.kind === "barn" ||
+              p.kind === "inn" ||
+              p.kind === "hall" ||
+              p.kind === "college" ||
+              p.kind === "capitol" ||
+              p.kind === "sugar" ||
+              p.kind === "disp",
+          );
+          if (roofs.length) {
+            const b = roofs[Math.floor(animT * 2) % roofs.length];
+            const night = localHour < 6 || localHour >= 20;
+            particles.push({
+              x: b.x * TILE + 5,
+              y: b.y * TILE + 1,
+              vx: (Math.random() - 0.4) * 6,
+              vy: -12 - Math.random() * 6,
+              life: 1.3,
+              color: night ? "#6a5a48" : "#e4dcc8",
+              size: Math.random() < 0.35 ? 2 : 1,
+              g: 0,
+            });
+          }
+          const night = localHour < 6 || localHour >= 20;
+          particles.push({
+            x: player.x + (Math.random() - 0.5) * 120,
+            y: player.y + (Math.random() - 0.5) * 80,
+            vx: (Math.random() - 0.5) * (night ? 8 : 4),
+            vy: night ? (Math.random() - 0.5) * 6 : -3,
+            life: night ? 2.4 : 1.5,
+            color: night ? "#e8c36a" : "#f4efe2",
+            size: 1,
+            g: 0,
+          });
+        }
       }
     }
 
@@ -1640,26 +1898,53 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return true;
   };
 
+  const hudLayer = document.createElement("canvas");
+  hudLayer.width = SNES_W;
+  hudLayer.height = 36;
+  const hudCtx = hudLayer.getContext("2d")!;
+  hudCtx.imageSmoothingEnabled = false;
+  let hudSig = "";
   const drawHudBar = () => {
     const town = TOWN_BY_ID[mapId]?.name ?? (isInterior(mapId) ? "Inside" : mapId);
     const clock = String(localHour).padStart(2, "0") + "h";
     const wx = weather ? weather.label.name.slice(0, 8) : "";
-    paintHudALttP(bctx, {
-      hp: player.hp,
-      maxHp: player.maxHp,
-      mp: save.mp,
-      maxMp: save.maxMp,
-      karma: save.karma,
-      arrows: save.flags.arrows,
-      bombs: save.flags.bombs,
-      keys: save.flags.keys,
-      year: save.flags.year,
+    const sig = [
+      player.hp,
+      player.maxHp,
+      save.mp,
+      save.maxMp,
+      save.karma,
+      save.flags.arrows,
+      save.flags.bombs,
+      save.flags.keys,
+      save.flags.year,
       town,
       clock,
-      weather: wx,
-      ySlot: save.flags.ySlot,
-      name: save.character.name,
-    });
+      wx,
+      save.flags.ySlot,
+      save.character.name,
+    ].join("|");
+    if (sig !== hudSig) {
+      hudSig = sig;
+      hudCtx.clearRect(0, 0, SNES_W, 36);
+      paintHudALttP(hudCtx, {
+        hp: player.hp,
+        maxHp: player.maxHp,
+        mp: save.mp,
+        maxMp: save.maxMp,
+        karma: save.karma,
+        arrows: save.flags.arrows,
+        bombs: save.flags.bombs,
+        keys: save.flags.keys,
+        year: save.flags.year,
+        town,
+        clock,
+        weather: wx,
+        ySlot: save.flags.ySlot,
+        name: save.character.name,
+      });
+    }
+    bctx.drawImage(hudLayer, 0, 0);
   };
 
   const draw = (_t: number) => {
@@ -1690,19 +1975,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     viewY = Math.max(0, Math.min(maxY, viewY));
     const ts = TILE * zoom;
     const frame = Math.floor(animT * 4) % 4;
-    const x0 = Math.max(0, Math.floor(viewX / TILE) - 1);
-    const y0 = Math.max(0, Math.floor(viewY / TILE) - 1);
-    const x1 = Math.min(world.w, x0 + Math.ceil(visW / TILE) + 2);
-    const y1 = Math.min(world.h, y0 + Math.ceil(visH / TILE) + 2);
 
-    for (let ty = y0; ty < y1; ty++) {
-      for (let tx = x0; tx < x1; tx++) {
-        const id = world.tiles[ty][tx];
-        const dx = Math.round((tx * TILE - viewX) * zoom);
-        const dy = Math.round((ty * TILE - viewY) * zoom);
-        tileCache.blit(bctx, id, dx, dy, tx, ty, world.tiles, frame, ts);
-      }
-    }
+    tileCache.blitView(bctx, world.tiles, viewX, viewY, visW, visH, zoom, frame);
 
     const worldX = (wx: number) => Math.round((wx - viewX) * zoom);
     const worldY = (wy: number) => Math.round((wy - viewY) * zoom);
@@ -1718,18 +1992,27 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const dx = worldX(p.x * TILE);
       const dy = worldY(p.y * TILE);
       const glow = save.upgrades.sight > 0;
-      if (p.kind === "bush") paintBush16(bctx, dx, dy, glow);
-      else if (p.kind === "chest") paintChest16(bctx, dx, dy, glow);
+      if (p.kind === "bush") propCache.bush(bctx, dx, dy, glow);
+      else if (p.kind === "chest") propCache.chest(bctx, dx, dy, glow);
       else if (p.kind === "cache") paintCache(bctx, dx, dy, glow);
-      else if (p.kind === "shrine") paintShrine16(bctx, dx, dy, ritual > 0);
-      else if (p.kind === "well") paintWell16(bctx, dx, dy);
+      else if (p.kind === "shrine") propCache.shrine(bctx, dx, dy, ritual > 0);
+      else if (p.kind === "well") propCache.well(bctx, dx, dy);
       else if (p.kind === "home" || p.kind === "barn" || p.kind === "inn" || p.kind === "hall" || p.kind === "college" || p.kind === "capitol" || p.kind === "sugar" || p.kind === "disp") {
         paintBuilding16(bctx, p.kind === "home" ? "home" : p.kind, dx, dy);
+        if (localHour < 6 || localHour >= 20) {
+          bctx.fillStyle = "#f0d090";
+          bctx.fillRect(dx + 5, dy + 7, 1, 1);
+          bctx.fillRect(dx + 10, dy + 7, 1, 1);
+        }
       } else if (p.kind === "rock") paintRock16(bctx, dx, dy);
       else if (p.kind === "pot") paintPot16(bctx, dx, dy);
-      else if (p.kind === "sheep") paintSheep16(bctx, dx, dy);
+      else if (p.kind === "sheep") {
+        const hop = reduced ? 0 : Math.floor(animT * 2 + p.x) % 5 === 0 ? -1 : 0;
+        paintSheep16(bctx, dx, dy + hop);
+      }
       else if (p.kind === "npc") {
-        paintNpc16(bctx, dx, dy, p.npc ?? "elder");
+        const bob = reduced ? 0 : Math.sin(animT * 2.4 + p.x * 0.7) > 0.92 ? -1 : 0;
+        paintNpc16(bctx, dx, dy + bob, p.npc ?? "elder");
         const mark =
           (p.npc === "elder" && !save.flags.talked.includes("elder")) ||
           (p.npc === "elder" && save.cycle >= 1 && save.flags.returnedFromDeath);
@@ -1757,6 +2040,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (p.kind === "grave") paintGrave16(bctx, dx, dy);
       else if (p.kind === "key") paintKey16(bctx, dx, dy);
       else if (p.kind === "lock") paintLock16(bctx, dx, dy);
+      else if (p.kind === "wheel") {
+        bctx.strokeStyle = "#8a5a2a";
+        bctx.strokeRect(dx + 3, dy + 3, 10, 10);
+        bctx.fillStyle = "#c4a574";
+        bctx.fillRect(dx + 7, dy + 4, 2, 8);
+        bctx.fillRect(dx + 4, dy + 7, 8, 2);
+      }
       else if (p.kind === "cave") paintCave16(bctx, dx, dy);
       else if (p.kind === "relic") {
         const sheet = images.get("relics");
@@ -1880,7 +2170,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
     for (const p of particles) {
       bctx.fillStyle = p.color;
-      bctx.fillRect(Math.round((p.x - viewX) * zoom), Math.round((p.y - viewY) * zoom), 1, 1);
+      const s = p.g === 0 ? Math.max(1, Math.min(2, Math.round(p.size))) : 1;
+      bctx.fillRect(Math.round((p.x - viewX) * zoom), Math.round((p.y - viewY) * zoom), s, s);
     }
     for (const f of floats) {
       bctx.fillStyle = f.color;
@@ -1955,6 +2246,57 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillStyle = "#e8c36a";
       bctx.fillRect(mx - 2, my, 5, 1);
       bctx.fillRect(mx, my - 2, 1, 5);
+    }
+
+    if (mode === "play" && beacon) {
+      const sx = worldX(beacon.x);
+      const sy = worldY(beacon.y);
+      const on = sx > 12 && sx < SNES_W - 12 && sy > 28 && sy < SNES_H - 14;
+      if (on) {
+        const bob = reduced ? 0 : Math.sin(animT * 6) > 0 ? 0 : 1;
+        const mx = sx;
+        const my = sy - 14 - bob;
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(mx - 2, my - 1, 5, 5);
+        bctx.fillStyle = "#e8c36a";
+        bctx.fillRect(mx, my, 1, 1);
+        bctx.fillRect(mx - 1, my + 1, 3, 1);
+        bctx.fillRect(mx, my + 2, 1, 1);
+      } else {
+        const ang = Math.atan2(beacon.y - player.y, beacon.x - player.x);
+        const oct = Math.round(ang / (Math.PI / 4));
+        const dirs: Array<[number, number]> = [
+          [1, 0],
+          [1, 1],
+          [0, 1],
+          [-1, 1],
+          [-1, 0],
+          [-1, -1],
+          [0, -1],
+          [1, -1],
+        ];
+        const [ax, ay] = dirs[((oct % 8) + 8) % 8];
+        const ix = Math.round(Math.max(18, Math.min(SNES_W - 18, SNES_W / 2 + Math.cos(ang) * (SNES_W / 2 - 24))));
+        const iy = Math.round(Math.max(34, Math.min(SNES_H - 18, SNES_H / 2 + Math.sin(ang) * (SNES_H / 2 - 30))));
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(ix - 4, iy - 4, 9, 9);
+        bctx.fillStyle = "#e8c36a";
+        bctx.fillRect(ix, iy, 1, 1);
+        bctx.fillRect(ix + ax, iy + ay, 1, 1);
+        bctx.fillRect(ix + ax * 2, iy + ay * 2, 1, 1);
+        bctx.fillRect(ix - ay, iy + ax, 1, 1);
+        bctx.fillRect(ix + ay, iy - ax, 1, 1);
+        const line = cardinal(beacon.x - player.x, beacon.y - player.y) + " " + beacon.label;
+        bctx.font = "8px monospace";
+        const tw = Math.min(SNES_W - 8, bctx.measureText(line).width);
+        let tx = ix - tw / 2;
+        tx = Math.max(4, Math.min(SNES_W - tw - 4, tx));
+        const ty = Math.max(40, Math.min(SNES_H - 6, iy + (ay >= 0 ? 14 : -8)));
+        bctx.fillStyle = "#1a120c";
+        bctx.fillRect(tx - 1, ty - 7, tw + 2, 9);
+        bctx.fillStyle = "#f4efe2";
+        bctx.fillText(line, tx, ty);
+      }
     }
 
     drawHudBar();
@@ -2048,6 +2390,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       afterlifeHost: save.flags.afterlifeHost,
       introBeat,
       job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
+      beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
     };
@@ -2083,6 +2426,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.lastDeed,
       introBeat,
       snap.job,
+      snap.beacon,
       snap.cycleLedger.thisLife,
       snap.cycleLedger.youKeep,
       snap.cycleLedger.theGround,
@@ -2446,6 +2790,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     sip,
     dispose: () => {
       running = false;
+      audio.dispose();
       deck.dispose();
       input.dispose();
       document.removeEventListener("visibilitychange", onHide);

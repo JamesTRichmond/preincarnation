@@ -1,0 +1,37 @@
+PREINCARNATION DG09–DG12 validation
+rooms 66
+PASS  sixty rooms — 66
+PASS  DG09 structural — 18 rooms, proofs 18
+PASS  DG09 routing cycles — 3 benign cycles, shortcut culvert,keg-return
+PASS  DG09 lost transported objects — loose-reins returns to DG09-R06
+PASS  DG09 missed rewards — 8 discoveries
+PASS  DG09 death during transitions — crossing death wakes at the lantern and does not arrive
+PASS  DG09 boss re-entry — last-coachman pays coach-token once
+PASS  DG09 god-form does not skip — sealed
+PASS  DG10 structural — 16 rooms, proofs 16
+PASS  DG10 routing cycles — 1 benign cycles, shortcut crane-return
+PASS  DG10 lost transported objects — marble-ticket returns to DG10-R02
+PASS  DG10 missed rewards — 4 discoveries
+PASS  DG10 death during transitions — crossing death wakes at the lantern and does not arrive
+PASS  DG10 boss re-entry — collector pays struck-ledger once
+PASS  DG10 god-form does not skip — sealed
+PASS  DG11 structural — 16 rooms, proofs 16
+PASS  DG11 routing cycles — 1 benign cycles, shortcut sparrow-roof
+PASS  DG11 lost transported objects — black-clod returns to DG11-R04
+PASS  DG11 missed rewards — 3 discoveries
+PASS  DG11 death during transitions — crossing death wakes at the lantern and does not arrive
+PASS  DG11 boss re-entry — winter-graft pays cambium-heart once
+PASS  DG11 god-form does not skip — sealed
+PASS  DG12 structural — 16 rooms, proofs 16
+PASS  DG12 routing cycles — 1 benign cycles, shortcut grateful-corridor
+PASS  DG12 lost transported objects — ash returns to DG12-R02
+PASS  DG12 missed rewards — 5 discoveries
+PASS  DG12 death during transitions — crossing death wakes at the lantern and does not arrive
+PASS  DG12 boss re-entry — keeper-of-unlived-years pays keeper-key once
+PASS  DG12 god-form does not skip — sealed
+PASS  DG10 debts are not an economy — 4 object-hooks
+PASS  DG11 seasons are authored states — four grafts, one fight dial
+PASS  DG12 mercy does not ambiguate progression — key without mercy, mercy without being the door
+PASS  fight marks are out of reach from the door — 8 doorway attempts refused
+
+OK  33 tests
