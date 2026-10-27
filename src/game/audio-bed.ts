@@ -1,3 +1,5 @@
+import { T } from "./tile-ids.ts";
+
 export type AudioBed = "county" | "combat" | "death" | "limbo" | "kitchen" | "quarry";
 
 export function bedFor(state: { mode: string; mapId: string; fighting: boolean }): AudioBed {
@@ -43,4 +45,44 @@ const THUD: StrikeVoice = { freq: 160, dur: 0.14, type: "sawtooth", slide: -90 }
 
 export function strikeVoice(kind: string): StrikeVoice {
   return STRIKE[kind] ?? THUD;
+}
+
+export type Ground = "soft" | "grit" | "wood" | "stone" | "water";
+
+/** What the boot actually meets. Unknown tiles stay soft grass. */
+export function groundOf(tile: number): Ground {
+  if (tile === T.water) return "water";
+  if (tile === T.wood || tile === T.bridge) return "wood";
+  if (
+    tile === T.marble ||
+    tile === T.marbleWall ||
+    tile === T.cracked ||
+    tile === T.cliff ||
+    tile === T.cliffLip ||
+    tile === T.cobble
+  ) {
+    return "stone";
+  }
+  if (tile === T.path || tile === T.gravel || tile === T.sand || tile === T.rail) return "grit";
+  return "soft";
+}
+
+const STEP: Record<Ground, StrikeVoice> = {
+  soft: { freq: 130, dur: 0.04, type: "triangle", slide: -30 },
+  grit: { freq: 240, dur: 0.03, type: "square", slide: -90 },
+  wood: { freq: 190, dur: 0.045, type: "square", slide: -24 },
+  stone: { freq: 360, dur: 0.028, type: "square", slide: -140 },
+  water: { freq: 96, dur: 0.06, type: "sine", slide: -16 },
+};
+
+export function stepVoice(tile: number): StrikeVoice {
+  return STEP[groundOf(tile)];
+}
+
+/** A stride of quiet, then one step. Standing still forgets the half-step. */
+export function stepDue(carry: number, moved: number, stride = 18): { carry: number; fire: boolean } {
+  if (!(moved > 0.35)) return { carry: 0, fire: false };
+  const total = carry + moved;
+  if (total < stride) return { carry: total, fire: false };
+  return { carry: total % stride, fire: true };
 }

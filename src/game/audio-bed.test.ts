@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { bedFor, bedSpec, clampVolume, strikeVoice } from "./audio-bed.ts";
+import { T } from "./tile-ids.ts";
+import { bedFor, bedSpec, clampVolume, groundOf, stepDue, stepVoice, strikeVoice } from "./audio-bed.ts";
 
 describe("audio beds", () => {
   it("changes the drone with the room and the fight, not with a new system", () => {
@@ -28,5 +29,22 @@ describe("audio beds", () => {
     assert.equal(strikeVoice("bomb").freq, strikeVoice("").freq);
     assert.ok(strikeVoice("bear").freq < strikeVoice("crow").freq);
     assert.ok(strikeVoice("fisher").freq > strikeVoice("bobcat").freq);
+  });
+
+  it("changes the step with the ground and waits a stride", () => {
+    assert.equal(groundOf(T.grass), "soft");
+    assert.equal(groundOf(T.flowers), "soft");
+    assert.equal(groundOf(T.path), "grit");
+    assert.equal(groundOf(T.wood), "wood");
+    assert.equal(groundOf(T.bridge), "wood");
+    assert.equal(groundOf(T.marble), "stone");
+    assert.equal(groundOf(T.water), "water");
+    assert.notEqual(stepVoice(T.grass).freq, stepVoice(T.marble).freq);
+    assert.notEqual(stepVoice(T.path).freq, stepVoice(T.wood).freq);
+    const early = stepDue(0, 8);
+    assert.equal(early.fire, false);
+    const next = stepDue(early.carry, 11);
+    assert.equal(next.fire, true);
+    assert.equal(stepDue(next.carry, 0).carry, 0);
   });
 });
