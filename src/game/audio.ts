@@ -1,5 +1,5 @@
 /** Procedural mixer — unlocked on the first gesture. */
-import { bedSpec, clampVolume, type AudioBed } from "./audio-bed.ts";
+import { bedSpec, clampVolume, strikeVoice, type AudioBed } from "./audio-bed.ts";
 
 export function createAudio() {
   let ctx: AudioContext | null = null;
@@ -52,9 +52,10 @@ export function createAudio() {
     beep(420 + Math.random() * 50, 0.08, "square", 0.07, -180);
     beep(880 + Math.random() * 40, 0.04, "triangle", 0.04, -240);
   };
-  const hit = () => {
-    beep(160 + Math.random() * 30, 0.14, "sawtooth", 0.16, -90);
-    beep(90, 0.1, "square", 0.08, -40);
+  const hit = (kind = "") => {
+    const v = strikeVoice(kind);
+    beep(v.freq, v.dur, v.type, kind === "fisher" ? 0.07 : 0.14, v.slide);
+    if (kind === "bear" || kind === "sentinel") beep(Math.max(40, v.freq * 0.5), v.dur, "square", 0.07, -16);
   };
   const pickup = () => beep(660, 0.14, "triangle", 0.09, 220);
   const hurt = () => beep(140, 0.2, "square", 0.12, -90);
