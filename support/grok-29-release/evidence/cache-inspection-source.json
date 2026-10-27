@@ -1,0 +1,70 @@
+{
+  "serviceWorkerRegistrations": [],
+  "pwa": "manifest and install tutorial only; cache-control no-cache on those responses; no precache",
+  "spriteUrls": [
+    {
+      "file": "src/game/content.ts",
+      "url": "/game/wanderer-walk/sheet.pn"
+    },
+    {
+      "file": "src/game/content.ts",
+      "url": "/game/smuggler-walk/sheet.pn"
+    },
+    {
+      "file": "src/game/content.ts",
+      "url": "/game/officer-walk/sheet.pn"
+    },
+    {
+      "file": "src/game/content.ts",
+      "url": "/game/embryo-walk/sheet.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/wanderer-walk/snes.png?v="
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/smuggler-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/officer-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/embryo-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/wraith-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/crow/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/sentinel/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/bear-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/bobcat-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/fisher-walk/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/resident/snes.pn"
+    },
+    {
+      "file": "src/game/engine.ts",
+      "url": "/game/relics/snes.pn"
+    }
+  ]
+}

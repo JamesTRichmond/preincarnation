@@ -69,6 +69,7 @@ const EMPTY: UiSnapshot = {
   afterlifeHost: null,
   introBeat: 0,
   job: OBJECTIVES.job,
+  beacon: null,
   lastDeed: "",
   cycleLedger: EMPTY_LEDGER,
 };
@@ -206,13 +207,19 @@ export function GameApp() {
           <p className="mt-1 font-mono text-[10px] tracking-wide text-fg-subtle">
             {ui.character.name} · {traitById(BACKGROUNDS, ui.character.backgroundId).name}
           </p>
+          {ui.beacon && (
+            <p className="mt-1 font-mono text-[11px] tracking-[0.16em] text-primary uppercase">{ui.beacon}</p>
+          )}
         </div>
       )}
 
-      {playing && ui.objective && (
-        <p className="pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-10 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 text-center font-mono text-[11px] tracking-wide text-fg-subtle">
-          {ui.interactHint ?? ui.message ?? ui.objective}
-        </p>
+      {playing && (ui.objective || ui.interactHint || ui.message) && (
+        <div className="pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-10 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 text-center">
+          {(ui.message || ui.interactHint) && (
+            <p className="font-mono text-xs tracking-wide text-primary">{ui.message ?? ui.interactHint}</p>
+          )}
+          {ui.objective && <p className="font-mono text-xs tracking-wide text-fg-subtle">{ui.objective}</p>}
+        </div>
       )}
 
       {ui.mode === "dialogue" && ui.dialogue && (
