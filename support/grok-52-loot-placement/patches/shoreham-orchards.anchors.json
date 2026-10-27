@@ -1,0 +1,379 @@
+{
+  "targetSession": "map/shoreham-orchards",
+  "doNotReplaceMap": true,
+  "note": "Copy these anchors onto the Shoreham map. The Lemon Fair Bend grid in fragment-map.mjs is a demo fragment owned by grok-52-loot-placement. It is not a replacement for map/shoreham-orchards.",
+  "anchors": [
+    {
+      "id": "anchor.lfb-milepost-nail",
+      "situationId": "lfb-milepost-nail",
+      "tile": {
+        "x": 16,
+        "y": 17
+      },
+      "room": "lane",
+      "title": "Survey nail in the milepost",
+      "venue": "cache",
+      "presentation": "hidden-compartment"
+    },
+    {
+      "id": "anchor.lfb-mudroom-boots",
+      "situationId": "lfb-mudroom-boots",
+      "tile": {
+        "x": 20,
+        "y": 7
+      },
+      "room": "hale-mudroom",
+      "title": "Wet-lane boots",
+      "venue": "home",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-parlor-clover",
+      "situationId": "lfb-parlor-clover",
+      "tile": {
+        "x": 20,
+        "y": 3
+      },
+      "room": "hale-parlor",
+      "title": "Clover in the parlor Bible",
+      "venue": "home",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-kitchen-crock",
+      "situationId": "lfb-kitchen-crock",
+      "tile": {
+        "x": 26,
+        "y": 5
+      },
+      "room": "hale-kitchen",
+      "title": "Kitchen apple crock",
+      "venue": "home",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-sideboard-locket",
+      "situationId": "lfb-sideboard-locket",
+      "tile": {
+        "x": 25,
+        "y": 4
+      },
+      "room": "hale-kitchen",
+      "title": "Locket behind the proud board",
+      "venue": "home",
+      "presentation": "hidden-compartment"
+    },
+    {
+      "id": "anchor.lfb-attic-letter",
+      "situationId": "lfb-attic-letter",
+      "tile": {
+        "x": 31,
+        "y": 3
+      },
+      "room": "hale-attic",
+      "title": "Unsent letter in the attic trunk",
+      "venue": "home",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-attic-marble",
+      "situationId": "lfb-attic-marble",
+      "tile": {
+        "x": 32,
+        "y": 3
+      },
+      "room": "hale-attic",
+      "title": "Marble in the child's coat",
+      "venue": "home",
+      "presentation": "on-character"
+    },
+    {
+      "id": "anchor.lfb-barn-halter",
+      "situationId": "lfb-barn-halter",
+      "tile": {
+        "x": 38,
+        "y": 3
+      },
+      "room": "barn",
+      "title": "Halter on the barn peg",
+      "venue": "farm",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-barn-lantern",
+      "situationId": "lfb-barn-lantern",
+      "tile": {
+        "x": 40,
+        "y": 4
+      },
+      "room": "barn",
+      "title": "Lantern on the tie-beam",
+      "venue": "farm",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-barn-trowel",
+      "situationId": "lfb-barn-trowel",
+      "tile": {
+        "x": 42,
+        "y": 5
+      },
+      "room": "barn",
+      "title": "Grafting trowel",
+      "venue": "farm",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-orchard-notebook",
+      "situationId": "lfb-orchard-notebook",
+      "tile": {
+        "x": 8,
+        "y": 8
+      },
+      "room": "orchard",
+      "title": "Notebook in the picker's coat",
+      "venue": "orchard",
+      "presentation": "on-character"
+    },
+    {
+      "id": "anchor.lfb-orchard-tag",
+      "situationId": "lfb-orchard-tag",
+      "tile": {
+        "x": 10,
+        "y": 4
+      },
+      "room": "orchard",
+      "title": "Seek-No-Further, tree twelve",
+      "venue": "orchard",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-orchard-windfalls",
+      "situationId": "lfb-orchard-windfalls",
+      "tile": {
+        "x": 6,
+        "y": 6
+      },
+      "room": "orchard",
+      "title": "Basket of windfalls",
+      "venue": "orchard",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-orchard-wax",
+      "situationId": "lfb-orchard-wax",
+      "tile": {
+        "x": 4,
+        "y": 8
+      },
+      "room": "orchard",
+      "title": "Grafting wax on the ladder",
+      "venue": "orchard",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-blaze-cache",
+      "situationId": "lfb-blaze-cache",
+      "tile": {
+        "x": 4,
+        "y": 11
+      },
+      "room": "orchard",
+      "title": "Jar under the blazed oak",
+      "venue": "cache",
+      "presentation": "buried-cache"
+    },
+    {
+      "id": "anchor.lfb-cooper-bung",
+      "situationId": "lfb-cooper-bung",
+      "tile": {
+        "x": 20,
+        "y": 14
+      },
+      "room": "workshop",
+      "title": "Branded bung",
+      "venue": "workshop",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-cooper-drawknife",
+      "situationId": "lfb-cooper-drawknife",
+      "tile": {
+        "x": 22,
+        "y": 14
+      },
+      "room": "workshop",
+      "title": "Drawknife on the bench",
+      "venue": "workshop",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-cooper-invoice",
+      "situationId": "lfb-cooper-invoice",
+      "tile": {
+        "x": 24,
+        "y": 15
+      },
+      "room": "workshop",
+      "title": "Invoice spike",
+      "venue": "workshop",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-cooper-brand",
+      "situationId": "lfb-cooper-brand",
+      "tile": {
+        "x": 26,
+        "y": 16
+      },
+      "room": "workshop",
+      "title": "Brand-iron in the horse's stile",
+      "venue": "workshop",
+      "presentation": "hidden-compartment"
+    },
+    {
+      "id": "anchor.lfb-skiff-satchel",
+      "situationId": "lfb-skiff-satchel",
+      "tile": {
+        "x": 5,
+        "y": 22
+      },
+      "room": "boathouse",
+      "title": "Satchel under the skiff's thwart",
+      "venue": "boat",
+      "presentation": "on-character"
+    },
+    {
+      "id": "anchor.lfb-net-locker",
+      "situationId": "lfb-net-locker",
+      "tile": {
+        "x": 7,
+        "y": 22
+      },
+      "room": "boathouse",
+      "title": "Net locker",
+      "venue": "boat",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-plank-key",
+      "situationId": "lfb-plank-key",
+      "tile": {
+        "x": 9,
+        "y": 22
+      },
+      "room": "boathouse",
+      "title": "Key under the walkway plank",
+      "venue": "boat",
+      "presentation": "hidden-compartment"
+    },
+    {
+      "id": "anchor.lfb-scoop",
+      "situationId": "lfb-scoop",
+      "tile": {
+        "x": 38,
+        "y": 22
+      },
+      "room": "sugarhouse",
+      "title": "Copper scoop by the arch",
+      "venue": "farm",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-tin-ledger",
+      "situationId": "lfb-tin-ledger",
+      "tile": {
+        "x": 42,
+        "y": 22
+      },
+      "room": "sugarhouse",
+      "title": "Scoop tin and the spare key",
+      "venue": "farm",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-sap-spile",
+      "situationId": "lfb-sap-spile",
+      "tile": {
+        "x": 39,
+        "y": 23
+      },
+      "room": "sugarhouse",
+      "title": "Spile on the slate ledge",
+      "venue": "farm",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-chapel-niche",
+      "situationId": "lfb-chapel-niche",
+      "tile": {
+        "x": 38,
+        "y": 14
+      },
+      "room": "chapel",
+      "title": "Offering niche in the chapel footing",
+      "venue": "ruin",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-chapel-lintel",
+      "situationId": "lfb-chapel-lintel",
+      "tile": {
+        "x": 36,
+        "y": 13
+      },
+      "room": "chapel",
+      "title": "Lintel that names the seventh",
+      "venue": "ruin",
+      "presentation": "world-pickup"
+    },
+    {
+      "id": "anchor.lfb-chapel-nail",
+      "situationId": "lfb-chapel-nail",
+      "tile": {
+        "x": 34,
+        "y": 16
+      },
+      "room": "chapel",
+      "title": "Seventh stone of the river course",
+      "venue": "ruin",
+      "presentation": "hidden-compartment"
+    },
+    {
+      "id": "anchor.lfb-powder-niche",
+      "situationId": "lfb-powder-niche",
+      "tile": {
+        "x": 27,
+        "y": 22
+      },
+      "room": "quarry-adit",
+      "title": "Powder niche, cleared",
+      "venue": "dungeon",
+      "presentation": "container"
+    },
+    {
+      "id": "anchor.lfb-pay-stake",
+      "situationId": "lfb-pay-stake",
+      "tile": {
+        "x": 22,
+        "y": 25
+      },
+      "room": "quarry-yard",
+      "title": "Hodge's pay under the drill steel",
+      "venue": "cache",
+      "presentation": "buried-cache"
+    },
+    {
+      "id": "anchor.lfb-snag-boot",
+      "situationId": "lfb-snag-boot",
+      "tile": {
+        "x": 1,
+        "y": 25
+      },
+      "room": "riverbank",
+      "title": "Boot in the beached snag",
+      "venue": "boat",
+      "presentation": "world-pickup"
+    }
+  ]
+}
