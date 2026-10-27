@@ -5,6 +5,14 @@ import { workspaceTypeScript } from "./engine.mjs";
 const ORDER = [
   "src/game/snes.ts",
   "src/game/weapons.ts",
+  "src/game/cooking/types.ts",
+  "src/game/cooking/constants.ts",
+  "src/game/cooking/ingredients.ts",
+  "src/game/cooking/effects.ts",
+  "src/game/cooking/recipes.ts",
+  "src/game/cooking/inventory.ts",
+  "src/game/cooking/state.ts",
+  "src/game/cooking/save.ts",
   "src/game/types.ts",
   "src/game/save.ts",
 ];

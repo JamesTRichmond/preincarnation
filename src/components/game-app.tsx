@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createGame, type GameHandle } from "@/game/engine";
+import { createKitchen } from "@/game/cooking";
+import { CountyKitchen } from "@/components/county-kitchen";
 import {
   afterlifeCopy,
   BACKGROUNDS,
@@ -238,6 +240,15 @@ export function GameApp() {
             gameRef.current?.reset();
             setHasSave(false);
           }}
+          onKitchen={() => gameRef.current?.openKitchen()}
+        />
+      )}
+
+      {ui.mode === "kitchen" && (
+        <CountyKitchen
+          initial={gameRef.current?.getKitchen() ?? createKitchen()}
+          onCommit={(kitchen) => gameRef.current?.setKitchen(kitchen)}
+          onClose={() => gameRef.current?.closeKitchen()}
         />
       )}
 
@@ -341,6 +352,7 @@ function Pause({
   onCycle,
   onControls,
   onReset,
+  onKitchen,
 }: {
   ui: UiSnapshot;
   onResume: () => void;
@@ -349,6 +361,7 @@ function Pause({
   onCycle: () => void;
   onControls: (v: boolean) => void;
   onReset: () => void;
+  onKitchen: () => void;
 }) {
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center bg-bg/80 p-4">
@@ -478,6 +491,16 @@ function Pause({
           cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
           shovel in 14–18 years. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
+
+        <h3 className="mt-5 font-display text-xl">The kitchen</h3>
+        <p className="mt-1 text-sm text-fg-muted">
+          A county kitchen. Cards, a pot, and two fictional seats. They do not change a fight, and this is not a second life.
+        </p>
+        {!ui.showHelp && (
+          <button type="button" className="mt-2 h-11 w-full rounded-[12px] bg-primary font-semibold text-primary-fg" onClick={onKitchen}>
+            Open the kitchen
+          </button>
+        )}
 
         <h3 className="mt-5 font-display text-xl">Settings</h3>
         <div className="mt-3 flex flex-col gap-2">

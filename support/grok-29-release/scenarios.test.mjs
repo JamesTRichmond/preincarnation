@@ -70,7 +70,7 @@ test("fresh install leaves storage empty and a new life readable", async () => {
   assert.deepEqual(storage.dump(), {});
   globalThis.localStorage = storage;
   const loaded = engine.loadSave();
-  assert.equal(loaded.version, 8);
+  assert.equal(loaded.version, engine.SAVE_VERSION);
   assert.equal(loaded.character.name, "Ellis Perch");
   assert.equal(loaded.cycle, 0);
   assert.equal(storage.getItem(KEY), null);
@@ -93,7 +93,7 @@ test("previous-version update migrates v7 through the engine and keeps a raw bac
   storage.setItem(KEY + ".bak", storage.getItem(KEY));
   storage.setItem(KEY, JSON.stringify({ ...migrated, version: engine.SAVE_VERSION }));
   const live = JSON.parse(storage.getItem(KEY));
-  assert.equal(live.version, 8);
+  assert.equal(live.version, engine.SAVE_VERSION);
   assert.equal(live.character.name, "Ira Fenn");
   assert.equal(live.character.bondId, "maeve");
   assert.equal(live.flags.lastDeed, "");
@@ -160,9 +160,9 @@ test("damaged import, future save, and duplicate import", async () => {
   });
   assert.equal(badKind.code, "damaged");
 
-  const future = await importEnvelope(lifeFile({ ...v7, version: 9 }), { storage, deck, engine });
+  const future = await importEnvelope(lifeFile({ ...v7, version: engine.SAVE_VERSION + 1 }), { storage, deck, engine });
   assert.equal(future.code, "incompatible");
-  assert.equal(future.supportedMax, 8);
+  assert.equal(future.supportedMax, engine.SAVE_VERSION);
   assert.deepEqual(storage.dump(), before);
   assert.deepEqual(deck.snapshot(), beforeDeck);
 
@@ -174,7 +174,7 @@ test("damaged import, future save, and duplicate import", async () => {
 
   const first = await importEnvelope(lifeFile({ ...v7, cycle: 3 }), { storage, deck, engine });
   assert.equal(first.code, "imported");
-  assert.equal(JSON.parse(storage.getItem(KEY)).version, 8);
+  assert.equal(JSON.parse(storage.getItem(KEY)).version, engine.SAVE_VERSION);
   assert.equal(JSON.parse(storage.getItem(KEY)).cycle, 3);
   assert.equal(JSON.parse(storage.getItem(KEY)).character.name, "Ira Fenn");
   assert.equal(JSON.parse(storage.getItem(KEY + ".bak")).version, 7);
@@ -194,7 +194,7 @@ test("import keeps an existing backup when the slot is empty", async () => {
   const result = await importEnvelope(lifeFile(v7), { storage, deck, engine });
   assert.equal(result.code, "imported");
   assert.equal(storage.getItem(KEY + ".bak"), bak);
-  assert.equal(JSON.parse(storage.getItem(KEY)).version, 8);
+  assert.equal(JSON.parse(storage.getItem(KEY)).version, engine.SAVE_VERSION);
 });
 
 test("unavailable storage rolls back the import", async () => {
@@ -233,7 +233,7 @@ test("boot guard quarantines a future life and snapshots an older one", () => {
 test("engine v1 coordinates are migrated and a garbage blob does not throw", () => {
   const raw = { version: 1, x: 32, y: 64, character: { name: "Old Road" } };
   const migrated = engine.migrate(raw);
-  assert.equal(migrated.version, 8);
+  assert.equal(migrated.version, engine.SAVE_VERSION);
   assert.equal(migrated.x, 16);
   assert.equal(migrated.y, 32);
   assert.equal(migrated.character.name, "Old Road");

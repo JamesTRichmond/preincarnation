@@ -31,7 +31,7 @@ export async function loadEngine(root = defaultEngineRoot()) {
   if (types.SAVE_KEY !== "preincarnation.save.v1") {
     throw new Error(`unexpected SAVE_KEY ${types.SAVE_KEY}`);
   }
-  if (types.SAVE_VERSION !== 8) {
+  if (types.SAVE_VERSION !== 9) {
     throw new Error(`unexpected SAVE_VERSION ${types.SAVE_VERSION}`);
   }
   return {

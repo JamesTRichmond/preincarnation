@@ -1,5 +1,7 @@
 import { TILE } from "./snes.ts";
 import { starterWeapon } from "./weapons.ts";
+import { createKitchen } from "./cooking/state.ts";
+import { readKitchen } from "./cooking/save.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -41,6 +43,7 @@ export function defaultSave(): SaveData {
     inventory: [iron],
     equippedId: iron.id,
     character: { ...DEFAULT_CHARACTER },
+    kitchen: createKitchen(),
   };
 }
 
@@ -120,6 +123,7 @@ export function migrate(save: SaveData): SaveData {
   s.flags.caches = save.flags?.caches ?? [];
   s.flags.riflesTaken = save.flags?.riflesTaken ?? s.flags.riflesTaken ?? [];
   s.flags.bottles = save.flags?.bottles ?? s.flags.bottles ?? ["empty", "empty"];
+  s.kitchen = readKitchen(save.kitchen);
   s.version = SAVE_VERSION;
   return s;
 }
