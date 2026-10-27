@@ -1,35 +1,34 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~03:10 UTC, after merge of PR #90. Main at `b2d93df` (squash merge of PR #90)._
+_Updated Tue 2026-10-27, ~03:35 UTC, after merge of PR #107. Main at `3beed56` (merge of PR #107)._
 
-## Health of main (`b2d93df`)
+## Health of main (`3beed56`)
 
 | Gate | Result |
 |---|---|
-| `npm test` | **234 pass, 0 fail** (per PR #90 evidence; world-life tests 68–82) |
-| `npm run typecheck` | exit 0 |
-| `npm run build` | exit 0 |
-| browser smoke (dev + prod preview) | exit 0; title, canvas, no errors, no overflow |
+| `npm run test:game` | **255 pass, 0 fail** (per PR #107 evidence log `ops/EVIDENCE/L-0004-test-game.txt`) |
+| `tsc --noEmit` | clean (per PR #107) |
 | SAVE_VERSION | remains 8 |
-| Engine / live route / county save touch | none |
-| Own save key | `preincarnation-world-life-v1` unused until import |
+| Engine / rules touch | yes: `enemyMaxHp` no longer scales with `save.cycle`; Tropoverse ×1.35 once (place, not deaths) |
+| County save / live route | unchanged |
 
-Prior health inherited. CI verify green on the PR head before merge.
+Prior typecheck/build/smoke inherited; full re-smoke recommended on next CI cycle. CI verify green on PR head before merge.
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #90 | Isolated world-life plate under `support/grok-24-world-life/`: three Addison hubs (Middlebury mill street, the intervale, Otter landing) with deterministic routines, activities, quest overrides, era/lineage substitution, safe fallbacks. Unmounted demo. Own save key unused. Not a hunger/job/weather/economy sim. | merged by James; main at `b2d93df` |
+| #107 | Stop a later life from fattening every enemy. `enemyMaxHp(base, tropoverse)` ignores cycle. Removes `1 + cycle * 0.12` sponge (P1A-5). Test guards against reintroduction. Tropoverse remains a one-time place multiplier. | merged by James; head `eeebd2f`; main tip `3beed56` |
 
-Vision Checklist satisfied: Marble Vein remains the sole plot; death advances ~14 winters as a chapter; one person (no party); no romance/party/crafting systems; 320×240 Canvas and SNES-coat preserved; localStorage and SAVE_VERSION=8 respected; support pack does not touch live engine, routes, or county save. Tests green. Explicitly not mounted on `/` to avoid replacing the Green.
+Vision Checklist satisfied: Marble Vein sole plot; death advances exactly 14 winters as chapter (unchanged); one person; no romance/party/crafting; 320×240 Canvas/SNES-coat preserved; localStorage/SAVE_VERSION=8 respected; no support-pack live impact. Later lives are the same fight. Tests green. Closes HP-only cycle scaling path.
 
 ## Durable facts
 
-- World-life plate is optional support material only. Does not cover the walk. Green stays one person on Canvas 2D.
+- Enemy max HP does not grow with deaths/cycles. Tropoverse is a place (×1.35 once). Player ribcage already free of cycle term.
 - Skill on death remains capped (from #83). SAVE_VERSION stays 8.
-- Node ≥ 22.12 required. Tests by glob.
 - Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
+- Marble Vein tell from #86 remains on main (decoy faces, Sentinel telegraph).
+- Node ≥ 22.12 required. Tests by glob.
 - Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
 
 ## Issue Factory
@@ -48,24 +47,23 @@ Vision Checklist satisfied: Marble Vein remains the sole plot; death advances ~1
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#90, ~03:10 UTC)
+## Open PR ledger (post-#107, ~03:35 UTC)
 
 | Bucket | PRs |
 |---|---|
-| STATUS updates (rebase/close) | #81 (after #80), #82 (after #76) |
-| Superseded | #38 (skill cap predecessor; close in favor of #83) |
-| Support / unmounted | #59 buried-history, #49 waterside finds, #42 quarry rules, #52 marble tell, #87 witness-mastery, #88 county-book, #89 community-gatherings |
-| Live features | #15 weapon compare, #36 item search, #86 marble tell (engine touch) |
-| Other | remaining from prior ledger pending rebase |
+| STATUS updates (rebase/close) | #81, #82 (stale relative to current main) |
+| Superseded | #38 (close; skill cap already on main via #83) |
+| Support / unmounted | #59, #49, #42, #87, #88, #89, #100, #101, #102, #105, #106, #108, etc. |
+| Live features | #15 weapon compare, #36 item search, remaining engine-touch candidates |
+| Other | pending rebase from #71–73 |
 
 ## Next priorities
 
-1. Close #38 as superseded by #83 (same intent, landed).
-2. Rebase or close stale STATUS PRs #81 and #82; prefer this update as the current STATUS.
-3. Continue bot-ready rebase of remaining PRs (#71-#73); verify vision and tests before merge.
-4. Review open support packs (#59, #87, #88, #89, etc.) for vision alignment; none unblocked by #90 specifically (isolated pack, no file overlap).
-5. #86 (Marble Vein tell, live engine) remains a candidate once CI green and vision confirmed; do not treat world-life as that tell.
-6. Full CI smoke on main post-#90 to confirm no regression.
-7. Repo hygiene: large artifacts/screenshots still inflate .git.
+1. Close #38 as superseded by #83.
+2. Rebase or close stale STATUS PRs (#81, #82); this STATUS is current.
+3. Continue bot-ready rebase of remaining open PRs (#71–73); verify vision + tests before any merge. Engine/rules touches require explicit review.
+4. Review open support packs for vision alignment and conflicts with recent main (rules.ts change is narrow).
+5. Full CI smoke on main post-#107 to confirm no regression from HP change.
+6. Repo hygiene: large artifacts/screenshots still inflate .git.
 
-No new risks. World-life does not affect QQ-VGEF pillars beyond optional support readiness.
+No new risks. Removes the P1A-5 sponge. QQ-VGEF pillars (live engine fidelity, vision constraints) strengthened; no impact on optional support readiness.
