@@ -3,6 +3,7 @@ import { createAudio } from "./audio";
 import { createDeck, EMPTY_DECK } from "./ipod";
 import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
+import { sipIndex, weaponFromGrave } from "./bag";
 import { createInput, type Actions } from "./input";
 import {
   lipStep,
@@ -39,7 +40,7 @@ import {
   paintLock16,
   paintCave16,
 } from "./pix";
-import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { clearSave, defaultSave, loadSave, undoLastSave as undoSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
@@ -668,7 +669,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const sip = () => {
-    const i = save.flags.bottles.findIndex((b) => b !== "empty");
+    const i = sipIndex(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp);
     if (i < 0) {
       say("No bottles.");
       return;
@@ -885,6 +886,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.ySlot = "shovel";
       dig();
     } else if (p.kind === "syrup") {
+      if (!save.flags.bottles.some((b) => b === "empty")) {
+        say("Both bottles are full.");
+        return;
+      }
       fillBottle("syrup");
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
@@ -1333,9 +1338,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     g0.excavated = true;
     props = props.filter((p) => p.id !== near.id);
     for (const w of g.weapons) {
-      const rolled = rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
-      rolled.id = w.id;
-      rolled.name = w.name;
+      const remembered = weaponFromGrave(w);
+      const rolled = remembered ?? rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
+      if (!remembered) {
+        rolled.id = w.id;
+        rolled.name = w.name;
+      }
       save.inventory = [...save.inventory, rolled];
     }
     for (const r of g.relics) {
@@ -1601,6 +1609,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           save.equippedId = next.id;
           say(next.name);
         }
+      }
+    }
+    if (actions.weaponCyclePressed) {
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (next) {
+        save.equippedId = next.id;
+        say(next.name);
       }
     }
     if (actions.usePressed) sip();
@@ -2799,11 +2814,23 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     },
     senseWorld: () => senseWorld(),
     cycleWeapon: () => {
-      if (save.inventory.length < 2) return;
+      if (save.inventory.length < 2) return false;
       const next = wearNextWeapon(save.inventory, save.equippedId);
-      if (!next) return;
+      if (!next) return false;
       save.equippedId = next.id;
       say(next.name);
+      return true;
+    },
+    equipWeapon: (id: string) => {
+      const w = save.inventory.find((item) => item.id === id);
+      if (!w) return false;
+      save.equippedId = w.id;
+      say(w.name);
+      return true;
+    },
+    undoLastSave: () => {
+      const restored = undoSave();
+      return restored !== null;
     },
     sip,
     dispose: () => {

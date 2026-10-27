@@ -1,4 +1,5 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
+import { graveSnapshot } from "./bag.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import { T } from "./tile-ids.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
@@ -293,14 +294,7 @@ export function resolveDeath(
     x: where.x,
     y: where.y,
     year: save.flags.year,
-    weapons: save.inventory
-      .filter((w) => w.id !== "starter-iron")
-      .map((w) => ({
-        id: w.id,
-        name: w.name,
-        magic: w.affixes.some((a) => a.magic),
-        kind: w.kind,
-      })),
+    weapons: save.inventory.filter((w) => w.id !== "starter-iron").map((w) => graveSnapshot(w)),
     relics: relicsForGrave(save.flags.relics, save.character.bondId),
     arrows: save.flags.arrows,
     bombs: save.flags.bombs,

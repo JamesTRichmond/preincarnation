@@ -443,6 +443,11 @@ function Pause({
               <tr className="border-t border-border">
                 <td className="px-3 py-2">Cycle Y-tool</td>
                 <td className="px-3 py-2 font-mono">Q</td>
+                <td className="px-3 py-2">—</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-3 py-2">Next weapon in the bag</td>
+                <td className="px-3 py-2 font-mono">0</td>
                 <td className="px-3 py-2">Arm</td>
               </tr>
               <tr className="border-t border-border">
@@ -475,7 +480,8 @@ function Pause({
         </div>
         <p className="mt-3 text-sm text-fg-muted">
           Space is always the sword — even with the lamp in hand. Y uses the tool in the HUD (shovel, lamp, hammer,
-          cape). Q cycles tools. Minus pulls the camera back over the town. Dying leaves a grave — come back with the
+          cape). Q cycles tools. 0, or Arm, takes the next weapon in the bag — Q does not, once a tool is yours.
+          Minus pulls the camera back over the town. Dying leaves a grave — come back with the
           shovel in 14–18 years. The Marble Vein east of Middlebury is the county temple. There is no credits sequence.
         </p>
 

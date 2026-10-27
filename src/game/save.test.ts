@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { TILE } from "./snes.ts";
-import { clearSave, defaultSave, loadSave, migrate, writeSave } from "./save.ts";
+import { clearSave, defaultSave, loadSave, migrate, undoLastSave, writeSave } from "./save.ts";
 import { SAVE_KEY, SAVE_VERSION, type SaveData } from "./types.ts";
 
 const mem = new Map<string, string>();
@@ -207,5 +207,61 @@ describe("writeSave / loadSave", () => {
     assert.equal(loadSave().cycle, 0);
     const bak = JSON.parse(mem.get(SAVE_KEY + ".bak") ?? "null") as { character?: { name?: string } };
     assert.equal(bak.character?.name, "Ira Fenn");
+  });
+
+  it("keeps a grave that only named the steel", () => {
+    const raw = {
+      version: 8,
+      cycle: 1,
+      karma: 0,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: {
+        graves: [
+          {
+            id: "grave-0-middlebury",
+            mapId: "middlebury",
+            x: 10,
+            y: 10,
+            year: 2026,
+            weapons: [{ id: "farm-axe", name: "Farm axe", magic: false, kind: "heavy" }],
+            relics: ["shovel"],
+            arrows: 0,
+            bombs: 0,
+            excavated: false,
+          },
+        ],
+      },
+      maxHp: 3,
+      hp: 3,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.flags.graves[0].weapons[0].name, "Farm axe");
+    assert.equal("dmg" in s.flags.graves[0].weapons[0], false);
+  });
+
+  it("swaps the last good life back when asked, and does not invent one", () => {
+    const first = defaultSave();
+    first.character.name = "Ira Fenn";
+    first.character.created = true;
+    first.character.skillPoints = 3;
+    writeSave(first);
+    writeSave(first);
+    const spent = structuredClone(loadSave());
+    spent.character.skillPoints = 2;
+    writeSave(spent);
+    const undone = undoLastSave();
+    assert.equal(undone?.character.skillPoints, 3);
+    assert.equal(loadSave().character.skillPoints, 3);
+    clearSave();
+    assert.equal(undoLastSave(), null);
   });
 });
