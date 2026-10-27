@@ -1,8 +1,8 @@
 # PREINCARNATION: CEO Status
 
-_Updated Mon 2026-10-26, ~8:10 PM EDT, after J R approved execution run #1. Main at `440a066` (merge of PR #17)._
+_Updated Tue 2026-10-27, ~01:55 UTC, after merge of PR #41. Main at `f204e97` (merge of PR #41)._
 
-## Health of main (`440a066`, verified locally on Node 22.23.4)
+## Health of main (`f204e97`)
 
 | Gate | Result |
 |---|---|
@@ -35,9 +35,7 @@ Each merged PR has a verification comment: typecheck, build, game tests, smoke d
 **Held, then closed under ruling #66:** #45. A played chapter is the right shape. That branch is not: no `pendingChapter` without a `SAVE_VERSION` bump, no death-cause string matching, winters are exactly 14.
 
 **Blocked (comment, not closed):**
-- #18 crafting resolver → #62.
-- #28 loot ledger mounted on `/` + `input.ts` keyup swallowing → #62.
-- #37 ground lens: `engine.ts`/new localStorage doc, loot framing, stale base → #62.
+- #18, #28, #37 (and related crafting/loot) → #62.
 
 ## Durable facts
 
@@ -66,23 +64,26 @@ Each merged PR has a verification comment: typecheck, build, game tests, smoke d
 
 **bot-ready (mechanical, verify then merge):**
 - #71 support/unmounted PRs, `package.json`-only conflicts: #27, #39, #42, #48, #49, #55. Merging #27/#39/#55 waits on #62. #42's tests need renaming to `.test.mjs`.
-- #72 live-feature PRs, `package.json`-only conflicts: #15, #29, #30, #36, #41. #30 waits on #66.
+- #72 live-feature PRs, `package.json`-only conflicts: #15, #29, #30, #36. (#41 merged; #30 waits on #66.)
 - #73 `engine.ts` conflicts: #38, #52, #54. Resolve only; merging needs a CEO review and J R sign-off.
 
-## Open PR ledger (41 open, ~8:10 PM EDT)
+## Open PR ledger (post-#41, ~01:55 UTC)
+
+Note: #61 and #41 are merged. #75 (STATUS update after #61) remains open against prior base.
 
 | Bucket | PRs |
 |---|---|
-| bot-ready rebase (#71/#72/#73) | 15, 27, 29, 30, 36, 38, 39, 41, 42, 48, 49, 52, 54, 55 |
+| bot-ready rebase (#71/#72/#73) | 15, 27, 29, 30, 36, 38, 39, 42, 48, 49, 52, 54, 55 |
 | Held for J R (core/engine/save) | 45 (#66), 47 (#66), 13 (#66), 14 (#66), 50 (#67), 22 (#67), 24 (#63/#67), 21 (#68) |
 | Held for J R (scope/aesthetic) | 16, 23, 34 (#64); 20, 26, 44 (#65); 25 (#69); 43 (#63) |
-| Held on crafting/loot line (#62); block comments posted on 18, 28, 37 only | 18, 19, 28, 31, 32, 33, 37, 40, 56 (mastery bench; its crash fix already landed as #57) |
-| New since the survey, not yet reviewed | 59 buried-history loot pack (`support/grok-70-*`, conflicts on `package.json`; loot → #62), 61 Vein Score desk (`/score` route + `support/grok-17-score`, +37,951 lines, mergeable) |
+| Held on crafting/loot line (#62) | 18, 19, 28, 31, 32, 33, 37, 40, 56 |
+| Other open | 59 buried-history loot pack (loot → #62), 75 STATUS after #61 |
 
-## Next run
+## Next priorities
 
-1. Watch #71–#73 for bot pushes, then verify and merge per the acceptance criteria.
-2. Review #59 and #61 against the Vision Checklist. #61's size, mostly under `public/score`, needs a repo-weight check.
-3. Once J R answers #62–#70, unblock or close the matching PRs.
-4. Repo hygiene: `artifacts/`, `screenshots/` and `attachments/` are committed (`.git` ≈130 MB). Propose moving them out of git and adding a PR body template.
-5. Bump the CI actions to v5.
+1. Merge or close #75 (STATUS after #61) once rebased or superseded by this update; prefer one STATUS PR.
+2. Watch #71–#73 for bot pushes, then verify and merge per acceptance criteria. #41 is done.
+3. Review remaining open PRs against Vision Checklist, starting with conflict-free support packs that do not touch live engine/save.
+4. Once J R answers #62–#70, unblock or close the matching PRs.
+5. Repo hygiene: committed `artifacts/`, `screenshots/`, `attachments/` inflate `.git`. Propose moving them out and adding a PR body template.
+6. Bump CI actions to v5.
