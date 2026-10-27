@@ -1,7 +1,7 @@
 # HANDOFF
 
 Cycle: L-0001   Step: 10 checkpoint, then the next cycle starts at Step 1   Time: 2026-10-27
-Branch/commit: integrate/preincarnation (commit hash filled after commit)
+Branch/commit: integrate/preincarnation @ b789c9d
 Uncommitted work: none after the checkpoint commit
 Failing tests: none. 219/219 game tests pass on this branch.
 Final Score: web 20.0   Points to Gate: 78.0
