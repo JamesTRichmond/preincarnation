@@ -1,4 +1,4 @@
-# SCORECARD   Cycle: L-0001   Timestamp: 2026-10-27T02:45:00Z
+# SCORECARD   Cycle: L-0002   Timestamp: 2026-10-27T03:05:00Z
 Platform: web browser, 320×240   (only platform with a build)
 
 | ID | Item | Score | Evidence tier | Cap applied | Evidence file | Tag |

@@ -1,4 +1,5 @@
 import type { Weapon } from "./weapons.ts";
+import type { KitRead } from "./kit-compare.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
 
@@ -200,6 +201,7 @@ export type UiSnapshot = {
   tempF: number | null;
   weaponName: string;
   weaponTags: string;
+  kit: KitRead;
   geoLine: string | null;
   bottles: BottleKind[];
   tropoverse: boolean;

@@ -13,3 +13,6 @@ D-005 | L-0001 | Death pays skill only while a non-crown rank is still unbought.
 D-006 | L-0001 | The same agent built the skill cap and would have scored it. P1A-3 stays 0 this cycle. Evidence is filed. A later cycle's QA pass may raise it.
 
 D-007 | L-0001 | P2B-2 is not marked N/A. That mark needs James (B-001).
+
+D-008 | L-0002 | Quarry row y=5 in QUARRY_SRC is `xxxxxxxx` at columns 14 through 21. Cells (16,5) and (18,5) are cracked marble. `x` is T.cracked. The decoy coordinates in pull 52 name real tiles. The port is allowed next cycle. It still must not take that pull's package.json edit or its pre-#78 weather imports.
+

@@ -4,7 +4,7 @@ Ranked by what can move a zero. Sev 1/2: none open. Item scores are 0, so PRV is
 | Rank | ID | Work | Why now | Status |
 |---|---|---|---|---|
 | 1 | P1A-3 | Skill cap on death. Tests in rules.test.ts and save.test.ts. | Highest-confidence unblocked slice. Done this cycle on the branch, not on main. | BUILT, unscored (D-006) |
-| 2 | P2A-1 | Rebase the weapon sheet from PR #15 onto this branch. Names the steel. No ranking. No save bump. | Pause already exists. Small, testable. | NEXT |
+| 2 | P2A-1 | Weapon sheet on the pause screen. Names reach, walk, and the strike. Refuses a ranking. | Pause already existed. | BUILT this cycle, unscored |
 | 3 | P1A-5 | Marble tell from PR #52, only after the decoy cells are shown to exist in the quarry source. Drop any package.json edit. | Telegraph, not a new gate. | BLOCKED on a map proof, not on James |
 | 4 | P1A-2 | Hitstop/lip/camera landed on main as #80 before this manifest. Re-measure, do not rebuild. | Evidence is the tests, not a feel panel. | REPORTED |
 | 5 | P1A-1 | Input-to-pixel harness. Hardware half is H-req. | No probe in this runtime. | BLOCKED B-001 is not this; hardware is a later B-HUMAN-TEST |
