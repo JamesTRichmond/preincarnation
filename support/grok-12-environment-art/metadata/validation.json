@@ -1,0 +1,57 @@
+{
+  "tile_edge": 16,
+  "total_tiles": 1419,
+  "shared_ground_and_architecture": 297,
+  "district_counts": {
+    "middlebury_green": 50,
+    "vergennes_falls": 78,
+    "otter_marsh": 94,
+    "champlain_shore": 79,
+    "ripton_woods": 81,
+    "lincoln_sugar": 39,
+    "shoreham_orchard": 39,
+    "addison_intervale": 82,
+    "leicester_quarry": 85,
+    "bristol_notch": 83,
+    "weybridge_span": 61,
+    "monkton_ridge": 67
+  },
+  "props": 60,
+  "interior_kit_counts": {
+    "farmhouse_kitchen": 16,
+    "sugarhouse": 16,
+    "general_store": 16,
+    "mill_floor": 16,
+    "quarry_shed": 16,
+    "meetinghouse": 16,
+    "lake_camp": 16,
+    "dairy_barn": 16
+  },
+  "era_counts": {
+    "tended": 16,
+    "weathered": 16,
+    "ruined": 16,
+    "rebuilding": 16,
+    "stewardship": 16,
+    "memorial": 16
+  },
+  "seam_checks": 58,
+  "seam_failures": 0,
+  "seam_failure_sample": [],
+  "atlas_matches_direct_render": true,
+  "night_luminance": {
+    "grass": 27.1,
+    "path_dirt": 73.3,
+    "water": 69.5,
+    "clapboard": 173.50000000000003
+  },
+  "unfinished": [],
+  "minimums": {
+    "shared_at_least_64": true,
+    "each_district_at_least_24": true,
+    "props_at_least_60": true,
+    "eight_kits": true,
+    "six_eras": true,
+    "twelve_scenes": true
+  }
+}
