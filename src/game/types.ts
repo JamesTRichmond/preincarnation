@@ -1,5 +1,5 @@
-import type { Weapon } from "./weapons.ts";
 import type { KitRead } from "./kit-compare.ts";
+import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
 import type { KitchenState } from "./cooking/types.ts";
