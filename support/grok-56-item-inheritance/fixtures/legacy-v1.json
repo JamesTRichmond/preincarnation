@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "year": 44,
+  "reputation": 3,
+  "items": [
+    {
+      "instanceId": "inst:v1:kept-compass",
+      "defId": "def:inherited.father-compass",
+      "name": "Father's compass",
+      "qty": 1,
+      "slot": "carried",
+      "owner": "player",
+      "inscription": "E.H."
+    },
+    {
+      "instanceId": "inst:v1:bread",
+      "defId": "def:food.travel-bread",
+      "qty": 2,
+      "slot": "stored",
+      "owner": "player"
+    },
+    {
+      "instanceId": "inst:v1:sun-coin",
+      "defId": "def:relic.sun-coin",
+      "qty": 1,
+      "slot": "displayed",
+      "owner": "player",
+      "siteId": "site:hall"
+    },
+    {
+      "instanceId": "inst:v1:plane",
+      "defId": "def:tool.smoothing-plane",
+      "qty": 1,
+      "owner": "npc:mara"
+    }
+  ]
+}

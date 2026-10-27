@@ -1,0 +1,13 @@
+{
+  "version": 0,
+  "year": 11,
+  "gold": 40,
+  "chapter": "first-market",
+  "inventory": [
+    { "id": "smoothing-plane", "name": "Smoothing plane", "qty": 1, "nickname": "the shop plane" },
+    { "id": "oak-plank", "name": "Oak plank", "qty": 6 },
+    { "id": "sun-coin", "name": "Sun coin", "qty": 1 },
+    { "id": "bread", "name": "Travel bread", "qty": 2 },
+    { "id": "odd-whistle", "name": "Odd whistle", "qty": 1 }
+  ]
+}
