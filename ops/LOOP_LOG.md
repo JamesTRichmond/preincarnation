@@ -46,5 +46,16 @@ Decisions: D-012
 Blockers: none
 Next: PWA install shell is still missing (D-009). Do not merge.
 
+L-0005 | 2026-10-27 | Phase: P0
+Goal: one installable shell for the 320×240 page.
+Done: manifest, icons, service worker, registration. No accounts. Release pack names this worker and still refuses any other.
+Verified: ops/EVIDENCE/L-0005-test-game.txt — 291 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged; builder does not score)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-013
+Blockers: none
+Next: write the theme map (every core verb to the Marble Vein) as a spec with a failing test for one dissonance. Do not merge.
+
+
 
 

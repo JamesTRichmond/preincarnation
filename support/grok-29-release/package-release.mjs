@@ -18,7 +18,7 @@ import {
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { bootGuardSource } from "./lib/boot-guard.mjs";
-import { applyVercelOutputHeaders, auditAssetReferences, rewriteTreeAssetUrls } from "./lib/cache-policy.mjs";
+import { applyVercelOutputHeaders, auditAssetReferences, isKnownShellRegistration, rewriteTreeAssetUrls } from "./lib/cache-policy.mjs";
 import { SOURCE, defaultEngineRoot } from "./lib/engine.mjs";
 import { emitSaveContract } from "./lib/emit-save-contract.mjs";
 
@@ -135,7 +135,7 @@ function scanSourceCache() {
   }
   return {
     serviceWorkerRegistrations: workers,
-    pwa: "manifest and install tutorial only; cache-control no-cache on those responses; no precache",
+    pwa: "one shell worker at /sw.js caches the document, the manifest, and the icons. It does not cache /api, /auth, or the save.",
     spriteUrls: sheets,
   };
 }
@@ -156,8 +156,8 @@ function main() {
   assertTanstack(tanstack);
   const cacheBefore = scanSourceCache();
   writeFileSync(join(EVIDENCE, "cache-inspection-source.json"), JSON.stringify(cacheBefore, null, 2) + "\n");
-  if (cacheBefore.serviceWorkerRegistrations.length) {
-    throw new Error("service worker found in engine; packaging would need a different cache plan");
+  if (cacheBefore.serviceWorkerRegistrations.some((path) => path !== "src/components/install-shell.tsx")) {
+    throw new Error("unexpected service worker found in engine; packaging would need a different cache plan");
   }
 
   const overlay = applyBootOverlay();
@@ -190,8 +190,12 @@ function main() {
   const rewritten = rewriteTreeAssetUrls(stagedOutput, BUILD_ID);
   const audit = auditAssetReferences(stagedOutput, BUILD_ID);
   writeFileSync(join(EVIDENCE, "cache-audit.json"), JSON.stringify({ rewritten, audit }, null, 2) + "\n");
-  if (audit.workers.length || audit.stale.length) {
-    throw new Error("packaged output still has a service worker or unversioned /game asset URL");
+  const surprise = audit.workers.filter((path) => {
+    const text = readFileSync(join(stagedOutput, path), "utf8");
+    return !isKnownShellRegistration(text);
+  });
+  if (surprise.length || audit.stale.length) {
+    throw new Error("packaged output still has an unexpected service worker or unversioned /game asset URL");
   }
 
   const config = join(stagedOutput, "config.json");

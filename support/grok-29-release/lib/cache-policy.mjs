@@ -42,6 +42,11 @@ export function rewriteTreeAssetUrls(root, buildId) {
   return { files, replacements };
 }
 
+export function isKnownShellRegistration(text) {
+  const calls = [...text.matchAll(/serviceWorker\.register\(\s*["'`]([^"'`]+)["'`]/g)].map((match) => match[1]);
+  return calls.length > 0 && calls.every((url) => url === "/sw.js");
+}
+
 export function auditAssetReferences(root, buildId) {
   const stale = [];
   const workers = [];
