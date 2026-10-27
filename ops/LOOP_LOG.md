@@ -66,6 +66,17 @@ Decisions: D-014
 Blockers: none
 Next: the spectrum objective still names four rooms and a Heart. Prove whether that is a second plot. Do not merge.
 
+L-0007 | 2026-10-27 | Phase: P0
+Goal: name the spectrum without building a second plot.
+Done: fold line. Dissonance heart-fate written. No rooms added. Stale save-version pin moved from 8 to 9.
+Verified: ops/EVIDENCE/L-0007-test-game.txt — 497 pass, 0 fail. tsc clean.
+Score: Final 20.0 (unchanged)   GPR 0%   CI 10.2
+Defects: opened 0 / closed 0 / open Sev1-2: 0
+Decisions: D-015
+Blockers: none
+Next: take the Crown fate off the Heart. Leave walk. Do not add rooms. Do not merge.
+
+
 
 
 
