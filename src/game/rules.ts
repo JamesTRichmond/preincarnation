@@ -197,8 +197,8 @@ export function skillAwardForDeath(idealId: string, townsCleared: readonly strin
   return 2 + (idealId === "the_job" && !townsCleared.includes("quarry") ? 1 : 0);
 }
 
-export function wintersPassed(rand: () => number = Math.random): number {
-  return 14 + Math.floor(rand() * 5);
+export function wintersPassed(_rand: () => number = Math.random): number {
+  return 14;
 }
 
 export function bondKeepsake(bondId: string): RelicId | null {

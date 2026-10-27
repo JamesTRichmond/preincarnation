@@ -109,9 +109,10 @@ describe("skill award", () => {
 });
 
 describe("wintersPassed", () => {
-  it("is fourteen to eighteen", () => {
+  it("is exactly fourteen", () => {
     assert.equal(wintersPassed(() => 0), 14);
-    assert.equal(wintersPassed(() => 0.99), 18);
+    assert.equal(wintersPassed(() => 0.99), 14);
+    assert.equal(wintersPassed(), 14);
   });
 });
 

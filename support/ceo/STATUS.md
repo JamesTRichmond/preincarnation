@@ -6,56 +6,61 @@ _Updated Tue 2026-10-27, ~01:55 UTC, after merge of PR #41. Main at `f204e97` (m
 
 | Gate | Result |
 |---|---|
-| CI / verify on PR #41 head `5a28858` | **success** (run 40434764270, completed 01:50 UTC) |
-| Prior main health (post-#61 `b3b635d` and earlier) | typecheck 0 errors, build OK, tests 145/145, browser-smoke clean desktop + mobile (documented in prior STATUS) |
-| Live walk, save, engine | Unchanged by #41 |
+| `npm ci` | OK |
+| `npx tsc --noEmit` | **0 errors** (was 10 before #57) |
+| `npm run build` | OK |
+| `npm test` (`test:game`, glob) | **145/145 pass** |
+| browser-smoke dev :8080, desktop + mobile | 200, canvas, 0 console errors, 0 page errors, no horizontal overflow |
+| browser-smoke built :8081, desktop + mobile | same; no divergence from the dev baseline |
+| GitHub Actions `CI / verify` on main | **success**, run 40422784882 (finished 8:00 PM EDT) |
 
-The P0 crash (`paintSheep16 is not defined`) remains fixed.
+The P0 crash (`paintSheep16 is not defined`) is fixed.
 
-## What changed recently
+## What changed in this run
 
-| PR | What | Result | SHA |
-|---|---|---|---|
-| #61 | Vein Score desk: optional `/score` audition (`support/grok-17-score` + `public/score`). Does not replace the walk, does not write a save, does not import field audio. | merged | `b3b635d` |
-| #41 | Action-input bench: meadow at `/input` (`support/grok-19-input`). Separate binding lab. Live Green still uses WASD, Space, E, Q. Save format unchanged. Own localStorage key `preincarnation.input.v1`. | merged | `f204e97` |
+| PR | What | Result |
+|---|---|---|
+| #57 | P0 hotfix: restore the `./pix` painter imports in `engine.ts`, and make `waterside/objects-demo.ts` a real module (cherry-pick of `e109654` from #56) | merged `cdf5b21` |
+| #58 | One `test` key. `test:game` uses globs (`src/**/*.test.ts`, `support/**/*.test.ts`, `support/**/*.test.mjs`); `test:platform` and `test:all` split out; `engines.node >=22.12` + `.nvmrc`; lockfile resync; README `## Test` | merged `f95d345` |
+| #60 | CI: `.github/workflows/ci.yml` on PRs and pushes to main. Node from `.nvmrc`, `npm ci`, tsc, build, `npm test`, Playwright smoke dev + built with a verdict gate, smoke artifacts uploaded | merged `0e675a2` |
+| #46 | Refuse a save the game can't read; protect the backup | merged `689c95c` (132/132) |
+| #12 | Addison County combat survey (support) | merged `9e36350` (128/128) |
+| #53 | DG09–12 dungeon pack (support) | merged `f099e55` (128/128) |
+| #17 | Release desk: keep a life across updates (support) | merged `440a066` (141/141) |
+| #35 | Duplicate of #56 | closed with comment |
+| #51 | Duplicate of #38 (unwired `rewards.ts`, no tests) | closed with comment |
 
-**Vision Checklist for #41 (confirmed):**
-1. Marble Vein remains the sole plot.
-2. Death advances ~14 winters as a chapter; return as self.
-3. One person; no party.
-4. No romance / party / crafting systems.
-5. 320×240 Canvas and SNES-coat feel preserved.
-6. localStorage save and migration behavior respected (game save untouched; input bindings isolated).
-7. Support pack does not unintentionally break the live game (route + CSS source only; live `src/game/input.ts` and engine untouched).
-8. Tests / CI verify green (success on head).
+Each merged PR has a verification comment: typecheck, build, game tests, smoke dev + built, desktop + mobile, console, overflow.
 
-**Held:** #45 (death as a chapter). Needs J R sign-off; see #66.
+**Held, then closed under ruling #66:** #45. A played chapter is the right shape. That branch is not: no `pendingChapter` without a `SAVE_VERSION` bump, no death-cause string matching, winters are exactly 14.
 
 **Blocked (comment, not closed):**
 - #18, #28, #37 (and related crafting/loot) → #62.
 
 ## Durable facts
 
-- **Node ≥ 22.12 is required.** On 22.11, `npm ci` silently skips rolldown's native binding and Vite 8 fails to build. Use `nvm use` (`.nvmrc` = 22).
-- **Tests are discovered by glob.** PRs must **not** edit `package.json` to add tests. Name files `*.test.ts` under `src/` or `support/`, or `*.test.mjs` under `support/`.
-- **Save:** `preincarnation.save.v1`, `SAVE_VERSION = 8`; `writeSave` keeps `<key>.bak`. Unreadable/newer save refused (#46).
-- **Death math:** `wintersPassed()` = 14 + floor(rand*5), i.e. 14–18 (`rules.ts`). README says 14. Question for J R: #70.
-- **CI:** concurrency cancels superseded main runs. Actions v4 emit Node 20 deprecation; bump later.
-- **Process:** PRs authored as `JamesTRichmond`. Merges PR → verify → merge commit. No force-push, no direct pushes to main.
-- **QQ-VGEF:** #41 is an optional isolated input desk. No impact on core vision pillars, live walk, or open risks. Advances optional binding lab coverage without touching the Marble Vein plot or engine.
+- **Node ≥ 22.12 is required.** On 22.11, `npm ci` silently skips rolldown's native binding (`@rolldown/binding-linux-x64-gnu`) and Vite 8 fails to build. Use `nvm use` (`.nvmrc` = 22).
+- **Tests are discovered by glob.** PRs must **not** edit `package.json` to add tests. Name files `*.test.ts` under `src/` or `support/`, or `*.test.mjs` under `support/`. `.js` tests are not discovered.
+- `npm run test:platform` runs the App Builder template tests in `scripts/`. They need the sandbox `.grok/` dir and skip cleanly without it.
+- **Save:** `preincarnation.save.v1`, `SAVE_VERSION = 8`; `writeSave` keeps `<key>.bak`. Since #46, an unreadable/newer save is refused, not overwritten.
+- **Death math:** `wintersPassed()` returns 14. The line and the year agree. No live geolocation, no forecast, no weather speed tax. Ruling #70, on `improve/authored-county`.
+- **CI:** `concurrency` cancels superseded main runs, so "cancelled" on an older main SHA is expected. `actions/checkout@v4`/`setup-node@v4` emit a Node 20 deprecation warning; bump them to v5 later.
+- **Process:** every PR is authored as `JamesTRichmond` (worker bots on J R's account). Merges go PR → verify → merge commit. No force-push, no direct pushes to main.
 
 ## Issue Factory
 
-**james-human (decisions for J R):**
-- #62 crafting/loot/bench line
-- #63 food vs hunger
-- #64 second games/modes
-- #65 photo art, audio, animation vs SNES coat
-- #66 what carries across a death
-- #67 core loop and seam gating
-- #68 Vermont authenticity (#21)
-- #69 localization (#25)
-- #70 the 14–18 winter variance and the real location/weather fetch
+**james-human rulings, applied 2026-10-26 (issues left open; the comment is the law):**
+- #62 support only. No craft, loot, bench, or storage on the live surface. Closed #18 #19 #27 #28 #31 #32 #33 #39 #40 #43 #55 #56.
+- #63 food may be named. Hunger does not exist.
+- #64 no second game. Closed #16 #23 #34.
+- #65 the coat is the medium. Closed #20 #26 #29 #44.
+- #66 keep yourself, the lantern, the shovel, and the waking iron. Closed #13 #14 #30 #45 #47.
+- #67 no new gate. Closed #22 #24 #50.
+- #68 real Addison County, or labeled fiction. Closed #21.
+- #69 English only for v1. Closed #25.
+- #70 exactly 14 winters. No geo, no forecast, no weather speed tax. This branch.
+
+#59 may stay as an unmounted support archive. It does not mount.
 
 **bot-ready (mechanical, verify then merge):**
 - #71 support/unmounted PRs, `package.json`-only conflicts: #27, #39, #42, #48, #49, #55. Merging #27/#39/#55 waits on #62. #42's tests need renaming to `.test.mjs`.

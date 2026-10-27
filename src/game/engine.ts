@@ -1,8 +1,7 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
 import { createDeck, EMPTY_DECK } from "./ipod";
-import { locatePlayer, TOWN_BY_ID } from "./geography";
-import { gpsOnCounty } from "./raster";
+import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
@@ -32,7 +31,6 @@ import {
 } from "./pix";
 import { clearSave, defaultSave, loadSave, writeSave } from "./save";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
-import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
 
@@ -174,10 +172,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
-  let weather: WeatherState | null = null;
   let playerStoned = 0;
   let flash = 0;
   const images = new Map<string, HTMLImageElement>();
@@ -376,49 +373,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     say("Fourteen winters. " + save.flags.year + ". Same hands. The county aged. The job did not.");
   };
 
-  const applyLocation = (lat: number, lng: number, announce: boolean) => {
-    const loc = locatePlayer(lat, lng);
-    save.flags.geoLat = lat;
-    save.flags.geoLng = lng;
-    save.flags.geoTown = loc.town.id;
-    save.flags.homeX = loc.localX;
-    save.flags.homeY = loc.localY;
-    void fetchWeather(loc.town.lat, loc.town.lng).then((w) => {
-      weather = w ?? {
-        tempF: 52,
-        code: 2,
-        wind: 4,
-        isDay: vtHour() >= 6 && vtHour() < 20,
-        precip: 0,
-        label: { id: "cloud", name: "Cloudy" },
-        lat: loc.town.lat,
-        lng: loc.town.lng,
-      };
-    });
-    if (announce) {
-      const where = loc.inVermont
-        ? loc.km < 18
-          ? "You woke in " + loc.town.name + "."
-          : loc.town.name + " is the nearest town (" + Math.round(loc.km) + " km)."
-        : "Far from Vermont. The county borrowed your shadow — " + loc.town.name + ".";
-      say(where + " Houses open. Rifles hang. The map is the land.");
-    }
-    return loc;
-  };
-
-  const senseWorld = async (warp: boolean) => {
-    const pos = await requestGeo();
-    const coords = pos ?? { lat: 44.0153, lng: -73.1673 };
-    const loc = applyLocation(coords.lat, coords.lng, true);
-    if (warp) {
-      if (loc.onOverworld) {
-        const dest = gpsOnCounty(loc.town.county, coords.lat, coords.lng);
-        loadWorld(dest.map, dest.x * TILE + 8, dest.y * TILE + 8);
-      } else {
-        loadWorld(loc.town.id);
-      }
-      persist();
-    }
+  const senseWorld = () => {
+    /* The county is authored. No device location, no forecast. */
   };
 
   const startNew = () => {
@@ -438,7 +394,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } catch {
       /* ignore */
     }
-    void senseWorld(false);
   };
 
   const continueGame = () => {
@@ -461,14 +416,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     audio.unlock();
     audio.startDrone(mode === "limbo");
     lastUi = "";
-    if (save.flags.geoLat != null && save.flags.geoLng != null) {
-      void fetchWeather(save.flags.geoLat, save.flags.geoLng).then((w) => {
-        weather = w;
-      });
-    } else {
-      const t = TOWN_BY_ID[save.mapId];
-      if (t) void fetchWeather(t.lat, t.lng).then((w) => (weather = w));
-    }
     try {
       cvs.focus();
     } catch {
@@ -1432,7 +1379,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (dashT > 0) dashT -= dt;
     if (playerStoned > 0) playerStoned -= dt;
     if (flash > 0) flash -= dt;
-    if (weather?.label.id === "storm" && Math.random() < dt * 0.15) flash = 0.08;
     if (messageT > 0) {
       messageT -= dt;
       if (messageT <= 0) message = null;
@@ -1453,9 +1399,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const spec = INCARNATIONS[save.incarnation];
     const wpn = equipped();
     const wx = 1 + weaponMoveMod(wpn);
-    const wMul = weatherSpeed(weather);
     const stonedMul = playerStoned > 0 ? 0.82 : 1;
-    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * wMul * stonedMul * sheetSpeedMul(save.character.flawId);
+    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * stonedMul * sheetSpeedMul(save.character.flawId);
     let mx = actions.moveX;
     let my = actions.moveY;
     if (actions.scheme === "keyboard" || actions.scheme === "gamepad") {
@@ -1795,21 +1740,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       return f.t > 0;
     });
 
-    if (weather && (weather.label.id === "rain" || weather.label.id === "storm" || weather.label.id === "snow")) {
-      const n = weather.label.id === "snow" ? 2 : 3;
-      for (let i = 0; i < n; i++) {
-        particles.push({
-          x: camX + (Math.random() - 0.5) * SNES_W,
-          y: camY - VIEW_H / 2 - 4,
-          vx: weather.label.id === "snow" ? 8 : 40 + weather.wind,
-          vy: weather.label.id === "snow" ? 22 : 70,
-          life: 0.9,
-          color: weather.label.id === "snow" ? "#f4efe2" : "#8eb4d4",
-          size: 1,
-        });
-      }
-    }
-
     beacon = questBeacon();
     if (!reduced && particles.length < 240 && mapId !== "soloverse") {
       const moving = Math.abs(mx) + Math.abs(my) > 0.2;
@@ -1907,7 +1837,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const drawHudBar = () => {
     const town = TOWN_BY_ID[mapId]?.name ?? (isInterior(mapId) ? "Inside" : mapId);
     const clock = String(localHour).padStart(2, "0") + "h";
-    const wx = weather ? weather.label.name.slice(0, 8) : "";
+    const wx = "";
     const sig = [
       player.hp,
       player.maxHp,
@@ -2211,15 +2141,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillStyle = "rgba(12,18,48," + lamp + ")";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
     }
-    if (weather?.label.id === "rain" || weather?.label.id === "storm") {
-      bctx.fillStyle = "rgba(200,220,240,0.55)";
-      for (let i = 0; i < 22; i++) {
-        const rx = Math.floor((animT * 140 + i * 37) % SNES_W);
-        const ry = Math.floor((animT * 180 + i * 53) % SNES_H);
-        bctx.fillRect(rx, ry, 1, 3);
-        bctx.fillRect(rx + 1, ry + 3, 1, 2);
-      }
-    }
     if (charge > 0.05) {
       bctx.fillStyle = "#2a2018";
       bctx.fillRect(SNES_W / 2 - 20, 8, 40, 3);
@@ -2359,8 +2280,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         : mapId === "soloverse"
           ? "Soloverse"
           : (town?.name ?? mapId),
-      weatherName: weather ? weather.label.name + " " + weather.tempF + "°" : "…",
-      tempF: weather?.tempF ?? null,
+      weatherName: "…",
+      tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
       geoLine: save.flags.geoTown
@@ -2779,7 +2700,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         }
       }
     },
-    senseWorld: () => void senseWorld(mode !== "title"),
+    senseWorld: () => senseWorld(),
     cycleWeapon: () => {
       if (save.inventory.length < 2) return;
       const i = save.inventory.findIndex((w) => w.id === save.equippedId);
