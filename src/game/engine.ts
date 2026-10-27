@@ -22,7 +22,7 @@ import { liveObjective } from "./quest";
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, countyAgainNode, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
+import { applyUpgrade, bodyStats, countyAgainNode, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, firstReturnStone, graveSteelStanding, grantBondKeepsake, isIncarnationUnlocked, lungeHits, quarryHammerLands, resolveDeath, seamSkips, seamSpawnWeight, sheetSpeedMul, sipRefusedAtFullHp, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -184,6 +184,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let dashT = 0;
   let hitstop = 0;
   let stepCarry = 0;
+  const passedGraves = new Set<string>();
+  const nearedGraves = new Set<string>();
   let attackQueued = false;
   let faceMem: AxisMem = null;
   let trauma = 0;
@@ -266,8 +268,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const spawnEnemies = () => {
     enemies = [];
+    const held = save.inventory.map((w) => w.id);
+    const steel = graveSteelStanding(save.flags.graves ?? [], held, [...passedGraves]);
     for (const p of props) {
       if (p.kind !== "enemy" || !p.enemy) continue;
+      const weight = seamSpawnWeight(1, p.enemy, mapId, p.x, save.cycle, steel);
+      if (seamSkips(p.id, save.cycle, weight)) continue;
       const hp = enemyMaxHp(ENEMY_HP[p.enemy] ?? 2, save.flags.tropoverse);
       enemies.push({
         id: p.id,
@@ -673,6 +679,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const sip = () => {
     const i = sipIndex(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp);
+    if (sipRefusedAtFullHp(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp)) {
+      audio.clink();
+      say("Full. The glass only clicks.");
+      return;
+    }
     if (i < 0) {
       say("No bottles.");
       return;
@@ -1553,6 +1564,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const paced = stepDue(stepCarry, Math.hypot(player.vx * dt, player.vy * dt));
     stepCarry = paced.carry;
     if (paced.fire) audio.step(tileAt(player.x, player.y));
+    for (const g of props) {
+      if (g.kind !== "grave") continue;
+      const d = Math.hypot(g.x * TILE + 8 - player.x, g.y * TILE + 8 - player.y);
+      if (d < 18) nearedGraves.add(g.id);
+      else if (nearedGraves.has(g.id) && d > 56) passedGraves.add(g.id);
+    }
     const pushing = Math.hypot(mx, my) > 0.25;
     if (pushing && blocked(player.x, player.y, 4)) {
       shoveT += dt;
@@ -1741,7 +1758,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           moveActor(e, ix * sp * dt, iy * sp * dt);
           if (Math.abs(ix) > Math.abs(iy)) e.dir = ix < 0 ? 1 : 2;
           else e.dir = iy < 0 ? 3 : 0;
-          if (dist < 12 && e.hurt <= 0) {
+          if (lungeHits("sentinel", player.x - e.x, player.y - e.y) && e.hurt <= 0) {
             hurtPlayer(1, e.x, e.y);
             e.hurt = 0.4;
           }
@@ -1764,7 +1781,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
               iy += Math.cos(animT * 6) * 0.45;
             }
             moveActor(e, ix * sp * dt, iy * sp * dt);
-            if (step.step === "bite" && dist < 12 && e.hurt <= 0) {
+            const bite =
+              e.kind === "bobcat"
+                ? lungeHits("bobcat", player.x - e.x, player.y - e.y)
+                : dist < 12;
+            if (step.step === "bite" && bite && e.hurt <= 0) {
               const dmg = e.kind === "bear" ? 1.5 : e.kind === "resident" ? 1.2 : 1;
               hurtPlayer(dmg, e.x, e.y);
               e.hurt = 0.4;
@@ -2077,7 +2098,19 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (p.kind === "warp") {
         bctx.fillStyle = "rgba(232,195,106,0.4)";
         bctx.fillRect(dx + 5, dy + 5, 6, 6);
-      } else if (p.kind === "grave") paintGrave16(bctx, dx, dy);
+      } else if (p.kind === "grave") {
+        paintGrave16(bctx, dx, dy);
+        const stone = firstReturnStone(save.cycle, save.character.name);
+        const latest = [...(save.flags.graves ?? [])].reverse().find((g) => !g.excavated);
+        if (stone && latest && latest.id === p.id) {
+          bctx.font = "8px monospace";
+          bctx.fillStyle = "#f4efe2";
+          bctx.textAlign = "center";
+          bctx.fillText(stone[0], dx + 8, dy - 10);
+          bctx.fillText(stone[1], dx + 8, dy - 2);
+          bctx.textAlign = "left";
+        }
+      }
       else if (p.kind === "key") paintKey16(bctx, dx, dy);
       else if (p.kind === "lock") paintLock16(bctx, dx, dy);
       else if (p.kind === "wheel") {

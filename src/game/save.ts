@@ -11,6 +11,8 @@ import {
   type SaveData,
 } from "./types.ts";
 
+export { SAVE_VERSION };
+
 export function defaultSave(): SaveData {
   const iron = starterWeapon();
   return {

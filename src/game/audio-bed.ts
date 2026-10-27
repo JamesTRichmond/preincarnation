@@ -47,6 +47,11 @@ export function strikeVoice(kind: string): StrikeVoice {
   return STRIKE[kind] ?? THUD;
 }
 
+/** Quiet glass. Not a strike. The mute dial still owns silence. */
+export function glassClink(): StrikeVoice {
+  return { freq: 1560, dur: 0.035, type: "sine", slide: 180 };
+}
+
 export type Ground = "soft" | "grit" | "wood" | "stone" | "water";
 
 /** What the boot actually meets. Unknown tiles stay soft grass. */
