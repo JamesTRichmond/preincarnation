@@ -209,6 +209,8 @@ describe("resolveDeath", () => {
       grave.weapons.map((w) => w.name),
       ["Farm axe"],
     );
+    assert.equal(grave.weapons[0].dmg, 2);
+    assert.deepEqual(grave.weapons[0].affixes, []);
     assert.ok(grave.relics.includes("shovel"));
     assert.equal(grave.relics.includes("lantern"), false);
     assert.ok(next.flags.relics.includes("lantern"));

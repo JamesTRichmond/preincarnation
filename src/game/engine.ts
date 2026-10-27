@@ -44,7 +44,8 @@ import {
   paintLock16,
   paintCave16,
 } from "./pix";
-import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, writeSave } from "./save";
+import { sipIndex, weaponFromGrave } from "./bag";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, undoLastSave, writeSave } from "./save";
 import { readKit, wearNextWeapon } from "./kit-compare";
 import { applyDeath } from "./cooking/reduce.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
@@ -662,22 +663,15 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const fillBottle = (kind: BottleKind) => {
     const i = save.flags.bottles.findIndex((b) => b === "empty");
-    if (i >= 0) {
-      const next = save.flags.bottles.slice();
-      next[i] = kind;
-      save.flags.bottles = next;
-      return true;
-    }
-    if (kind === "syrup" || kind === "deluxe") {
-      player.hp = Math.min(player.maxHp, player.hp + 4);
-      save.hp = player.hp;
-    }
-    if (kind === "creemee" || kind === "deluxe") save.mp = save.maxMp;
-    return false;
+    if (i < 0) return false;
+    const next = save.flags.bottles.slice();
+    next[i] = kind;
+    save.flags.bottles = next;
+    return true;
   };
 
   const sip = () => {
-    const i = save.flags.bottles.findIndex((b) => b !== "empty");
+    const i = sipIndex(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp);
     if (i < 0) {
       say("No bottles.");
       return;
@@ -719,6 +713,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (!dialogue?.choices) return;
     const c = dialogue.choices[index];
     if (!c) return;
+    if (c.flag?.syrupStash && !save.flags.bottles.includes("empty")) {
+      say("Both bottles are full. The tin stays on the shelf.");
+      dialogue = null;
+      mode = "play";
+      persist();
+      return;
+    }
     if (c.karma) addKarma(c.karma);
     if (c.crowns) {
       save.crowns += c.crowns;
@@ -894,13 +895,19 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.ySlot = "shovel";
       dig();
     } else if (p.kind === "syrup") {
-      fillBottle("syrup");
+      if (!fillBottle("syrup")) {
+        say("Both bottles are full. The tin stays.");
+        return;
+      }
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
       say("Maple tin. Red bottle. V to drink.");
       persist();
     } else if (p.kind === "creemee") {
-      fillBottle("creemee");
+      if (!fillBottle("creemee")) {
+        say("Both bottles are full. The cup stays.");
+        return;
+      }
       save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
@@ -1307,9 +1314,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     g0.excavated = true;
     props = props.filter((p) => p.id !== near.id);
     for (const w of g.weapons) {
-      const rolled = rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
-      rolled.id = w.id;
-      rolled.name = w.name;
+      const remembered = weaponFromGrave(w);
+      const rolled = remembered ?? rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
+      if (!remembered) {
+        rolled.id = w.id;
+        rolled.name = w.name;
+      }
       save.inventory = [...save.inventory, rolled];
     }
     for (const r of g.relics) {
@@ -1327,8 +1337,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     for (const e of enemies) {
       if (!e.alive || e.kind !== "crow") continue;
       if (Math.hypot(e.x - player.x, e.y - player.y) < 22) {
+        if (!fillBottle("deluxe")) {
+          say("Both bottles are full. The crow keeps the light.");
+          continue;
+        }
         e.alive = false;
-        fillBottle("deluxe");
         say("A light in the net. Bottled.");
         audio.pickup();
       }
@@ -1575,6 +1588,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           save.equippedId = next.id;
           say(next.name);
         }
+      }
+    }
+    if (actions.weaponCyclePressed) {
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (next) {
+        save.equippedId = next.id;
+        say(next.name);
       }
     }
     if (actions.usePressed) sip();
@@ -2391,6 +2411,19 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
+      bag: [
+        ...save.inventory.map((weapon) => weapon.name),
+        ...save.flags.relics
+          .filter((id) => id !== "sword")
+          .map((id) => RELIC_BY_ID[id]?.name)
+          .filter((name): name is string => !!name),
+        ...save.flags.bottles
+          .filter((bottle) => bottle !== "empty")
+          .map((bottle) => (bottle === "deluxe" ? "Deluxe creemee" : bottle === "creemee" ? "Creemee" : "Syrup")),
+        ...(save.flags.arrows > 0 ? [`Arrows ×${save.flags.arrows}`] : []),
+        ...(save.flags.bombs > 0 ? [`Powder kegs ×${save.flags.bombs}`] : []),
+        ...(save.flags.keys > 0 ? [`Keys ×${save.flags.keys}`] : []),
+      ].join(" · ") || "Nothing",
       kit: readKit(
         save.inventory,
         save.equippedId,
@@ -2454,6 +2487,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.townName,
       snap.weatherName,
       snap.weaponName,
+      snap.bag,
       snap.kit.handName,
       snap.kit.lead,
       snap.showControls,
@@ -2866,12 +2900,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     },
     senseWorld: () => senseWorld(),
     cycleWeapon: () => {
-      if (save.inventory.length < 2) return;
+      if (save.inventory.length < 2) return false;
       const next = wearNextWeapon(save.inventory, save.equippedId);
-      if (!next) return;
+      if (!next) return false;
       save.equippedId = next.id;
       say(next.name);
+      return true;
     },
+    undoLastSave: () => undoLastSave() !== null,
     sip,
     dispose: () => {
       running = false;

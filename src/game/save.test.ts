@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { applyDeath } from "./cooking/reduce.ts";
 import { TILE } from "./snes.ts";
-import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, migrate, writeSave } from "./save.ts";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, migrate, undoLastSave, writeSave } from "./save.ts";
 import { resolveDeath } from "./rules.ts";
 import { SAVE_KEY, SAVE_VERSION, type SaveData } from "./types.ts";
 
@@ -210,6 +210,23 @@ describe("writeSave / loadSave", () => {
     assert.equal(loadSave().cycle, 0);
     const bak = JSON.parse(mem.get(SAVE_KEY + ".bak") ?? "null") as { character?: { name?: string } };
     assert.equal(bak.character?.name, "Ira Fenn");
+  });
+
+  it("swaps the last good life back when asked, and does not invent one", () => {
+    const first = defaultSave();
+    first.character.name = "Ira Fenn";
+    first.character.created = true;
+    first.character.skillPoints = 3;
+    writeSave(first);
+    writeSave(first);
+    const spent = structuredClone(loadSave());
+    spent.character.skillPoints = 2;
+    writeSave(spent);
+    const undone = undoLastSave();
+    assert.equal(undone?.character.skillPoints, 3);
+    assert.equal(loadSave().character.skillPoints, 3);
+    clearSave();
+    assert.equal(undoLastSave(), null);
   });
 });
 
