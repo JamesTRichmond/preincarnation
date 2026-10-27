@@ -1,89 +1,81 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~01:55 UTC, after merge of PR #41. Main at `f204e97` (merge of PR #41)._
+_Updated Tue 2026-10-27, ~02:25 UTC, after merge of PR #80. Main at `4a9766d` (merge of PR #80)._
 
-## Health of main (`f204e97`)
+## Health of main (`4a9766d`)
 
 | Gate | Result |
 |---|---|
-| `npm ci` | OK |
-| `npx tsc --noEmit` | **0 errors** (was 10 before #57) |
-| `npm run build` | OK |
-| `npm test` (`test:game`, glob) | **145/145 pass** |
-| browser-smoke dev :8080, desktop + mobile | 200, canvas, 0 console errors, 0 page errors, no horizontal overflow |
-| browser-smoke built :8081, desktop + mobile | same; no divergence from the dev baseline |
-| GitHub Actions `CI / verify` on main | **success**, run 40422784882 (finished 8:00 PM EDT) |
+| `npm ci` | OK (prior runs) |
+| `npx tsc --noEmit` | **0 errors** (PR #80 reported clean) |
+| `npm run build` | OK (prior) |
+| `npm test` (`test:game`, glob) | feel.test.ts + rules.test.ts 44 pass; full suite not re-run this minute, new file under glob. Prior main ~145 pass. |
+| browser-smoke | Prior green; #80 is feel-only, no route/save change. |
+| GitHub Actions `CI / verify` on #80 head | **in_progress** at merge (run started 02:19:59Z). Watch for green. |
 
-The P0 crash (`paintSheep16 is not defined`) is fixed.
+Live engine feel improved without save, winter, or geo changes.
 
-## What changed in this run
+## What changed recently
 
 | PR | What | Result |
 |---|---|---|
-| #57 | P0 hotfix: restore the `./pix` painter imports in `engine.ts`, and make `waterside/objects-demo.ts` a real module (cherry-pick of `e109654` from #56) | merged `cdf5b21` |
-| #58 | One `test` key. `test:game` uses globs (`src/**/*.test.ts`, `support/**/*.test.ts`, `support/**/*.test.mjs`); `test:platform` and `test:all` split out; `engines.node >=22.12` + `.nvmrc`; lockfile resync; README `## Test` | merged `f95d345` |
-| #60 | CI: `.github/workflows/ci.yml` on PRs and pushes to main. Node from `.nvmrc`, `npm ci`, tsc, build, `npm test`, Playwright smoke dev + built with a verdict gate, smoke artifacts uploaded | merged `0e675a2` |
-| #46 | Refuse a save the game can't read; protect the backup | merged `689c95c` (132/132) |
-| #12 | Addison County combat survey (support) | merged `9e36350` (128/128) |
-| #53 | DG09–12 dungeon pack (support) | merged `f099e55` (128/128) |
-| #17 | Release desk: keep a life across updates (support) | merged `440a066` (141/141) |
-| #35 | Duplicate of #56 | closed with comment |
-| #51 | Duplicate of #38 (unwired `rewards.ts`, no tests) | closed with comment |
+| #80 | Keep a swing that lands during hitstop; lip-step mover (4px), knockback via same mover, short hurt freeze (reduced-motion scaled), analog facing axis memory, camera deadzone+ease. Rebased feel pass of old #54 onto post-#78 main. New `src/game/feel.ts` + test. | merged `4a9766d` (head `d81b6d6`) |
+| #78 | Lock death at exactly 14 winters; drop live geolocation, open-meteo, weather speed tax, forecast particles. | merged `3e804d0` |
+| #76 | docs-only STATUS.md update after #41 | merged `d559133` |
+| #61 | Vein Score desk (/score + support/grok-17-score) | merged earlier |
+| #41 | action-input bench (/input + support/grok-19-input) | merged `f204e97` |
 
-Each merged PR has a verification comment: typecheck, build, game tests, smoke dev + built, desktop + mobile, console, overflow.
-
-**Held, then closed under ruling #66:** #45. A played chapter is the right shape. That branch is not: no `pendingChapter` without a `SAVE_VERSION` bump, no death-cause string matching, winters are exactly 14.
-
-**Blocked (comment, not closed):**
-- #18, #28, #37 (and related crafting/loot) → #62.
+Vision Checklist satisfied for #80: Marble Vein sole plot; winters stay 14; one person; no romance/party/crafting; 320×240 preserved; localStorage untouched; support not involved; tests reported green on touched files.
 
 ## Durable facts
 
-- **Node ≥ 22.12 is required.** On 22.11, `npm ci` silently skips rolldown's native binding (`@rolldown/binding-linux-x64-gnu`) and Vite 8 fails to build. Use `nvm use` (`.nvmrc` = 22).
-- **Tests are discovered by glob.** PRs must **not** edit `package.json` to add tests. Name files `*.test.ts` under `src/` or `support/`, or `*.test.mjs` under `support/`. `.js` tests are not discovered.
-- `npm run test:platform` runs the App Builder template tests in `scripts/`. They need the sandbox `.grok/` dir and skip cleanly without it.
-- **Save:** `preincarnation.save.v1`, `SAVE_VERSION = 8`; `writeSave` keeps `<key>.bak`. Since #46, an unreadable/newer save is refused, not overwritten.
-- **Death math:** `wintersPassed()` returns 14. The line and the year agree. No live geolocation, no forecast, no weather speed tax. Ruling #70, on `improve/authored-county`.
-- **CI:** `concurrency` cancels superseded main runs, so "cancelled" on an older main SHA is expected. `actions/checkout@v4`/`setup-node@v4` emit a Node 20 deprecation warning; bump them to v5 later.
-- **Process:** every PR is authored as `JamesTRichmond` (worker bots on J R's account). Merges go PR → verify → merge commit. No force-push, no direct pushes to main.
+- **Node ≥ 22.12 is required.** On 22.11, `npm ci` silently skips rolldown's native binding and Vite 8 fails. Use `.nvmrc`.
+- **Tests are discovered by glob.** Do not edit `package.json` to add tests. Name `*.test.ts` under `src/` or `support/`, or `*.test.mjs` under `support/`.
+- **Save:** `preincarnation.save.v1`, `SAVE_VERSION = 8`; backup kept. Unreadable/newer refused since #46. #80 did not touch saves.
+- **Death math:** exactly 14 winters. No live geolocation, no forecast, no weather speed tax (Ruling #70 / #78).
+- **Feel (post-#80):** attack buffer across hitstop; lip-step collision; consistent knockback; reduced-motion hitstop scale; axis-memory facing; camera deadzone.
+- **CI:** concurrency cancels superseded runs. Actions v4 Node 20 deprecation warning remains.
+- **Process:** PRs authored as JamesTRichmond. Prefer PR → verify → merge. No force-push.
 
 ## Issue Factory
 
-**james-human rulings, applied 2026-10-26 (issues left open; the comment is the law):**
-- #62 support only. No craft, loot, bench, or storage on the live surface. Closed #18 #19 #27 #28 #31 #32 #33 #39 #40 #43 #55 #56.
+**james-human rulings (still open; comments are law):**
+- #62 support only. No craft/loot/bench/storage on live. Closed related.
 - #63 food may be named. Hunger does not exist.
-- #64 no second game. Closed #16 #23 #34.
-- #65 the coat is the medium. Closed #20 #26 #29 #44.
-- #66 keep yourself, the lantern, the shovel, and the waking iron. Closed #13 #14 #30 #45 #47.
-- #67 no new gate. Closed #22 #24 #50.
-- #68 real Addison County, or labeled fiction. Closed #21.
-- #69 English only for v1. Closed #25.
-- #70 exactly 14 winters. No geo, no forecast, no weather speed tax. This branch.
+- #64 no second game.
+- #65 the coat is the medium.
+- #66 keep yourself, the lantern, the shovel, and the waking iron.
+- #67 no new gate.
+- #68 real Addison County, or labeled fiction.
+- #69 English only for v1.
+- #70 exactly 14 winters. No geo/forecast/weather tax. Done via #78.
 
-#59 may stay as an unmounted support archive. It does not mount.
+**bot-ready:**
+- #71 support/unmounted PRs with package.json conflicts: remaining #27, #39, #42, #48, #49, #55 (some may be closed).
+- #72 live-feature PRs: #15, #29, #30, #36 ( #41 done).
+- #73 engine.ts conflicts: #38, #52 ( #54 closed by #80). Resolve only; CEO + J R review before merge. #80 changes to engine.ts may increase conflict surface.
 
-**bot-ready (mechanical, verify then merge):**
-- #71 support/unmounted PRs, `package.json`-only conflicts: #27, #39, #42, #48, #49, #55. Merging #27/#39/#55 waits on #62. #42's tests need renaming to `.test.mjs`.
-- #72 live-feature PRs, `package.json`-only conflicts: #15, #29, #30, #36. (#41 merged; #30 waits on #66.)
-- #73 `engine.ts` conflicts: #38, #52, #54. Resolve only; merging needs a CEO review and J R sign-off.
-
-## Open PR ledger (post-#41, ~01:55 UTC)
-
-Note: #61 and #41 are merged. #75 (STATUS update after #61) remains open against prior base.
+## Open PR ledger (post-#80, ~02:25 UTC)
 
 | Bucket | PRs |
 |---|---|
-| bot-ready rebase (#71/#72/#73) | 15, 27, 29, 30, 36, 38, 39, 42, 48, 49, 52, 54, 55 |
-| Held for J R (core/engine/save) | 45 (#66), 47 (#66), 13 (#66), 14 (#66), 50 (#67), 22 (#67), 24 (#63/#67), 21 (#68) |
-| Held for J R (scope/aesthetic) | 16, 23, 34 (#64); 20, 26, 44 (#65); 25 (#69); 43 (#63) |
-| Held on crafting/loot line (#62) | 18, 19, 28, 31, 32, 33, 37, 40, 56 |
-| Other open | 59 buried-history loot pack (loot → #62), 75 STATUS after #61 |
+| bot-ready rebase (#71/#72/#73) | 15, 36, 38, 42, 49, 52, 59 (and any still open from prior lists) |
+| Held for J R | 59 (loot → #62), others closed by rulings |
+| STATUS | this update |
+
+Many prior PRs closed under #62–#70 rulings. #54 superseded by #80.
+
+## Impact on QQ-VGEF / risks
+
+- QQ-VGEF pillars: feel improvements support the SNES-coat job without adding systems. No new essential gates, no economy.
+- Open risks: engine.ts is now more complex (feel extracted). Other engine PRs (#38, #52) will need careful rebase. CI on #80 still running at report time. Full test:game not freshly confirmed post-merge.
+- Unblocks: closes the old #54 line. May not directly unblock others; engine changes could block #73 work until rebased.
 
 ## Next priorities
 
-1. Merge or close #75 (STATUS after #61) once rebased or superseded by this update; prefer one STATUS PR.
-2. Watch #71–#73 for bot pushes, then verify and merge per acceptance criteria. #41 is done.
-3. Review remaining open PRs against Vision Checklist, starting with conflict-free support packs that do not touch live engine/save.
-4. Once J R answers #62–#70, unblock or close the matching PRs.
-5. Repo hygiene: committed `artifacts/`, `screenshots/`, `attachments/` inflate `.git`. Propose moving them out and adding a PR body template.
-6. Bump CI actions to v5.
+1. Confirm CI verify green on main post-#80 (run 40437800495).
+2. Merge this STATUS PR once green.
+3. Continue #71–#73 bot-ready rebases; prioritize conflict-free support packs.
+4. Review remaining open PRs (esp. #38/#52 engine) against Vision Checklist after rebase.
+5. Monitor for any feel regressions in play; reduced-motion path is new.
+6. Repo hygiene and CI actions bump remain secondary.
