@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AshBendRouteImport } from './routes/ash-bend'
 import { Route as InputRouteImport } from './routes/input'
 import { Route as ScoreRouteImport } from './routes/score'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AshBendRoute = AshBendRouteImport.update({
+  id: '/ash-bend',
+  path: '/ash-bend',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InputRoute = InputRouteImport.update({
@@ -31,30 +37,34 @@ const ScoreRoute = ScoreRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
   '/input': typeof InputRoute
   '/score': typeof ScoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
   '/input': typeof InputRoute
   '/score': typeof ScoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
   '/input': typeof InputRoute
   '/score': typeof ScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/input' | '/score'
+  fullPaths: '/' | '/ash-bend' | '/input' | '/score'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/input' | '/score'
-  id: '__root__' | '/' | '/input' | '/score'
+  to: '/' | '/ash-bend' | '/input' | '/score'
+  id: '__root__' | '/' | '/ash-bend' | '/input' | '/score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AshBendRoute: typeof AshBendRoute
   InputRoute: typeof InputRoute
   ScoreRoute: typeof ScoreRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ash-bend': {
+      id: '/ash-bend'
+      path: '/ash-bend'
+      fullPath: '/ash-bend'
+      preLoaderRoute: typeof AshBendRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/input': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AshBendRoute: AshBendRoute,
   InputRoute: InputRoute,
   ScoreRoute: ScoreRoute,
 }

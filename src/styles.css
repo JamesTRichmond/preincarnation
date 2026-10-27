@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../support/grok-19-input";
+@source "../support/grok-75-household-loot";
 
 @theme {
   --color-bg: #070b18;
@@ -34,6 +35,18 @@
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
+  /* Ash Bend desk only. Prefixed so they do not repaint the county. */
+  --color-ash-pine: #1c1915;
+  --color-ash-ink: #241c16;
+  --color-ash-cream: #f3eadf;
+  --color-ash-plaster: #e7dccb;
+  --color-ash-ember: #c4622d;
+  --color-ash-ember-deep: #8d3e16;
+  --color-ash-moss: #3d5c4a;
+  --color-ash-moss-deep: #24382d;
+  --color-ash-line: #d9cbb8;
+  --color-ash-muted: #6f6256;
+  --color-ash-warn: #8c3a2f;
 }
 
 @layer base {
@@ -73,4 +86,56 @@
 
 .vein-level {
   transition: transform 80ms linear;
+}
+
+/* Ash Bend parlor. Scoped classes. They do not touch the county canvas. */
+.ash-vignette {
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 42%,
+    color-mix(in oklab, var(--color-ash-pine) 34%, transparent) 100%
+  );
+}
+
+.ash-dusk {
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--color-ash-pine) 50%, transparent),
+    color-mix(in oklab, var(--color-ash-pine) 12%, transparent) 46%,
+    transparent 70%
+  );
+}
+
+.ash-lamp {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-ash-cream) 80%, var(--color-ash-ember)) 0%,
+    color-mix(in oklab, var(--color-ash-ember) 55%, transparent) 38%,
+    transparent 70%
+  );
+  animation: ash-breathe 4.8s ease-in-out infinite;
+}
+
+.ash-era-settlement {
+  filter: saturate(0.72) contrast(1.04);
+}
+
+.ash-era-memory {
+  filter: saturate(1.08) sepia(0.06);
+}
+
+.ash-select {
+  min-height: 2.75rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-ash-line) 45%, transparent);
+  background: var(--color-ash-pine);
+  color: var(--color-ash-cream);
+  padding-inline: 0.75rem;
+}
+
+@keyframes ash-breathe {
+  50% {
+    opacity: 0.72;
+  }
 }
