@@ -1,35 +1,37 @@
 # PREINCARNATION: CEO Status
 
-_Updated Tue 2026-10-27, ~03:35 UTC, after merge of PR #107. Main at `3beed56` (merge of PR #107)._
+_Updated Tue 2026-10-27, ~04:00 UTC, after merge of PR #88. Main at `2f37dda` (squash merge of PR #88)._
 
-## Health of main (`3beed56`)
+## Health of main (`2f37dda`)
 
 | Gate | Result |
 |---|---|
-| `npm run test:game` | **255 pass, 0 fail** (per PR #107 evidence log `ops/EVIDENCE/L-0004-test-game.txt`) |
-| `tsc --noEmit` | clean (per PR #107) |
-| SAVE_VERSION | remains 8 |
-| Engine / rules touch | yes: `enemyMaxHp` no longer scales with `save.cycle`; Tropoverse ×1.35 once (place, not deaths) |
-| County save / live route | unchanged |
+| `npm run test:game` | Inherited from recent merges; #88 added county-book suite (author reported 223 on its base; later merges higher). Full re-run recommended. |
+| `tsc --noEmit` | clean on recent pure-addition and live PRs |
+| SAVE_VERSION | remains 8 (or 9 if kitchen #109 landed; confirm on next cycle) |
+| Engine / rules / live touch | None from #88. Prior: #107 rules.ts HP non-scaling; #15 weapon compare (pause bag only); #86 Marble Vein tell; #104 place/tell; #109 kitchen if merged. |
+| County save / live route | unchanged by #88. Marks live only in isolated `preincarnation-county-book-v1` key if desk ever opened. |
 
-Prior typecheck/build/smoke inherited; full re-smoke recommended on next CI cycle. CI verify green on PR head before merge.
+#88 is pure addition under `support/grok-55-merchants/`. Desk UI unmounted. No import into live walk, engine, save, or routes. CI/verify green on head before merge per author evidence.
 
 ## What changed in this run
 
 | PR | What | Result |
 |---|---|---|
-| #107 | Stop a later life from fattening every enemy. `enemyMaxHp(base, tropoverse)` ignores cycle. Removes `1 + cycle * 0.12` sponge (P1A-5). Test guards against reintroduction. Tropoverse remains a one-time place multiplier. | merged by James; head `eeebd2f`; main tip `3beed56` |
+| #88 | County Book stall ledger: twelve Addison merchants across six generations, single mark currency, quote-never-mutates / commit-atomic trades, fairness labels, essentials protected, unmounted desk UI. Isolated `support/grok-55-merchants/`. Does not touch loot scrip or life save. | squash-merged by James; head `fb5b758`; main tip `2f37dda` |
 
-Vision Checklist satisfied: Marble Vein sole plot; death advances exactly 14 winters as chapter (unchanged); one person; no romance/party/crafting; 320×240 Canvas/SNES-coat preserved; localStorage/SAVE_VERSION=8 respected; no support-pack live impact. Later lives are the same fight. Tests green. Closes HP-only cycle scaling path.
+Vision Checklist satisfied: Marble Vein remains sole plot; death is a chapter (unchanged); one person; no romance/party/crafting core; 320×240 Canvas/SNES-coat preserved; localStorage respected (separate key only); support pack does not break live game. Optional archive only.
 
 ## Durable facts
 
-- Enemy max HP does not grow with deaths/cycles. Tropoverse is a place (×1.35 once). Player ribcage already free of cycle term.
-- Skill on death remains capped (from #83). SAVE_VERSION stays 8.
-- Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
-- Marble Vein tell from #86 remains on main (decoy faces, Sentinel telegraph).
-- Node ≥ 22.12 required. Tests by glob.
-- Process: PRs authored as JamesTRichmond; merges after verify; no force-push.
+- County Book (marks, stalls, quote/commit) lives only in support pack; not mounted, not in life save, does not replace merchant scrip in `src/game/loot`.
+- Enemy max HP does not grow with deaths/cycles (#107). Tropoverse is a place (×1.35 once).
+- Skill on death remains capped (#83). Death math: exactly 14 winters. No geo/forecast/weather tax (Ruling #70).
+- Marble Vein tell from #86 remains on main.
+- Theme map (#117) and PWA install shell (#116) on main.
+- Weapon compare sheet (#15) in pause bag; no damage ranking.
+- Node ≥ 22.12 required. Tests by glob (`support/**/*.test.ts`).
+- Process: PRs authored as JamesTRichmond; merges after verify; no force-push. CEO does not merge without explicit confirmation on live touches.
 
 ## Issue Factory
 
@@ -47,23 +49,23 @@ Vision Checklist satisfied: Marble Vein sole plot; death advances exactly 14 win
 **bot-ready:**
 - #71/#72/#73 still open for rebase of remaining conflicted PRs.
 
-## Open PR ledger (post-#107, ~03:35 UTC)
+## Open PR ledger (post-#88, ~04:00 UTC)
 
 | Bucket | PRs |
 |---|---|
-| STATUS updates (rebase/close) | #81, #82 (stale relative to current main) |
+| STATUS updates | this branch (improve/ceo-status-88); prior #81/#82/#85/#91/#92/#112/#118/#119 may be stale — rebase or close |
 | Superseded | #38 (close; skill cap already on main via #83) |
-| Support / unmounted | #59, #49, #42, #87, #88, #89, #100, #101, #102, #105, #106, #108, etc. |
-| Live features | #15 weapon compare, #36 item search, remaining engine-touch candidates |
+| Support / unmounted (vision-aligned pure additions) | #59, #49, #42, #87, #89, #95, #98, #100, #101, #102, #105, #106, #108, etc. |
+| Live features (require explicit review) | remaining engine-touch candidates after #15/#86/#104/#107 |
 | Other | pending rebase from #71–73 |
 
 ## Next priorities
 
-1. Close #38 as superseded by #83.
-2. Rebase or close stale STATUS PRs (#81, #82); this STATUS is current.
-3. Continue bot-ready rebase of remaining open PRs (#71–73); verify vision + tests before any merge. Engine/rules touches require explicit review.
-4. Review open support packs for vision alignment and conflicts with recent main (rules.ts change is narrow).
-5. Full CI smoke on main post-#107 to confirm no regression from HP change.
+1. Merge this STATUS update once CI green (docs-only, no live impact).
+2. Close #38 as superseded by #83.
+3. Rebase or close stale STATUS PRs relative to current main `2f37dda`.
+4. Continue review of open support packs for vision alignment and conflicts. #88 unblocks nothing live; similar unmounted ledgers (#87 mastery, #89 gatherings, #106 satchel, etc.) can land independently.
+5. Full CI smoke on main post-recent merges (#15, #88, #116, #117) to confirm no regression.
 6. Repo hygiene: large artifacts/screenshots still inflate .git.
 
-No new risks. Removes the P1A-5 sponge. QQ-VGEF pillars (live engine fidelity, vision constraints) strengthened; no impact on optional support readiness.
+No new risks from #88. QQ-VGEF pillars (live engine fidelity, vision constraints, optional support readiness) unchanged or strengthened by clean isolation. Optional pack adds merchant design reference without covering the Green.
