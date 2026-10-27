@@ -2,7 +2,7 @@
 
 ## Result of the run
 
-Command, from the repository root, on main `679de6f` plus this pack:
+Command, from the repository root, after rebasing onto main `156b308`:
 
 ```text
 node --experimental-strip-types support/grok-02-persistence/src/run-tests.js
