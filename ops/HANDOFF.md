@@ -1,7 +1,7 @@
 # HANDOFF
 
 Cycle: L-0008   Step: 10 checkpoint   Time: 2026-10-27
-Branch/commit: integrate/vanguard-must (hash after commit)
+Branch/commit: integrate/vanguard-must @ c76f90c
 Uncommitted work: none after this checkpoint
 Failing tests: none. 510/510 game tests pass.
 Final Score per platform: PWA 20.0   Points to Gate: 78.0
