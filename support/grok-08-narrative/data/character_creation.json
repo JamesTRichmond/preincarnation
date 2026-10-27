@@ -1,0 +1,116 @@
+{
+  "note": "Background, bond, ideal, and flaw change reactions and available lines. They are not combat classes and they grant no meters.",
+  "backgrounds": [
+    {
+      "id": "intervale",
+      "label": "Intervale",
+      "detail": "Raised on flood-ground farming in the New Haven or Cornwall flats."
+    },
+    {
+      "id": "mill_race",
+      "label": "Mill race",
+      "detail": "Raised within earshot of a wheel on Otter Creek."
+    },
+    {
+      "id": "quarry_cut",
+      "label": "Quarry cut",
+      "detail": "Raised with limestone in the clothes, Bristol or the hills above it."
+    },
+    {
+      "id": "crossing",
+      "label": "Crossing",
+      "detail": "Raised at a landing, a bell, or a toll."
+    },
+    {
+      "id": "survey_desk",
+      "label": "Survey desk",
+      "detail": "Raised around maps, oaths, and the habit of a fair copy."
+    },
+    {
+      "id": "roadside",
+      "label": "Roadside",
+      "detail": "Raised at a pullout, a stand, a pump, a bench that faces traffic."
+    }
+  ],
+  "bonds": [
+    {
+      "id": "harrow_homestead",
+      "label": "Harrow homestead",
+      "detail": "You answer first when the orchard is spoken of."
+    },
+    {
+      "id": "voss_crossing",
+      "label": "Voss crossing",
+      "detail": "You answer first when the landing log is wrong."
+    },
+    {
+      "id": "demerritt_wheel",
+      "label": "Demerritt wheel",
+      "detail": "You answer first when the gate moves."
+    },
+    {
+      "id": "waite_house",
+      "label": "Waite house",
+      "detail": "You answer first when a plate is set for someone who is not coming."
+    },
+    {
+      "id": "pellegrin_cut",
+      "label": "Pellegrin cut",
+      "detail": "You answer first when a name is about to be rained off."
+    },
+    {
+      "id": "lamb_stand",
+      "label": "Lamb stand",
+      "detail": "You answer first when an order is about to be corrected."
+    },
+    {
+      "id": "unbound",
+      "label": "Unbound",
+      "detail": "No house has a first claim. People notice the lack."
+    }
+  ],
+  "ideals": [
+    {
+      "id": "the_record_holds",
+      "label": "The record holds",
+      "detail": "A thing written in the book is the thing that happened, or it must be made so."
+    },
+    {
+      "id": "the_living_first",
+      "label": "The living first",
+      "detail": "A living inconvenience outranks a correct sentence."
+    },
+    {
+      "id": "names_aloud",
+      "label": "Names aloud",
+      "detail": "A name unspoken is a wage unpaid."
+    },
+    {
+      "id": "water_has_its_level",
+      "label": "Water has its level",
+      "detail": "You do not argue with where water wants to go. You argue with who is standing there."
+    }
+  ],
+  "flaws": [
+    {
+      "id": "spares_a_kind_lie",
+      "label": "Spares a kind lie",
+      "detail": "You will not correct a mercy that is also inaccurate."
+    },
+    {
+      "id": "signs_unread",
+      "label": "Signs unread",
+      "detail": "Your hand will sign to end a silence."
+    },
+    {
+      "id": "keeps_a_second_copy",
+      "label": "Keeps a second copy",
+      "detail": "You cannot stand one record. You make another, and then a third problem."
+    },
+    {
+      "id": "cannot_leave_a_gate",
+      "label": "Cannot leave a gate",
+      "detail": "An unlatched gate, a half-told sentence, an open sack: you will finish it even when finishing is the harm."
+    }
+  ]
+}

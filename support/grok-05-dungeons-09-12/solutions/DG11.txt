@@ -1,0 +1,135 @@
+DG11 The Orchard of Black Snow
+Site: Hogback Orchard above Shoreham
+Dependency:
+  ENTER -> dg11.wedges
+  dg11.wedges -> season.north.WINTER
+  season.north.WINTER -> dg11.barrel-read
+  dg11.barrel-read -> season.west.AUTUMN
+  season.west.AUTUMN -> dg11.row-cleared
+  dg11.row-cleared -> season.south.SPRING
+  season.south.SPRING -> season.east.BLACK_SNOW
+  season.east.BLACK_SNOW -> dg11.cleared
+Shortcut sparrow-roof: The cape roof drops into the south plot and skips the Unpicked Row. All four grafts remain mandatory.
+
+== route main
+DG11-R01: move 1,6 → exit west
+DG11-R06: move 8,6 → interact take-wedges → move 16,6 → exit east
+DG11-R01: move 9,1 → exit north
+DG11-R02: move 8,5 → interact dial-north → interact dial-north → interact dial-north → move 9,5 → interact graft-north → move 4,1 → exit down
+DG11-R03: move 9,10 → exit down
+DG11-R04: move 8,4 → interact read-barrel → move 16,6 → exit east
+DG11-R09: move 9,1 → exit north
+DG11-R07: move 8,5 → interact dial-west → interact dial-west → move 9,5 → interact graft-west → move 9,10 → exit south
+DG11-R09: move 9,10 → exit south
+DG11-R10: miniboss begin → miniboss strike shovel → move 8,5 → interact dial-row → interact dial-row → interact dial-row → miniboss strike hammer → interact dial-row → move 11,6 → miniboss strike hammer → move 16,6 → exit east
+DG11-R11: move 9,5 → interact graft-south → move 1,6 → exit west
+DG11-R10: move 9,1 → exit north
+DG11-R09: move 1,6 → exit west
+DG11-R04: move 9,1 → exit up
+DG11-R03: move 9,1 → exit up
+DG11-R02: move 9,10 → exit south
+DG11-R01: move 16,6 → exit east
+DG11-R05: move 8,5 → interact dial-east → interact dial-east → interact dial-east → interact dial-east → move 9,5 → interact graft-east → move 1,6 → exit west
+DG11-R01: move 9,1 → exit north
+DG11-R02: move 4,1 → exit down
+DG11-R03: move 9,10 → exit down
+DG11-R04: move 16,6 → exit east
+DG11-R09: move 16,3 → exit heart
+DG11-R13: move 16,6 → exit east
+DG11-R14: boss begin → move 4,6 → boss set-season N WINTER → boss lock N → move 8,5 → boss set-season E BLACK_SNOW → boss lock E → move 6,8 → boss set-season W AUTUMN → boss lock W → move 12,6 → boss set-season S SPRING → boss lock S → move 9,6 → boss set-season C WINTER → boss strike bow C → boss strike bow C → assert item-count cambium-heart → assert item-count wedge → assert not-item mirror-note → assert not-item kiln-lens → assert not-item marble-seed → assert flag dg11.row-cleared → assert room DG11-R14
+end DG11-R14 items wedgex0, cambium-heartx1
+
+== route shortcut
+DG11-R01: move 1,6 → exit west
+DG11-R06: move 8,6 → interact take-wedges → move 16,6 → exit east
+DG11-R01: move 16,6 → exit east
+DG11-R05: move 8,5 → interact dial-east → interact dial-east → interact dial-east → interact dial-east → move 9,5 → interact graft-east → move 1,6 → exit west
+DG11-R01: move 9,1 → exit north
+DG11-R02: move 8,5 → interact dial-north → interact dial-north → interact dial-north → move 9,5 → interact graft-north → move 4,1 → exit down
+DG11-R03: move 9,10 → exit down
+DG11-R04: move 8,4 → interact read-barrel → move 16,6 → exit east
+DG11-R09: move 9,1 → exit north
+DG11-R07: move 8,5 → interact dial-west → interact dial-west → move 9,5 → interact graft-west → move 9,10 → exit south
+DG11-R09: move 1,6 → exit west
+DG11-R04: move 9,1 → exit up
+DG11-R03: move 9,1 → exit up
+DG11-R02: move 9,10 → exit south
+DG11-R01: move 14,1 → exit roof
+DG11-R15: move 16,6 → exit east
+DG11-R11: move 9,5 → interact graft-south → move 9,1 → exit north
+DG11-R15: move 1,6 → exit west
+DG11-R01: move 9,1 → exit north
+DG11-R02: move 4,1 → exit down
+DG11-R03: move 9,10 → exit down
+DG11-R04: move 16,6 → exit east
+DG11-R09: move 16,3 → exit heart
+DG11-R13: move 16,6 → exit east
+DG11-R14: boss begin → move 4,6 → boss set-season N WINTER → boss lock N → move 8,5 → boss set-season E BLACK_SNOW → boss lock E → move 6,8 → boss set-season W AUTUMN → boss lock W → move 12,6 → boss set-season S SPRING → boss lock S → move 9,6 → boss set-season C WINTER → boss strike bow C → boss strike bow C → assert flag dg11.row-cleared → assert not-visited DG11-R10 → assert item cambium-heart
+end DG11-R14 items wedgex0, cambium-heartx1
+
+== room solution traces
+DG11-R01 main
+  solve: move 4,3 → interact mile-r01 → move 1,6 → exit west
+  fail roof-from-the-wrong-tile: exit roof => NOT_ON_EXIT
+  recover: move 14,1 → exit roof
+DG11-R02 main
+  solve: move 8,5 → interact dial-north → interact dial-north → interact dial-north → move 9,5 → interact graft-north → move 4,1 → exit down
+  fail ungrafted-dial-resets-on-leave: interact dial-north → interact dial-north → interact dial-north → assert season → move 9,10 → exit south => soft
+  recover: move 9,1 → exit north → assert season
+  fail wrong-graft-prunes: interact dial-north → move 9,5 → interact graft-north → assert flag season.north.SUMMER => soft
+  recover: move 9,10 → exit south → move 1,6 → exit west → move 4,8 → interact prune-north → move 16,6 → exit east → move 9,1 → exit north → move 8,5 → interact dial-north → interact dial-north → interact dial-north → move 9,5 → interact graft-north
+DG11-R03 main
+  solve: move 9,10 → exit down
+  fail ladder-wall: move 0,6 => NO_PATH
+  recover: move 9,10 → exit down
+DG11-R04 main
+  solve: move 8,4 → interact read-barrel → move 16,6 → exit east
+  fail barrel-without-lamp: interact read-barrel => FORM_REQUIRED
+  recover: set-form → grant-tool → interact read-barrel
+DG11-R05 main
+  solve: move 8,5 → interact dial-east → interact dial-east → interact dial-east → interact dial-east → move 9,5 → interact graft-east
+  fail god-cannot-turn-a-plot: interact dial-east => FORM_REQUIRED
+  recover: set-form → interact dial-east
+DG11-R06 main
+  solve: move 8,6 → interact take-wedges
+  fail drawer-taken-once: interact take-wedges → interact take-wedges => soft
+  recover: move 16,6 → exit east
+DG11-R07 main
+  solve: move 8,5 → interact dial-west → interact dial-west → move 9,5 → interact graft-west
+  fail graft-without-a-wedge: interact graft-west => NO_WEDGE
+DG11-R08 optional
+  solve: interact fire-clod
+  fail kiln-empty-hands: interact fire-clod => WRONG_OBJECT
+  recover: move 9,1 → exit north
+DG11-R09 main
+  solve: move 9,10 → exit south
+  fail leaf-bridge-shut: move 9,10 => NO_PATH
+  recover: move 4,4 → interact mile-r09
+DG11-R10 main
+  solve: miniboss begin → miniboss strike shovel → move 8,5 → interact dial-row → interact dial-row → interact dial-row → miniboss strike hammer → interact dial-row → move 11,6 → miniboss strike hammer → move 16,6 → exit east
+  fail strike-in-the-wrong-face: miniboss begin → interact dial-row → miniboss strike shovel => WRONG_SEASON
+  recover: interact dial-row → interact dial-row → interact dial-row → interact dial-row → move 9,8 → miniboss strike shovel → move 8,5 → interact dial-row → interact dial-row → interact dial-row → miniboss strike hammer → interact dial-row → move 11,6 → miniboss strike hammer
+DG11-R11 main
+  solve: move 9,5 → interact graft-south
+  fail turning-south-off-spring: interact dial-south → move 9,5 → interact graft-south → assert flag season.south.SPRING => soft
+  recover: move 9,1 → exit north → move 1,6 → exit west → move 1,6 → exit west → move 10,8 → interact prune-south → move 16,6 → exit east → move 14,1 → exit roof → move 16,6 → exit east → move 9,5 → interact graft-south
+DG11-R12 optional
+  solve: move 8,6 → interact read-mirror
+  fail mirror-without-glass: interact read-mirror => TOOL_REQUIRED
+  recover: grant-tool → interact read-mirror
+DG11-R13 main
+  solve: move 16,6 → exit east
+  fail heart-missing-south: exit east => EXIT_CLOSED
+  recover: move 4,5 → interact mile-r13
+DG11-R14 main
+  solve: boss begin → move 4,6 → boss set-season N WINTER → boss lock N → move 8,5 → boss set-season E BLACK_SNOW → boss lock E → move 6,8 → boss set-season W AUTUMN → boss lock W → move 12,6 → boss set-season S SPRING → boss lock S → move 9,6 → boss set-season C WINTER → boss strike bow C → boss strike bow C
+  fail misgraft-resets-the-arm: boss begin → boss set-season N SUMMER → boss lock N => WRONG_SEASON
+  recover: move 4,6 → boss set-season N WINTER → boss lock N → move 8,5 → boss set-season E BLACK_SNOW → boss lock E → move 6,8 → boss set-season W AUTUMN → boss lock W → move 12,6 → boss set-season S SPRING → boss lock S → move 9,6 → boss set-season C WINTER → boss strike bow C → boss strike bow C
+DG11-R15 optional
+  solve: move 3,3 → interact mile-r15 → move 16,6 → exit east
+  fail god-cannot-cross-the-gust: move 16,6 => NO_PATH
+  recover: set-form → move 16,6 → exit east
+DG11-R16 optional
+  solve: move 8,6 → interact loose-seed
+  fail seed-without-bow: interact loose-seed => TOOL_REQUIRED
+  recover: grant-tool → interact loose-seed

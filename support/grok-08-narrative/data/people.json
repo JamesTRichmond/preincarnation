@@ -1,0 +1,2285 @@
+[
+  {
+    "id": "p.samuel_harrow",
+    "name": "Samuel Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Homestead patriarch, fence-walker",
+    "birthYear": 1899,
+    "deathYear": 1963,
+    "deathCause": "A January heart on the orchard road.",
+    "presence": "living",
+    "voice": "Talks as if the listener is a fence post that might still learn. Avoids paper.",
+    "relationshipToEllis": "Knew Ivo as the man who moved water onto Harrow ground. In 1952 he watches Rennet's hands and does not say the name.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "At the boot room",
+        "text": "You can come in. You can also tell me why your hands know which peg is loose. I am not asking the creek. I am asking you."
+      }
+    ]
+  },
+  {
+    "id": "p.lottie_harrow",
+    "name": "Lottie Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Homestead reckoner",
+    "birthYear": 1902,
+    "deathYear": 1974,
+    "deathCause": "Stroke in the sugarhouse doorway.",
+    "presence": "living",
+    "voice": "Counts out loud. Warm only after the number is said.",
+    "relationshipToEllis": "Wants the silt written down so the county cannot take the trees by smiling. Trusts records more than men who return.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Cistern",
+        "text": "That ring in the frost is not dirt from this year. Drink it and you are drinking twenty-seven. Write it and you are making it somebody's."
+      },
+      {
+        "era": "E1",
+        "context": "Kitchen, older",
+        "text": "Fourteen years and the cup is the same cup. If you are new, the cup does not care. I care. Sit and count rows with me or go back to the road."
+      }
+    ]
+  },
+  {
+    "id": "p.maeve_harrow",
+    "name": "Maeve Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Homestead keeper",
+    "birthYear": 1924,
+    "deathYear": 1991,
+    "deathCause": "Pneumonia after a March thaw she worked through.",
+    "presence": "living",
+    "voice": "Short sentences. Garden nouns. Drops her voice instead of raising it. Never greets a returning Ellis as if the face were the news.",
+    "relationshipToEllis": "Saw Ivo at the gate as a girl. In 1952 she tests Rennet. In 1966 her life has already been rebuilt or ruined by what was said about the stake, and Ada is met inside that life, not at its door.",
+    "secondLife": {
+      "fromEra": "E1",
+      "npcId": "p.maeve_harrow",
+      "note": "The second-life scenes are the orchard chain stage st.orchard.e1, three full graphs, not a swapped greeting."
+    },
+    "lines": [
+      {
+        "era": "E0",
+        "context": "South block",
+        "text": "Don't tell me the creek did this by itself. Creeks don't carry iron stakes. Men do. If you are only a rodman, say so and hold the rod still."
+      },
+      {
+        "era": "E1",
+        "context": "If the truth was told",
+        "text": "You don't get to be a stranger on this row. I spent fourteen years grafting under my own name because someone finally said the silt was ours. Put the knife in the right hand or don't pick it up."
+      },
+      {
+        "era": "E1",
+        "context": "If the stake was hidden",
+        "text": "The county has been in my trees since you were somebody else, or since nobody was. I don't know your face. I know the office in your pocket. Stay at the gate."
+      },
+      {
+        "era": "E2",
+        "context": "Cider",
+        "text": "Nell can inherit a lawsuit or an orchard. I am too tired to pretend those are the same will. Choose with me, not for me."
+      }
+    ]
+  },
+  {
+    "id": "p.june_harrow",
+    "name": "June Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Maeve's younger sister, dead before the playable seasons",
+    "birthYear": 1927,
+    "deathYear": 1949,
+    "deathCause": "Infection after a cut from grafting, ignored until it was not ignorable.",
+    "presence": "memory",
+    "voice": "Only in letters and in Maeve's quotations. Bright, then suddenly practical.",
+    "relationshipToEllis": "Ivo wrote toward the Harrow girls as if they were the future of the intervale. June did not live to meet Rennet. Her tree remains.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Letter, 1948, unsent draft kept by Sylvia Keene",
+        "text": "Maeve, if the graft fails, fail it in public. Do not bury a tree and call it weather. I will not be here to argue this twice."
+      }
+    ]
+  },
+  {
+    "id": "p.nell_harrow",
+    "name": "Nell Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Maeve's daughter, later orchard keeper",
+    "birthYear": 1946,
+    "deathYear": 2019,
+    "deathCause": "Cancer, treated in Burlington and died at the homestead.",
+    "presence": "living",
+    "voice": "More paper than her mother, less faith in it. Dry humor used as a lid.",
+    "relationshipToEllis": "Too young in 1952 to be a partner. From 1966 she watches Ellis change the terms of her inheritance. She is not a reincarnation believer. She is an accountant of consequences.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Orchard ladder",
+        "text": "Mother talks like the row owes her a verdict. I talk like the row owes taxes. If you are here to be mysterious, the ladder only holds two."
+      },
+      {
+        "era": "E3",
+        "context": "After Maeve's death",
+        "text": "There are two maps in the attic and one of them is a kindness. I am not asking you which is true. I am asking which one you are willing to be hated for."
+      },
+      {
+        "era": "E4",
+        "context": "Right of way",
+        "text": "Carl's cows did not read the flood. They read the grass. That is not the same as a right."
+      }
+    ]
+  },
+  {
+    "id": "p.asa_harrow",
+    "name": "Asa Harrow",
+    "lineageId": "lin.harrow",
+    "role": "Nell's son, last Harrow on the intervale",
+    "birthYear": 1971,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Quiet, specific, tired of being the end of a sentence his grandmother started.",
+    "relationshipToEllis": "Inherits a story about a person who wears different faces and always ends up at the third row. In 2022 he asks Rowan to stop.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "As a young man at the funeral bake",
+        "text": "Everyone is telling a flood story. I was born in a dry year. If you have a fact, put it where I can reach it without standing in a myth."
+      },
+      {
+        "era": "E5",
+        "context": "South block",
+        "text": "I can graft. I am good at it. I am asking you, of all people, whether good at it is a reason to keep doing it to a row that already has too many lives in it."
+      }
+    ]
+  },
+  {
+    "id": "p.peter_voss",
+    "name": "Peter Voss",
+    "lineageId": "lin.voss",
+    "role": "Cal's father, landing man",
+    "birthYear": 1899,
+    "deathYear": 1948,
+    "deathCause": "Went through the ice east of the bridge channel, Vermont side, in a thaw he had called safe.",
+    "presence": "memory",
+    "voice": "Quoted by Ida and Cal. Confident about ice. Wrong once.",
+    "relationshipToEllis": "Ivo and Peter argued about the gate while Peter still lived. Ellis inherits the argument's echo, not Peter's friendship.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Cal from a 1947 landing note",
+        "text": "If the ice sings, it is talking, not warning. I have crossed on worse. Do not write me down as careful."
+      }
+    ]
+  },
+  {
+    "id": "p.ida_voss",
+    "name": "Ida Voss",
+    "lineageId": "lin.voss",
+    "role": "Landing kitchen, keeper of who eats",
+    "birthYear": 1906,
+    "deathYear": 1975,
+    "deathCause": "Died in the chair by the log book, pen in hand, mid-entry.",
+    "presence": "living",
+    "voice": "Feeds people while refusing their excuses. Names are ingredients.",
+    "relationshipToEllis": "Will feed Rennet and later Ada. Judges them by whether they leave the log worse.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Landing kitchen",
+        "text": "You can have the soup. You cannot have a story that makes my son look like a fool for seeing cracks. Eat, then pick which son you are willing to cost."
+      },
+      {
+        "era": "E1",
+        "context": "Same kitchen, stiffer hands",
+        "text": "Fourteen years of tolls and the bowl is chipped in the same place. If Bram is not in that chair, do not fill it with talk. Say his name or take the bowl outside."
+      }
+    ]
+  },
+  {
+    "id": "p.bram_voss",
+    "name": "Bram Voss",
+    "lineageId": "lin.voss",
+    "role": "Pier-watcher, Cal's older brother",
+    "birthYear": 1928,
+    "deathYear": 1979,
+    "deathCause": "Default: heart in his truck on the Addison flats, pier long since jacketed.",
+    "deathOverrides": [
+      {
+        "ifFlag": "flags.bridge.testimony_withheld",
+        "deathYear": 1965,
+        "cause": "Fell from the unjacketed west-approach repair on the Vermont side in the last season before Ada woke."
+      }
+    ],
+    "presence": "living",
+    "voice": "Pencil behind the ear. Speaks in measurements, then in anger when measurements are treated as moods.",
+    "relationshipToEllis": "In 1952 he shows Rennet the ticks because he thinks a rodman might still be honest. He does not plan to become a ghost in somebody else's second life.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Abutment",
+        "text": "I didn't paint a picture. I marked where the concrete powders under the thumb. If you call that a feeling, give me your thumb."
+      },
+      {
+        "era": "E1",
+        "context": "If he lived",
+        "text": "They jacketed it. I am alive and I am not grateful to a stranger. If you know where the ticks were, you are not a stranger, and that is worse."
+      }
+    ]
+  },
+  {
+    "id": "p.cal_voss",
+    "name": "Cal Voss",
+    "lineageId": "lin.voss",
+    "role": "Crossing keeper at Chimney Point",
+    "birthYear": 1931,
+    "deathYear": 2004,
+    "deathCause": "Heart, standing on the Vermont abutment, looking at the span he no longer trusted and still opened.",
+    "presence": "living",
+    "voice": "Even, logistical, then suddenly bare. Does not do reunions. Does the work in front of him and makes the work accuse you.",
+    "relationshipToEllis": "The crossing's living conscience. In the second life he is not the young man who asked for a delay. He is the man the delay made, or the man the testimony made. Both are heavier.",
+    "secondLife": {
+      "fromEra": "E1",
+      "npcId": "p.cal_voss",
+      "note": "Substantial scenes are chain stage st.bridge.e1. Grief, credit, and the demand that a name be said are different scenes."
+    },
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Landing log",
+        "text": "Hay's not in. If you testify this week, we become the county's cracked bridge and nobody crosses for the cut. If you don't, Bram will go up there himself. Tell me which loss you can carry, then sign nothing until you mean it."
+      },
+      {
+        "era": "E1",
+        "context": "If Bram fell",
+        "text": "Don't introduce yourself. Stand on the crack and say Bram Voss. After that you can be whoever you are. Before that you are a person wasting my year."
+      },
+      {
+        "era": "E1",
+        "context": "If the pier was jacketed",
+        "text": "I lost a season of fares and I kept a brother. I do not want your new face to come collect thanks. If you remember the pencil, say what the jacket covered, exactly, or get off my abutment."
+      },
+      {
+        "era": "E3",
+        "context": "Plaque draft",
+        "text": "They took the tolls off and left the lying to a plaque. I will not stand in a suit while they forget the painter. Fix the names or unveil it to an empty rail."
+      }
+    ]
+  },
+  {
+    "id": "p.lena_voss",
+    "name": "Lena Voss",
+    "lineageId": "lin.voss",
+    "role": "Cal's daughter, later keeper of the log",
+    "birthYear": 1956,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Administrative and tender in the same sentence. Protects the log from poetry.",
+    "relationshipToEllis": "Grows up around the question of whether Ellis is a recurring problem. By 1994 she treats the recurrence as a management issue.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Apple crate",
+        "text": "I can log a crate. I cannot log a haunting. If this bill of sale is a trick, say trick. If it is a sale, say who gets paid."
+      },
+      {
+        "era": "E4",
+        "context": "Before the closure",
+        "text": "My father died looking at this span. If you know something about the piers, do not save it for a dramatic year. This is the dull year. Use it."
+      },
+      {
+        "era": "E5",
+        "context": "New bridge",
+        "text": "It is a different bridge and the same ground. I will not pretend those are one fact. Read what we put on the plaque, then tell me if the promise was the span or the sentence."
+      }
+    ]
+  },
+  {
+    "id": "p.noah_voss",
+    "name": "Noah Voss",
+    "lineageId": "lin.voss",
+    "role": "Lena's son, landing hand",
+    "birthYear": 1988,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Modern, unsentimental, loyal to the log because he has seen the alternative.",
+    "relationshipToEllis": "Knows Ellis only as a story his mother refuses to tell cleanly. In 2022 he wants a job, not a myth, and still asks the right question.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Age twenty at the rail",
+        "text": "People say the bridge is fine because they need it to be fine. I pump gas. I hear the need. I do not hear the concrete."
+      },
+      {
+        "era": "E5",
+        "context": "New span",
+        "text": "If your name is Rowan today, fine. The log doesn't have a column for who you were. It has a column for what you warned. There's a blank. Look at it."
+      }
+    ]
+  },
+  {
+    "id": "p.irene_voss",
+    "name": "Irene Voss",
+    "lineageId": "lin.voss",
+    "role": "Cousin from the New York shore who only appears on the Vermont landing",
+    "birthYear": 1940,
+    "deathYear": 2017,
+    "deathCause": "Stroke in Port Henry. Her scenes are only ever played in Addison.",
+    "presence": "living",
+    "voice": "Polite, braced, unwilling to let a state line own a dead man.",
+    "relationshipToEllis": "Does not know Ellis. She knows the landing has been keeping her uncle's death as local property.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Chimney Point, Vermont side",
+        "text": "I didn't come to take your bridge. I came to ask whether Peter can be named where his other people stand. You can refuse. Do it in a whole sentence."
+      }
+    ]
+  },
+  {
+    "id": "p.harris_demerritt",
+    "name": "Harris Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Retired millwright, Ansel's father",
+    "birthYear": 1886,
+    "deathYear": 1953,
+    "deathCause": "Dies in the gap after the 1952 season, damp in the lungs.",
+    "presence": "living",
+    "voice": "Nineteenth-century workmanship spoken in the present tense. Contempt for explanations.",
+    "relationshipToEllis": "He remembers Ivo's hands on the wheel. Rennet's hands upset him more than Rennet's face.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Beside the pin",
+        "text": "Left hand. Always the left. If you reach with the right you are a tourist in my son's mill. Ivo reached left and too late. Don't you show off by reaching at all."
+      }
+    ]
+  },
+  {
+    "id": "p.ansel_demerritt",
+    "name": "Ansel Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Millwright of the lower gate",
+    "birthYear": 1910,
+    "deathYear": 1978,
+    "deathCause": "The damp. He dies in the gap before 1980, after the second-life season.",
+    "presence": "living",
+    "voice": "Proud, exact, capable of fury without volume. Talks to machines as if they were witnesses.",
+    "relationshipToEllis": "The millwright. In 1952 he asks Rennet to keep counsel or to betray the wheel to the meadow. In 1966 he is not the same employer: either he has rebuilt the gate and barred Ellis from it, or he is protecting a dying lie and calling Ada by Ivo's name.",
+    "secondLife": {
+      "fromEra": "E1",
+      "npcId": "p.ansel_demerritt",
+      "note": "Substantial scenes are the standalone quest q.the_second_gate, three structurally different scenes."
+    },
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Night wheel",
+        "text": "Downstream will smell it in the milk by morning. You can go tell March and lose me this wheel's reputation, or you can stand here and be useful. Those are the choices. Don't invent a third where everybody is rinsed clean."
+      },
+      {
+        "era": "E1",
+        "context": "If the meadow was told",
+        "text": "I repinned it. More water goes by. I did that because you opened your mouth. You don't get to touch the new pin with a new set of hands and call it help. Watch, or get off the race."
+      },
+      {
+        "era": "E1",
+        "context": "If counsel was kept",
+        "text": "Ivo— damn it. You. The new one. The lawsuit has my name and the farmers' anger and none of the truth we kept. If you came to be forgiven, the wheel doesn't do that. Put your left hand in your pocket and listen."
+      }
+    ]
+  },
+  {
+    "id": "p.clarice_demerritt",
+    "name": "Clarice Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Wage-book keeper",
+    "birthYear": 1915,
+    "deathYear": 1988,
+    "deathCause": "Died the winter after a thaw warped the wage book a second time.",
+    "presence": "living",
+    "voice": "Numbers first. Affection as a correction.",
+    "relationshipToEllis": "Knows the night crew's hours are the moral fact. She wants Ellis to choose which ink survives.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Wage book",
+        "text": "If you run the wheel at night, I have to write the night. If you pretend we didn't, I have to become a liar with neat handwriting. I am not neat enough for that."
+      },
+      {
+        "era": "E2",
+        "context": "Wet book",
+        "text": "One side will smear. Night crew or day crew. You don't get to dry the binding and call that fairness. Put your hand on a page."
+      }
+    ]
+  },
+  {
+    "id": "p.eli_demerritt",
+    "name": "Eli Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Ansel's son, wheel hand",
+    "birthYear": 1936,
+    "deathYear": 1968,
+    "deathCause": "Default: caught by the wheel in a night run after Ansel's counsel held.",
+    "deathOverrides": [
+      {
+        "ifFlag": "flags.mill.downstream_told",
+        "deathYear": 2002,
+        "cause": "Left the mill in 1953. Died of a plain old age in a Waltham house, not in the race."
+      }
+    ],
+    "presence": "living",
+    "voice": "Younger than the work. Wants to be loyal and also wants to sleep.",
+    "relationshipToEllis": "Ellis's choice in 1952 decides whether Eli's life stays on the wheel. Ellis does not get to call that destiny. It is a schedule.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Race walk",
+        "text": "Father says the night run is how we keep the contract. I say the night run is how I forget which morning is mine. If you tell the meadow, say my name right so I can pack like a man and not like a scandal."
+      },
+      {
+        "era": "E1",
+        "context": "If he is still at the wheel",
+        "text": "I'm still here. That's the whole speech. You didn't tell them. I didn't leave. We'll both pretend the milk tastes like milk."
+      },
+      {
+        "era": "E2",
+        "context": "If he lives in Waltham",
+        "text": "I shoe horses' neighbors and I fix pumps. I don't dream the pin. If you came for absolution, Ruth has the wheel now. I have a porch. Sit or don't."
+      }
+    ]
+  },
+  {
+    "id": "p.ruth_demerritt",
+    "name": "Ruth Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Niece, apprentice, then millwright",
+    "birthYear": 1948,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Cleaner anger than Ansel. She inherited a machine and a lawsuit and refuses to inherit the silence.",
+    "relationshipToEllis": "Child in 1952. By 1980 she is the millwright Ellis must deal with, and she has opinions about Ivo that she will not dress up as fate.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Apprentice",
+        "text": "Uncle lets you stand too close. I count boards. His count and the downstream count are not having a misunderstanding. They are having a theft."
+      },
+      {
+        "era": "E2",
+        "context": "As millwright",
+        "text": "The eel passage costs me head. The closed gate costs the creek a generation. I am not Ansel and I am not your penance. Choose a loss you will say out loud."
+      },
+      {
+        "era": "E5",
+        "context": "Retired from the race, not from the opinion",
+        "text": "I kept the pin in a drawer. Not a relic. Evidence. If your last body wants to touch it, the answer is still no."
+      }
+    ]
+  },
+  {
+    "id": "p.tessa_demerritt",
+    "name": "Tessa Demerritt",
+    "lineageId": "lin.demerritt",
+    "role": "Ruth's daughter, records clerk in Middlebury",
+    "birthYear": 1976,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Legal precision without courtroom theater. Hates the word legacy.",
+    "relationshipToEllis": "Sees Ellis as a recurring signature problem in the land records.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Survey room, visiting",
+        "text": "If you sign for a dead surveyor, you are not being poetic. You are making a record I may have to defend to a person with a flooded basement."
+      },
+      {
+        "era": "E5",
+        "context": "Same",
+        "text": "Mother kept the pin. I keep the docket. Bring me a fact that survives Irene or don't bring me the family story."
+      }
+    ]
+  },
+  {
+    "id": "p.ivo_perch",
+    "name": "Ivo Perch",
+    "lineageId": "lin.perch",
+    "role": "County surveyor, Ellis's body in the wound year",
+    "birthYear": 1895,
+    "deathYear": 1938,
+    "deathCause": "Died of a chest infection the winter after he certified the gate and opened it late. Ellis returns fourteen years later, in 1952.",
+    "presence": "memory",
+    "voice": "The flood book's hand. Formal, then the margin breaks the form.",
+    "relationshipToEllis": "Not an ancestor standing beside Ellis. The prior wearing of the will. The wound is his act and Ellis's.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Certification line",
+        "text": "The gate remained shut. The lower works were preserved. Attested this day, Ivo Perch, surveyor."
+      },
+      {
+        "era": null,
+        "context": "Margin, same page, pencil",
+        "text": "Opened. Late. Both mercies missed. Do not fair-copy this into courage."
+      }
+    ]
+  },
+  {
+    "id": "p.helen_perch",
+    "name": "Helen Perch",
+    "lineageId": "lin.perch",
+    "role": "Ivo's sister",
+    "birthYear": 1898,
+    "deathYear": 1961,
+    "deathCause": "Died in the gap before 1966.",
+    "presence": "living",
+    "voice": "Social, frightened of mess, capable of a true sentence when cornered.",
+    "relationshipToEllis": "A margin names her as the person who told Ivo to keep the gate shut. She meets Rennet and recognizes nothing and everything.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Her parlor in Middlebury",
+        "text": "If you came to inherit his tools, they were sold. If you came to inherit his mistake, get out of my doorway before Gordon makes a sermon of you."
+      }
+    ]
+  },
+  {
+    "id": "p.gordon_perch",
+    "name": "Gordon Perch",
+    "lineageId": "lin.perch",
+    "role": "Helen's son, town skeptic",
+    "birthYear": 1921,
+    "deathYear": 1989,
+    "deathCause": "Died before the oath year.",
+    "presence": "living",
+    "voice": "Sneering only when frightened. He prefers fraud to haunting because fraud has a procedure.",
+    "relationshipToEllis": "Treats each new body that knows Ivo's margin as a con. He is sometimes right about the harm and wrong about the mechanism.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Survey room door",
+        "text": "You learned a story at some kitchen table. That doesn't make you my uncle. It makes you a man with too much time and somebody else's grief."
+      },
+      {
+        "era": "E2",
+        "context": "Older",
+        "text": "A second face knowing the same pencil note is not proof of a soul. It is proof this county repeats itself. Stop helping it."
+      }
+    ]
+  },
+  {
+    "id": "p.mina_perch",
+    "name": "Mina Perch",
+    "lineageId": "lin.perch",
+    "role": "Gordon's daughter, would-be archivist",
+    "birthYear": 1947,
+    "deathYear": 2005,
+    "deathCause": "Died before the bridge-closure season.",
+    "presence": "living",
+    "voice": "Hungry for the public record. Not cruel. Incomplete.",
+    "relationshipToEllis": "Wants the flood book in an archive where it can be studied. Ellis may be the study's obstruction.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Survey room",
+        "text": "I am not asking to own it. I am asking to stop it living in a drawer where one deputy can neaten it. You, whoever you are this decade, are not a preservation method."
+      },
+      {
+        "era": "E3",
+        "context": "Same argument, older",
+        "text": "If the college won't have it, the town clerk will. A book that only a haunted surveyor can touch is not a record. It is a relic, and relics rot in private."
+      }
+    ]
+  },
+  {
+    "id": "p.owen_perch",
+    "name": "Owen Perch",
+    "lineageId": "lin.perch",
+    "role": "Mina's son, refuser of the office",
+    "birthYear": 1973,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Plain. He practiced refusal until it became a craft.",
+    "relationshipToEllis": "The living Perch who will not be surveyor. In 2022 he brings Ellis the unfinished sentence and does not want it finished for the family's sake.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Doorway",
+        "text": "Don't offer me the key. I have seen what the key does to basements. I work at the feed store. That is a complete life."
+      },
+      {
+        "era": "E5",
+        "context": "With the book",
+        "text": "Write both sentences or write neither. If you write one, you will feel clean, and the meadow will still be wet. I didn't bring this so you could feel clean."
+      }
+    ]
+  },
+  {
+    "id": "p.marco_pellegrin",
+    "name": "Marco Pellegrin",
+    "lineageId": "lin.pellegrin",
+    "role": "Lead cutter",
+    "birthYear": 1908,
+    "deathYear": 1969,
+    "deathCause": "Lungs, the dust he could name and not escape.",
+    "presence": "living",
+    "voice": "Italian-American Vermont English, unaccented in spelling, musical in pace. Chalk under the nail.",
+    "relationshipToEllis": "Lets Rennet read the overhang if Rennet will say whether names belong to supper or to the tax man.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Under the overhang",
+        "text": "Rain takes it by evening. A monument in the village has donors. Donors did not drill. Read now, and then decide if your mouth is safer than your book."
+      }
+    ]
+  },
+  {
+    "id": "p.elena_pellegrin",
+    "name": "Elena Pellegrin",
+    "lineageId": "lin.pellegrin",
+    "role": "Shack keeper and grace-sayer",
+    "birthYear": 1912,
+    "deathYear": 1984,
+    "deathCause": "Died between the fair-copy year and the oath year.",
+    "presence": "living",
+    "voice": "Host's authority. She can put a wrong name in a grace without blinking.",
+    "relationshipToEllis": "Tests Ellis in public, at a table, where flinching is data.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Supper hall",
+        "text": "We thank the work of men who are not on the monument, and of one who never drew a wage. If you know which is which, your face will tell me before your manners do."
+      },
+      {
+        "era": "E1",
+        "context": "The unrealized name",
+        "text": "Scrub it and you teach the cut that jokes are the only ghosts we permit. Leave it and you teach the powder man to fear chalk. I know which lesson I want. I am asking what you can live beside."
+      }
+    ]
+  },
+  {
+    "id": "p.vito_pellegrin",
+    "name": "Vito Pellegrin",
+    "lineageId": "lin.pellegrin",
+    "role": "Powder man",
+    "birthYear": 1934,
+    "deathYear": 1998,
+    "deathCause": "Not an explosion. A long cough and a short winter.",
+    "presence": "living",
+    "voice": "Safety talk that is also theology. Hates ambiguous marks near powder.",
+    "relationshipToEllis": "The key in a dead body's coat is a safety problem and a confession.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Powder shack",
+        "text": "A name that never worked a shift is a story. A story on the wall by the powder is a way for a tired man to hesitate. Hesitation is how you lose a hand. I am not being poetic."
+      },
+      {
+        "era": "E2",
+        "context": "Dust counts",
+        "text": "Post the paper where the wives can see it, or hand it to us and we will lose it on purpose. Those are different sins. Pick."
+      }
+    ]
+  },
+  {
+    "id": "p.gina_pellegrin",
+    "name": "Gina Pellegrin",
+    "lineageId": "lin.pellegrin",
+    "role": "Name-chalker, later keeper of the closed cut",
+    "birthYear": 1958,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Fewer speeches than Elena. The chalk is the speech.",
+    "relationshipToEllis": "In 1980 she offers Louis's body a wage for Lou's unworked week. In 2022 she stops chalking and asks if speech is enough.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Cut",
+        "text": "The envelope has your week's name on it. You didn't drill. The man who would have drilled isn't here because you are. I won't pretend that's payroll. I am asking you not to cash a ghost."
+      },
+      {
+        "era": "E3",
+        "context": "Monument list",
+        "text": "Twelve names. I have more than twelve in the jar. If you choose, you don't get to say the stone chose."
+      },
+      {
+        "era": "E5",
+        "context": "Closed cut",
+        "text": "I didn't bring chalk. Say them or don't. A name that works a shift only in a mouth is still doing something. I want to know if you believe that when nobody is cutting stone."
+      }
+    ]
+  },
+  {
+    "id": "p.leo_pellegrin",
+    "name": "Leo Pellegrin",
+    "lineageId": "lin.pellegrin",
+    "role": "Last cutter, who leaves",
+    "birthYear": 1982,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Done. Not cruel about it.",
+    "relationshipToEllis": "Leaves the county's stone before 2022. His absence is the point of Gina's last scene. He can be met in 2008.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Cut road",
+        "text": "I'm going to a shop in Rutland County next month. Don't make me a symbol on my way out. The dust is the reason. The names can survive me. That's supposed to be good news."
+      }
+    ]
+  },
+  {
+    "id": "p.henri_boucher",
+    "name": "Henri Boucher",
+    "lineageId": "lin.boucher",
+    "role": "Paymaster",
+    "birthYear": 1894,
+    "deathYear": 1957,
+    "deathCause": "Died in the gap after 1952.",
+    "presence": "living",
+    "voice": "French-Canadian Vermont, lightly. Envelopes as a moral system.",
+    "relationshipToEllis": "Suspects the survey office of turning wages into folklore.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Pay table",
+        "text": "If a man worked, the envelope is fat. If you put a name in the book who did not work, you are not remembering him. You are hiring a shadow with my ink."
+      }
+    ]
+  },
+  {
+    "id": "p.celine_boucher",
+    "name": "Céline Boucher",
+    "lineageId": "lin.boucher",
+    "role": "Widow who keeps the extra envelopes",
+    "birthYear": 1922,
+    "deathYear": 2006,
+    "deathCause": "Died before the closure season.",
+    "presence": "living",
+    "voice": "Soft volume, hard categories. She knows memorial and fraud share a table.",
+    "relationshipToEllis": "Asks Ellis to pick a category and live in it.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Starksboro porch",
+        "text": "These envelopes are for men the flood took before they could be hired, and for one week last month that nobody worked. I will not mix them in front of you and smile. Which pile are you here to defend?"
+      }
+    ]
+  },
+  {
+    "id": "p.marc_boucher",
+    "name": "Marc Boucher",
+    "lineageId": "lin.boucher",
+    "role": "Envelope writer",
+    "birthYear": 1949,
+    "deathYear": 2012,
+    "deathCause": "Died in the gap between the closure and the new bridge's long aftermath, before 2022.",
+    "presence": "living",
+    "voice": "Handwriting is his conscience. He hates being told to write a blank.",
+    "relationshipToEllis": "A peer in the middle eras. He wants the drill log and the chalk to agree because disagreement ruins his hand.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Porch",
+        "text": "I can write a name beautiful. Beautiful is not the same as owed. Tell my mother which is which or take the pen and be the liar yourself."
+      },
+      {
+        "era": "E3",
+        "context": "Drill log",
+        "text": "Paper says he drilled Thursday. Chalk says he was buried Wednesday. I will not average those into a Friday."
+      }
+    ]
+  },
+  {
+    "id": "p.paulette_boucher",
+    "name": "Paulette Boucher",
+    "lineageId": "lin.boucher",
+    "role": "Refuser of blank envelopes",
+    "birthYear": 1977,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Short. Modern. Unwilling to be the family's calligraphy.",
+    "relationshipToEllis": "In the monument year she is the one who says the state does not get a soft list.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Supper hall",
+        "text": "I won't write blanks so the selectboard can feel generous. If a name is missing, the missing is the truth. You want mercy, build a second stone. Don't sand this one."
+      },
+      {
+        "era": "E5",
+        "context": "Phone call from Starksboro, scene still at the closed cut",
+        "text": "I kept the jar. I didn't keep the job. If you need a witness that the envelopes stopped, I am the witness. I am not coming back to sing."
+      }
+    ]
+  },
+  {
+    "id": "p.doris_lamb",
+    "name": "Doris Lamb",
+    "lineageId": "lin.lamb",
+    "role": "Founder of Lamb's Creemee",
+    "birthYear": 1926,
+    "deathYear": 1990,
+    "deathCause": "Died the year before Maeve, heart at the machine.",
+    "presence": "living",
+    "voice": "Customer voice and private voice are different countries. The order book is the border.",
+    "relationshipToEllis": "In 1966 she hears a flavor order that belongs to a dead surveyor and a displaced life. She does not want a legend. She wants a spelling.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Window",
+        "text": "Maple-walnut in June is a silly order. I wrote it because the person said it like a debt. If I correct the name to something we know, I am tidying a stranger. If I don't, I am keeping a ghost in the book. Speak slower."
+      }
+    ]
+  },
+  {
+    "id": "p.hugh_lamb",
+    "name": "Hugh Lamb",
+    "lineageId": "lin.lamb",
+    "role": "Machine keeper",
+    "birthYear": 1924,
+    "deathYear": 1983,
+    "deathCause": "Heart. The machine outlived him.",
+    "presence": "living",
+    "voice": "Grease and courtesy. He believes a till is a diary nobody should publish.",
+    "relationshipToEllis": "The 1938 coin wrapper is his secret and his fear.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Behind the machine",
+        "text": "Don't bless the machine. Fix the drip or leave it. Blessing is how people get out of wiping."
+      },
+      {
+        "era": "E2",
+        "context": "Till",
+        "text": "That wrapper says a year before you were born, depending who you are. Open it and you are confessing for a dead man. Leave it and I die with a rattle in the drawer. I know what I prefer. I am not sure I get the vote."
+      }
+    ]
+  },
+  {
+    "id": "p.pearl_lamb",
+    "name": "Pearl Lamb",
+    "lineageId": "lin.lamb",
+    "role": "Keeper of the stand after Doris",
+    "birthYear": 1950,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Fierce about the word creemee. Practical about cream.",
+    "relationshipToEllis": "The middle and late chain. She sees Christian's hands show up in Chris and does not make a joke of it.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Recipe",
+        "text": "The dairy wants a label. The woman in Waltham wants her mother's pot acknowledged. I want a summer that pays the electric. If you pick the romantic one, stay and scrub."
+      },
+      {
+        "era": "E3",
+        "context": "Definition card",
+        "text": "Write what a creemee is. If you write 'product,' Randy wins and the word leaves the pullout. If you write 'place,' we stay poor and specific."
+      },
+      {
+        "era": "E4",
+        "context": "Hands",
+        "text": "Christian Dobbs is how you hold that wrench. Chris is what the license says. I don't need the theology. I need to know if the wrench is going to be here in October when the traffic isn't."
+      }
+    ]
+  },
+  {
+    "id": "p.randy_lamb",
+    "name": "Randy Lamb",
+    "lineageId": "lin.lamb",
+    "role": "Pearl's son, expansionist",
+    "birthYear": 1973,
+    "deathYear": 2015,
+    "deathCause": "Heart, winter, not on the road. Died before the 2022 season.",
+    "presence": "living",
+    "voice": "Ambition spoken as common sense. He is not a villain. He is done with pullouts.",
+    "relationshipToEllis": "Wants Ellis to define the word in a way that travels.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Stand",
+        "text": "A truck is not a betrayal. A truck is a way the flavor doesn't die when the bridge does something stupid. Write the card like you have lived through a closure. You look like you have lived through several."
+      },
+      {
+        "era": "E4",
+        "context": "Last argument",
+        "text": "Warn them and you spook August. Don't warn them and you are a person who knew. I sell cones. I still know which one costs more."
+      }
+    ]
+  },
+  {
+    "id": "p.ivy_lamb",
+    "name": "Ivy Lamb",
+    "lineageId": "lin.lamb",
+    "role": "Pearl's granddaughter, last decision at the pullout",
+    "birthYear": 1996,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Unsentimental, local, allergic to vintage branding.",
+    "relationshipToEllis": "In 2008 she is a child with one real line. In 2022 she holds what 'last' means.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Child at the window",
+        "text": "If the bridge closes, do we still make maple for nobody? I can eat the nobody ones."
+      },
+      {
+        "era": "E5",
+        "context": "Empty pullout",
+        "text": "Last can mean the book is in my kitchen, or it can mean I open this window one afternoon and refuse to call it a business. Don't say brand. The word I have is enough or it isn't."
+      }
+    ]
+  },
+  {
+    "id": "p.esther_waite",
+    "name": "Esther Waite",
+    "lineageId": "lin.waite",
+    "role": "First keeper of the plates",
+    "birthYear": 1900,
+    "deathYear": 1970,
+    "deathCause": "Died in the gap before 1980, after seeing two displacements.",
+    "presence": "living",
+    "voice": "Hospitable, exact, unsentimental about ghosts. A plate is a practice.",
+    "relationshipToEllis": "She is not worshiping Ellis. She is refusing to let the displaced go unrecorded by a house, because the office will record them wrong.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Table",
+        "text": "Cress had plans this morning. You have plans now. The plate is not a trick. Eat, and I will stop setting it tomorrow. Leave it, and I will set it until I die. Those are different kinds of kindness."
+      },
+      {
+        "era": "E1",
+        "context": "Second plate",
+        "text": "Tell me one thing Adah wanted that you will not do. Not a pretty want. A small, inconvenient, real one. I will write it. Then we can all be rude in the correct direction."
+      }
+    ]
+  },
+  {
+    "id": "p.harold_waite",
+    "name": "Harold Waite",
+    "lineageId": "lin.waite",
+    "role": "Clock keeper",
+    "birthYear": 1896,
+    "deathYear": 1962,
+    "deathCause": "Died in the gap before the second-life season's later years; alive in 1952, dead before 1966.",
+    "presence": "living",
+    "voice": "Almost no adjectives. Time is a tool he refuses to let run.",
+    "relationshipToEllis": "Stops the clock at the minute before the waking. He does not explain more than once.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Hall clock",
+        "text": "I wind it to the minute and I stop. If you start it, you are saying the morning continued. It didn't. Not for both of you."
+      }
+    ]
+  },
+  {
+    "id": "p.miriam_waite",
+    "name": "Miriam Waite",
+    "lineageId": "lin.waite",
+    "role": "Daughter, long keeper of the household",
+    "birthYear": 1928,
+    "deathYear": 2009,
+    "deathCause": "Dies the year after the 2008 season, having asked for the book to stay out of the office.",
+    "presence": "living",
+    "voice": "Anger held at room temperature. She loves the practice and hates the necessity.",
+    "relationshipToEllis": "The household's spine across five seasons. She never welcomes Ellis. She deals with the fact of the displacement.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Door",
+        "text": "Mother will be kind. I will be accurate. You are in a life that was going somewhere. If you eat her food, do not call it a homecoming."
+      },
+      {
+        "era": "E2",
+        "context": "Clock",
+        "text": "Joel is old enough to wind it. I am old enough to stop pretending my hand is the only honest one. Don't help. Witness."
+      },
+      {
+        "era": "E4",
+        "context": "Failing",
+        "text": "Take the book out and you will make them measurements. Leave it and my son inherits a strange housekeeping. I know which one I can forgive."
+      }
+    ]
+  },
+  {
+    "id": "p.clara_waite",
+    "name": "Clara Waite",
+    "lineageId": "lin.waite",
+    "role": "Miriam's sister, dissenter",
+    "birthYear": 1931,
+    "deathYear": 1988,
+    "deathCause": "Died before the oath year.",
+    "presence": "living",
+    "voice": "The one who says when a sentence is pretty. Necessary and exhausting.",
+    "relationshipToEllis": "Catches the pretty lie about Adah. She wants the plates stopped, not because she is cruel, but because she thinks memory is becoming a diet.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Kitchen",
+        "text": "A plate for a living person who changed is not grief. It is a refusal to let them become someone. I live here too."
+      },
+      {
+        "era": "E1",
+        "context": "After a pretty want",
+        "text": "That want is from a book you read, not from Adah. Adah wanted the school stove fixed and nobody to thank her. Sit down and try again, or stop using our ink."
+      }
+    ]
+  },
+  {
+    "id": "p.joel_waite",
+    "name": "Joel Waite",
+    "lineageId": "lin.waite",
+    "role": "Miriam's son, later keeper",
+    "birthYear": 1952,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Born the year of the first return. Speaks as a man who grew up with an extra place setting and resents its wisdom.",
+    "relationshipToEllis": "Peer and victim of the practice. He decides the clock. He inherits the book.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Age fourteen, the slate",
+        "text": "I wrote over it. I didn't know the handwriting was a person's last ordinary thing. Don't look at me like the house looks at me."
+      },
+      {
+        "era": "E2",
+        "context": "Clock",
+        "text": "If I wind it, I am killing a minute you all worship. If I don't, I am living in a stopped house. Move your hands off the case."
+      },
+      {
+        "era": "E5",
+        "context": "To Eden, overheard",
+        "text": "I kept it because Mother asked. That is not the same as believing the plates feed anyone but us."
+      }
+    ]
+  },
+  {
+    "id": "p.eden_waite",
+    "name": "Eden Waite",
+    "lineageId": "lin.waite",
+    "role": "Joel's child, keeper in 2022",
+    "birthYear": 1980,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Clear, contemporary, not ironic about care. She can end a practice without mocking it.",
+    "relationshipToEllis": "Asks the last household question. She is not Ellis's disciple.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Young",
+        "text": "Christian's plate is too much food. I said so. They said portion is memory. I said portion is groceries."
+      },
+      {
+        "era": "E5",
+        "context": "Table",
+        "text": "I can keep setting places for people the Vein pushes out, or I can say the names once at the creek and dry the plates. I can't stop you returning. I can stop feeding it a house."
+      }
+    ]
+  },
+  {
+    "id": "p.albert_keene",
+    "name": "Albert Keene",
+    "lineageId": "lin.keene",
+    "role": "Grange master",
+    "birthYear": 1911,
+    "deathYear": 1981,
+    "deathCause": "Died just after the fair-copy year.",
+    "presence": "living",
+    "voice": "Institutional. He loves the grange more than the choir and is ashamed of the ranking.",
+    "relationshipToEllis": "A practical antagonist, not an enemy. Feed versus letters.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Loft stair",
+        "text": "Sylvia's sack is not a sacrament. It is paper over a feed loft. If the roof goes, I will choose grain. Practice your speech before that day."
+      },
+      {
+        "era": "E1",
+        "context": "Storm",
+        "text": "A person living up there is a fire risk and a neighbor. I can be a master or a man about it, not both in one night. Help me fail at the correct job."
+      }
+    ]
+  },
+  {
+    "id": "p.sylvia_keene",
+    "name": "Sylvia Keene",
+    "lineageId": "lin.keene",
+    "role": "Choir keeper of unsent letters",
+    "birthYear": 1916,
+    "deathYear": 1996,
+    "deathCause": "Dies two years after the oath-year choice, having heard or not heard the burn.",
+    "presence": "living",
+    "voice": "Musical breath. She treats sending as a violence and keeping as a violence and chooses anyway.",
+    "relationshipToEllis": "Hands Ellis the sack's dilemma. Later she hides one letter from the sack, about Bram.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Loft",
+        "text": "They paid me not to send these. That was the whole transaction. If you deliver one, you are breaking a contract with the dead's privacy. If you bind them, you are obeying people who were afraid."
+      },
+      {
+        "era": "E1",
+        "context": "Hidden letter",
+        "text": "This one was never in the sack. I kept it out because the name on it might still be alive, and I am a coward with good pitch."
+      },
+      {
+        "era": "E3",
+        "context": "Last instruction",
+        "text": "Burn them if the choir is down to one voice and the voice is tired. Sing them if Faye agrees to be used. Do not archive me into a reading room."
+      }
+    ]
+  },
+  {
+    "id": "p.walter_keene",
+    "name": "Walter Keene",
+    "lineageId": "lin.keene",
+    "role": "Post corner keeper",
+    "birthYear": 1940,
+    "deathYear": 2010,
+    "deathCause": "Died in the gap after 2008.",
+    "presence": "living",
+    "voice": "Rules as kindness. He is not a tyrant. He is afraid of ad-hoc mercy.",
+    "relationshipToEllis": "The dead-letter rule meets a person who is, awkwardly, the dead.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Counter",
+        "text": "Undeliverable is not a suggestion. If I start handing letters to whoever feels addressed, the corner becomes a séance with stamps."
+      },
+      {
+        "era": "E2",
+        "context": "Ivo's letter",
+        "text": "It is addressed to a man dead before the war ended. You may stand there looking claimed. The rule does not have a feeling about your look."
+      }
+    ]
+  },
+  {
+    "id": "p.faye_keene",
+    "name": "Faye Keene",
+    "lineageId": "lin.keene",
+    "role": "Last choir voice",
+    "birthYear": 1964,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "One strong voice, suspicious of being turned into a monument.",
+    "relationshipToEllis": "Will sing a burial and will refuse to sing a sack if the sack is only Ellis's guilt.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Loft",
+        "text": "I can sing names. I cannot be the choir. If you need a crowd, you are in the wrong year."
+      },
+      {
+        "era": "E3",
+        "context": "Gail's burial",
+        "text": "Her unsent line is good. That is not the same as permission. Burials are full of good lines that should have stayed in pockets."
+      }
+    ]
+  },
+  {
+    "id": "p.ben_keene",
+    "name": "Ben Keene",
+    "lineageId": "lin.keene",
+    "role": "Archive helper who cannot sing",
+    "birthYear": 1990,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Careful, contemporary, embarrassed by grandeur.",
+    "relationshipToEllis": "In 2022 he holds the letters' last custody question.",
+    "lines": [
+      {
+        "era": "E5",
+        "context": "Loft, now an attic",
+        "text": "I don't have the voice and I don't have the contract. I have damp. Tell me if a choir is the singing or the not-throwing-away. I can only do one of those."
+      }
+    ]
+  },
+  {
+    "id": "p.osier_rouleau",
+    "name": "Osier Rouleau",
+    "lineageId": "lin.rouleau",
+    "role": "Falls hand",
+    "birthYear": 1918,
+    "deathYear": 1977,
+    "deathCause": "The damp, like half this county's trades.",
+    "presence": "living",
+    "voice": "Counts people on rocks the way other men count boards.",
+    "relationshipToEllis": "Wants every coat to be the old story so he knows the procedure. Ellis may refuse him that comfort.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Basin",
+        "text": "There is a coat in the eddy and there is a boy on the slick. I can climb or I can keep the count. Don't tell me water has a moral. Tell me which job you will shout."
+      }
+    ]
+  },
+  {
+    "id": "p.marie_rouleau",
+    "name": "Marie Rouleau",
+    "lineageId": "lin.rouleau",
+    "role": "Night-kitchen keeper",
+    "birthYear": 1921,
+    "deathYear": 1999,
+    "deathCause": "Died before the closure season.",
+    "presence": "living",
+    "voice": "Soup as argument. She does not let the office eat for free without being seen.",
+    "relationshipToEllis": "Makes Ellis choose a table during the wage fight.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Coat",
+        "text": "That coat is wet this week. If you need it to be 1938, you are no use to the woman missing it."
+      },
+      {
+        "era": "E1",
+        "context": "Kitchen",
+        "text": "Upstairs they are writing the night hours out. Down here we are eating them. Take a bowl in the room you are willing to be counted in."
+      }
+    ]
+  },
+  {
+    "id": "p.denis_rouleau",
+    "name": "Denis Rouleau",
+    "lineageId": "lin.rouleau",
+    "role": "Night-wheel sympathizer, later falls watcher",
+    "birthYear": 1946,
+    "deathYear": 2017,
+    "deathCause": "Died before 2022.",
+    "presence": "living",
+    "voice": "Loyal to crews. Suspicious of both the office and the romance of labor.",
+    "relationshipToEllis": "A worker's view of the gate across the middle years.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Kitchen",
+        "text": "If you eat with us, stay for the bitter part, not the bread. If you eat with them, don't come down after for the good conscience."
+      },
+      {
+        "era": "E3",
+        "context": "Falls",
+        "text": "The coat story is old. The rocks are still slick. I don't need a surveyor. I need a person who will yell 'step back' without a speech."
+      }
+    ]
+  },
+  {
+    "id": "p.aimee_rouleau",
+    "name": "Aimée Rouleau",
+    "lineageId": "lin.rouleau",
+    "role": "Denis's daughter, town clerk's assistant in Vergennes",
+    "birthYear": 1974,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Clerical, funny, precise about what a clerk cannot do.",
+    "relationshipToEllis": "Helps and hinders the record without becoming a quest dispenser.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Clerk window",
+        "text": "I can stamp what you signed. I cannot stamp what you meant. People cry at this window about meaning. Bring a page."
+      },
+      {
+        "era": "E5",
+        "context": "After Irene's paperwork",
+        "text": "The flood of eleven made a lot of men into Ivo for a weekend. Most of them signed the easy sentence. I kept a list of who asked for the hard one. Your name is messy on it."
+      }
+    ]
+  },
+  {
+    "id": "p.earl_pike",
+    "name": "Earl Pike",
+    "lineageId": "lin.pike",
+    "role": "Marsh-edge farmer",
+    "birthYear": 1913,
+    "deathYear": 1986,
+    "deathCause": "Died before the oath year.",
+    "presence": "living",
+    "voice": "Hay first. Wonder never. He still knows the turtle by name because Hada does.",
+    "relationshipToEllis": "A practical threat to Queen's log. Not malicious.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Marsh",
+        "text": "I can lose a cutting or I can lose a turtle. Don't look at me like those are equal in the bank book. Tell me if they're equal to you, and then help me move the mower or the animal."
+      },
+      {
+        "era": "E1",
+        "context": "Wrong stake",
+        "text": "Your old stake, somebody's old stake, puts my cousin's blind on the refuge side. Correct it and you will be called a meddler. Leave it and you will be a man who knew the line."
+      }
+    ]
+  },
+  {
+    "id": "p.hada_pike",
+    "name": "Hada Pike",
+    "lineageId": "lin.pike",
+    "role": "Queen's first human witness in the playable years",
+    "birthYear": 1917,
+    "deathYear": 1992,
+    "deathCause": "Died the year after Maeve.",
+    "presence": "living",
+    "voice": "Affection without baby-talk. She does not think the turtle is a god. She thinks the turtle is old and specific.",
+    "relationshipToEllis": "Shows Ellis the log. Is hurt, later, when Queen comes to a new body and not to her.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Log",
+        "text": "She comes for the grease smell and a whistle I will not do, because it isn't mine. If your mouth knows it, that tells me something I don't want. It doesn't make her yours."
+      },
+      {
+        "era": "E1",
+        "context": "Hurt",
+        "text": "I have fed this marsh attention for thirty years. She walked past my boot toward you. I am going to be decent about it. I am not going to be cheerful."
+      }
+    ]
+  },
+  {
+    "id": "p.vernon_pike",
+    "name": "Vernon Pike",
+    "lineageId": "lin.pike",
+    "role": "Marsh hunter who wants the boundary",
+    "birthYear": 1942,
+    "deathYear": 2008,
+    "deathCause": "Dies during the 2008 season, after he can still speak his request.",
+    "presence": "living",
+    "voice": "Blunt, local, more careful of the marsh than strangers expect, less careful than Lula wants.",
+    "relationshipToEllis": "Wants the boundary to favor a blind. At the end he wants Queen unmanaged.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Marsh",
+        "text": "Band her and she becomes a file. Notch her and she becomes a story. I hunt here. I know which one makes a man hesitate, and hesitation is not always holy."
+      },
+      {
+        "era": "E4",
+        "context": "Last request",
+        "text": "Don't let them manage her into a brochure. If she doesn't come to you, leave the not-coming alone. That is the whole will. It isn't long because I don't like you that much."
+      }
+    ]
+  },
+  {
+    "id": "p.lula_pike",
+    "name": "Lula Pike",
+    "lineageId": "lin.pike",
+    "role": "Local biologist, state permit holder",
+    "birthYear": 1962,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Science with a Panton accent she refused to sand off. She loves Queen and also loves data, and she knows that is a conflict.",
+    "relationshipToEllis": "The animal chain's adult authority in the middle and late seasons.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Banding",
+        "text": "A notch is a story only your family can read. A band is a story the next stranger can read. I want the stranger to be careful. I know what careful has cost this creek."
+      },
+      {
+        "era": "E3",
+        "context": "Permit",
+        "text": "My name is on a permit I did not write the last paragraph of. Withdrawing it will look like superstition. Leaving it will look like ambition. I need a witness, not a crowd."
+      },
+      {
+        "era": "E4",
+        "context": "Heronry",
+        "text": "If I show them the nests, I save the nests and end them as a secret. If I don't, the pullout takes the cottonwoods. Bring me a third way or stand still while I hate both."
+      }
+    ]
+  },
+  {
+    "id": "p.sim_pike",
+    "name": "Sim Pike",
+    "lineageId": "lin.pike",
+    "role": "Vernon's grandchild, does not hunt",
+    "birthYear": 1994,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Gentle, concrete, uninterested in inheriting a rifle or a myth.",
+    "relationshipToEllis": "Asks whether Queen's story is county or family. The last animal question.",
+    "lines": [
+      {
+        "era": "E5",
+        "context": "Dead Creek",
+        "text": "I don't want her on a sign. I also don't want her only in our kitchen stories, where she shrinks every winter. Tell me which shrinking you can live with."
+      }
+    ]
+  },
+  {
+    "id": "p.norma_seaver",
+    "name": "Norma Seaver",
+    "lineageId": "lin.seaver",
+    "role": "Deputy surveyor",
+    "birthYear": 1919,
+    "deathYear": 2003,
+    "deathCause": "Died in the gap before 2008, after decades of fair copies.",
+    "presence": "living",
+    "voice": "Kind, devastating. She believes neatness prevents fights. She is often locally right and historically wrong.",
+    "relationshipToEllis": "The office's human face. She will offer Ellis a clean oath and a clean book.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Flood book",
+        "text": "The margin makes the certification look like a lie. The certification makes the margin look like panic. A fair copy can let this county stop hurting itself on one page. I am not ashamed of that."
+      },
+      {
+        "era": "E2",
+        "context": "Burnham garden",
+        "text": "I gave her ten feet because her husband had just died and the neighbor is a bully. If you correct me, bring a handkerchief and a spine. You will need both."
+      },
+      {
+        "era": "E3",
+        "context": "Oath",
+        "text": "Swear the clean one. The contradiction can live in your chest. Chests are not public documents."
+      }
+    ]
+  },
+  {
+    "id": "p.clark_seaver",
+    "name": "Clark Seaver",
+    "lineageId": "lin.seaver",
+    "role": "Norma's son, surveyor with insurance friends",
+    "birthYear": 1945,
+    "deathYear": 2016,
+    "deathCause": "Died before 2022.",
+    "presence": "living",
+    "voice": "Smooth, not oily. He thinks precedent is how you love a town: by making water predictable.",
+    "relationshipToEllis": "Asks for signatures that repeat the wound at a smaller scale.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Runner",
+        "text": "They will read the page aloud. If your face moves on the margin, the whole room will see it. Decide before you walk in whether your face works for the book or for the pencil."
+      },
+      {
+        "era": "E3",
+        "context": "Promotion",
+        "text": "Re-sign the certification in your living hand and the Leicester culvert becomes fundable. Refuse and you are protecting a mood. Moods don't move water. Culverts do."
+      },
+      {
+        "era": "E4",
+        "context": "Precedent",
+        "text": "I am not Ivo. I am a man with a smaller gate and a louder selectboard. If you stop me, say what you are offering the flooded cellar instead of a proverb."
+      }
+    ]
+  },
+  {
+    "id": "p.willa_seaver",
+    "name": "Willa Seaver",
+    "lineageId": "lin.seaver",
+    "role": "Copyist who keeps the contradiction",
+    "birthYear": 1970,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Precise copies, impure motives in the best sense. She believes a clean page is a weapon.",
+    "relationshipToEllis": "Offers the contradictory oath. In 2022 she has a private copy and a stranger who wants the clean story.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Oath",
+        "text": "Swear both lines. If they won't let you, swear neither. A clean oath is how this office stays inherited and unaccountable."
+      },
+      {
+        "era": "E5",
+        "context": "Private copy",
+        "text": "He wants a story for a class. I want him to feel the smear. If I give him the contradiction he may turn it into content. If I don't, Norma wins from the grave."
+      }
+    ]
+  },
+  {
+    "id": "p.ned_seaver",
+    "name": "Ned Seaver",
+    "lineageId": "lin.seaver",
+    "role": "Willa's cousin, refuses the desk",
+    "birthYear": 1992,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Like Owen, but angrier about paperwork specifically.",
+    "relationshipToEllis": "Stands in the Goshen dooryard and at the copy desk as a no.",
+    "lines": [
+      {
+        "era": "E5",
+        "context": "Goshen",
+        "text": "Move the post and Alma loses a foot of the only flat place she has to set a chair. Leave it and the next kid with a GPS calls her a thief. I hate both speeches. Make one anyway."
+      }
+    ]
+  },
+  {
+    "id": "p.gail_yorston",
+    "name": "Gail Yorston",
+    "lineageId": "lin.yorston",
+    "role": "Larabee kitchen",
+    "birthYear": 1925,
+    "deathYear": 1994,
+    "deathCause": "Dies in the oath year; the burial is a quest, not a surprise cutscene.",
+    "presence": "living",
+    "voice": "Ferry gossip with a moral spine. She feeds crews and remembers orders.",
+    "relationshipToEllis": "A landing that is not Cal's. Proof the county has more than one shore.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Bell",
+        "text": "Tom rings it for men who are already buried. I let him because the alternative is a quiet that pretends the lake is only scenery."
+      },
+      {
+        "era": "E3",
+        "context": "Before the burial, last week of her life",
+        "text": "If they sing the line I never sent, they are finishing my argument without me. I may want that. I may want the hymn ordinary. Ask me while I can still be selfish."
+      }
+    ]
+  },
+  {
+    "id": "p.tom_yorston",
+    "name": "Tom Yorston",
+    "lineageId": "lin.yorston",
+    "role": "Bell ringer",
+    "birthYear": 1923,
+    "deathYear": 1988,
+    "deathCause": "Died before the oath year.",
+    "presence": "living",
+    "voice": "Few words. The bell is the rest.",
+    "relationshipToEllis": "Offers Ellis a practice that is cousin to the Quiet Household and not the same.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Larabee",
+        "text": "The bell is not a church. It is a way to put a name in the air on this side of the lake. Ring it, stop it, or move it. Don't study it while it sits."
+      },
+      {
+        "era": "E1",
+        "context": "Older arm",
+        "text": "Peter Voss is not my cousin and I still ring him, because Cal won't, and somebody on a Vermont dock should."
+      }
+    ]
+  },
+  {
+    "id": "p.pat_yorston",
+    "name": "Pat Yorston",
+    "lineageId": "lin.yorston",
+    "role": "Child of the landing kitchen, later keeper",
+    "birthYear": 1951,
+    "deathYear": 2010,
+    "deathCause": "Died in the gap after 2008.",
+    "presence": "living",
+    "voice": "Practical heir of a bell they did not ask for.",
+    "relationshipToEllis": "Middle-era Shoreham voice.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Landing",
+        "text": "Father's bell scares the tourists and steadies my mother. If you are here to modernize us, the ferry already did. Try a smaller ambition."
+      },
+      {
+        "era": "E3",
+        "context": "After Gail",
+        "text": "Tell Faye what Mother said, not what would sound good over water. I have heard enough good."
+      }
+    ]
+  },
+  {
+    "id": "p.rose_yorston",
+    "name": "Rose Yorston",
+    "lineageId": "lin.yorston",
+    "role": "Bell ringer after Pat",
+    "birthYear": 1979,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Keeps the practice smaller. She rings less often and means it more.",
+    "relationshipToEllis": "A late witness at Shoreham, not a convert.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Bell",
+        "text": "I ring for Gail on her day and for nobody on spec. If you have a name, it better be a person you can describe without magic."
+      },
+      {
+        "era": "E5",
+        "context": "Same",
+        "text": "The new bridge didn't change this dock. That's the point of a dock. Say what you came to say or help me coil this."
+      }
+    ]
+  },
+  {
+    "id": "p.frank_abbott",
+    "name": "Frank Abbott",
+    "lineageId": "lin.abbott",
+    "role": "Whiting line farmer",
+    "birthYear": 1907,
+    "deathYear": 1968,
+    "deathCause": "Died in the gap before 1980. His grave is the later argument.",
+    "presence": "living",
+    "voice": "Property as care. He is not a miser. He is afraid of being redrawn.",
+    "relationshipToEllis": "Alive only in the first two seasons. Talks about the line as if it were a neighbor.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Fence",
+        "text": "The flood moved the fence. The map did not. If you are the sort who obeys water, my garden is already gone in your head. Speak carefully."
+      },
+      {
+        "era": "E1",
+        "context": "Older",
+        "text": "Bury me on the Whiting side even if the clover is better in Orwell. I have spent my life on one side of a sentence. Don't edit the grave."
+      }
+    ]
+  },
+  {
+    "id": "p.bea_abbott",
+    "name": "Bea Abbott",
+    "lineageId": "lin.abbott",
+    "role": "Frank's wife, grave defender",
+    "birthYear": 1910,
+    "deathYear": 1985,
+    "deathCause": "Dies in the gap after 1980, having won or lost the line.",
+    "presence": "living",
+    "voice": "Polite steel.",
+    "relationshipToEllis": "The 1980 grave quest is hers. She will not be managed.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Plot",
+        "text": "Move the line and my husband becomes an Orwell man in a clerk's mouth. He never set foot in their town meeting. I will not accept a correction that improves a map and insults a body."
+      }
+    ]
+  },
+  {
+    "id": "p.carl_abbott",
+    "name": "Carl Abbott",
+    "lineageId": "lin.abbott",
+    "role": "Son, cows and right-of-way",
+    "birthYear": 1948,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Farmer plain. He uses the intervale path because the cows do, and he is honest about that.",
+    "relationshipToEllis": "Middle and late conflict with the Harrows. Not a villain. A user of grass.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "With his mother",
+        "text": "I'll dig where you say if you say it before hay. After hay I will resent you in a way that lasts longer than the map."
+      },
+      {
+        "era": "E4",
+        "context": "Intervale",
+        "text": "The path is ours because we kept walking it when the Harrows were in a lawsuit with a ghost. Possession isn't pretty. It is how pastures work."
+      }
+    ]
+  },
+  {
+    "id": "p.nina_abbott",
+    "name": "Nina Abbott",
+    "lineageId": "lin.abbott",
+    "role": "Carl's daughter, grave question's heir",
+    "birthYear": 1975,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Wants the family to stop being a boundary dispute and knows that wanting isn't a survey.",
+    "relationshipToEllis": "Late voice on the line.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Plot",
+        "text": "Grandmother won or didn't. I still have to mow. If you reopen it, bring more than a feeling. Bring the hours you'll spend explaining it at town meeting."
+      },
+      {
+        "era": "E5",
+        "context": "Same",
+        "text": "I put flowers on the Whiting side. The GPS sometimes puts me in Orwell. The flowers don't care. People with forms care. Which are you today?"
+      }
+    ]
+  },
+  {
+    "id": "p.henry_march",
+    "name": "Henry March",
+    "lineageId": "lin.march",
+    "role": "Waltham dairyman, downstream",
+    "birthYear": 1912,
+    "deathYear": 1974,
+    "deathCause": "Died the same year as Lottie, different house.",
+    "presence": "living",
+    "voice": "Milk quality is his dignity. He would rather blame his own can than be a man's victim, until he can smell the truth.",
+    "relationshipToEllis": "The person Ansel's counsel harms. Downstream is not an abstraction. It is Henry's morning.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Meadow",
+        "text": "If the night wheel warmed my cans, say the night wheel. If my cooler failed, say my cooler. Don't stand in my yard building a compromise that tastes like both."
+      },
+      {
+        "era": "E1",
+        "context": "If he was told",
+        "text": "You told me. I lost a neighbor and I kept a dairy. I will not perform gratitude. I will pour you a glass that tastes like morning, and you will notice."
+      }
+    ]
+  },
+  {
+    "id": "p.dolores_march",
+    "name": "Dolores March",
+    "lineageId": "lin.march",
+    "role": "Henry's wife, source of the maple-walnut method",
+    "birthYear": 1916,
+    "deathYear": 1982,
+    "deathCause": "Died just after Hugh Lamb.",
+    "presence": "living",
+    "voice": "Recipe speech: order of operations, no mystique.",
+    "relationshipToEllis": "Her pot becomes a county flavor if Ellis is careless. She is alive to refuse mystique.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Kitchen",
+        "text": "The cow walks to the old gate because salt is in the grease. You can kill her for being readable. I wouldn't. I also wouldn't write a poem about her."
+      },
+      {
+        "era": "E1",
+        "context": "Recipe",
+        "text": "Walnut, then maple, then the cold. If a stand up the road is selling it, they are selling my order of operations. Names cost nothing. Use mine or stop."
+      }
+    ]
+  },
+  {
+    "id": "p.kitty_march",
+    "name": "Kitty March",
+    "lineageId": "lin.march",
+    "role": "Dolores's daughter, recipe's heir",
+    "birthYear": 1944,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Proud, not greedy. She wants attribution more than a royalty, because this pack has no economy of royalties.",
+    "relationshipToEllis": "The 1980 recipe-wage argument.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Stand yard and meadow, scene at the stand",
+        "text": "Pearl can keep the profit of the summer. She cannot keep my mother's name off the card. I am not taking the machine. I am taking the sentence."
+      },
+      {
+        "era": "E5",
+        "context": "Older",
+        "text": "I still make it at home in October when no stand is open. That is the version that matters. The pullout was always a rumor of my kitchen."
+      }
+    ]
+  },
+  {
+    "id": "p.arthur_iles",
+    "name": "Arthur Iles",
+    "lineageId": "lin.lone",
+    "role": "Weybridge veterinarian",
+    "birthYear": 1908,
+    "deathYear": 1971,
+    "deathCause": "Died in the gap before 1980.",
+    "presence": "living",
+    "voice": "Triage. No pastoral softness during a shut road.",
+    "relationshipToEllis": "Makes Ellis choose a barn. Does not thank Ellis for the philosophy.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Mud road",
+        "text": "I can do one barn before my hands shake. Upper has more animals. Lower has the one you can't replace. I will not pretend those are a single ethical object. Point."
+      }
+    ]
+  },
+  {
+    "id": "p.evan_dunn",
+    "name": "Evan Dunn",
+    "lineageId": "lin.lone",
+    "role": "Hired man using a dead cutter's name",
+    "birthYear": 1926,
+    "deathYear": 1990,
+    "deathCause": "Died the year Doris Lamb died.",
+    "presence": "living",
+    "voice": "Ashamed and practical. The name gets him hired.",
+    "relationshipToEllis": "A living misuse of the quarry's dead. Ellis can strip him and also strip his wages.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "New Haven barn",
+        "text": "The name opens the job. My name opens nothing. If you take it off me, stay and tell Samuel why the hay is late. Don't do it as a purity and leave."
+      },
+      {
+        "era": "E1",
+        "context": "If still hired",
+        "text": "I have been him for fourteen years in this valley's mouth. Correcting me now is not honesty. It is a new inconvenience with better posture."
+      }
+    ]
+  },
+  {
+    "id": "p.agnes_holt",
+    "name": "Agnes Holt",
+    "lineageId": "lin.lone",
+    "role": "Tenant in the Marble Works buildings",
+    "birthYear": 1918,
+    "deathYear": 1976,
+    "deathCause": "Died before 1980.",
+    "presence": "living",
+    "voice": "Floor, dust, rent. She is not a metaphor for marble. She lives above a damp room.",
+    "relationshipToEllis": "Competes with the wheel for an hour of water and an hour of quiet.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Her stair",
+        "text": "When they open the race at night my floor sweats and my boy coughs. Ansel calls it the contract. I call it my stairs. If you are the survey, survey the damp on the third step, not the proud wheel."
+      }
+    ]
+  },
+  {
+    "id": "p.pauline_ester",
+    "name": "Pauline Ester",
+    "lineageId": "lin.lone",
+    "role": "Geologist who works the cut, not a campus office",
+    "birthYear": 1933,
+    "deathYear": 2011,
+    "deathCause": "Dies in the gap, the year of Irene, before 2022.",
+    "presence": "living",
+    "voice": "Curious, respectful, not mystical. She wants a core. She can hear no.",
+    "relationshipToEllis": "The scientific hand on the Marble Vein's stone. Ellis must not turn her into a villain or a priest.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Cut face",
+        "text": "I want the face that shows the fold. You want the face that has names in chalk above it. Those can be different faces. Show me the difference without telling me a ghost story, and I will move my bit."
+      },
+      {
+        "era": "E4",
+        "context": "Older",
+        "text": "I cored what you allowed. The stone is limestone with a marble temper. It is not a soul. The names are still a reason to pick a hole carefully. I learned that without joining your church."
+      }
+    ]
+  },
+  {
+    "id": "p.redmond_mahey",
+    "name": "Redmond Mahey",
+    "lineageId": "lin.lone",
+    "role": "Shoreham smith",
+    "birthYear": 1920,
+    "deathYear": 1984,
+    "deathCause": "Dies before the oath year.",
+    "presence": "living",
+    "voice": "Fire and finality. He destroys objects people are too sentimental to destroy.",
+    "relationshipToEllis": "Can unmake the powder key. He does not do quests. He does a burn.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Forge",
+        "text": "I can spoil the key so nobody uses it by mistake or on purpose. I can't spoil the reason you brought it. If the reason still needs a key, keep it and don't waste my coal."
+      }
+    ]
+  },
+  {
+    "id": "p.rita_cole",
+    "name": "Rita Cole",
+    "lineageId": "lin.lone",
+    "role": "Lincoln road crew",
+    "birthYear": 1955,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Triage in a rain jacket. She has heard every speech about who matters.",
+    "relationshipToEllis": "The slide quest. She demands an order of clearing.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Slide",
+        "text": "Bus road or quarry lane. I have one loader window before the next rain. Your flood book is not on the loader. Your mouth is. Use it in the next minute."
+      },
+      {
+        "era": "E5",
+        "context": "Same road, paved better",
+        "text": "We cleared what you said. I remember the minute. Don't come up here now to revise it into a lesson. The lesson already had a commute."
+      }
+    ]
+  },
+  {
+    "id": "p.nan_pettis",
+    "name": "Nan Pettis",
+    "lineageId": "lin.lone",
+    "role": "Person living in the grange during a storm",
+    "birthYear": 1944,
+    "deathYear": 2001,
+    "deathCause": "Died before the closure season, housed by then, still poor.",
+    "presence": "living",
+    "voice": "Tired of being a moral example. Specific needs.",
+    "relationshipToEllis": "Not a delivery objective. A person in a room Albert wants for feed.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Loft",
+        "text": "I am not a letter and I am not a sack of grain. If you need me to be one so you can decide, you can decide without me in the room. I'll hear the boots either way."
+      }
+    ]
+  },
+  {
+    "id": "p.louisa_garrett",
+    "name": "Louisa Garrett",
+    "lineageId": "lin.lone",
+    "role": "Health inspector who loved a flavor",
+    "birthYear": 1940,
+    "deathYear": 2018,
+    "deathCause": "Died before 2022.",
+    "presence": "living",
+    "voice": "Regulation spoken cleanly. Grief underneath, not as manipulation.",
+    "relationshipToEllis": "Can close Lamb's. Her sister's love of maple-walnut is a fact, not a lever she enjoys pulling.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Stand",
+        "text": "The cooler is wrong. I can close you today. My sister would have hated the closing and hated the cooler more. Do not use her to bargain. Fix it or hand me the spoon."
+      }
+    ]
+  },
+  {
+    "id": "p.allan_briggs",
+    "name": "Allan Briggs",
+    "lineageId": "lin.lone",
+    "role": "State road crew, right-of-way",
+    "birthYear": 1959,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Not a monster. A man with a manual and a schedule.",
+    "relationshipToEllis": "The bench. He will move it unless spoken to as a person with a manual.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Ferrisburgh pullout",
+        "text": "The bench is in the clear zone. I didn't kill the man it remembers. I also can't leave a memorial that becomes a crash. Give me a place to put it that isn't a speech."
+      }
+    ]
+  },
+  {
+    "id": "p.sadie_burnham",
+    "name": "Sadie Burnham",
+    "lineageId": "lin.lone",
+    "role": "Leicester widow with ten extra feet",
+    "birthYear": 1924,
+    "deathYear": 2000,
+    "deathCause": "Died before the closure season.",
+    "presence": "living",
+    "voice": "Grateful and uneasy. She knows a gift can be a theft from someone she has to church with.",
+    "relationshipToEllis": "Norma's kindness sits in Sadie's garden.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Garden",
+        "text": "She measured me a kindness after the funeral. The neighbor hasn't spoken since. If you take it back, do it before I plant, and stay to say it was a correction and not my greed."
+      }
+    ]
+  },
+  {
+    "id": "p.constance_daly",
+    "name": "Constance Daly",
+    "lineageId": "lin.lone",
+    "role": "Orwell schoolteacher",
+    "birthYear": 1910,
+    "deathYear": 1978,
+    "deathCause": "Died the year Ansel died.",
+    "presence": "living",
+    "voice": "Penmanship and moral confidence. She is not the household. She thinks lessons are how you honor the dead.",
+    "relationshipToEllis": "Wants Cress's slate for a class. She can be refused without being humiliated as a type.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "School step",
+        "text": "The hand is beautiful. Children can learn from a beautiful hand. If you tell me the hand is private, I will return it. I will also think you are hoarding a lesson. I can live with your opinion."
+      }
+    ]
+  },
+  {
+    "id": "p.kit_downing",
+    "name": "Kit Downing",
+    "lineageId": "lin.lone",
+    "role": "Scion seller, June's old friend",
+    "birthYear": 1938,
+    "deathYear": 2004,
+    "deathCause": "Died the year Cal died.",
+    "presence": "living",
+    "voice": "Persuasive, not slick. Believes wood should travel.",
+    "relationshipToEllis": "Sells June's scion at the exchange. A philosophy, not a theft with a cackling tone.",
+    "lines": [
+      {
+        "era": "E1",
+        "context": "Exchange yard",
+        "text": "June would have given this wood away. Maeve will keep it until it rots into a principle. I am selling it cheap so it becomes a tree somewhere else. Call that theft if you need a short word."
+      }
+    ]
+  },
+  {
+    "id": "p.cora_belden",
+    "name": "Cora Belden",
+    "lineageId": "lin.lone",
+    "role": "Weybridge horse keeper, neighbor to the Morgan farm country",
+    "birthYear": 1944,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Horse sense without costume. Promises and feed bills are both real to her.",
+    "relationshipToEllis": "Asks for a witness, not a buyer. No economy minigame. A sentence about a mare.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Fence",
+        "text": "I promised Invoice to the girl. I also owe the feed man more than pride. If you witness, you don't get a share. You get the blame of whichever way I go, because you stood there."
+      },
+      {
+        "era": "E4",
+        "context": "Older paddock",
+        "text": "The girl got the horse or she didn't. Don't come revise the animal. Come tell me if you still think a promise outranks hay. I think about it every winter."
+      }
+    ]
+  },
+  {
+    "id": "p.alma_gray",
+    "name": "Alma Gray",
+    "lineageId": "lin.lone",
+    "role": "Goshen dooryard keeper",
+    "birthYear": 1948,
+    "deathYear": null,
+    "presence": "living",
+    "voice": "Sparse as the town. She has one flat place for a chair.",
+    "relationshipToEllis": "The corner post is one foot inside her life.",
+    "lines": [
+      {
+        "era": "E5",
+        "context": "Dooryard",
+        "text": "Move it if it's true. I will put the chair in the slope and I will not forgive you out loud. Leave it if you want me comfortable and the map wrong. I have lived with worse wrongness. I would like the chair."
+      }
+    ]
+  },
+  {
+    "id": "p.rennet_moss",
+    "name": "Rennet Moss",
+    "lineageId": "lin.moss",
+    "role": "Public body of Ellis in 1952, hired rodman",
+    "birthYear": 1930,
+    "deathYear": 1952,
+    "deathCause": "The body dies at the end of the 1952 season unless a mid-quest death takes it sooner. Fourteen years later Ellis wakes as Ada.",
+    "presence": "body",
+    "voice": "County hired-man English. The residue that is not Ellis is a young rodman's practical mouth.",
+    "relationshipToEllis": "The first playable wearing. Neighbors keep saying Rennet. Ellis answers.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "Residue, spoken by the mouth before Ellis catches it",
+        "text": "Rod's in the truck. I said I'd be back before the dew burned off. I don't know why I said that. I don't remember owning a truck."
+      }
+    ]
+  },
+  {
+    "id": "p.cress_moss",
+    "name": "Cress Moss",
+    "lineageId": "lin.moss",
+    "role": "The displaced continuation of Rennet's life",
+    "birthYear": 1930,
+    "deathYear": 1952,
+    "deathCause": "Not a bodily death. The morning Ellis woke, the life called Cress at home stopped.",
+    "presence": "displaced",
+    "splitYear": 1952,
+    "voice": "Only as the household quotes it. Domestic, future-tense.",
+    "relationshipToEllis": "The person the Quiet Household sets a plate for in 1952. Not a villain and not a costume.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Esther from Cress's last ordinary plan",
+        "text": "Tell Samuel I'll walk the south row after chores and I won't take a wage for it. I just want to see if June's tree took. Don't let Mother make it a lesson."
+      }
+    ]
+  },
+  {
+    "id": "p.ada_smollet",
+    "name": "Ada Smollet",
+    "lineageId": "lin.smollet",
+    "role": "Public body of Ellis in 1966, schoolteacher",
+    "birthYear": 1942,
+    "deathYear": 1966,
+    "deathCause": "Dies at the end of the 1966 season. Ellis returns in 1980 as Louis.",
+    "presence": "body",
+    "voice": "Teacher's clarity. The residue corrects grammar and is kind about it.",
+    "relationshipToEllis": "Second playable life. Maeve, Cal, and Ansel meet this face inside their changed lives.",
+    "lines": [
+      {
+        "era": "E0",
+        "context": "As a child, not yet worn, overheard later",
+        "text": "I want the stove in the school fixed and I don't want a prize for saying it."
+      },
+      {
+        "era": "E1",
+        "context": "Residue",
+        "text": "The children will be waiting on the step. I left the spelling list in the book. I don't know which book. I know the list is real."
+      }
+    ]
+  },
+  {
+    "id": "p.adah_smollet",
+    "name": "Adah Smollet",
+    "lineageId": "lin.smollet",
+    "role": "Displaced continuation of Ada, spelled as her mother spelled it",
+    "birthYear": 1942,
+    "deathYear": 1966,
+    "deathCause": "Displacement at the 1966 waking.",
+    "presence": "displaced",
+    "splitYear": 1966,
+    "voice": "Quoted. Specific, unpretty.",
+    "relationshipToEllis": "The second plate. Clara knows the difference between Adah's want and a pretty one.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Clara",
+        "text": "Fix the school stove. Don't put my name on the fix. If I am thanked I will have to smile, and I am saving my smile for the spelling list."
+      }
+    ]
+  },
+  {
+    "id": "p.louis_pell",
+    "name": "Louis Pell",
+    "lineageId": "lin.pell",
+    "role": "Public body of Ellis in 1980, quarry cook's son",
+    "birthYear": 1956,
+    "deathYear": 1980,
+    "deathCause": "Dies at the end of the 1980 season.",
+    "presence": "body",
+    "voice": "Kitchen-and-cut English. Residue knows the soup pot and the wage day.",
+    "relationshipToEllis": "Third wearing. The cut recognizes the body and does not recognize the will.",
+    "lines": [
+      {
+        "era": "E2",
+        "context": "Residue",
+        "text": "Thursday is envelope day. I should be at the pot, not the drill. My hands disagree with me. Don't let them take a wage for disagreeing."
+      }
+    ]
+  },
+  {
+    "id": "p.lou_pell",
+    "name": "Lou Pell",
+    "lineageId": "lin.pell",
+    "role": "Displaced continuation of Louis",
+    "birthYear": 1956,
+    "deathYear": 1980,
+    "deathCause": "Displacement at the 1980 waking. Lou had been going to leave the cut.",
+    "presence": "displaced",
+    "splitYear": 1980,
+    "voice": "Quoted. A leaving voice.",
+    "relationshipToEllis": "The life that was about to get out. Ellis's presence keeps the body at the stone.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Gina from a note in the soup pot",
+        "text": "I'm not taking Thursday's envelope. I'm taking the bus as far as the money goes. Tell Elena the pot needs salt, not a speech."
+      }
+    ]
+  },
+  {
+    "id": "p.hannah_greer",
+    "name": "Hannah Greer",
+    "lineageId": "lin.greer",
+    "role": "Public body of Ellis in 1994, landing bookkeeper",
+    "birthYear": 1970,
+    "deathYear": 1994,
+    "deathCause": "Dies at the end of the 1994 season.",
+    "presence": "body",
+    "voice": "Books, columns, a patience that is the body's, not always Ellis's.",
+    "relationshipToEllis": "Fourth wearing. The oath is offered to this mouth.",
+    "lines": [
+      {
+        "era": "E3",
+        "context": "Residue",
+        "text": "The log balances if you stop putting the dog in it. I would like one ordinary column. I don't think I get it."
+      }
+    ]
+  },
+  {
+    "id": "p.nan_greer",
+    "name": "Nan Greer",
+    "lineageId": "lin.greer",
+    "role": "Displaced continuation of Hannah",
+    "birthYear": 1970,
+    "deathYear": 1994,
+    "deathCause": "Displacement at the 1994 waking. Nan wanted the landing, not the survey office.",
+    "presence": "displaced",
+    "splitYear": 1994,
+    "voice": "Quoted. A person with a job she liked.",
+    "relationshipToEllis": "The east-room bed in 1994 is made for her.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Miriam",
+        "text": "Leave me at the landing book. I am good at it. If a nicer office comes asking, tell them Nan already has a chair that faces the water."
+      }
+    ]
+  },
+  {
+    "id": "p.chris_dobbs",
+    "name": "Chris Dobbs",
+    "lineageId": "lin.dobbs",
+    "role": "Public body of Ellis in 2008, mechanic of whatever leaks",
+    "birthYear": 1984,
+    "deathYear": 2008,
+    "deathCause": "Dies at the end of the 2008 season, into the years of closure and replacement.",
+    "presence": "body",
+    "voice": "Tools. Short. The residue diagnoses machines before people.",
+    "relationshipToEllis": "Fifth wearing. Pearl sees Christian in the wrench hold.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "Residue",
+        "text": "The compressor knocks because the intake is dirty, not because the year is cursed. Hand me the small brush. I can be a person after."
+      }
+    ]
+  },
+  {
+    "id": "p.christian_dobbs",
+    "name": "Christian Dobbs",
+    "lineageId": "lin.dobbs",
+    "role": "Displaced continuation of Chris",
+    "birthYear": 1984,
+    "deathYear": 2008,
+    "deathCause": "Displacement at the 2008 waking.",
+    "presence": "displaced",
+    "splitYear": 2008,
+    "voice": "Quoted. A mechanic who was going to stay.",
+    "relationshipToEllis": "The household cooks his meal. The stand misses his hands without having a theology.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Pearl",
+        "text": "I'll stay through October even if the traffic thins. The machine doesn't know the bridge. Somebody should keep knowing the machine."
+      }
+    ]
+  },
+  {
+    "id": "p.rowan_keel",
+    "name": "Rowan Keel",
+    "lineageId": "lin.keel",
+    "role": "Public body of Ellis in 2022",
+    "birthYear": 1998,
+    "deathYear": null,
+    "deathCause": null,
+    "presence": "body",
+    "voice": "Contemporary Orwell English. The residue is a cousin of the Waites who expected a smaller life.",
+    "relationshipToEllis": "Sixth wearing. The household knew this one was coming and still set a plate.",
+    "lines": [
+      {
+        "era": "E4",
+        "context": "As a child, not yet worn",
+        "text": "Eden says I have too much name. I have exactly the name on the form. She can mind her plates."
+      },
+      {
+        "era": "E5",
+        "context": "Residue",
+        "text": "I was going to the clerk's window for a permit to fix the step, not the world. The step is still broken. That part I trust."
+      }
+    ]
+  },
+  {
+    "id": "p.maren_keel",
+    "name": "Maren Keel",
+    "lineageId": "lin.keel",
+    "role": "Displaced continuation of Rowan, name on the certificate the household kept",
+    "birthYear": 1998,
+    "deathYear": 2022,
+    "deathCause": "Displacement at the 2022 waking.",
+    "presence": "displaced",
+    "splitYear": 2022,
+    "voice": "Quoted. Ordinary future.",
+    "relationshipToEllis": "The last plate. Eden may release the name rather than keep it.",
+    "lines": [
+      {
+        "era": null,
+        "context": "Quoted by Eden from the certificate margin",
+        "text": "Fix the step. Eat at home. Don't let them make a ceremony out of a cousin who only wanted the stair to hold."
+      }
+    ]
+  }
+]

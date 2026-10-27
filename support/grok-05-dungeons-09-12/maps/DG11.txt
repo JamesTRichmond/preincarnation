@@ -1,0 +1,309 @@
+DG11 The Orchard of Black Snow
+Boss: The Winter Graft in DG11-R14. Miniboss in DG11-R10.
+Entry DG11-R01 @ 3,6.
+Legend: # ruin or wall, . floor, , road, ~ water, G gust, + gated, ! hazard. Letters are objects.
+
+DG11-R01  Packing Shed  [main]  18x12
+Hogback Orchard's shed. The wall states every graft the root heart will ask for.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+#........N....U..#
+#................#
+#...*............#
+#.....##...##....#
+#................#
+#W.@.....,......E#
+#................#
+##################
+##################
+##################
+##################
+  north@9,1 -> DG11-R02 [walk] if open
+  east@16,6 -> DG11-R05 [walk] if open
+  west@1,6 -> DG11-R06 [walk] if open
+  roof@14,1 -> DG11-R15 [walk] if open
+
+DG11-R02  North Plot  [main]  18x12
+North plot dial. Grafting WINTER freezes the broken root stair.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+###.v.############
+###.+.############
+###.+......#######
+###........#######
+###.....DH.#######
+###........#######
+###...#....#######
+###.*.#....#######
+###........#######
+###......S.#######
+##################
+  south@9,10 -> DG11-R01 [walk] if open
+  down@4,1 -> DG11-R03 [walk] if season.north.WINTER
+
+DG11-R03  Root Ladder  [main]  18x12
+The frozen stair between the north plot and the ice cellar.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+########.U.#######
+########...#######
+###...##...#######
+###.*.##...#######
+###...##...#######
+########.^.#######
+########...#######
+########...#######
+########...#######
+########.D.#######
+##################
+  up@9,1 -> DG11-R02 [walk] if open
+  down@9,10 -> DG11-R04 [walk] if open
+
+DG11-R04  Ice Cellar  [main]  18x12
+Stored winters in barrels. The lamp reads them. A clod on the mound is optional.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+#####....U.......#
+###..............#
+###.*............#
+###.....B........#
+#####............#
+#####.C.........E#
+#####............#
+########...#######
+########...#######
+########.K.#######
+##################
+  up@9,1 -> DG11-R03 [walk] if open
+  east@16,6 -> DG11-R09 [walk] if open
+  south@9,10 -> DG11-R08 [walk] if open
+
+DG11-R05  East Plot  [main]  18x12
+East plot. BLACK_SNOW is the fifth face of the dial, an authored state.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+########.N.#######
+###...##...#######
+###.*.##...#######
+#..........#######
+#.......DH.#######
+#W.........#######
+#..........#######
+##################
+##################
+##################
+##################
+  west@1,6 -> DG11-R01 [walk] if open
+  north@9,1 -> DG11-R16 [walk] if open
+
+DG11-R06  Grafting Bench  [main]  18x12
+Four wedges in a drawer. Pruning a bad graft returns its wedge.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+##################
+###...############
+###.*.############
+###...############
+###..............#
+###.....W.......E#
+###..............#
+###.n.e.w.s......#
+###..............#
+##################
+##################
+  east@16,6 -> DG11-R01 [walk] if open
+
+DG11-R07  West Plot  [main]  18x12
+West plot. AUTUMN grows the leaf bridge in the cider tunnel.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+##################
+###...############
+###.*.############
+###...#....#######
+#######.DH.#######
+#######....#######
+#######....#######
+#######....#######
+#######....#######
+#######..S.#######
+##################
+  south@9,10 -> DG11-R09 [walk] if open
+
+DG11-R08  Snow Kiln  [optional]  18x12
+Optional kiln. Fires one clod into a lens. Not a season dial.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+#######..N.#######
+###...#....#######
+###.*.#....#######
+###...#....#######
+#######....#######
+#######.K..#######
+#######....#######
+##################
+##################
+##################
+##################
+  north@9,1 -> DG11-R04 [walk] if open
+
+DG11-R09  Cider Tunnel  [main]  18x12
+Under the orchard. Leaf bridge and marble gate are graft doors, not climate.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+#........N.#######
+#..........###...#
+#..............+H#
+#...*............#
+#................#
+#W............++E#
+#................#
+#........+.#######
+########.+.#######
+########.S.#######
+##################
+  west@1,6 -> DG11-R04 [walk] if open
+  north@9,1 -> DG11-R07 [walk] if open
+  south@9,10 -> DG11-R10 [walk] if season.west.AUTUMN
+  east@16,6 -> DG11-R12 [walk] if season.east.BLACK_SNOW
+  heart@16,3 -> DG11-R13 [walk] if season.east.BLACK_SNOW
+
+DG11-R10  The Unpicked Row  [main]  18x12
+Miniboss. Spring at the door, winter at the dial, black snow at the far trunk. The dial resets on death and is not a graft. North returns to the tunnel only after the row falls, so the roof cannot walk into the cellar.
+persistent: miniboss-defeat, flags
+reset: ungrafted-dials, boss-phase-if-not-defeated, enemy-positions
+##################
+##.......N..######
+##..*.......######
+##............####
+##...............#
+####....D........#
+####............E#
+####.............#
+####.............#
+######......######
+######......######
+##################
+  north@9,1 -> DG11-R09 [walk] if dg11.row-cleared
+  east@16,6 -> DG11-R11 [walk] if open
+
+DG11-R11  South Plot  [main]  18x12
+South plot. The heart wants this one grafted on SPRING, before the dial is turned.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+########.N.#######
+###...##...#######
+###.*.##...#######
+#..........#######
+#.......DH.#######
+#W.........#######
+#..........#######
+##################
+##################
+##################
+##################
+  west@1,6 -> DG11-R10 [walk] if open
+  north@9,1 -> DG11-R15 [walk] if open
+
+DG11-R12  Mirror Orchard  [optional]  18x12
+Homestead glass repeats the four required grafts. The shed already said them.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+##################
+###...############
+###.*.############
+###...############
+#.........########
+#W......g.########
+#.........########
+##################
+##################
+##################
+##################
+  west@1,6 -> DG11-R09 [walk] if open
+
+DG11-R13  Root Heart  [main]  18x12
+Four lock slots show the required grafts in writing.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+#................#
+#................#
+#................#
+#.....##...####..#
+#...*............#
+#W......,...,..,E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG11-R09 [walk] if open
+  east@16,6 -> DG11-R14 [walk] if season.north.WINTER+season.east.BLACK_SNOW+season.west.AUTUMN+season.south.SPRING
+
+DG11-R14  The Winter Graft  [main]  18x12
+The Winter Graft tries to lock the wrong faces. Walk to each arm, set it, and lock it. Two arrows into the winter heart. God-form cannot turn the arms.
+persistent: collected-rewards, grafted-seasons, flags
+reset: boss-phase-if-not-defeated
+##################
+##.....###########
+##..*......#######
+##.............###
+#................#
+#................#
+#.......,.......E#
+#................#
+#................#
+####...........###
+####.....S.....###
+##################
+  south@9,10 -> DG11-R13 [walk] if open
+  east@16,6 -> COUNTY:HOGBACK [walk] if dg11.cleared
+
+DG11-R15  Sparrow Roof  [optional]  18x12
+Cape gust across the roof drops into the south plot, skipping the unpicked row.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+##################
+##.....###########
+##.*...###########
+##.....###########
+#......#....#....#
+#W......GGGG....E#
+#......#....#....#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG11-R01 [walk] if open
+  east@16,6 -> DG11-R11 [walk] if open
+
+DG11-R16  Discarded June  [optional]  18x12
+A discarded summer stored as its own room. A bow target hides a seed. The dials elsewhere do not move.
+persistent: flags, grafted-seasons, collected-rewards
+reset: ungrafted-dials, enemy-positions, boss-phase-if-not-defeated
+##################
+##################
+###...############
+###.*.############
+###...############
+#######...########
+#######.t.########
+#######...########
+#######...########
+#######....#######
+#######..S.#######
+##################
+  south@9,10 -> DG11-R05 [walk] if open

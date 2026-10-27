@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="cache-control-hint" content="no-store" />
+  <title>PREINCARNATION — life desk</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0; background: #12160f; color: #efe6d4;
+      font: 17px/1.45 "Iowan Old Style", Palatino, Georgia, serif;
+    }
+    main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
+    h1 { font-size: 1.6rem; font-weight: 500; margin: 0 0 0.3rem; }
+    p { margin: 0.5rem 0; }
+    .muted { color: #b7aa93; }
+    button, label.file {
+      font: inherit; cursor: pointer; background: #efe6d4; color: #12160f;
+      border: 0; border-radius: 999px; padding: 0.45rem 0.9rem; margin: 0.25rem 0.4rem 0.25rem 0;
+      display: inline-block;
+    }
+    pre {
+      white-space: pre-wrap; background: #1c2418; padding: 0.8rem; border-radius: 8px;
+      font-family: ui-monospace, monospace; font-size: 0.86rem;
+    }
+    .bad { color: #e7a090; }
+    .ok { color: #b7d7a8; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Life desk</h1>
+    <p class="muted">One life on this device. Build <span id="build">…</span>. Nothing here is an account, and nothing is uploaded.</p>
+    <p id="origin" class="muted"></p>
+    <p>
+      <button type="button" id="check">Check for a new build</button>
+      <button type="button" id="export">Download this life</button>
+      <label class="file">Bring a life back<input id="file" type="file" accept="application/json,.json" hidden /></label>
+    </p>
+    <pre id="log">Ready.</pre>
+  </main>
+  <script type="module">
+    import { exportEnvelope, importEnvelope, inspectRawSave } from "./player-data.mjs";
+    import { migrate, SAVE_KEY, SAVE_VERSION } from "./engine/save.js";
+
+    const BUILD_ID = "__BUILD_ID__";
+    const log = document.querySelector("#log");
+    const engine = { migrate, SAVE_KEY, SAVE_VERSION };
+    document.querySelector("#build").textContent = BUILD_ID;
+    const here = location.protocol === "file:" ? "file" : location.origin;
+    document.querySelector("#origin").textContent =
+      location.protocol === "file:"
+        ? "This page was opened as a file. It cannot see the game's save. Open it from the same site as the game, under /release/save-desk.html."
+        : "Saves below belong to " + here + " only. Another browser or another site is a different life.";
+
+    function say(text, kind) {
+      log.textContent = text;
+      log.className = kind || "";
+    }
+
+    function openDb() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open("preincarnation.deck.v1", 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains("files")) db.createObjectStore("files");
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    const deck = {
+      async entries() {
+        const db = await openDb();
+        const keys = await new Promise((resolve, reject) => {
+          const tx = db.transaction("files", "readonly");
+          const req = tx.objectStore("files").getAllKeys();
+          req.onsuccess = () => resolve(req.result || []);
+          req.onerror = () => reject(req.error);
+        });
+        const out = [];
+        for (const key of keys) {
+          const blob = await new Promise((resolve, reject) => {
+            const tx = db.transaction("files", "readonly");
+            const req = tx.objectStore("files").get(key);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+          });
+          if (!blob) continue;
+          out.push({
+            key: String(key),
+            mediaType: blob.type || "application/octet-stream",
+            bytes: new Uint8Array(await blob.arrayBuffer()),
+          });
+        }
+        return out;
+      },
+      async replace(records) {
+        const db = await openDb();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction("files", "readwrite");
+          const store = tx.objectStore("files");
+          store.clear();
+          for (const record of records) {
+            store.put(new Blob([record.bytes], { type: record.mediaType }), record.key);
+          }
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      },
+    };
+
+    document.querySelector("#check").addEventListener("click", async () => {
+      try {
+        const response = await fetch("/release-manifest.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const remote = await response.json();
+        if (!remote.buildId) throw new Error("damaged manifest");
+        if (remote.buildId === BUILD_ID) {
+          say("This is the build the site is serving (" + BUILD_ID + "). The life was not touched.", "ok");
+        } else {
+          say(
+            "The site is serving " + remote.buildId + " and this page is " + BUILD_ID + ".\nDownload this life before you keep playing. This check does not replace files and does not delete the life.",
+            "bad",
+          );
+        }
+      } catch {
+        say(
+          "Offline, or the manifest could not be read. That is not the same as being up to date. The life on this device was left where it is. This build has no offline copy of the world.",
+          "bad",
+        );
+      }
+    });
+
+    document.querySelector("#export").addEventListener("click", async () => {
+      try {
+        const envelope = await exportEnvelope(localStorage, deck, {
+          savedAt: new Date().toISOString(),
+          sourceBuild: BUILD_ID,
+          saveKey: SAVE_KEY,
+          saveVersion: SAVE_VERSION,
+        });
+        const blob = new Blob([JSON.stringify(envelope, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "preincarnation-life.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        const raw = localStorage.getItem(SAVE_KEY);
+        const seen = raw ? inspectRawSave(raw, engine) : { code: "empty" };
+        say("Downloaded preincarnation-life.json (" + (seen.code === "readable" ? seen.name + ", cycle " + seen.cycle : seen.code) + "). Keep that file. This browser can forget you.", "ok");
+      } catch (err) {
+        say("Could not read storage (" + (err && err.name ? err.name : err) + "). Nothing was written.", "bad");
+      }
+    });
+
+    document.querySelector("#file").addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+      const text = await file.text();
+      const result = await importEnvelope(text, { storage: localStorage, deck, engine });
+      if (!result.ok) {
+        say("Not imported (" + result.code + "). The life already on this device was left in place.", "bad");
+        return;
+      }
+      if (result.code === "duplicate") {
+        say("That file is already the life on this device. Nothing was rewritten.", "ok");
+        return;
+      }
+      say("Imported. A rescue copy of what was here before is in this browser under preincarnation.release.rescue. Reload the game to continue that life.", "ok");
+    });
+  </script>
+</body>
+</html>

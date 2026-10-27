@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: fresh install leaves storage empty and a new life readable
+ok 1 - fresh install leaves storage empty and a new life readable
+  ---
+  duration_ms: 3.034897
+  type: 'test'
+  ...
+# Subtest: previous-version update migrates v7 through the engine and keeps a raw backup
+ok 2 - previous-version update migrates v7 through the engine and keeps a raw backup
+  ---
+  duration_ms: 0.676301
+  type: 'test'
+  ...
+# Subtest: rollback to a supported version restores the pre-migration life and refuses a bare v8
+ok 3 - rollback to a supported version restores the pre-migration life and refuses a bare v8
+  ---
+  duration_ms: 0.288504
+  type: 'test'
+  ...
+# Subtest: interrupted launch does not touch the save
+ok 4 - interrupted launch does not touch the save
+  ---
+  duration_ms: 0.241177
+  type: 'test'
+  ...
+# Subtest: damaged import, future save, and duplicate import
+ok 5 - damaged import, future save, and duplicate import
+  ---
+  duration_ms: 1.599885
+  type: 'test'
+  ...
+# Subtest: import keeps an existing backup when the slot is empty
+ok 6 - import keeps an existing backup when the slot is empty
+  ---
+  duration_ms: 0.263372
+  type: 'test'
+  ...
+# Subtest: unavailable storage rolls back the import
+ok 7 - unavailable storage rolls back the import
+  ---
+  duration_ms: 0.485161
+  type: 'test'
+  ...
+# Subtest: boot guard quarantines a future life and snapshots an older one
+ok 8 - boot guard quarantines a future life and snapshots an older one
+  ---
+  duration_ms: 0.256419
+  type: 'test'
+  ...
+# Subtest: engine v1 coordinates are migrated and a garbage blob does not throw
+ok 9 - engine v1 coordinates are migrated and a garbage blob does not throw
+  ---
+  duration_ms: 0.452144
+  type: 'test'
+  ...
+# Subtest: export round-trips the strange-device bytes
+ok 10 - export round-trips the strange-device bytes
+  ---
+  duration_ms: 0.749273
+  type: 'test'
+  ...
+# Subtest: emitted browser save contract matches the engine migrate
+ok 11 - emitted browser save contract matches the engine migrate
+  ---
+  duration_ms: 309.801569
+  type: 'test'
+  ...
+# Subtest: update check stays quiet offline and does not claim currency
+ok 12 - update check stays quiet offline and does not claim currency
+  ---
+  duration_ms: 0.247349
+  type: 'test'
+  ...
+# Subtest: asset rewrite is idempotent and headers refuse a mixed generation
+ok 13 - asset rewrite is idempotent and headers refuse a mixed generation
+  ---
+  duration_ms: 1.834393
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 445.50771

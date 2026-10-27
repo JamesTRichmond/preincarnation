@@ -2,6 +2,9 @@
   "name": "app-builder-workspace",
   "private": true,
   "sideEffects": false,
+  "engines": {
+    "node": ">=22.12"
+  },
   "type": "module",
   "overrides": {
     "nf3": "0.3.17"
@@ -16,7 +19,10 @@
     "preview:stop": "node scripts/preview.mjs stop",
     "typecheck": "tsc --noEmit",
     "check:auth": "node scripts/check-auth-invariant.mjs",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts src/game/rules.test.ts src/game/items.test.ts src/game/save.test.ts support/grok-19-input/test/input.test.ts",
+    "test": "npm run test:game",
+    "test:game": "node --experimental-strip-types --test 'src/**/*.test.ts' 'support/**/*.test.ts' 'support/**/*.test.mjs'",
+    "test:platform": "node --test 'scripts/**/*.test.mjs'",
+    "test:all": "npm run test:game && npm run test:platform",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
