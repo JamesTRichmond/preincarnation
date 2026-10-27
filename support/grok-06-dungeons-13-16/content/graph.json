@@ -1,0 +1,1304 @@
+{
+  "edges": [
+    {
+      "from": "DG13.R01",
+      "exit": "north",
+      "to": "DG13.R02",
+      "requires": [
+        "dg13.platesRead"
+      ]
+    },
+    {
+      "from": "DG13.R02",
+      "exit": "south",
+      "to": "DG13.R01",
+      "requires": []
+    },
+    {
+      "from": "DG13.R02",
+      "exit": "north",
+      "to": "DG13.R03",
+      "requires": [
+        "dg13.clerkPlate"
+      ]
+    },
+    {
+      "from": "DG13.R03",
+      "exit": "south",
+      "to": "DG13.R02",
+      "requires": []
+    },
+    {
+      "from": "DG13.R03",
+      "exit": "north",
+      "to": "DG13.R04",
+      "requires": [
+        "dg13.appointmentsCopied"
+      ]
+    },
+    {
+      "from": "DG13.R04",
+      "exit": "south",
+      "to": "DG13.R03",
+      "requires": []
+    },
+    {
+      "from": "DG13.R04",
+      "exit": "north",
+      "to": "DG13.R05",
+      "requires": [
+        "dg13.lotMeasured"
+      ]
+    },
+    {
+      "from": "DG13.R05",
+      "exit": "south",
+      "to": "DG13.R04",
+      "requires": []
+    },
+    {
+      "from": "DG13.R05",
+      "exit": "north",
+      "to": "DG13.R06",
+      "requires": [
+        "dg13.fenceHeld"
+      ]
+    },
+    {
+      "from": "DG13.R06",
+      "exit": "south",
+      "to": "DG13.R05",
+      "requires": []
+    },
+    {
+      "from": "DG13.R06",
+      "exit": "north",
+      "to": "DG13.R07",
+      "requires": [
+        "dg13.constableOpen"
+      ]
+    },
+    {
+      "from": "DG13.R07",
+      "exit": "south",
+      "to": "DG13.R06",
+      "requires": []
+    },
+    {
+      "from": "DG13.R07",
+      "exit": "north",
+      "to": "DG13.R08",
+      "requires": [
+        "dg13.boardSeated"
+      ]
+    },
+    {
+      "from": "DG13.R08",
+      "exit": "south",
+      "to": "DG13.R07",
+      "requires": []
+    },
+    {
+      "from": "DG13.R08",
+      "exit": "north",
+      "to": "DG13.R09",
+      "requires": [
+        "dg13.gapBridged"
+      ]
+    },
+    {
+      "from": "DG13.R09",
+      "exit": "south",
+      "to": "DG13.R08",
+      "requires": []
+    },
+    {
+      "from": "DG13.R09",
+      "exit": "north",
+      "to": "DG13.R10",
+      "requires": [
+        "disc.erased.overseerBench"
+      ]
+    },
+    {
+      "from": "DG13.R10",
+      "exit": "south",
+      "to": "DG13.R09",
+      "requires": []
+    },
+    {
+      "from": "DG13.R10",
+      "exit": "north",
+      "to": "DG13.R11",
+      "requires": [
+        "dg13.landingTrue"
+      ]
+    },
+    {
+      "from": "DG13.R11",
+      "exit": "south",
+      "to": "DG13.R10",
+      "requires": []
+    },
+    {
+      "from": "DG13.R11",
+      "exit": "north",
+      "to": "DG13.R12",
+      "requires": [
+        "dg13.millAligned"
+      ]
+    },
+    {
+      "from": "DG13.R12",
+      "exit": "south",
+      "to": "DG13.R11",
+      "requires": []
+    },
+    {
+      "from": "DG13.R12",
+      "exit": "north",
+      "to": "DG13.R13",
+      "requires": [
+        "dg13.noWaterYet"
+      ]
+    },
+    {
+      "from": "DG13.R13",
+      "exit": "south",
+      "to": "DG13.R12",
+      "requires": []
+    },
+    {
+      "from": "DG13.R13",
+      "exit": "north",
+      "to": "DG13.R14",
+      "requires": [
+        "dg13.copyFiled"
+      ]
+    },
+    {
+      "from": "DG13.R14",
+      "exit": "south",
+      "to": "DG13.R13",
+      "requires": []
+    },
+    {
+      "from": "DG13.R14",
+      "exit": "north",
+      "to": "DG13.R15",
+      "requires": [
+        "dg13.pegLeftEmpty"
+      ]
+    },
+    {
+      "from": "DG13.R15",
+      "exit": "south",
+      "to": "DG13.R14",
+      "requires": []
+    },
+    {
+      "from": "DG13.R15",
+      "exit": "north",
+      "to": "DG13.R16",
+      "requires": [
+        "dg13.emptyMayorAdjourned"
+      ]
+    },
+    {
+      "from": "DG13.R16",
+      "exit": "south",
+      "to": "DG13.R15",
+      "requires": []
+    },
+    {
+      "from": "DG13.R16",
+      "exit": "north",
+      "to": "DG14.R01",
+      "requires": [
+        "dg13.emptyMayorAdjourned"
+      ]
+    },
+    {
+      "from": "DG14.R01",
+      "exit": "south",
+      "to": "DG13.R16",
+      "requires": []
+    },
+    {
+      "from": "DG14.R01",
+      "exit": "north",
+      "to": "DG14.R02",
+      "requires": [
+        "dg14.iceMarked",
+        "dg14.glassLesson"
+      ]
+    },
+    {
+      "from": "DG14.R02",
+      "exit": "south",
+      "to": "DG14.R01",
+      "requires": []
+    },
+    {
+      "from": "DG14.R02",
+      "exit": "north",
+      "to": "DG14.R03",
+      "requires": [
+        "dg14.trueDoorSeen"
+      ]
+    },
+    {
+      "from": "DG14.R03",
+      "exit": "south",
+      "to": "DG14.R02",
+      "requires": []
+    },
+    {
+      "from": "DG14.R03",
+      "exit": "north",
+      "to": "DG14.R04",
+      "requires": [
+        "dg14.shedThawed"
+      ]
+    },
+    {
+      "from": "DG14.R04",
+      "exit": "south",
+      "to": "DG14.R03",
+      "requires": []
+    },
+    {
+      "from": "DG14.R04",
+      "exit": "north",
+      "to": "DG14.R05",
+      "requires": [
+        "dg14.otterCrossed"
+      ]
+    },
+    {
+      "from": "DG14.R05",
+      "exit": "south",
+      "to": "DG14.R04",
+      "requires": []
+    },
+    {
+      "from": "DG14.R05",
+      "exit": "north",
+      "to": "DG14.R06",
+      "requires": [
+        "dg14.archiveRead"
+      ]
+    },
+    {
+      "from": "DG14.R06",
+      "exit": "south",
+      "to": "DG14.R05",
+      "requires": []
+    },
+    {
+      "from": "DG14.R06",
+      "exit": "north",
+      "to": "DG14.R07",
+      "requires": [
+        "dg14.bridgeLatched"
+      ]
+    },
+    {
+      "from": "DG14.R07",
+      "exit": "south",
+      "to": "DG14.R06",
+      "requires": []
+    },
+    {
+      "from": "DG14.R07",
+      "exit": "north",
+      "to": "DG14.R08",
+      "requires": [
+        "dg14.kitchenPassed"
+      ]
+    },
+    {
+      "from": "DG14.R08",
+      "exit": "south",
+      "to": "DG14.R07",
+      "requires": []
+    },
+    {
+      "from": "DG14.R08",
+      "exit": "north",
+      "to": "DG14.R09",
+      "requires": [
+        "disc.quiet.windowUnderIce"
+      ]
+    },
+    {
+      "from": "DG14.R09",
+      "exit": "south",
+      "to": "DG14.R08",
+      "requires": []
+    },
+    {
+      "from": "DG14.R09",
+      "exit": "north",
+      "to": "DG14.R10",
+      "requires": [
+        "disc.erased.otterNightShift"
+      ]
+    },
+    {
+      "from": "DG14.R10",
+      "exit": "south",
+      "to": "DG14.R09",
+      "requires": []
+    },
+    {
+      "from": "DG14.R10",
+      "exit": "north",
+      "to": "DG14.R11",
+      "requires": [
+        "dg14.trueFall"
+      ]
+    },
+    {
+      "from": "DG14.R11",
+      "exit": "south",
+      "to": "DG14.R10",
+      "requires": []
+    },
+    {
+      "from": "DG14.R11",
+      "exit": "north",
+      "to": "DG14.R12",
+      "requires": [
+        "dg14.pilingsCrossed"
+      ]
+    },
+    {
+      "from": "DG14.R12",
+      "exit": "south",
+      "to": "DG14.R11",
+      "requires": []
+    },
+    {
+      "from": "DG14.R12",
+      "exit": "north",
+      "to": "DG14.R13",
+      "requires": [
+        "dg14.backwardsRead"
+      ]
+    },
+    {
+      "from": "DG14.R13",
+      "exit": "south",
+      "to": "DG14.R12",
+      "requires": []
+    },
+    {
+      "from": "DG14.R13",
+      "exit": "north",
+      "to": "DG14.R14",
+      "requires": [
+        "dg14.orchardCrossed"
+      ]
+    },
+    {
+      "from": "DG14.R14",
+      "exit": "south",
+      "to": "DG14.R13",
+      "requires": []
+    },
+    {
+      "from": "DG14.R14",
+      "exit": "north",
+      "to": "DG14.R15",
+      "requires": [
+        "dg14.tableWitnessed"
+      ]
+    },
+    {
+      "from": "DG14.R15",
+      "exit": "south",
+      "to": "DG14.R14",
+      "requires": []
+    },
+    {
+      "from": "DG14.R15",
+      "exit": "north",
+      "to": "DG14.R16",
+      "requires": [
+        "dg14.antechamberReady"
+      ]
+    },
+    {
+      "from": "DG14.R16",
+      "exit": "south",
+      "to": "DG14.R15",
+      "requires": []
+    },
+    {
+      "from": "DG14.R16",
+      "exit": "north",
+      "to": "DG14.R17",
+      "requires": [
+        "dg14.otherShoreNamed"
+      ]
+    },
+    {
+      "from": "DG14.R17",
+      "exit": "south",
+      "to": "DG14.R16",
+      "requires": []
+    },
+    {
+      "from": "DG14.R17",
+      "exit": "north",
+      "to": "DG15.R01",
+      "requires": [
+        "dg14.otherShoreNamed"
+      ]
+    },
+    {
+      "from": "DG15.R01",
+      "exit": "south",
+      "to": "DG14.R17",
+      "requires": []
+    },
+    {
+      "from": "DG15.R01",
+      "exit": "north",
+      "to": "DG15.R02",
+      "requires": [
+        "dg15.entered"
+      ]
+    },
+    {
+      "from": "DG15.R02",
+      "exit": "south",
+      "to": "DG15.R01",
+      "requires": []
+    },
+    {
+      "from": "DG15.R02",
+      "exit": "north",
+      "to": "DG15.R03",
+      "requires": [
+        "dg15.pressJammed"
+      ]
+    },
+    {
+      "from": "DG15.R03",
+      "exit": "south",
+      "to": "DG15.R02",
+      "requires": []
+    },
+    {
+      "from": "DG15.R03",
+      "exit": "north",
+      "to": "DG15.R04",
+      "requires": [
+        "dg15.moldsRead"
+      ]
+    },
+    {
+      "from": "DG15.R04",
+      "exit": "south",
+      "to": "DG15.R03",
+      "requires": []
+    },
+    {
+      "from": "DG15.R04",
+      "exit": "north",
+      "to": "DG15.R05",
+      "requires": [
+        "dg15.valvesOpen"
+      ]
+    },
+    {
+      "from": "DG15.R05",
+      "exit": "south",
+      "to": "DG15.R04",
+      "requires": []
+    },
+    {
+      "from": "DG15.R05",
+      "exit": "north",
+      "to": "DG15.R06",
+      "requires": [
+        "dg15.blueprintAligned"
+      ]
+    },
+    {
+      "from": "DG15.R06",
+      "exit": "south",
+      "to": "DG15.R05",
+      "requires": []
+    },
+    {
+      "from": "DG15.R06",
+      "exit": "north",
+      "to": "DG15.R07",
+      "requires": [
+        "disc.erased.foundryClock"
+      ]
+    },
+    {
+      "from": "DG15.R07",
+      "exit": "south",
+      "to": "DG15.R06",
+      "requires": []
+    },
+    {
+      "from": "DG15.R07",
+      "exit": "north",
+      "to": "DG15.R08",
+      "requires": [
+        "disc.quiet.rejectedPattern"
+      ]
+    },
+    {
+      "from": "DG15.R08",
+      "exit": "south",
+      "to": "DG15.R07",
+      "requires": []
+    },
+    {
+      "from": "DG15.R08",
+      "exit": "north",
+      "to": "DG15.R09",
+      "requires": [
+        "dg15.familyArchPassed"
+      ]
+    },
+    {
+      "from": "DG15.R09",
+      "exit": "south",
+      "to": "DG15.R08",
+      "requires": []
+    },
+    {
+      "from": "DG15.R09",
+      "exit": "north",
+      "to": "DG15.R10",
+      "requires": [
+        "dg15.traysPassed"
+      ]
+    },
+    {
+      "from": "DG15.R10",
+      "exit": "south",
+      "to": "DG15.R09",
+      "requires": []
+    },
+    {
+      "from": "DG15.R10",
+      "exit": "north",
+      "to": "DG15.R11",
+      "requires": [
+        "dg15.wheelsCoupled"
+      ]
+    },
+    {
+      "from": "DG15.R11",
+      "exit": "south",
+      "to": "DG15.R10",
+      "requires": []
+    },
+    {
+      "from": "DG15.R11",
+      "exit": "north",
+      "to": "DG15.R12",
+      "requires": [
+        "dg15.ferryFloorPassed"
+      ]
+    },
+    {
+      "from": "DG15.R12",
+      "exit": "south",
+      "to": "DG15.R11",
+      "requires": []
+    },
+    {
+      "from": "DG15.R12",
+      "exit": "north",
+      "to": "DG15.R13",
+      "requires": [
+        "dg15.stackCrossed"
+      ]
+    },
+    {
+      "from": "DG15.R13",
+      "exit": "south",
+      "to": "DG15.R12",
+      "requires": []
+    },
+    {
+      "from": "DG15.R13",
+      "exit": "north",
+      "to": "DG15.R14",
+      "requires": [
+        "dg15.orderAddressed"
+      ]
+    },
+    {
+      "from": "DG15.R14",
+      "exit": "south",
+      "to": "DG15.R13",
+      "requires": []
+    },
+    {
+      "from": "DG15.R14",
+      "exit": "north",
+      "to": "DG15.R15",
+      "requires": [
+        "dg15.unpouredCrossed"
+      ]
+    },
+    {
+      "from": "DG15.R15",
+      "exit": "south",
+      "to": "DG15.R14",
+      "requires": []
+    },
+    {
+      "from": "DG15.R15",
+      "exit": "north",
+      "to": "DG15.R16",
+      "requires": [
+        "dg15.anteReady"
+      ]
+    },
+    {
+      "from": "DG15.R16",
+      "exit": "south",
+      "to": "DG15.R15",
+      "requires": []
+    },
+    {
+      "from": "DG15.R16",
+      "exit": "north",
+      "to": "DG15.R17",
+      "requires": [
+        "dg15.surveyorUnfinished"
+      ]
+    },
+    {
+      "from": "DG15.R17",
+      "exit": "south",
+      "to": "DG15.R16",
+      "requires": []
+    },
+    {
+      "from": "DG15.R17",
+      "exit": "north",
+      "to": "DG16.HUB",
+      "requires": [
+        "dg15.surveyorUnfinished"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "fiction",
+      "to": "DG16.F1",
+      "requires": [
+        "cleared.DG16.HUB"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "fact",
+      "to": "DG16.FA1",
+      "requires": [
+        "cleared.DG16.HUB"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "imagination",
+      "to": "DG16.I1",
+      "requires": [
+        "cleared.DG16.HUB"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "history",
+      "to": "DG16.H1",
+      "requires": [
+        "cleared.DG16.HUB"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "back-drain",
+      "to": "DG15.R17",
+      "requires": []
+    },
+    {
+      "from": "DG16.F1",
+      "exit": "south",
+      "to": "DG16.HUB",
+      "requires": []
+    },
+    {
+      "from": "DG16.F1",
+      "exit": "north",
+      "to": "DG16.F2",
+      "requires": [
+        "dg16.f.rope"
+      ]
+    },
+    {
+      "from": "DG16.FA1",
+      "exit": "west",
+      "to": "DG16.HUB",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA1",
+      "exit": "north",
+      "to": "DG16.FA2",
+      "requires": [
+        "dg16.fact.benchmarkCopied"
+      ]
+    },
+    {
+      "from": "DG16.I1",
+      "exit": "east",
+      "to": "DG16.HUB",
+      "requires": []
+    },
+    {
+      "from": "DG16.I1",
+      "exit": "north",
+      "to": "DG16.I2",
+      "requires": [
+        "dg16.i.moatCrossed"
+      ]
+    },
+    {
+      "from": "DG16.H1",
+      "exit": "south",
+      "to": "DG16.HUB",
+      "requires": []
+    },
+    {
+      "from": "DG16.H1",
+      "exit": "north",
+      "to": "DG16.H2",
+      "requires": [
+        "dg16.hist.cutbank"
+      ]
+    },
+    {
+      "from": "DG16.F2",
+      "exit": "south",
+      "to": "DG16.F1",
+      "requires": []
+    },
+    {
+      "from": "DG16.F2",
+      "exit": "north",
+      "to": "DG16.F3",
+      "requires": [
+        "dg16.f.vacant"
+      ]
+    },
+    {
+      "from": "DG16.FA2",
+      "exit": "south",
+      "to": "DG16.FA1",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA2",
+      "exit": "north",
+      "to": "DG16.FA3",
+      "requires": [
+        "dg16.fact.otterMeasured"
+      ]
+    },
+    {
+      "from": "DG16.I2",
+      "exit": "south",
+      "to": "DG16.I1",
+      "requires": []
+    },
+    {
+      "from": "DG16.I2",
+      "exit": "north",
+      "to": "DG16.I3",
+      "requires": [
+        "dg16.i.wishCrossed"
+      ]
+    },
+    {
+      "from": "DG16.H2",
+      "exit": "south",
+      "to": "DG16.H1",
+      "requires": []
+    },
+    {
+      "from": "DG16.H2",
+      "exit": "north",
+      "to": "DG16.H3",
+      "requires": [
+        "disc.quiet.heartUnmapped"
+      ]
+    },
+    {
+      "from": "DG16.F3",
+      "exit": "south",
+      "to": "DG16.F2",
+      "requires": []
+    },
+    {
+      "from": "DG16.F3",
+      "exit": "north",
+      "to": "DG16.F4",
+      "requires": [
+        "dg16.f.spoken"
+      ]
+    },
+    {
+      "from": "DG16.FA3",
+      "exit": "south",
+      "to": "DG16.FA2",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA3",
+      "exit": "north",
+      "to": "DG16.FA4",
+      "requires": [
+        "dg16.fact.flatsCrossed"
+      ]
+    },
+    {
+      "from": "DG16.I3",
+      "exit": "south",
+      "to": "DG16.I2",
+      "requires": []
+    },
+    {
+      "from": "DG16.I3",
+      "exit": "north",
+      "to": "DG16.I4",
+      "requires": [
+        "dg16.i.chairsLeft"
+      ]
+    },
+    {
+      "from": "DG16.H3",
+      "exit": "south",
+      "to": "DG16.H2",
+      "requires": []
+    },
+    {
+      "from": "DG16.H3",
+      "exit": "north",
+      "to": "DG16.H4",
+      "requires": [
+        "dg16.hist.winterLit"
+      ]
+    },
+    {
+      "from": "DG16.F4",
+      "exit": "south",
+      "to": "DG16.F3",
+      "requires": []
+    },
+    {
+      "from": "DG16.F4",
+      "exit": "north",
+      "to": "DG16.F5",
+      "requires": [
+        "dg16.f.snowCrossed"
+      ]
+    },
+    {
+      "from": "DG16.FA4",
+      "exit": "south",
+      "to": "DG16.FA3",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA4",
+      "exit": "north",
+      "to": "DG16.FA5",
+      "requires": [
+        "dg16.fact.wheelSet"
+      ]
+    },
+    {
+      "from": "DG16.I4",
+      "exit": "south",
+      "to": "DG16.I3",
+      "requires": []
+    },
+    {
+      "from": "DG16.I4",
+      "exit": "north",
+      "to": "DG16.I5",
+      "requires": [
+        "dg16.i.wheelGrounded"
+      ]
+    },
+    {
+      "from": "DG16.H4",
+      "exit": "south",
+      "to": "DG16.H3",
+      "requires": []
+    },
+    {
+      "from": "DG16.H4",
+      "exit": "north",
+      "to": "DG16.H5",
+      "requires": [
+        "dg16.hist.willRead"
+      ]
+    },
+    {
+      "from": "DG16.F5",
+      "exit": "south",
+      "to": "DG16.F4",
+      "requires": []
+    },
+    {
+      "from": "DG16.F5",
+      "exit": "north",
+      "to": "DG16.F6",
+      "requires": [
+        "dg16.f.circleSafe"
+      ]
+    },
+    {
+      "from": "DG16.FA5",
+      "exit": "south",
+      "to": "DG16.FA4",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA5",
+      "exit": "north",
+      "to": "DG16.FA6",
+      "requires": [
+        "dg16.fact.charterHeld"
+      ]
+    },
+    {
+      "from": "DG16.I5",
+      "exit": "south",
+      "to": "DG16.I4",
+      "requires": []
+    },
+    {
+      "from": "DG16.I5",
+      "exit": "north",
+      "to": "DG16.I6",
+      "requires": [
+        "dg16.i.crossingImagined"
+      ]
+    },
+    {
+      "from": "DG16.H5",
+      "exit": "south",
+      "to": "DG16.H4",
+      "requires": []
+    },
+    {
+      "from": "DG16.H5",
+      "exit": "north",
+      "to": "DG16.H6",
+      "requires": [
+        "dg16.hist.fordCrossed"
+      ]
+    },
+    {
+      "from": "DG16.F6",
+      "exit": "south",
+      "to": "DG16.F5",
+      "requires": []
+    },
+    {
+      "from": "DG16.F6",
+      "exit": "north",
+      "to": "DG16.F7",
+      "requires": [
+        "dg16.f.trueLife"
+      ]
+    },
+    {
+      "from": "DG16.FA6",
+      "exit": "south",
+      "to": "DG16.FA5",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA6",
+      "exit": "north",
+      "to": "DG16.FA7",
+      "requires": [
+        "disc.erased.grandListHole"
+      ]
+    },
+    {
+      "from": "DG16.I6",
+      "exit": "south",
+      "to": "DG16.I5",
+      "requires": []
+    },
+    {
+      "from": "DG16.I6",
+      "exit": "north",
+      "to": "DG16.I7",
+      "requires": [
+        "dg16.i.pathGrown"
+      ]
+    },
+    {
+      "from": "DG16.H6",
+      "exit": "south",
+      "to": "DG16.H5",
+      "requires": []
+    },
+    {
+      "from": "DG16.H6",
+      "exit": "north",
+      "to": "DG16.H7",
+      "requires": [
+        "dg16.hist.wheelTurned"
+      ]
+    },
+    {
+      "from": "DG16.F7",
+      "exit": "south",
+      "to": "DG16.F6",
+      "requires": []
+    },
+    {
+      "from": "DG16.F7",
+      "exit": "north",
+      "to": "DG16.F8",
+      "requires": [
+        "dg16.f.pageCut"
+      ]
+    },
+    {
+      "from": "DG16.FA7",
+      "exit": "south",
+      "to": "DG16.FA6",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA7",
+      "exit": "north",
+      "to": "DG16.FA8",
+      "requires": [
+        "dg16.fact.acreBridged"
+      ]
+    },
+    {
+      "from": "DG16.I7",
+      "exit": "south",
+      "to": "DG16.I6",
+      "requires": []
+    },
+    {
+      "from": "DG16.I7",
+      "exit": "north",
+      "to": "DG16.I8",
+      "requires": [
+        "dg16.i.otherResolved"
+      ]
+    },
+    {
+      "from": "DG16.H7",
+      "exit": "south",
+      "to": "DG16.H6",
+      "requires": []
+    },
+    {
+      "from": "DG16.H7",
+      "exit": "north",
+      "to": "DG16.H8",
+      "requires": [
+        "dg16.hist.wallWalked"
+      ]
+    },
+    {
+      "from": "DG16.F8",
+      "exit": "south",
+      "to": "DG16.F7",
+      "requires": []
+    },
+    {
+      "from": "DG16.F8",
+      "exit": "north",
+      "to": "DG16.HUB",
+      "requires": [
+        "dg16.fiction.complete"
+      ]
+    },
+    {
+      "from": "DG16.FA8",
+      "exit": "south",
+      "to": "DG16.FA7",
+      "requires": []
+    },
+    {
+      "from": "DG16.FA8",
+      "exit": "north",
+      "to": "DG16.HUB",
+      "requires": [
+        "dg16.fact.complete"
+      ]
+    },
+    {
+      "from": "DG16.I8",
+      "exit": "south",
+      "to": "DG16.I7",
+      "requires": []
+    },
+    {
+      "from": "DG16.I8",
+      "exit": "north",
+      "to": "DG16.HUB",
+      "requires": [
+        "dg16.imagination.complete"
+      ]
+    },
+    {
+      "from": "DG16.HUB",
+      "exit": "heart",
+      "to": "DG16.GATE",
+      "requires": [
+        "dg16.fiction.complete",
+        "dg16.fact.complete",
+        "dg16.history.complete",
+        "dg16.imagination.complete"
+      ]
+    },
+    {
+      "from": "DG16.H8",
+      "exit": "south",
+      "to": "DG16.H7",
+      "requires": []
+    },
+    {
+      "from": "DG16.H8",
+      "exit": "north",
+      "to": "DG16.HUB",
+      "requires": [
+        "disc.quiet.nailPlaced",
+        "dg16.history.complete"
+      ]
+    },
+    {
+      "from": "DG16.GATE",
+      "exit": "south",
+      "to": "DG16.HUB",
+      "requires": []
+    },
+    {
+      "from": "DG16.GATE",
+      "exit": "north",
+      "to": "DG16.SEAM",
+      "requires": [
+        "dg16.gate.read"
+      ]
+    },
+    {
+      "from": "DG16.SEAM",
+      "exit": "south",
+      "to": "DG16.GATE",
+      "requires": []
+    }
+  ],
+  "reached": [
+    "DG13.R01",
+    "DG13.R02",
+    "DG13.R03",
+    "DG13.R04",
+    "DG13.R05",
+    "DG13.R06",
+    "DG13.R07",
+    "DG13.R08",
+    "DG13.R09",
+    "DG13.R10",
+    "DG13.R11",
+    "DG13.R12",
+    "DG13.R13",
+    "DG13.R14",
+    "DG13.R15",
+    "DG13.R16",
+    "DG14.R01",
+    "DG14.R02",
+    "DG14.R03",
+    "DG14.R04",
+    "DG14.R05",
+    "DG14.R06",
+    "DG14.R07",
+    "DG14.R08",
+    "DG14.R09",
+    "DG14.R10",
+    "DG14.R11",
+    "DG14.R12",
+    "DG14.R13",
+    "DG14.R14",
+    "DG14.R15",
+    "DG14.R16",
+    "DG14.R17",
+    "DG15.R01",
+    "DG15.R02",
+    "DG15.R03",
+    "DG15.R04",
+    "DG15.R05",
+    "DG15.R06",
+    "DG15.R07",
+    "DG15.R08",
+    "DG15.R09",
+    "DG15.R10",
+    "DG15.R11",
+    "DG15.R12",
+    "DG15.R13",
+    "DG15.R14",
+    "DG15.R15",
+    "DG15.R16",
+    "DG15.R17",
+    "DG16.HUB",
+    "DG16.F1",
+    "DG16.FA1",
+    "DG16.I1",
+    "DG16.H1",
+    "DG16.F2",
+    "DG16.FA2",
+    "DG16.I2",
+    "DG16.H2",
+    "DG16.F3",
+    "DG16.FA3",
+    "DG16.I3",
+    "DG16.H3",
+    "DG16.F4",
+    "DG16.FA4",
+    "DG16.I4",
+    "DG16.H4",
+    "DG16.F5",
+    "DG16.FA5",
+    "DG16.I5",
+    "DG16.H5",
+    "DG16.F6",
+    "DG16.FA6",
+    "DG16.I6",
+    "DG16.H6",
+    "DG16.F7",
+    "DG16.FA7",
+    "DG16.I7",
+    "DG16.H7",
+    "DG16.F8",
+    "DG16.FA8",
+    "DG16.I8",
+    "DG16.H8",
+    "DG16.GATE",
+    "DG16.SEAM"
+  ]
+}

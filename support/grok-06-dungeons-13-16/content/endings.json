@@ -1,0 +1,885 @@
+{
+  "mappingStatus": "PENDING",
+  "note": "Four commits. Eligibility may overlap. campaign.ending is a single field. Sequences are the playable selection plus eight county scenes plus credits.",
+  "endings": [
+    {
+      "id": "keep",
+      "title": "Keep the Seam",
+      "mappingStatus": "PENDING",
+      "eligibilityRef": "systems/eligibility.json",
+      "selection": [
+        {
+          "event": "write-line",
+          "line": "keep",
+          "note": "Write the lectern's keep line: The seam stays open in my keeping."
+        },
+        {
+          "event": "hang-coat",
+          "note": "Hang the current coat on the seam peg."
+        },
+        {
+          "event": "place-needle",
+          "note": "Lay the marble needle on the crack."
+        },
+        {
+          "event": "confirm-keep",
+          "note": "Confirm. campaign.ending becomes keep."
+        }
+      ],
+      "worldRules": {
+        "seamOpen": true,
+        "fourteenYearDeathContinues": true,
+        "holder": "ellis",
+        "administered": true,
+        "deathIsFinal": false
+      },
+      "vignettes": [
+        {
+          "id": "keep.farm",
+          "domain": "farm",
+          "title": "The lane past the cedars",
+          "spawn": "Addison flats, a cedar lane, a gate.",
+          "observe": {
+            "prepared": "The gate you mended still latches. One unlisted furrow keeps producing because the seam stays open in your keeping, and the farm does not ask the office before it cuts that furrow.",
+            "neglected": "The lane is thistled. The open seam drafts through a field you did not help, and the draft is not weather. Nothing here knows how to hold what you kept.",
+            "opposed": "You sided with the office against these acres. They stay fenced to the survey. The seam you kept does not cross that fence.",
+            "unknown": "No record says you helped this farm. The lane is only a lane. The open seam is elsewhere."
+          },
+          "action": {
+            "input": "open-gate",
+            "result": "The gate moves. The lane has been witnessed."
+          },
+          "next": "keep.mill"
+        },
+        {
+          "id": "keep.mill",
+          "domain": "mill",
+          "title": "The race",
+          "spawn": "Otter Creek, the mill race, the near wheel.",
+          "observe": {
+            "prepared": "The race you helped clear still feeds the wheel. The mill keeps a second, unlisted turning for the seam you held, and it grinds that grain apart from the office books.",
+            "neglected": "The wheel turns when the creek says so. An open seam adds a shiver to the shaft that the miller cannot use.",
+            "opposed": "The mill you opposed runs only the hours the office posted. Your open seam is not allowed on the race.",
+            "unknown": "The mill has no record of you. It runs. It does not answer the seam."
+          },
+          "action": {
+            "input": "touch-wheel",
+            "result": "The wheel answers the hand or it doesn't. The scene releases."
+          },
+          "next": "keep.crossing"
+        },
+        {
+          "id": "keep.crossing",
+          "domain": "crossing",
+          "title": "The ford",
+          "spawn": "The creek crossing, stones or scow as the record allows.",
+          "observe": {
+            "prepared": "The ford you helped keep still takes a cart. The tender knows the seam is open and still decides, alone, when the scow goes.",
+            "neglected": "The crossing is a rumor of stones. Keeping the seam did not build a way over.",
+            "opposed": "The crossing is posted shut in your hand as much as the office's. An open seam does not erase the posting.",
+            "unknown": "No one at the ford remembers your help. Travelers cross or they don't. The seam is not their business."
+          },
+          "action": {
+            "input": "step-ford",
+            "result": "You step the near stone and step back. The crossing is witnessed."
+          },
+          "next": "keep.family"
+        },
+        {
+          "id": "keep.family",
+          "domain": "family",
+          "title": "The kitchen",
+          "spawn": "A kitchen on a town road. Bowls. Chairs.",
+          "observe": {
+            "reunited": "The kitchen you helped bring back to one table sets a place for the body you still change out of. They do not manage the seam. They know you kept it.",
+            "scattered": "The household is in more than one house. Keeping the seam gives them no table to put a share on.",
+            "estranged": "The chairs still face the walls. An open seam in your keeping does not turn them.",
+            "unknown": "The family has no record of a mending. Supper is ordinary. You are not in it."
+          },
+          "action": {
+            "input": "stand-at-the-door",
+            "result": "You do not sit as a ruler. The kitchen is witnessed."
+          },
+          "next": "keep.office"
+        },
+        {
+          "id": "keep.office",
+          "domain": null,
+          "title": "The town office",
+          "spawn": "The office the empty mayor left.",
+          "observe": "The minute book shows an adjournment. The chair is empty. The county goes on with a keeper who is not the chair.",
+          "variants": [
+            {
+              "ifFlag": "dg13.mayorSealedVacant",
+              "text": "The ordinance is sealed vacant. The office likes the stamp more than it likes you."
+            },
+            {
+              "ifFlag": "dg13.mayorWrittenVacant",
+              "text": "The ordinance is written vacant in the field book. The office has no stamp to hide behind."
+            }
+          ],
+          "action": {
+            "input": "read-minute",
+            "result": "You close the minute. The office does not follow you out."
+          },
+          "next": "keep.shore"
+        },
+        {
+          "id": "keep.shore",
+          "domain": null,
+          "title": "The lake cut",
+          "spawn": "The Champlain cut, after the other shore was named.",
+          "observe": "The other shore stays other. Water is crossable by the unfinished life, because you kept that crossing possible.",
+          "variants": [],
+          "action": {
+            "input": "look-out",
+            "result": "You look and do not rename it."
+          },
+          "next": "keep.erased"
+        },
+        {
+          "id": "keep.erased",
+          "domain": null,
+          "title": "The gouged names",
+          "spawn": "The bridge timber where the night shift was cut out.",
+          "observe": "The gouges are still gouges. Keeping the seam did not write the night shift back onto the list. You can read them. You are not their clerk.",
+          "variants": [],
+          "action": {
+            "input": "read-gouges",
+            "result": "You read the names that the lamp already showed you. You add no title."
+          },
+          "next": "keep.quiet"
+        },
+        {
+          "id": "keep.quiet",
+          "domain": null,
+          "title": "The unmapped kitchen",
+          "spawn": "A house the grand list skipped. Three bowls.",
+          "observe": "The unmapped kitchen is still unmapped. Three bowls. You kept the seam and did not appoint the household to anything.",
+          "variants": [
+            {
+              "ifFlag": "disc.quiet.unappointedPlaque",
+              "text": "You remember the roof plaque: the house that was never appointed. This is that house."
+            }
+          ],
+          "action": {
+            "input": "look-in",
+            "result": "You look. You do not give them a plate on the office wall."
+          },
+          "next": "keep.credits"
+        }
+      ],
+      "credits": {
+        "id": "keep.credits",
+        "beats": [
+          {
+            "beats": 4,
+            "text": "PREINCARNATION"
+          },
+          {
+            "beats": 4,
+            "text": "Addison County"
+          },
+          {
+            "beats": 4,
+            "text": "Ellis Perch"
+          },
+          {
+            "beats": 5,
+            "text": "Offices, lake, foundry, vein"
+          },
+          {
+            "beats": 6,
+            "text": "The seam stays open in Ellis's keeping."
+          }
+        ],
+        "afterLastBeat": "finish-credits"
+      },
+      "postCompletion": {
+        "save": {
+          "campaign.ending": "keep",
+          "meta.terminal": true,
+          "meta.yearFrozen": true,
+          "meta.deathEnabled": false,
+          "meta.lecternLocked": true,
+          "meta.dungeonReentry": "museum",
+          "meta.bossesRespawn": false,
+          "meta.toolsPreserved": true
+        },
+        "loadSpawn": {
+          "room": "EPILOGUE.PORCH",
+          "x": 9,
+          "y": 7
+        },
+        "newGame": "separate-slot-only",
+        "completedSlot": "The completed slot loads the porch. The lectern does not offer the four choices again. Bosses do not respawn. Dungeons can be walked as quiet rooms. Death does not run. Year does not advance. Tools remain. A new game is another slot and does not clear this one.",
+        "world": {
+          "seamOpen": true,
+          "fourteenYearDeathContinues": true,
+          "holder": "ellis",
+          "administered": true,
+          "deathIsFinal": false
+        }
+      }
+    },
+    {
+      "id": "close",
+      "title": "Close the Seam",
+      "mappingStatus": "PENDING",
+      "eligibilityRef": "systems/eligibility.json",
+      "selection": [
+        {
+          "event": "write-line",
+          "line": "close",
+          "note": "Write the lectern's close line."
+        },
+        {
+          "event": "stamp-seal",
+          "note": "Stamp the crack with the office seal."
+        },
+        {
+          "event": "latch-chain",
+          "note": "Latch the field chain across the crack and leave it."
+        },
+        {
+          "event": "confirm-close",
+          "note": "Confirm. campaign.ending becomes close."
+        }
+      ],
+      "worldRules": {
+        "seamOpen": false,
+        "fourteenYearDeathContinues": false,
+        "holder": "none",
+        "administered": true,
+        "deathIsFinal": true
+      },
+      "vignettes": [
+        {
+          "id": "close.farm",
+          "domain": "farm",
+          "title": "The lane past the cedars",
+          "spawn": "Addison flats, a cedar lane, a gate.",
+          "observe": {
+            "prepared": "The gate you mended still latches. The unlisted furrow is gone. What you helped them grow is only what can be written down, and the books are now complete.",
+            "neglected": "The thistles remain, and nothing uncanny moves them. Closing the seam made this field ordinary, which is not the same as tended.",
+            "opposed": "The office fence you backed is the only fence. With the seam shut there is no acre left that the survey failed to name.",
+            "unknown": "The farm does not remember you. It also does not remember a crack in the air. Both absences look like peace from the road."
+          },
+          "action": {
+            "input": "open-gate",
+            "result": "The gate moves. The lane has been witnessed."
+          },
+          "next": "close.mill"
+        },
+        {
+          "id": "close.mill",
+          "domain": "mill",
+          "title": "The race",
+          "spawn": "Otter Creek, the mill race, the near wheel.",
+          "observe": {
+            "prepared": "The race runs true and only true. The second turning you had made room for does not spin. The miller keeps the settlement and loses the unlisted grain.",
+            "neglected": "The wheel is as you left it. Shutting the seam did not repair a race.",
+            "opposed": "The posted hours are the only hours. The office gets the county it measured, including this wheel.",
+            "unknown": "The mill grinds what the creek brings. No one mentions you, or a seam."
+          },
+          "action": {
+            "input": "touch-wheel",
+            "result": "The wheel answers the hand or it doesn't. The scene releases."
+          },
+          "next": "close.crossing"
+        },
+        {
+          "id": "close.crossing",
+          "domain": "crossing",
+          "title": "The ford",
+          "spawn": "The creek crossing, stones or scow as the record allows.",
+          "observe": {
+            "prepared": "The scow you helped keep still crosses. It crosses a finished lake. The tender's judgment is ordinary judgment now.",
+            "neglected": "The ford is as poor as you left it. Closing the seam did not lay stones.",
+            "opposed": "The posted closure holds. There is no other shore arguing with it anymore.",
+            "unknown": "Travelers use the crossing or they don't. The water is only water."
+          },
+          "action": {
+            "input": "step-ford",
+            "result": "You step the near stone and step back. The crossing is witnessed."
+          },
+          "next": "close.family"
+        },
+        {
+          "id": "close.family",
+          "domain": "family",
+          "title": "The kitchen",
+          "spawn": "A kitchen on a town road. Bowls. Chairs.",
+          "observe": {
+            "reunited": "The table you helped pull back together stays set. No extra place appears for a life that was not poured. They live in the one county.",
+            "scattered": "The houses stay separate. A shut seam does not gather them.",
+            "estranged": "The turned chairs stay turned. Nothing from the vein sits down.",
+            "unknown": "Supper happens without a record of you. The room is only a room."
+          },
+          "action": {
+            "input": "stand-at-the-door",
+            "result": "You do not sit as a ruler. The kitchen is witnessed."
+          },
+          "next": "close.office"
+        },
+        {
+          "id": "close.office",
+          "domain": null,
+          "title": "The town office",
+          "spawn": "The office the empty mayor left.",
+          "observe": "The minute book closes with the seam. The empty chair stays empty and will not be argued with again.",
+          "variants": [
+            {
+              "ifFlag": "dg15.falseCharter",
+              "text": "The false charter you stamped at the foundry is in the drawer, and it looks like foresight now."
+            }
+          ],
+          "action": {
+            "input": "read-minute",
+            "result": "You leave the minute shut."
+          },
+          "next": "close.shore"
+        },
+        {
+          "id": "close.shore",
+          "domain": null,
+          "title": "The lake cut",
+          "spawn": "The Champlain cut, after the other shore was named.",
+          "observe": "The other shore is a story that no longer has a door. The lake is a lake. Snow does not fall upward.",
+          "variants": [],
+          "action": {
+            "input": "look-out",
+            "result": "You look at finished water."
+          },
+          "next": "close.erased"
+        },
+        {
+          "id": "close.erased",
+          "domain": null,
+          "title": "The gouged names",
+          "spawn": "The bridge timber where the night shift was cut out.",
+          "observe": "The chalk will not take. A closed seam does not restore a line the list refused. The gouges remain as damage, not as a gate.",
+          "variants": [],
+          "action": {
+            "input": "try-chalk",
+            "result": "The chalk dusts off. The names stay gouged."
+          },
+          "next": "close.quiet"
+        },
+        {
+          "id": "close.quiet",
+          "domain": null,
+          "title": "The unmapped kitchen",
+          "spawn": "A house the grand list skipped. Three bowls.",
+          "observe": "With the seam shut, the kitchen is a kitchen the list skipped. It does not become mythical. It also does not get its nail back from history, because history already seated it.",
+          "variants": [],
+          "action": {
+            "input": "look-in",
+            "result": "You look. The bowls are bowls. The county is finished around them."
+          },
+          "next": "close.credits"
+        }
+      ],
+      "credits": {
+        "id": "close.credits",
+        "beats": [
+          {
+            "beats": 4,
+            "text": "PREINCARNATION"
+          },
+          {
+            "beats": 4,
+            "text": "Addison County"
+          },
+          {
+            "beats": 4,
+            "text": "Ellis Perch"
+          },
+          {
+            "beats": 5,
+            "text": "Offices, lake, foundry, vein"
+          },
+          {
+            "beats": 6,
+            "text": "The seam is shut. The next death is only a death."
+          }
+        ],
+        "afterLastBeat": "finish-credits"
+      },
+      "postCompletion": {
+        "save": {
+          "campaign.ending": "close",
+          "meta.terminal": true,
+          "meta.yearFrozen": true,
+          "meta.deathEnabled": false,
+          "meta.lecternLocked": true,
+          "meta.dungeonReentry": "museum",
+          "meta.bossesRespawn": false,
+          "meta.toolsPreserved": true
+        },
+        "loadSpawn": {
+          "room": "EPILOGUE.PORCH",
+          "x": 9,
+          "y": 7
+        },
+        "newGame": "separate-slot-only",
+        "completedSlot": "The completed slot loads the porch. The lectern does not offer the four choices again. Bosses do not respawn. Dungeons can be walked as quiet rooms. Death does not run. Year does not advance. Tools remain. A new game is another slot and does not clear this one.",
+        "world": {
+          "seamOpen": false,
+          "fourteenYearDeathContinues": false,
+          "holder": "none",
+          "administered": true,
+          "deathIsFinal": true
+        }
+      }
+    },
+    {
+      "id": "distribute",
+      "title": "Distribute the Seam",
+      "mappingStatus": "PENDING",
+      "eligibilityRef": "systems/eligibility.json",
+      "selection": [
+        {
+          "event": "fill-socket",
+          "which": "farm",
+          "note": "Seat the farm socket. Fails aloud if the farm was not prepared."
+        },
+        {
+          "event": "fill-socket",
+          "which": "mill",
+          "note": "Seat the mill socket."
+        },
+        {
+          "event": "fill-socket",
+          "which": "crossing",
+          "note": "Seat the crossing socket."
+        },
+        {
+          "event": "fill-socket",
+          "which": "family",
+          "note": "Seat the family socket. Only reunited fits."
+        },
+        {
+          "event": "ring-bell",
+          "note": "Ring once at the center."
+        },
+        {
+          "event": "write-line",
+          "line": "distribute",
+          "note": "Write the lectern's distribute line."
+        },
+        {
+          "event": "place-needle",
+          "note": "Lay the needle across the four threads."
+        },
+        {
+          "event": "confirm-distribute",
+          "note": "Confirm. campaign.ending becomes distribute."
+        }
+      ],
+      "worldRules": {
+        "seamOpen": true,
+        "fourteenYearDeathContinues": true,
+        "holder": "institutions",
+        "administered": true,
+        "deathIsFinal": false,
+        "newLifeAssignedBy": "prepared-institutions"
+      },
+      "vignettes": [
+        {
+          "id": "distribute.farm",
+          "domain": "farm",
+          "title": "The lane past the cedars",
+          "spawn": "Addison flats, a cedar lane, a gate.",
+          "observe": {
+            "prepared": "The gate you mended is a holder. The unlisted furrow remains, and the farm, not you, decides when it is cut. A share of the seam is in soil you helped make ready.",
+            "neglected": "The field socket stays empty. You left this farm to the season, and the socket says so: a season is not a holder.",
+            "opposed": "The field socket stays empty. You sided with the office against these acres, and the socket will not put a share in a fence you helped close.",
+            "unknown": "The field socket stays empty. Nothing at the farm was recorded, so the socket has no institution to wake."
+          },
+          "action": {
+            "input": "open-gate",
+            "result": "The gate moves. The lane has been witnessed."
+          },
+          "next": "distribute.mill"
+        },
+        {
+          "id": "distribute.mill",
+          "domain": "mill",
+          "title": "The race",
+          "spawn": "Otter Creek, the mill race, the near wheel.",
+          "observe": {
+            "prepared": "The wheel you helped keep takes a thread of the seam on its shaft. The miller chooses the extra hour. The office can watch the race and cannot stop it.",
+            "neglected": "The mill socket stays empty. The race was not made ready, and the socket will not tie a thread to a wheel you did not help.",
+            "opposed": "The mill socket stays empty. You stood with the office against the mill, and the socket refuses that partnership.",
+            "unknown": "The mill socket stays empty. No settlement was recorded. The wheel is not a holder."
+          },
+          "action": {
+            "input": "touch-wheel",
+            "result": "The wheel answers the hand or it doesn't. The scene releases."
+          },
+          "next": "distribute.crossing"
+        },
+        {
+          "id": "distribute.crossing",
+          "domain": "crossing",
+          "title": "The ford",
+          "spawn": "The creek crossing, stones or scow as the record allows.",
+          "observe": {
+            "prepared": "The crossing you helped keep holds a thread. The tender says when a life may cross. The seam is in the ford, not in your pocket.",
+            "neglected": "The ford socket stays empty. You did not help the crossing hold, and the socket will not invent a tender.",
+            "opposed": "The ford socket stays empty. The closure you backed is not a holder. The socket says the posting out loud and takes nothing.",
+            "unknown": "The ford socket stays empty. No preparation was recorded. The water is not an institution."
+          },
+          "action": {
+            "input": "step-ford",
+            "result": "You step the near stone and step back. The crossing is witnessed."
+          },
+          "next": "distribute.family"
+        },
+        {
+          "id": "distribute.family",
+          "domain": "family",
+          "title": "The kitchen",
+          "spawn": "A kitchen on a town road. Bowls. Chairs.",
+          "observe": {
+            "reunited": "The household you helped reunite keeps one thread at the table. They decide which unrealized life gets a chair. You do not.",
+            "scattered": "The table socket stays empty. A household in more than one house cannot hold one share, and the socket does not pretend.",
+            "estranged": "The table socket stays empty. The chairs face the walls. The socket will not hand a life to a room that will not look at itself.",
+            "unknown": "The table socket stays empty. No family preparation was recorded, so there is no table to wake."
+          },
+          "action": {
+            "input": "stand-at-the-door",
+            "result": "You do not sit as a ruler. The kitchen is witnessed."
+          },
+          "next": "distribute.office"
+        },
+        {
+          "id": "distribute.office",
+          "domain": null,
+          "title": "The town office",
+          "spawn": "The office the empty mayor left.",
+          "observe": "The minute book records holders: farm, mill, crossing, household. The chair is still empty. The office is a witness, not the key.",
+          "variants": [],
+          "action": {
+            "input": "read-minute",
+            "result": "You leave the minute where the holders can read it."
+          },
+          "next": "distribute.shore"
+        },
+        {
+          "id": "distribute.shore",
+          "domain": null,
+          "title": "The lake cut",
+          "spawn": "The Champlain cut, after the other shore was named.",
+          "observe": "The other shore stays other. The people who hold the seam may still need a boat. The lake is not yours to police.",
+          "variants": [
+            {
+              "ifFlag": "dg14.usedPreparedCrossing",
+              "text": "The scow you launched under the ice is beached here, ordinary, ready."
+            }
+          ],
+          "action": {
+            "input": "look-out",
+            "result": "You leave the cut to its tenders."
+          },
+          "next": "distribute.erased"
+        },
+        {
+          "id": "distribute.erased",
+          "domain": null,
+          "title": "The gouged names",
+          "spawn": "The bridge timber where the night shift was cut out.",
+          "observe": "The holders have copied the gouged names onto their own board, not the office's. The shift is still not a future the foundry poured. It is at least no longer only a hole.",
+          "variants": [],
+          "action": {
+            "input": "read-board",
+            "result": "You read their board and do not correct it."
+          },
+          "next": "distribute.quiet"
+        },
+        {
+          "id": "distribute.quiet",
+          "domain": null,
+          "title": "The unmapped kitchen",
+          "spawn": "A house the grand list skipped. Three bowls.",
+          "observe": "The holders know the kitchen exists. They do not get to pour it into a future. Distribution stopped at the four institutions you actually prepared.",
+          "variants": [],
+          "action": {
+            "input": "look-in",
+            "result": "You look. The household is not a fifth socket."
+          },
+          "next": "distribute.credits"
+        }
+      ],
+      "credits": {
+        "id": "distribute.credits",
+        "beats": [
+          {
+            "beats": 4,
+            "text": "PREINCARNATION"
+          },
+          {
+            "beats": 4,
+            "text": "Addison County"
+          },
+          {
+            "beats": 4,
+            "text": "Ellis Perch"
+          },
+          {
+            "beats": 5,
+            "text": "Offices, lake, foundry, vein"
+          },
+          {
+            "beats": 6,
+            "text": "Farm, mill, crossing, and household hold the seam. Ellis does not."
+          }
+        ],
+        "afterLastBeat": "finish-credits"
+      },
+      "postCompletion": {
+        "save": {
+          "campaign.ending": "distribute",
+          "meta.terminal": true,
+          "meta.yearFrozen": true,
+          "meta.deathEnabled": false,
+          "meta.lecternLocked": true,
+          "meta.dungeonReentry": "museum",
+          "meta.bossesRespawn": false,
+          "meta.toolsPreserved": true
+        },
+        "loadSpawn": {
+          "room": "EPILOGUE.PORCH",
+          "x": 9,
+          "y": 7
+        },
+        "newGame": "separate-slot-only",
+        "completedSlot": "The completed slot loads the porch. The lectern does not offer the four choices again. Bosses do not respawn. Dungeons can be walked as quiet rooms. Death does not run. Year does not advance. Tools remain. A new game is another slot and does not clear this one.",
+        "world": {
+          "seamOpen": true,
+          "fourteenYearDeathContinues": true,
+          "holder": "institutions",
+          "administered": true,
+          "deathIsFinal": false,
+          "newLifeAssignedBy": "prepared-institutions"
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "title": "Refuse the Given Choices",
+      "mappingStatus": "PENDING",
+      "eligibilityRef": "systems/eligibility.json",
+      "selection": [
+        {
+          "event": "jam-nail",
+          "note": "Put the unmapped nail into the lectern hinge. The three lines cannot be signed."
+        },
+        {
+          "event": "read-pages",
+          "note": "Read the erased pages already in the field book."
+        },
+        {
+          "event": "enter-embryonic",
+          "note": "Enter the unfinished form. Coat on, needle and lead in hand, no seal on the crack."
+        },
+        {
+          "event": "cross-lintel",
+          "note": "Cross the crack and do not take a lectern choice with you."
+        }
+      ],
+      "worldRules": {
+        "seamOpen": true,
+        "fourteenYearDeathContinues": false,
+        "holder": "none",
+        "administered": false,
+        "deathIsFinal": false
+      },
+      "vignettes": [
+        {
+          "id": "refuse.farm",
+          "domain": "farm",
+          "title": "The lane past the cedars",
+          "spawn": "Addison flats, a cedar lane, a gate.",
+          "observe": {
+            "prepared": "The gate you mended still latches. You gave the farm no thread, because you would not sign the form that makes holders. The field is a field. It is not the office's.",
+            "neglected": "The thistles are still yours to have ignored. Refusing the seam's menu did not plow them, and it did not hand them to the survey.",
+            "opposed": "The fence you backed for the office is still there. Refusing the form does not unbuild it. It only means the seam was not the office's prize either.",
+            "unknown": "The farm has no record of you. After the refusal it also has no new master."
+          },
+          "action": {
+            "input": "open-gate",
+            "result": "The gate moves. The lane has been witnessed."
+          },
+          "next": "refuse.mill"
+        },
+        {
+          "id": "refuse.mill",
+          "domain": "mill",
+          "title": "The race",
+          "spawn": "Otter Creek, the mill race, the near wheel.",
+          "observe": {
+            "prepared": "The race you cleared runs. No thread was tied to the shaft. The miller keeps the settlement you helped and does not become a minister of futures.",
+            "neglected": "The mill runs or sticks as the creek decides. You refused the menu. You did not repair the race.",
+            "opposed": "The posted hours remain a thing you did. The refusal does not launder them. It does keep the seam off the office's mill.",
+            "unknown": "No mill record, no new authority. The wheel is a wheel."
+          },
+          "action": {
+            "input": "touch-wheel",
+            "result": "The wheel answers the hand or it doesn't. The scene releases."
+          },
+          "next": "refuse.crossing"
+        },
+        {
+          "id": "refuse.crossing",
+          "domain": "crossing",
+          "title": "The ford",
+          "spawn": "The creek crossing, stones or scow as the record allows.",
+          "observe": {
+            "prepared": "The ford you helped keep still answers to its tender. You did not make the tender a holder of the seam. Travel stays local.",
+            "neglected": "The poor crossing stays poor. Refusal is not a bridge.",
+            "opposed": "The closure you posted is still paper on a tree. The seam is not the office's consolation for that.",
+            "unknown": "The ford remembers weather, not you. It does not remember a new rule."
+          },
+          "action": {
+            "input": "step-ford",
+            "result": "You step the near stone and step back. The crossing is witnessed."
+          },
+          "next": "refuse.family"
+        },
+        {
+          "id": "refuse.family",
+          "domain": "family",
+          "title": "The kitchen",
+          "spawn": "A kitchen on a town road. Bowls. Chairs.",
+          "observe": {
+            "reunited": "The table you helped reunite stays a table. You did not set a thread between the bowls. They are together, which is a different fact from being an institution of the vein.",
+            "scattered": "They are still in more than one house. The refusal did not gather them and did not file them.",
+            "estranged": "The chairs stay turned. You did not use the seam to force a reconciliation, and you did not give the office that power either.",
+            "unknown": "The family has no record of you. The refusal adds none."
+          },
+          "action": {
+            "input": "stand-at-the-door",
+            "result": "You do not sit as a ruler. The kitchen is witnessed."
+          },
+          "next": "refuse.office"
+        },
+        {
+          "id": "refuse.office",
+          "domain": null,
+          "title": "The town office",
+          "spawn": "The office the empty mayor left.",
+          "observe": "The minute book is open to a form with three lines. None of them is signed. The chair is empty because you would not complete the form.",
+          "variants": [
+            {
+              "ifFlag": "disc.surveyor.objectionFiled",
+              "text": "Your objection from the ordering room is pinned under the form, older than the refusal and the same shape."
+            }
+          ],
+          "action": {
+            "input": "read-minute",
+            "result": "You leave the form unsigned."
+          },
+          "next": "refuse.shore"
+        },
+        {
+          "id": "refuse.shore",
+          "domain": null,
+          "title": "The lake cut",
+          "spawn": "The Champlain cut, after the other shore was named.",
+          "observe": "The other shore stays other. No one was appointed to explain it. The water does not become a doctrine.",
+          "variants": [],
+          "action": {
+            "input": "look-out",
+            "result": "You look, and you do not found a rule."
+          },
+          "next": "refuse.erased"
+        },
+        {
+          "id": "refuse.erased",
+          "domain": null,
+          "title": "The gouged names",
+          "spawn": "The bridge timber where the night shift was cut out.",
+          "observe": "You chalk the names yourself, on the timber, without a form. The night shift is visible to anyone who crosses. No institution was paid with the seam to do it.",
+          "variants": [
+            {
+              "ifFlag": "disc.erased.winterBoard",
+              "text": "The winter board's sentence is among the names, because you lit that stove."
+            }
+          ],
+          "action": {
+            "input": "chalk-names",
+            "result": "The chalk holds. You do not sign a title under it."
+          },
+          "next": "refuse.quiet"
+        },
+        {
+          "id": "refuse.quiet",
+          "domain": null,
+          "title": "The unmapped kitchen",
+          "spawn": "A house the grand list skipped. Three bowls.",
+          "observe": "The kitchen is on a real road now, not as a charter but because you would not leave it only inside the vein. Three bowls. No mayor. No survey nail in the door.",
+          "variants": [],
+          "action": {
+            "input": "set-nothing",
+            "result": "You set nothing down. The nail stayed in the history board. The house does not need a second one."
+          },
+          "next": "refuse.credits"
+        }
+      ],
+      "credits": {
+        "id": "refuse.credits",
+        "beats": [
+          {
+            "beats": 4,
+            "text": "PREINCARNATION"
+          },
+          {
+            "beats": 4,
+            "text": "Addison County"
+          },
+          {
+            "beats": 4,
+            "text": "Ellis Perch"
+          },
+          {
+            "beats": 5,
+            "text": "Offices, lake, foundry, vein"
+          },
+          {
+            "beats": 6,
+            "text": "The form was not signed. The vein stays, unadministered."
+          }
+        ],
+        "afterLastBeat": "finish-credits"
+      },
+      "postCompletion": {
+        "save": {
+          "campaign.ending": "refuse",
+          "meta.terminal": true,
+          "meta.yearFrozen": true,
+          "meta.deathEnabled": false,
+          "meta.lecternLocked": true,
+          "meta.dungeonReentry": "museum",
+          "meta.bossesRespawn": false,
+          "meta.toolsPreserved": true
+        },
+        "loadSpawn": {
+          "room": "EPILOGUE.PORCH",
+          "x": 9,
+          "y": 7
+        },
+        "newGame": "separate-slot-only",
+        "completedSlot": "The completed slot loads the porch. The lectern does not offer the four choices again. Bosses do not respawn. Dungeons can be walked as quiet rooms. Death does not run. Year does not advance. Tools remain. A new game is another slot and does not clear this one.",
+        "world": {
+          "seamOpen": true,
+          "fourteenYearDeathContinues": false,
+          "holder": "none",
+          "administered": false,
+          "deathIsFinal": false
+        }
+      }
+    }
+  ]
+}

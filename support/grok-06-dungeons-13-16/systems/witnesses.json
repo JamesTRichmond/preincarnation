@@ -1,0 +1,44 @@
+{
+  "witnesses": [
+    {
+      "flag": "disc.erased.overseerBench",
+      "room": "DG13.R09",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.erased.otterNightShift",
+      "room": "DG14.R09",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.erased.foundryClock",
+      "room": "DG15.R06",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.quiet.rejectedPattern",
+      "room": "DG15.R07",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.erased.grandListHole",
+      "room": "DG16.FA6",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.quiet.windowUnderIce",
+      "room": "DG14.R08",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.quiet.heartUnmapped",
+      "room": "DG16.H2",
+      "exit": "north"
+    },
+    {
+      "flag": "disc.quiet.nailPlaced",
+      "room": "DG16.H8",
+      "exit": "north"
+    }
+  ]
+}

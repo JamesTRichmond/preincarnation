@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "preincarnation/dg13-16/room",
+  "title": "Engine-neutral dungeon room",
+  "type": "object",
+  "required": [
+    "id",
+    "dungeon",
+    "name",
+    "region",
+    "purpose",
+    "bounds",
+    "layout",
+    "exits",
+    "actors",
+    "objects",
+    "transitions",
+    "persistence",
+    "solution",
+    "solutionTrace"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "dungeon": { "type": "string", "enum": ["DG13", "DG14", "DG15", "DG16", "EPILOGUE"] },
+    "environment": { "type": ["string", "null"], "enum": ["fiction", "fact", "history", "imagination", null] },
+    "region": { "type": "string" },
+    "checkpoint": { "type": "boolean" },
+    "purpose": { "type": "string", "minLength": 8 },
+    "layoutNote": { "type": "string" },
+    "bounds": {
+      "type": "object",
+      "required": ["w", "h", "unit"],
+      "properties": {
+        "w": { "type": "integer", "minimum": 5 },
+        "h": { "type": "integer", "minimum": 5 },
+        "unit": { "const": "tile" }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["rows"],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "# wall, . floor, D door, ~ water, V void, = ice, , snow, : bridge, + marked station"
+        }
+      }
+    },
+    "exits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "facing", "tile", "landing", "requires"],
+        "properties": {
+          "tile": { "type": "object", "required": ["x", "y"] },
+          "landing": {
+            "type": "object",
+            "required": ["room", "x", "y"],
+            "properties": { "room": { "type": "string" }, "x": { "type": "integer" }, "y": { "type": "integer" } }
+          },
+          "requires": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "solution": {
+      "type": "object",
+      "required": ["steps"],
+      "properties": {
+        "when": { "type": "object" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["action", "note"],
+            "properties": {
+              "action": { "type": "string" },
+              "note": { "type": "string" },
+              "tool": { "type": ["string", "null"] },
+              "target": { "type": ["string", "null"] },
+              "exit": { "type": ["string", "null"] },
+              "requires": { "type": "array", "items": { "type": "string" } },
+              "requiresAbsent": { "type": "array", "items": { "type": "string" } },
+              "sets": { "type": "array" }
+            }
+          }
+        }
+      }
+    },
+    "solutionTrace": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "persistence": {
+      "type": "object",
+      "required": ["visitedFlag", "survivesDeath", "resetsOnDeath", "region"],
+      "properties": {
+        "survivesDeath": { "type": "array", "items": { "type": "string" } },
+        "resetsOnDeath": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
