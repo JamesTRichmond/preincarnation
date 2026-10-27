@@ -1059,7 +1059,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     moveActor(e, k.x * 10, k.y * 10);
     burst(e.x, e.y, "#f4efe2", 10);
     floats.push({ x: e.x, y: e.y - 10, t: 0.55, text: String(Math.max(1, Math.round(dmg))), color: "#f4efe2" });
-    audio.hit();
+    audio.hit(e.kind);
     hitstop = scaleHitstop(0.07, reduced);
     trauma = Math.min(1, trauma + 0.32);
     if (aff?.lifesteal) {

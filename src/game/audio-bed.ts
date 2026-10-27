@@ -20,3 +20,27 @@ export function clampVolume(n: number): number {
   if (!Number.isFinite(n)) return 0;
   return Math.min(1, Math.max(0, n));
 }
+
+export type StrikeVoice = {
+  freq: number;
+  dur: number;
+  type: "square" | "sawtooth" | "sine" | "triangle";
+  slide: number;
+};
+
+/** Same mixer. The body you hit picks the note. Unknown kinds keep the old thud. */
+const STRIKE: Record<string, StrikeVoice> = {
+  crow: { freq: 880, dur: 0.06, type: "square", slide: -420 },
+  wraith: { freq: 170, dur: 0.16, type: "sine", slide: -50 },
+  sentinel: { freq: 68, dur: 0.2, type: "square", slide: -18 },
+  bear: { freq: 86, dur: 0.18, type: "sawtooth", slide: -36 },
+  bobcat: { freq: 340, dur: 0.07, type: "triangle", slide: 160 },
+  fisher: { freq: 1380, dur: 0.05, type: "square", slide: -860 },
+  resident: { freq: 220, dur: 0.11, type: "triangle", slide: -70 },
+};
+
+const THUD: StrikeVoice = { freq: 160, dur: 0.14, type: "sawtooth", slide: -90 };
+
+export function strikeVoice(kind: string): StrikeVoice {
+  return STRIKE[kind] ?? THUD;
+}

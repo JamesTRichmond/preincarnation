@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { bedFor, bedSpec, clampVolume } from "./audio-bed.ts";
+import { bedFor, bedSpec, clampVolume, strikeVoice } from "./audio-bed.ts";
 
 describe("audio beds", () => {
   it("changes the drone with the room and the fight, not with a new system", () => {
@@ -19,5 +19,14 @@ describe("audio beds", () => {
     assert.equal(clampVolume(2), 1);
     assert.equal(clampVolume(-1), 0);
     assert.equal(clampVolume(0.4), 0.4);
+  });
+
+  it("gives each county body its own strike and leaves bombs on the thud", () => {
+    const kinds = ["crow", "wraith", "sentinel", "bear", "bobcat", "fisher", "resident"];
+    const freqs = new Set(kinds.map((k) => strikeVoice(k).freq));
+    assert.equal(freqs.size, kinds.length);
+    assert.equal(strikeVoice("bomb").freq, strikeVoice("").freq);
+    assert.ok(strikeVoice("bear").freq < strikeVoice("crow").freq);
+    assert.ok(strikeVoice("fisher").freq > strikeVoice("bobcat").freq);
   });
 });
