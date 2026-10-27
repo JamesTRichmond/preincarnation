@@ -1,0 +1,10 @@
+{
+  "rewritten": {
+    "files": 2,
+    "replacements": 32
+  },
+  "audit": {
+    "stale": [],
+    "workers": []
+  }
+}

@@ -1,0 +1,26 @@
+[
+  [
+    "flags.orchard.truth_told",
+    "flags.orchard.stake_hidden",
+    "flags.orchard.unresolved"
+  ],
+  [
+    "flags.bridge.testimony_given",
+    "flags.bridge.testimony_withheld",
+    "flags.bridge.unresolved"
+  ],
+  [
+    "flags.mill.downstream_told",
+    "flags.mill.counsel_kept",
+    "flags.mill.unresolved"
+  ],
+  [
+    "flags.floodbook.margin_kept",
+    "flags.floodbook.fair_copy",
+    "flags.floodbook.private_card"
+  ],
+  [
+    "flags.household.ate",
+    "flags.household.left_plate"
+  ]
+]

@@ -1,0 +1,368 @@
+{
+  "status": "proposed-reference-model",
+  "verifies_runtime": false,
+  "baseline_violations": [],
+  "baseline_clean": true,
+  "campaign_tools": [
+    "ash-bow",
+    "block-rod",
+    "bug-net",
+    "creek-fins",
+    "gap-boots",
+    "grave-shovel",
+    "homestead-glass",
+    "marble-hammer",
+    "oil-lamp",
+    "powder-kegs",
+    "shadow-cape",
+    "sugar-line-hookshot"
+  ],
+  "campaign_flags": [
+    "archive-read",
+    "catacomb-cleared",
+    "crypt-cleared",
+    "heron-spared",
+    "mayor-spoken",
+    "void-crossed"
+  ],
+  "campaign_crowns": [
+    "crown-of-the-creek",
+    "crown-of-the-ridge"
+  ],
+  "phase2_ran": true,
+  "exploration": {
+    "projection": "core",
+    "exhaustive": true,
+    "full_game_exhaustive": false,
+    "locations": [
+      "middlebury-green",
+      "grave-crypt",
+      "grave-crypt-heart",
+      "vergennes-falls",
+      "cornwall-flats",
+      "hook-span",
+      "otter-creek-narrows",
+      "creek-channel",
+      "ferrisburgh-shore",
+      "lake-cut"
+    ],
+    "tracked_bits": [
+      "grave-shovel",
+      "sugar-line-hookshot",
+      "creek-fins",
+      "mayor-spoken",
+      "crypt-warden-cleared"
+    ],
+    "year_form_pairs": [
+      [
+        0,
+        "mortal-wanderer"
+      ],
+      [
+        14,
+        "otter-creek-smuggler"
+      ],
+      [
+        14,
+        "rutland-officer"
+      ],
+      [
+        28,
+        "otter-creek-smuggler"
+      ],
+      [
+        28,
+        "rutland-officer"
+      ]
+    ],
+    "representation_domain": 1600,
+    "domain_formula": "10 locations * 2^5 bits * 5 year-form pairs = 1600",
+    "reachable_states": 676,
+    "unreachable_admissible_states": 924,
+    "by_year": {
+      "0": 164,
+      "14": 256,
+      "28": 256
+    },
+    "goal_reached": true,
+    "goal_state_count": 4,
+    "witness_length": 11,
+    "death_transitions_inside_core": 671,
+    "latent_deaths_exiting_core": 256,
+    "idempotent_boss_reentries_observed": 32,
+    "duplicate_reward_transitions": 0,
+    "death_flag_drops": 0,
+    "invariants": {
+      "all_states_admissible": true,
+      "no_officer_without_flag": true,
+      "no_wanderer_in_creek_without_fins": true,
+      "no_officer_in_creek_without_fins": true,
+      "officer_reaches_creek_with_fins": true,
+      "smuggler_reaches_creek_without_fins": true,
+      "no_lake_without_fins": true,
+      "wanderer_reaches_lake_with_fins": true,
+      "smuggler_reaches_lake_only_with_fins": true,
+      "wanderer_reaches_hook_span_with_hookshot": true,
+      "no_heart_without_shovel": true,
+      "late_successor_window": true,
+      "flag_survives_into_year_28": true,
+      "death_flag_drops": 0,
+      "duplicate_reward_transitions": 0
+    },
+    "excluded": [
+      "embryonic-god",
+      "years 42, 56, 70 and every post-principal year",
+      "the nine tools other than grave shovel, sugar-line hookshot, and creek fins",
+      "both crowns and the void terminus",
+      "the seven districts with no core location"
+    ]
+  },
+  "witness_actions": [
+    "move:grave-crypt",
+    "pickup:grave-shovel",
+    "move:grave-crypt-heart",
+    "boss:first-clear",
+    "die:smuggler",
+    "move:vergennes-falls",
+    "talk:mayor-spoken",
+    "die:officer",
+    "move:cornwall-flats",
+    "pickup:sugar-line-hookshot",
+    "move:hook-span"
+  ],
+  "ending_witnesses": [
+    "long-homestead: ok",
+    "smugglers-litany: ok",
+    "officers-quiet: ok",
+    "embryonic-crossing: ok"
+  ],
+  "fixtures": [
+    {
+      "file": "01_tool_self_lock.json",
+      "id": "broken-01-tool-self-lock",
+      "injected": "The only edge into notch-span, where gap boots are found, requires gap boots.",
+      "expect": [
+        "tool_self_lock"
+      ],
+      "got": [
+        "campaign_unreachable",
+        "ending_unreachable",
+        "tool_self_lock"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "02_key_consumed_early.json",
+      "id": "broken-02-key-consumed-early",
+      "injected": "Single consumed crypt key can be spent on an optional ossuary before the mandatory warden door.",
+      "expect": [
+        "key_consumed_before_mandatory_use"
+      ],
+      "got": [
+        "internal_unlock_mismatch",
+        "key_consumed_before_mandatory_use"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "03_npc_no_successor.json",
+      "id": "broken-03-npc-no-successor",
+      "injected": "Mayor Lane dies entering year 28 and Clerk Ross is gone, so mayor-spoken has no grantor from era 28 on.",
+      "expect": [
+        "essential_npc_no_successor"
+      ],
+      "got": [
+        "essential_npc_no_successor"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "04_death_erases_flag.json",
+      "id": "broken-04-death-erases-flag",
+      "injected": "Death clears mayor-spoken, which the trunk and the mortal endings require.",
+      "expect": [
+        "death_erases_required_flag"
+      ],
+      "got": [
+        "death_erases_required_flag",
+        "ending_unreachable"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "05_form_strands.json",
+      "id": "broken-05-form-strands",
+      "injected": "Embryonic God loses ground and water. The ridge shrine exit is a ground edge, and Middlebury has no void edge.",
+      "expect": [
+        "form_change_strands_player"
+      ],
+      "got": [
+        "campaign_unreachable",
+        "ending_unreachable",
+        "form_change_strands_player"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "06_ending_exclusive_forms.json",
+      "id": "broken-06-ending-two-forms",
+      "injected": "The Long Homestead ending requires the smuggler body and the officer body at once.",
+      "expect": [
+        "ending_mutually_exclusive_states"
+      ],
+      "got": [
+        "ending_mutually_exclusive_states"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "07_optional_blocks_main.json",
+      "id": "broken-07-optional-blocks",
+      "injected": "Optional, irreversible pawn destroys the grave shovel and blocks the trunk.",
+      "expect": [
+        "optional_choice_blocks_main"
+      ],
+      "got": [
+        "optional_choice_blocks_main"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "08_warp_bypass.json",
+      "id": "broken-08-warp-bypass",
+      "injected": "A warp from Middlebury Green to the void terminal grants completion with no prerequisites.",
+      "expect": [
+        "warp_bypasses_mandatory"
+      ],
+      "got": [
+        "warp_bypasses_mandatory"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "09_boss_reentry_dup.json",
+      "id": "broken-09-boss-reentry",
+      "injected": "Creek warden may be fought again and pays the unique crown twice.",
+      "expect": [
+        "boss_reentry_duplicates_rewards"
+      ],
+      "got": [
+        "boss_reentry_duplicates_rewards"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "10_years_beyond.json",
+      "id": "broken-10-years-beyond",
+      "injected": "Year 70 death has no support, and a required objective demands year 84.",
+      "expect": [
+        "years_beyond_principal_eras"
+      ],
+      "got": [
+        "years_beyond_principal_eras"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "11_key_two_mandatory.json",
+      "id": "broken-11-key-two-mandatory",
+      "injected": "One consumed key is the only copy for two mandatory doors.",
+      "expect": [
+        "key_consumed_before_mandatory_use"
+      ],
+      "got": [
+        "internal_unlock_mismatch",
+        "key_consumed_before_mandatory_use"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "12_ending_exclusive_flags.json",
+      "id": "broken-12-ending-exclusive-flags",
+      "injected": "Officer's Quiet requires mayor-spoken to be both true and false.",
+      "expect": [
+        "ending_mutually_exclusive_states"
+      ],
+      "got": [
+        "ending_mutually_exclusive_states"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "13_successor_dies.json",
+      "id": "broken-13-successor-dies",
+      "injected": "Clerk Ross dies entering year 42 and names no further successor, so eras 42, 56, 70, and post have no grantor.",
+      "expect": [
+        "essential_npc_no_successor"
+      ],
+      "got": [
+        "essential_npc_no_successor"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "14_optional_kills_speakers.json",
+      "id": "broken-14-optional-kills-speakers",
+      "injected": "The NPC table still covers every era until the player takes this optional feud, which kills both speakers.",
+      "expect": [
+        "optional_choice_blocks_main"
+      ],
+      "got": [
+        "optional_choice_blocks_main"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "15_tool_cycle.json",
+      "id": "broken-15-tool-cycle",
+      "injected": "Hookshot requires the lamp and the lamp requires the hookshot. The dungeon text matches the tool records, so this is a cycle rather than a bookkeeping drift.",
+      "expect": [
+        "tool_cycle_lock"
+      ],
+      "got": [
+        "campaign_unreachable",
+        "ending_unreachable",
+        "tool_cycle_lock"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "16_internal_unlock_drift.json",
+      "id": "broken-16-internal-drift",
+      "injected": "The crypt's internal cairn says the shovel requires itself. The solver tool record does not, so the two layers disagree.",
+      "expect": [
+        "internal_unlock_mismatch"
+      ],
+      "got": [
+        "internal_unlock_mismatch"
+      ],
+      "rejected": true
+    },
+    {
+      "file": "17_post_era_strand.json",
+      "id": "broken-17-post-era-strand",
+      "injected": "Death past year 70 is marked supported, but it respawns a mortal body inside the void terminal.",
+      "expect": [
+        "years_beyond_principal_eras"
+      ],
+      "got": [
+        "years_beyond_principal_eras"
+      ],
+      "rejected": true
+    }
+  ],
+  "fixture_count": 17,
+  "ten_codes_covered": [
+    "boss_reentry_duplicates_rewards",
+    "death_erases_required_flag",
+    "ending_mutually_exclusive_states",
+    "essential_npc_no_successor",
+    "form_change_strands_player",
+    "key_consumed_before_mandatory_use",
+    "optional_choice_blocks_main",
+    "tool_self_lock",
+    "warp_bypasses_mandatory",
+    "years_beyond_principal_eras"
+  ],
+  "problems": []
+}

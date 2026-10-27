@@ -1,5 +1,6 @@
 import type { MapId } from "./types";
 import { T } from "./tile-ids";
+import { BELL_ENTRY } from "./bell";
 
 /** Fourteen winters is one generation. HUD year is the only clock that matters. */
 export function generations(year: number) {
@@ -14,11 +15,13 @@ export const TOWN_SPAWN: Partial<Record<MapId, { x: number; y: number }>> = {
   salisbury: { x: 12, y: 9 },
   farmstead: { x: 12, y: 9 },
   quarry: { x: 16, y: 13 },
+  bell: { x: BELL_ENTRY.x, y: BELL_ENTRY.y },
   addison: { x: 36, y: 28 },
 };
 
 const WARP_NAMES: Record<string, string> = {
   quarry: "Marble Vein",
+  bell: "The bell",
   addison: "Addison County",
   middlebury: "Middlebury",
   vergennes: "Vergennes",
