@@ -1,8 +1,8 @@
 # PREINCARNATION: CEO Status
 
-_Updated 2026-11-06T14:18:30.466Z. Main at `ef7eadb`._
+_Updated 2026-11-07. Main tip `2b87ee6` (auto rewrite after 2026-11-06 audit at `ef7eadb`)._
 
-## Health of main (`ef7eadb`)
+## Health of main (`2b87ee6`)
 
 | Gate | Result |
 |---|---|
@@ -18,6 +18,26 @@ _Updated 2026-11-06T14:18:30.466Z. Main at `ef7eadb`._
 - The marble tell keeps the lantern gate.
 - The install shell is /manifest.webmanifest and /sw.js. It does not cache the save.
 - Support archives stay beside the walk until the density call.
+- Theme map enforces sole plot; Heart second-plot choices removed.
+
+## QQ-VGEF Gap Matrix (2026-11-07)
+
+Estimated band **~85–88%**.
+
+| Pillar | Weight | Score | Key gaps |
+|--------|--------|-------|----------|
+| Primary Core | 50% | 88% | Live narrative pacing thinner than packs; latency/feel harness missing; deeper return polish. |
+| Secondary | 20% | 75% | Formal a11y checklist; UI chrome; audio coherence. |
+| Structural Integrity | 20% | 92% | Stale PR process debt; platform test drift documented; no latency probe in CI. |
+| Innovation | 10% | 90% | Density call is the remaining dilution risk. |
+
+### Prioritized next actions
+
+1. James decisions: density, kitchen (#133), engine touches (#138), close #38.
+2. Bot-ready: latency/feel probe harness.
+3. Bot-ready: formal a11y checklist for 320×240 + mobile.
+4. Stale PR triage (#42/#49/#59/#139).
+5. Selective density only after James call — no second plot, no essential gates.
 
 ## Open work
 
