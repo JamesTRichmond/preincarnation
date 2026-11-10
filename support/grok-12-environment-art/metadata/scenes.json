@@ -1,0 +1,1094 @@
+[
+  {
+    "id": "middlebury_green",
+    "title": "Middlebury Green",
+    "blurb": "College-town green, bluestone walks, clapboard and brick.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/middlebury_green-day.png",
+    "night": "scenes/middlebury_green-night.png",
+    "buildings": [
+      {
+        "wall": "brick",
+        "roof": "slate",
+        "x": 1,
+        "y": 1,
+        "w": 6,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "clap",
+        "roof": "slate",
+        "x": 22,
+        "y": 1,
+        "w": 7,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 1,
+        "y": 13,
+        "w": 6,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "brick",
+        "roof": "slate",
+        "x": 24,
+        "y": 13,
+        "w": 6,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "elm",
+        "tx": 6,
+        "ty": 4
+      },
+      {
+        "id": "elm",
+        "tx": 18,
+        "ty": 4
+      },
+      {
+        "id": "paper_birch",
+        "tx": 10,
+        "ty": 6
+      },
+      {
+        "id": "bench",
+        "tx": 12,
+        "ty": 8
+      },
+      {
+        "id": "lamp_post",
+        "tx": 20,
+        "ty": 7
+      },
+      {
+        "id": "gravestone",
+        "tx": 26,
+        "ty": 8
+      },
+      {
+        "id": "iron_gate",
+        "tx": 8,
+        "ty": 12
+      },
+      {
+        "id": "aster_clump",
+        "tx": 14,
+        "ty": 13
+      },
+      {
+        "id": "well",
+        "tx": 5,
+        "ty": 8
+      }
+    ],
+    "features": [
+      {
+        "x": 10,
+        "y": 10,
+        "id": "middlebury_green.crosswalk"
+      },
+      {
+        "x": 16,
+        "y": 6,
+        "id": "middlebury_green.pier"
+      },
+      {
+        "x": 24,
+        "y": 15,
+        "id": "middlebury_green.stoop"
+      }
+    ]
+  },
+  {
+    "id": "vergennes_falls",
+    "title": "Vergennes Falls",
+    "blurb": "Mill ledge, race, and a three-tile fall into the basin.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/vergennes_falls-day.png",
+    "night": "scenes/vergennes_falls-night.png",
+    "buildings": [
+      {
+        "wall": "mill",
+        "roof": "slate",
+        "x": 2,
+        "y": 2,
+        "w": 7,
+        "h": 5,
+        "door": true
+      },
+      {
+        "wall": "brick",
+        "roof": "shingle",
+        "x": 22,
+        "y": 2,
+        "w": 7,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "stone",
+        "roof": "slate",
+        "x": 2,
+        "y": 12,
+        "w": 5,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "millstone",
+        "tx": 9,
+        "ty": 6
+      },
+      {
+        "id": "crate",
+        "tx": 8,
+        "ty": 8
+      },
+      {
+        "id": "chimney_stack",
+        "tx": 4,
+        "ty": 1
+      },
+      {
+        "id": "split_rail_h",
+        "tx": 22,
+        "ty": 10
+      },
+      {
+        "id": "boulder",
+        "tx": 11,
+        "ty": 14
+      },
+      {
+        "id": "reeds",
+        "tx": 20,
+        "ty": 16
+      }
+    ],
+    "features": [
+      {
+        "x": 15,
+        "y": 7,
+        "id": "vergennes_falls.falls_crest"
+      },
+      {
+        "x": 16,
+        "y": 7,
+        "id": "vergennes_falls.falls_crest"
+      },
+      {
+        "x": 15,
+        "y": 8,
+        "id": "vergennes_falls.falls_mid"
+      },
+      {
+        "x": 16,
+        "y": 8,
+        "id": "vergennes_falls.falls_mid"
+      },
+      {
+        "x": 15,
+        "y": 9,
+        "id": "vergennes_falls.falls_base"
+      },
+      {
+        "x": 16,
+        "y": 9,
+        "id": "vergennes_falls.falls_base"
+      },
+      {
+        "x": 18,
+        "y": 6,
+        "id": "vergennes_falls.sluice"
+      },
+      {
+        "x": 10,
+        "y": 5,
+        "id": "vergennes_falls.wheel_pad"
+      }
+    ]
+  },
+  {
+    "id": "otter_marsh",
+    "title": "Otter Marsh",
+    "blurb": "Peat, tussock, a corduroy boardwalk and black water.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/otter_marsh-day.png",
+    "night": "scenes/otter_marsh-night.png",
+    "buildings": [
+      {
+        "wall": "camp",
+        "roof": "shake",
+        "x": 24,
+        "y": 1,
+        "w": 5,
+        "h": 3,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "cattails",
+        "tx": 8,
+        "ty": 5
+      },
+      {
+        "id": "cattails",
+        "tx": 18,
+        "ty": 10
+      },
+      {
+        "id": "reeds",
+        "tx": 14,
+        "ty": 12
+      },
+      {
+        "id": "lilypads",
+        "tx": 9,
+        "ty": 7
+      },
+      {
+        "id": "buoy",
+        "tx": 21,
+        "ty": 11
+      },
+      {
+        "id": "cedar",
+        "tx": 28,
+        "ty": 1
+      },
+      {
+        "id": "driftwood",
+        "tx": 3,
+        "ty": 10
+      }
+    ],
+    "features": [
+      {
+        "x": 6,
+        "y": 5,
+        "id": "otter_marsh.board_break"
+      },
+      {
+        "x": 12,
+        "y": 14,
+        "id": "otter_marsh.reed_tile"
+      },
+      {
+        "x": 16,
+        "y": 4,
+        "id": "otter_marsh.post"
+      }
+    ]
+  },
+  {
+    "id": "champlain_shore",
+    "title": "Champlain Shore",
+    "blurb": "Shale shelf, drift sand, and a short dock into the lake.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/champlain_shore-day.png",
+    "night": "scenes/champlain_shore-night.png",
+    "buildings": [
+      {
+        "wall": "camp",
+        "roof": "shake",
+        "x": 22,
+        "y": 1,
+        "w": 6,
+        "h": 3,
+        "door": true
+      },
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 2,
+        "y": 1,
+        "w": 5,
+        "h": 3,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "rowboat",
+        "tx": 12,
+        "ty": 10
+      },
+      {
+        "id": "canoe",
+        "tx": 18,
+        "ty": 12
+      },
+      {
+        "id": "buoy",
+        "tx": 8,
+        "ty": 14
+      },
+      {
+        "id": "dock_piling",
+        "tx": 6,
+        "ty": 7
+      },
+      {
+        "id": "driftwood",
+        "tx": 16,
+        "ty": 6
+      },
+      {
+        "id": "reeds",
+        "tx": 26,
+        "ty": 7
+      },
+      {
+        "id": "paper_birch",
+        "tx": 18,
+        "ty": 1
+      }
+    ],
+    "features": [
+      {
+        "x": 10,
+        "y": 6,
+        "id": "champlain_shore.dock_plank"
+      },
+      {
+        "x": 14,
+        "y": 5,
+        "id": "champlain_shore.drift_log"
+      }
+    ]
+  },
+  {
+    "id": "ripton_woods",
+    "title": "Ripton High Woods",
+    "blurb": "Needle duff, granite, and a dark spruce interior.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/ripton_woods-day.png",
+    "night": "scenes/ripton_woods-night.png",
+    "buildings": [
+      {
+        "wall": "log",
+        "roof": "shake",
+        "x": 26,
+        "y": 13,
+        "w": 5,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "red_spruce",
+        "tx": 2,
+        "ty": 1
+      },
+      {
+        "id": "white_pine",
+        "tx": 12,
+        "ty": 1
+      },
+      {
+        "id": "red_spruce",
+        "tx": 20,
+        "ty": 2
+      },
+      {
+        "id": "paper_birch",
+        "tx": 8,
+        "ty": 8
+      },
+      {
+        "id": "fern",
+        "tx": 14,
+        "ty": 8
+      },
+      {
+        "id": "mushrooms",
+        "tx": 18,
+        "ty": 14
+      },
+      {
+        "id": "boulder",
+        "tx": 6,
+        "ty": 4
+      },
+      {
+        "id": "stump",
+        "tx": 22,
+        "ty": 10
+      },
+      {
+        "id": "birch_log",
+        "tx": 10,
+        "ty": 14
+      }
+    ],
+    "features": [
+      {
+        "x": 8,
+        "y": 5,
+        "id": "ripton_woods.moss_cap"
+      },
+      {
+        "x": 15,
+        "y": 10,
+        "id": "ripton_woods.fern_bed"
+      },
+      {
+        "x": 4,
+        "y": 11,
+        "id": "ripton_woods.trail_log"
+      }
+    ]
+  },
+  {
+    "id": "lincoln_sugar",
+    "title": "Lincoln Sugar Slope",
+    "blurb": "October litter, tubing line, and a sugarhouse.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/lincoln_sugar-day.png",
+    "night": "scenes/lincoln_sugar-night.png",
+    "buildings": [
+      {
+        "wall": "camp",
+        "roof": "shake",
+        "x": 20,
+        "y": 1,
+        "w": 6,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "barn",
+        "roof": "metal",
+        "x": 2,
+        "y": 12,
+        "w": 6,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "sugar_maple",
+        "tx": 4,
+        "ty": 1
+      },
+      {
+        "id": "sugar_maple",
+        "tx": 12,
+        "ty": 2
+      },
+      {
+        "id": "young_maple",
+        "tx": 28,
+        "ty": 4
+      },
+      {
+        "id": "sap_bucket",
+        "tx": 8,
+        "ty": 6
+      },
+      {
+        "id": "sap_tank",
+        "tx": 16,
+        "ty": 6
+      },
+      {
+        "id": "cordwood",
+        "tx": 24,
+        "ty": 10
+      },
+      {
+        "id": "stone_wall_run",
+        "tx": 4,
+        "ty": 10
+      },
+      {
+        "id": "stump",
+        "tx": 30,
+        "ty": 12
+      }
+    ],
+    "features": [
+      {
+        "x": 10,
+        "y": 7,
+        "id": "lincoln_sugar.tubing"
+      },
+      {
+        "x": 22,
+        "y": 8,
+        "id": "lincoln_sugar.sled_rut"
+      }
+    ]
+  },
+  {
+    "id": "shoreham_orchard",
+    "title": "Shoreham Orchard",
+    "blurb": "Mown alleys, apple rows, hive and press yard.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/shoreham_orchard-day.png",
+    "night": "scenes/shoreham_orchard-night.png",
+    "buildings": [
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 26,
+        "y": 1,
+        "w": 5,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "barn",
+        "roof": "metal",
+        "x": 26,
+        "y": 12,
+        "w": 5,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "apple_tree",
+        "tx": 3,
+        "ty": 2
+      },
+      {
+        "id": "apple_tree",
+        "tx": 10,
+        "ty": 2
+      },
+      {
+        "id": "apple_tree",
+        "tx": 16,
+        "ty": 5
+      },
+      {
+        "id": "apple_tree",
+        "tx": 4,
+        "ty": 8
+      },
+      {
+        "id": "apple_tree",
+        "tx": 12,
+        "ty": 8
+      },
+      {
+        "id": "apple_tree",
+        "tx": 6,
+        "ty": 12
+      },
+      {
+        "id": "bushel",
+        "tx": 18,
+        "ty": 10
+      },
+      {
+        "id": "beehive",
+        "tx": 20,
+        "ty": 14
+      },
+      {
+        "id": "cider_barrel",
+        "tx": 18,
+        "ty": 16
+      },
+      {
+        "id": "apple_crate",
+        "tx": 8,
+        "ty": 16
+      }
+    ],
+    "features": [
+      {
+        "x": 8,
+        "y": 4,
+        "id": "shoreham_orchard.tree_row"
+      },
+      {
+        "x": 27,
+        "y": 10,
+        "id": "shoreham_orchard.press_pad"
+      }
+    ]
+  },
+  {
+    "id": "addison_intervale",
+    "title": "Addison Intervale",
+    "blurb": "Dairy pasture, stubble, and a barn against the lane.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/addison_intervale-day.png",
+    "night": "scenes/addison_intervale-night.png",
+    "buildings": [
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 2,
+        "y": 1,
+        "w": 6,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "barn",
+        "roof": "metal",
+        "x": 20,
+        "y": 1,
+        "w": 8,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "round_bale",
+        "tx": 8,
+        "ty": 8
+      },
+      {
+        "id": "hay_bale",
+        "tx": 12,
+        "ty": 8
+      },
+      {
+        "id": "round_bale",
+        "tx": 16,
+        "ty": 12
+      },
+      {
+        "id": "milk_can",
+        "tx": 10,
+        "ty": 3
+      },
+      {
+        "id": "corn_shock",
+        "tx": 6,
+        "ty": 12
+      },
+      {
+        "id": "split_rail_h",
+        "tx": 4,
+        "ty": 16
+      },
+      {
+        "id": "pumpkins",
+        "tx": 14,
+        "ty": 15
+      },
+      {
+        "id": "elm",
+        "tx": 28,
+        "ty": 8
+      }
+    ],
+    "features": [
+      {
+        "x": 22,
+        "y": 7,
+        "id": "addison_intervale.silo_base"
+      },
+      {
+        "x": 8,
+        "y": 6,
+        "id": "addison_intervale.fence_line"
+      }
+    ]
+  },
+  {
+    "id": "leicester_quarry",
+    "title": "Leicester Quarry",
+    "blurb": "Cut face, talus, and a rail running into the spoil.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/leicester_quarry-day.png",
+    "night": "scenes/leicester_quarry-night.png",
+    "buildings": [
+      {
+        "wall": "stone",
+        "roof": "metal",
+        "x": 22,
+        "y": 1,
+        "w": 7,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "quarry_cart",
+        "tx": 12,
+        "ty": 8
+      },
+      {
+        "id": "quarry_block",
+        "tx": 16,
+        "ty": 12
+      },
+      {
+        "id": "quarry_block",
+        "tx": 20,
+        "ty": 14
+      },
+      {
+        "id": "boulder",
+        "tx": 4,
+        "ty": 14
+      },
+      {
+        "id": "ladder",
+        "tx": 8,
+        "ty": 4
+      },
+      {
+        "id": "cordwood",
+        "tx": 26,
+        "ty": 12
+      }
+    ],
+    "features": [
+      {
+        "x": 2,
+        "y": 4,
+        "id": "leicester_quarry.face"
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "id": "leicester_quarry.face"
+      },
+      {
+        "x": 2,
+        "y": 8,
+        "id": "leicester_quarry.face"
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "id": "leicester_quarry.face"
+      },
+      {
+        "x": 14,
+        "y": 10,
+        "id": "leicester_quarry.rail"
+      },
+      {
+        "x": 20,
+        "y": 10,
+        "id": "leicester_quarry.rail"
+      },
+      {
+        "x": 24,
+        "y": 6,
+        "id": "leicester_quarry.derrick_pad"
+      }
+    ]
+  },
+  {
+    "id": "bristol_notch",
+    "title": "Bristol Notch",
+    "blurb": "Cliff foot, rutted notch road, and a small porch row.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/bristol_notch-day.png",
+    "night": "scenes/bristol_notch-night.png",
+    "buildings": [
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 22,
+        "y": 1,
+        "w": 7,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "clap",
+        "roof": "slate",
+        "x": 12,
+        "y": 1,
+        "w": 5,
+        "h": 3,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "cedar",
+        "tx": 8,
+        "ty": 2
+      },
+      {
+        "id": "fern",
+        "tx": 7,
+        "ty": 6
+      },
+      {
+        "id": "boulder",
+        "tx": 4,
+        "ty": 12
+      },
+      {
+        "id": "signpost",
+        "tx": 10,
+        "ty": 8
+      },
+      {
+        "id": "fieldstone",
+        "tx": 16,
+        "ty": 10
+      },
+      {
+        "id": "goldenrod",
+        "tx": 28,
+        "ty": 12
+      }
+    ],
+    "features": [
+      {
+        "x": 5,
+        "y": 4,
+        "id": "bristol_notch.cliff_foot"
+      },
+      {
+        "x": 5,
+        "y": 8,
+        "id": "bristol_notch.cliff_foot"
+      },
+      {
+        "x": 14,
+        "y": 12,
+        "id": "bristol_notch.rut"
+      }
+    ]
+  },
+  {
+    "id": "weybridge_span",
+    "title": "Weybridge Span",
+    "blurb": "Creek bed, plank deck, and meadow approaches.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/weybridge_span-day.png",
+    "night": "scenes/weybridge_span-night.png",
+    "buildings": [
+      {
+        "wall": "clap",
+        "roof": "slate",
+        "x": 2,
+        "y": 1,
+        "w": 5,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "clap",
+        "roof": "shingle",
+        "x": 24,
+        "y": 13,
+        "w": 6,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "paper_birch",
+        "tx": 8,
+        "ty": 1
+      },
+      {
+        "id": "goldenrod",
+        "tx": 22,
+        "ty": 4
+      },
+      {
+        "id": "aster_clump",
+        "tx": 6,
+        "ty": 14
+      },
+      {
+        "id": "bench",
+        "tx": 18,
+        "ty": 5
+      },
+      {
+        "id": "rowboat",
+        "tx": 22,
+        "ty": 9
+      },
+      {
+        "id": "reeds",
+        "tx": 4,
+        "ty": 8
+      }
+    ],
+    "features": [
+      {
+        "x": 12,
+        "y": 8,
+        "id": "weybridge_span.truss_bay"
+      },
+      {
+        "x": 12,
+        "y": 11,
+        "id": "weybridge_span.truss_bay"
+      },
+      {
+        "x": 19,
+        "y": 8,
+        "id": "weybridge_span.truss_bay"
+      },
+      {
+        "x": 19,
+        "y": 11,
+        "id": "weybridge_span.truss_bay"
+      },
+      {
+        "x": 14,
+        "y": 9,
+        "id": "weybridge_span.deck_edge"
+      },
+      {
+        "x": 8,
+        "y": 8,
+        "id": "weybridge_span.abutment"
+      }
+    ]
+  },
+  {
+    "id": "monkton_ridge",
+    "title": "Monkton Ridge",
+    "blurb": "Thin ridge grass, a windbreak, and a hamlet stoop.",
+    "size": [
+      32,
+      20
+    ],
+    "tile": 16,
+    "day": "scenes/monkton_ridge-day.png",
+    "night": "scenes/monkton_ridge-night.png",
+    "buildings": [
+      {
+        "wall": "clap",
+        "roof": "metal",
+        "x": 22,
+        "y": 3,
+        "w": 6,
+        "h": 4,
+        "door": true
+      },
+      {
+        "wall": "barn",
+        "roof": "metal",
+        "x": 4,
+        "y": 3,
+        "w": 6,
+        "h": 4,
+        "door": true
+      }
+    ],
+    "props": [
+      {
+        "id": "red_spruce",
+        "tx": 14,
+        "ty": 1
+      },
+      {
+        "id": "cedar",
+        "tx": 18,
+        "ty": 2
+      },
+      {
+        "id": "white_pine",
+        "tx": 10,
+        "ty": 0
+      },
+      {
+        "id": "split_rail_h",
+        "tx": 12,
+        "ty": 12
+      },
+      {
+        "id": "boulder",
+        "tx": 2,
+        "ty": 8
+      },
+      {
+        "id": "goldenrod",
+        "tx": 28,
+        "ty": 12
+      },
+      {
+        "id": "staked_sapling",
+        "tx": 16,
+        "ty": 13
+      }
+    ],
+    "features": [
+      {
+        "x": 8,
+        "y": 14,
+        "id": "monkton_ridge.blueberry"
+      },
+      {
+        "x": 20,
+        "y": 10,
+        "id": "monkton_ridge.track"
+      }
+    ]
+  }
+]

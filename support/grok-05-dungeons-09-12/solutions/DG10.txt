@@ -1,0 +1,182 @@
+DG10 The Ferryman's Ledger
+Site: Ledger Landing on the Champlain shore
+Dependency:
+  ENTER -> dg10.ledger-read
+  dg10.ledger-read -> dg10.D1
+  dg10.D1 -> dg10.D2
+  dg10.D2 -> dg10.chain
+  dg10.chain -> dg10.D3
+  dg10.D3 -> dg10.warden
+  dg10.warden -> dg10.D4
+  dg10.D4 -> dg10.cleared
+Shortcut crane-return: After the oarlock, the high crane rope replaces the homeward ferry. All four lines are still required.
+
+== route main
+DG10-R01: move 6,4 → interact read-ledger → move 16,6 → exit east
+DG10-R02: move 8,5 → interact pick-ticket → move 1,6 → exit west
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 6,5 → interact H1 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 8,5 → interact lever-E → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R06: move 16,6 → exit east
+DG10-R07: move 8,5 → interact pick-bell → move 1,6 → exit west
+DG10-R06: move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 8,5 → interact lever-E → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 8,5 → interact H2 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 4,5 → interact lever-W → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R03: move 8,6 → interact pull-chain → move 16,6 → exit east
+DG10-R09: move 8,5 → interact pick-lantern → move 1,6 → exit west
+DG10-R03: move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 4,5 → interact lever-W → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 10,5 → interact H3 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 12,5 → interact lever-S → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R11: move 16,6 → exit east
+DG10-R10: move 9,6 → miniboss begin → miniboss pin bow 1 → miniboss pin bow 2 → miniboss pin bow 3 → miniboss strike hammer → move 8,8 → interact pick-oarlock → move 1,6 → exit west
+DG10-R11: move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 12,5 → interact lever-S → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 12,5 → interact H4 → move 9,1 → exit north
+DG10-R13: move 16,6 → exit east
+DG10-R14: boss begin → move 6,6 → boss glass-strike → move 8,6 → boss glass-strike → move 9,4 → boss stand-ring → move 10,6 → boss glass-strike → move 12,6 → boss glass-strike → move 9,6 → boss snag → boss strike hammer → assert item-count struck-ledger → assert not-item blue-shell → assert not-item crane-pin → assert not-item scratched-line → assert room DG10-R14
+end DG10-R14 items struck-ledgerx1
+
+== route shortcut
+DG10-R01: move 6,4 → interact read-ledger → move 16,6 → exit east
+DG10-R02: move 8,5 → interact pick-ticket → move 1,6 → exit west
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 6,5 → interact H1 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 8,5 → interact lever-E → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R06: move 16,6 → exit east
+DG10-R07: move 8,5 → interact pick-bell → move 1,6 → exit west
+DG10-R06: move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 8,5 → interact lever-E → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 8,5 → interact H2 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 4,5 → interact lever-W → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R03: move 8,6 → interact pull-chain → move 16,6 → exit east
+DG10-R09: move 8,5 → interact pick-lantern → move 1,6 → exit west
+DG10-R03: move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 4,5 → interact lever-W → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 10,5 → interact H3 → move 4,6 → exit board
+DG10-R04: move 2,6 → exit launch-home → tick → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 12,5 → interact lever-S → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R11: move 16,6 → exit east
+DG10-R10: move 9,6 → miniboss begin → miniboss pin bow 1 → miniboss pin bow 2 → miniboss pin bow 3 → miniboss strike hammer → move 8,8 → interact pick-oarlock → move 1,6 → exit west
+DG10-R11: move 9,1 → exit north
+DG10-R15: move 8,5 → interact fix-crane → move 16,6 → exit rope → tick → tick → tick
+DG10-R01: move 9,1 → exit north
+DG10-R08: move 12,5 → interact lever-S → move 9,10 → exit south
+DG10-R01: move 4,6 → exit board
+DG10-R04: move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05: move 12,5 → interact H4 → move 9,1 → exit north
+DG10-R13: move 16,6 → exit east
+DG10-R14: boss begin → move 6,6 → boss glass-strike → move 8,6 → boss glass-strike → move 9,4 → boss stand-ring → move 10,6 → boss glass-strike → move 12,6 → boss glass-strike → move 9,6 → boss snag → boss strike hammer → assert item-count struck-ledger → assert not-item blue-shell → assert not-item scratched-line → assert room DG10-R14 → assert item crane-pin → assert flag dg10.D4
+end DG10-R14 items crane-pinx1, struck-ledgerx1
+
+== room solution traces
+DG10-R01 main
+  solve: move 6,3 → interact mile-r01 → move 6,4 → interact read-ledger → move 16,6 → exit east
+  fail god-does-not-skip-the-lake: exit god-fly-lake => GOD_SEALED
+  recover: set-form → move 6,4 → interact read-ledger
+DG10-R02 main
+  solve: move 8,5 → interact pick-ticket
+  fail god-cannot-take-the-ticket: interact pick-ticket => FORM_REQUIRED
+  recover: set-form → interact pick-ticket
+DG10-R03 main
+  solve: move 8,6 → interact pull-chain → move 16,6 → exit east
+  fail chain-without-sugar-line: interact pull-chain => TOOL_REQUIRED
+  recover: grant-tool → interact pull-chain
+DG10-R04 main
+  solve: move 9,4 → interact mile-r04 → move 15,6 → exit launch-channel → tick → tick → tick → tick
+  fail two-levers-tangle: exit launch-channel => TANGLE
+  recover: move 2,6 → exit launch-home → tick → tick → tick → tick → move 9,1 → exit north → move 4,5 → interact lever-W → move 8,5 → interact lever-E → move 9,10 → exit south → move 4,6 → exit board → move 15,6 → exit launch-channel → tick → tick → tick → tick
+DG10-R05 main
+  solve: interact H1
+  fail wrong-hook-does-not-spend-the-ticket: interact H2 => WRONG_OBJECT
+  recover: move 6,5 → interact H1
+DG10-R06 main
+  solve: move 16,6 → exit east
+  fail god-cannot-swim-the-pool: move 8,2 => NO_PATH
+  recover: set-form → move 8,2 → interact take-shell
+DG10-R07 main
+  solve: move 8,5 → interact pick-bell
+  fail leave-the-tower-from-the-wrong-tile: exit up => NOT_ON_EXIT
+  recover: move 9,1 → exit up
+DG10-R08 main
+  solve: move 8,5 → interact lever-E → assert lever → move 8,5 → interact lever-E → assert lever
+  fail loft-wall: move 0,5 => NO_PATH
+  recover: move 4,5 → interact lever-W → move 4,5 → interact lever-W
+DG10-R09 main
+  solve: move 8,5 → interact pick-lantern
+  fail god-cannot-lift-the-lantern: interact pick-lantern => FORM_REQUIRED
+  recover: set-form → interact pick-lantern
+DG10-R10 main
+  solve: move 9,6 → miniboss begin → miniboss pin bow 1 → miniboss pin bow 2 → miniboss pin bow 3 → miniboss strike hammer → move 8,8 → interact pick-oarlock
+  fail pins-out-of-order-reset: miniboss begin → miniboss pin bow 2 => WRONG_ORDER
+  recover: miniboss pin bow 1 → miniboss pin bow 2 → miniboss pin bow 3 → miniboss strike hammer
+DG10-R11 main
+  solve: move 16,6 → exit east
+  fail south-run-wall: move 0,6 => NO_PATH
+  recover: move 9,1 → exit north
+DG10-R12 optional
+  solve: move 8,6 → interact read-keel
+  fail keel-jammed: interact read-keel => TOOL_REQUIRED
+  recover: grant-tool → interact read-keel
+DG10-R13 main
+  solve: move 16,6 → exit east
+  fail collector-door-with-a-line-open: exit east => EXIT_CLOSED
+  recover: move 4,5 → interact mile-r13
+DG10-R14 main
+  solve: boss begin → move 6,6 → boss glass-strike → move 8,6 → boss glass-strike → move 9,4 → boss stand-ring → move 10,6 → boss glass-strike → move 12,6 → boss glass-strike → move 9,6 → boss snag → boss strike hammer
+  fail god-cannot-strike-a-line: boss begin → boss glass-strike => GOD_SEALED
+  recover: set-form → boss begin → move 6,6 → boss glass-strike → move 8,6 → boss glass-strike → move 9,4 → boss stand-ring → move 10,6 → boss glass-strike → move 12,6 → boss glass-strike → move 9,6 → boss snag → boss strike hammer
+DG10-R15 optional
+  solve: move 8,5 → interact fix-crane → move 16,6 → exit rope → tick → tick → tick
+  fail rope-before-the-pin: exit rope => EXIT_CLOSED
+  recover: move 8,5 → interact fix-crane → move 16,6 → exit rope → tick → tick → tick
+DG10-R16 optional
+  solve: move 8,6 → interact see-passengers
+  fail crib-without-glass: interact see-passengers => TOOL_REQUIRED
+  recover: grant-tool → interact see-passengers

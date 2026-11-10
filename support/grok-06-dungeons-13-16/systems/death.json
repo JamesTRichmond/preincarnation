@@ -1,0 +1,31 @@
+{
+  "id": "death.final-complex",
+  "yearDelta": 14,
+  "bodyRule": "body.id becomes ellis-body-{deathCount}. The persistent name remains Ellis Perch.",
+  "checkpointRule": "Respawn at the latest visited checkpoint inside the current region. Boss rooms are not checkpoints; their antechambers are. DG16 environments checkpoint at their first room. The Seam checkpoints itself.",
+  "persists": [
+    "discoveries (disc.*)",
+    "room clears",
+    "completed boss phases",
+    "environment completion",
+    "institution decisions",
+    "physical seam preparations: seal, chain, sockets, bell, nail jam, pages read",
+    "a coat left on a peg, reclassified from current to previous"
+  ],
+  "resets": [
+    "strike.*",
+    "hazard.*",
+    "meta.embryonic",
+    "staged.line (unconfirmed lectern choice)",
+    "*.progress.* boss indices",
+    "actor positions"
+  ],
+  "doesNot": [
+    "grant a discovery you did not earn",
+    "complete an environment",
+    "commit or change campaign.ending",
+    "consume or restore institution preparation"
+  ],
+  "afterCommitBeforeCredits": "Death still advances the year and returns you to DG16.SEAM. The committed ending and vignette index remain. Replay the current vignette.",
+  "afterTerminal": "meta.terminal is set and meta.deathEnabled is false. Death does not fire. The save loads EPILOGUE.PORCH. Bosses do not respawn. Dungeons reopen as museums. The lectern does not offer the four choices again. A new game is a separate slot."
+}

@@ -1,0 +1,64 @@
+{
+  "gaps": [
+    {
+      "id": "catalog-768",
+      "title": "Planned 768-item catalog",
+      "detail": "Other loot-like files exist beside this pack (the traversal catalog, the county relics, src/game/loot). None of them is the planned 768-item catalog. Names were compared; new ids alone were not treated as proof of new content."
+    },
+    {
+      "id": "campaign-inventory",
+      "title": "Campaign inventory",
+      "detail": "Discovery sites, weights, and storage rules are data on the gadget. They are not written into a county map or into preincarnation.save.v1."
+    },
+    {
+      "id": "enemy-ai",
+      "title": "Enemy AI",
+      "detail": "narrow, flock, rhythm, burrow, keen-ear, and phototactic change an alert flag on the bench. There is no navigation, animation, or damage model."
+    },
+    {
+      "id": "lamps",
+      "title": "Lamp props",
+      "detail": "Approved lamps change a mode string. No scene light, mesh, or moth simulation exists outside the bench."
+    },
+    {
+      "id": "audio",
+      "title": "Diegetic audio",
+      "detail": "The wax recorder stores an authored sound id. The bench can hum a stand-in for a named take. It does not capture a microphone or play a field recording of the creek."
+    },
+    {
+      "id": "puzzles",
+      "title": "Puzzle geometry",
+      "detail": "Locks, gates, and compartments flip solved, revealed, or unlatched. They are not wired to door meshes or dialogue."
+    },
+    {
+      "id": "trade",
+      "title": "Trade economy",
+      "detail": "A sale adds a local credit number or is refused as an heirloom. No merchant wallet or base-game currency id was available."
+    },
+    {
+      "id": "shelf",
+      "title": "Display furniture",
+      "detail": "The study shelf is four slots on the bench, not a room in a house map."
+    },
+    {
+      "id": "weather",
+      "title": "Weather",
+      "detail": "Wind, wet, dawn, and pressure are scene flags, not a county forecast."
+    },
+    {
+      "id": "npcs",
+      "title": "NPC schedules",
+      "detail": "The two-note pipe sets friendApproaching. No character controller exists to walk that person in."
+    },
+    {
+      "id": "physics",
+      "title": "Physics",
+      "detail": "Balances, sash lifts, chain lengths, and drifts are numbers, not rigid bodies."
+    },
+    {
+      "id": "base-craft",
+      "title": "Cross-pack crafting",
+      "detail": "Restore materials are pack-local names (clock oil, rouge, beeswax). They are not county relic ids."
+    }
+  ]
+}

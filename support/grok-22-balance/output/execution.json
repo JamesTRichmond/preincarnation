@@ -1,0 +1,3000 @@
+{
+  "playtest": false,
+  "simulation": true,
+  "sourceSha": "c737e42eb188148291438dfb8a5993d6ce2b77fa",
+  "assumptions": [
+    "Fixed step 1/60s. Hit check runs before the enemy update, matching engine.ts sim().",
+    "Standard policy spaces at ~20px with starter iron, faces the target to slash, does not sip, does not spin, does not bomb.",
+    "Assisted policy retreats earlier, may dash if the form or boots allow, and sips one syrup when hp is at or under the next contact hit. Early lives have no syrup.",
+    "Default flaw cannot_rest (speed ×1.1) is the shipped character. Form sweep also uses pride (×1).",
+    "Open field. Town walls are not navmeshed. Quarry gate uses the real tile string.",
+    "Enemy projectiles are absent from the engine, so saturation is reported as zero rather than invented.",
+    "No player stun state exists. Flee probes measure whether contact repeats while leaving.",
+    "Resident is defined and unplaced. No arena was invented for it.",
+    "Bears are classified as the miniboss tier only because they are the repeated elite stat block. The game has no miniboss type.",
+    "Four major rows are campaign checkpoints of the one placed boss (sentinel), not four authored boss characters."
+  ],
+  "counts": {
+    "ordinaryPlacements": 12,
+    "ordinaryAlsoCluster": 1,
+    "bearPlacements": 8,
+    "majorCheckpoints": 4,
+    "baselineRows": 158
+  },
+  "summary": {
+    "ordinary": {
+      "rows": 76,
+      "standardClears": 38,
+      "standardUntouched": 38,
+      "standardOf": 38,
+      "assistedClears": 38,
+      "assistedUntouched": 38,
+      "assistedOf": 38,
+      "maxTtk": 4.683,
+      "maxIdle": 0.382
+    },
+    "group": {
+      "rows": 28,
+      "standardClears": 14,
+      "standardUntouched": 14,
+      "standardOf": 14,
+      "assistedClears": 14,
+      "assistedUntouched": 14,
+      "assistedOf": 14,
+      "maxTtk": 4.217,
+      "maxIdle": 0.446
+    },
+    "miniboss": {
+      "rows": 46,
+      "standardClears": 23,
+      "standardUntouched": 23,
+      "standardOf": 23,
+      "assistedClears": 23,
+      "assistedUntouched": 23,
+      "assistedOf": 23,
+      "maxTtk": 2.333,
+      "maxIdle": 0.438
+    },
+    "major": {
+      "rows": 8,
+      "standardClears": 4,
+      "standardUntouched": 4,
+      "standardOf": 4,
+      "assistedClears": 4,
+      "assistedUntouched": 4,
+      "assistedOf": 4,
+      "maxTtk": 3.3,
+      "maxIdle": 0.433
+    }
+  },
+  "summaryAfter": {
+    "ordinary": {
+      "rows": 76,
+      "standardClears": 38,
+      "standardUntouched": 38,
+      "standardOf": 38,
+      "assistedClears": 38,
+      "assistedUntouched": 38,
+      "assistedOf": 38,
+      "maxTtk": 4.683,
+      "maxIdle": 0.382
+    },
+    "group": {
+      "rows": 28,
+      "standardClears": 14,
+      "standardUntouched": 14,
+      "standardOf": 14,
+      "assistedClears": 14,
+      "assistedUntouched": 14,
+      "assistedOf": 14,
+      "maxTtk": 4.217,
+      "maxIdle": 0.446
+    },
+    "miniboss": {
+      "rows": 46,
+      "standardClears": 23,
+      "standardUntouched": 23,
+      "standardOf": 23,
+      "assistedClears": 23,
+      "assistedUntouched": 23,
+      "assistedOf": 23,
+      "maxTtk": 2.333,
+      "maxIdle": 0.438
+    },
+    "major": {
+      "rows": 8,
+      "standardClears": 4,
+      "standardUntouched": 4,
+      "standardOf": 4,
+      "assistedClears": 4,
+      "assistedUntouched": 4,
+      "assistedOf": 4,
+      "maxTtk": 3.3,
+      "maxIdle": 0.433
+    }
+  },
+  "combatPatch": {},
+  "patchDecisions": {
+    "fisherNormalize": {
+      "enabled": false,
+      "reason": "spacing policy took no damage and cleared every tested fisher"
+    },
+    "enemyCycleMulCap": {
+      "enabled": false,
+      "reason": "sentinel checkpoints still die to starter iron inside 35s at cycle 5, including tropoverse. No health-pool cap.",
+      "rows": [
+        {
+          "id": "quarry-sentinel-first",
+          "won": true,
+          "ttk": 2.817,
+          "dmg": 0
+        },
+        {
+          "id": "quarry-sentinel-return",
+          "won": true,
+          "ttk": 2.983,
+          "dmg": 0
+        },
+        {
+          "id": "quarry-sentinel-late",
+          "won": true,
+          "ttk": 2.867,
+          "dmg": 0
+        },
+        {
+          "id": "soloverse-sentinel",
+          "won": true,
+          "ttk": 3.1,
+          "dmg": 0
+        }
+      ]
+    },
+    "embryoSolidity": {
+      "enabled": false,
+      "reason": "wanderer already reaches the sentinel. Embryo's extra cells are void (blurb) plus cracked tiles that are not the only path. isSolid left as authored.",
+      "gates": {
+        "wanderer": {
+          "reaches": true,
+          "cells": 457
+        },
+        "embryoLive": {
+          "reaches": true,
+          "cells": 512
+        },
+        "embryoIfCrackedSolid": {
+          "reaches": true,
+          "cells": 504
+        }
+      }
+    }
+  },
+  "fisherStress": [
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-wanderer-cannot_rest",
+      "form": "wanderer",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 1.1,
+      "idleFraction": 0.368,
+      "playerHp": 4,
+      "peak": {
+        "fisher-1": 109.699
+      },
+      "remain": [],
+      "flaw": "cannot_rest"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-wanderer-pride",
+      "form": "wanderer",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 1.133,
+      "idleFraction": 0.362,
+      "playerHp": 4,
+      "peak": {
+        "fisher-1": 109.389
+      },
+      "remain": [],
+      "flaw": "pride"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-smuggler-cannot_rest",
+      "form": "smuggler",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 1.05,
+      "idleFraction": 0.382,
+      "playerHp": 4,
+      "peak": {
+        "fisher-1": 110.101
+      },
+      "remain": [],
+      "flaw": "cannot_rest"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-smuggler-pride",
+      "form": "smuggler",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 1.067,
+      "idleFraction": 0.375,
+      "playerHp": 4,
+      "peak": {
+        "fisher-1": 110.103
+      },
+      "remain": [],
+      "flaw": "pride"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-officer-cannot_rest",
+      "form": "officer",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 0.9,
+      "idleFraction": 0.318,
+      "playerHp": 6,
+      "peak": {
+        "fisher-1": 99.281
+      },
+      "remain": [],
+      "flaw": "cannot_rest"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-officer-pride",
+      "form": "officer",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 0.933,
+      "idleFraction": 0.311,
+      "playerHp": 6,
+      "peak": {
+        "fisher-1": 99.331
+      },
+      "remain": [],
+      "flaw": "pride"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-embryo-cannot_rest",
+      "form": "embryo",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 0.617,
+      "idleFraction": 0.25,
+      "playerHp": 7,
+      "peak": {
+        "fisher-1": 99.221
+      },
+      "remain": [],
+      "flaw": "cannot_rest"
+    },
+    {
+      "tier": "form-sweep",
+      "id": "mb-fisher",
+      "map": "middlebury",
+      "kind": "fisher",
+      "build": "middle-embryo-pride",
+      "form": "embryo",
+      "cycle": 2,
+      "tropoverse": false,
+      "policy": "standard",
+      "won": true,
+      "timedOut": false,
+      "damageTaken": 0,
+      "contacts": 0,
+      "sips": 0,
+      "ttk": 0.633,
+      "idleFraction": 0.241,
+      "playerHp": 7,
+      "peak": {
+        "fisher-1": 99.225
+      },
+      "remain": [],
+      "flaw": "pride"
+    }
+  ],
+  "healingDependency": [],
+  "fleeWhileHit": [
+    {
+      "id": "mb-fisher",
+      "startDist": 70,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-fisher",
+      "startDist": 70,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-fisher",
+      "startDist": 50,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-fisher",
+      "startDist": 50,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-fisher",
+      "startDist": 30,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-fisher",
+      "startDist": 30,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 70,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 70,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 50,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 50,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 30,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "mb-bob",
+      "startDist": 30,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 70,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 70,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 50,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 50,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 30,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "br-bear",
+      "startDist": 30,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 70,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 70,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 50,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 50,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 30,
+      "normalized": false,
+      "contacts": 0,
+      "damageTaken": 0
+    },
+    {
+      "id": "vg-wraith",
+      "startDist": 30,
+      "normalized": true,
+      "contacts": 0,
+      "damageTaken": 0
+    }
+  ],
+  "snowFisher": {
+    "won": true,
+    "damageTaken": 0,
+    "ttk": 0.967,
+    "contacts": 0
+  },
+  "simultaneousAggroPairs": [
+    {
+      "map": "middlebury",
+      "a": "crow-1",
+      "b": "bob-chipman",
+      "distPx": 36,
+      "combinedAggro": 156
+    },
+    {
+      "map": "vergennes",
+      "a": "v-crow",
+      "b": "v-fisher",
+      "distPx": 107,
+      "combinedAggro": 156
+    },
+    {
+      "map": "bristol",
+      "a": "b-fisher",
+      "b": "b-bear",
+      "distPx": 116,
+      "combinedAggro": 142
+    },
+    {
+      "map": "ferrisburgh",
+      "a": "f-bob",
+      "b": "f-bear",
+      "distPx": 101,
+      "combinedAggro": 142
+    },
+    {
+      "map": "soloverse",
+      "a": "solo-wraith-a",
+      "b": "solo-wraith-c",
+      "distPx": 115,
+      "combinedAggro": 156
+    },
+    {
+      "map": "soloverse",
+      "a": "solo-wraith-a",
+      "b": "solo-sentinel",
+      "distPx": 72,
+      "combinedAggro": 156
+    }
+  ],
+  "enemyProjectileShots": 0,
+  "playerStunExists": false,
+  "budgets": {
+    "crow": {
+      "early": {
+        "enemyHp": 2,
+        "slash": 1,
+        "hitsToKill": 2,
+        "connectSeconds": 0.44,
+        "contact": 1,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 2,
+        "slash": 1.18,
+        "hitsToKill": 2,
+        "connectSeconds": 0.44,
+        "contact": 1,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 3,
+        "slash": 1.54,
+        "hitsToKill": 2,
+        "connectSeconds": 0.44,
+        "contact": 1,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 5
+      }
+    },
+    "wraith": {
+      "early": {
+        "enemyHp": 3,
+        "slash": 1,
+        "hitsToKill": 3,
+        "connectSeconds": 0.66,
+        "contact": 1,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 4,
+        "slash": 1.18,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 5,
+        "slash": 1.54,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 5
+      }
+    },
+    "sentinel": {
+      "early": {
+        "enemyHp": 10,
+        "slash": 1,
+        "hitsToKill": 10,
+        "connectSeconds": 2.2,
+        "contact": 1,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 12,
+        "slash": 1.18,
+        "hitsToKill": 11,
+        "connectSeconds": 2.42,
+        "contact": 1,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 16,
+        "slash": 1.54,
+        "hitsToKill": 11,
+        "connectSeconds": 2.42,
+        "contact": 1,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 5
+      }
+    },
+    "bear": {
+      "early": {
+        "enemyHp": 7,
+        "slash": 1,
+        "hitsToKill": 7,
+        "connectSeconds": 1.54,
+        "contact": 1.5,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 1
+      },
+      "middle": {
+        "enemyHp": 9,
+        "slash": 1.18,
+        "hitsToKill": 8,
+        "connectSeconds": 1.76,
+        "contact": 1.5,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 2
+      },
+      "late": {
+        "enemyHp": 11,
+        "slash": 1.54,
+        "hitsToKill": 8,
+        "connectSeconds": 1.76,
+        "contact": 1.5,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 3
+      }
+    },
+    "bobcat": {
+      "early": {
+        "enemyHp": 3,
+        "slash": 1,
+        "hitsToKill": 3,
+        "connectSeconds": 0.66,
+        "contact": 1,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 4,
+        "slash": 1.18,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 5,
+        "slash": 1.54,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 5
+      }
+    },
+    "fisher": {
+      "early": {
+        "enemyHp": 3,
+        "slash": 1,
+        "hitsToKill": 3,
+        "connectSeconds": 0.66,
+        "contact": 1,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 4,
+        "slash": 1.18,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 5,
+        "slash": 1.54,
+        "hitsToKill": 4,
+        "connectSeconds": 0.88,
+        "contact": 1,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 5
+      }
+    },
+    "resident": {
+      "early": {
+        "enemyHp": 12,
+        "slash": 1,
+        "hitsToKill": 12,
+        "connectSeconds": 2.64,
+        "contact": 1.2,
+        "playerHp": 3,
+        "mistakesBeforeDeath": 2
+      },
+      "middle": {
+        "enemyHp": 15,
+        "slash": 1.18,
+        "hitsToKill": 13,
+        "connectSeconds": 2.86,
+        "contact": 1.2,
+        "playerHp": 4,
+        "mistakesBeforeDeath": 3
+      },
+      "late": {
+        "enemyHp": 19,
+        "slash": 1.54,
+        "hitsToKill": 13,
+        "connectSeconds": 2.86,
+        "contact": 1.2,
+        "playerHp": 6,
+        "mistakesBeforeDeath": 4
+      }
+    }
+  },
+  "rows": [
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.783,
+      "sips": 0,
+      "idleFraction": 0.189
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.8,
+      "sips": 0,
+      "idleFraction": 0.105
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.086
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.219
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-crow",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.094
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.967,
+      "sips": 0,
+      "idleFraction": 0.292
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1,
+      "sips": 0,
+      "idleFraction": 0.14
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.167,
+      "sips": 0,
+      "idleFraction": 0.344
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.2,
+      "sips": 0,
+      "idleFraction": 0.175
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.362
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-bob",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.172
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.9,
+      "sips": 0,
+      "idleFraction": 0.318
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.95,
+      "sips": 0,
+      "idleFraction": 0.064
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.368
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.117,
+      "sips": 0,
+      "idleFraction": 0.241
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.05,
+      "sips": 0,
+      "idleFraction": 0.382
+    },
+    {
+      "tier": "ordinary",
+      "id": "mb-fisher",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.083,
+      "sips": 0,
+      "idleFraction": 0.246
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.783,
+      "sips": 0,
+      "idleFraction": 0.189
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.8,
+      "sips": 0,
+      "idleFraction": 0.105
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.086
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.219
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-crow",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.094
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.033,
+      "sips": 0,
+      "idleFraction": 0.269
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.033,
+      "sips": 0,
+      "idleFraction": 0.135
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.217,
+      "sips": 0,
+      "idleFraction": 0.328
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.217,
+      "sips": 0,
+      "idleFraction": 0.203
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.167,
+      "sips": 0,
+      "idleFraction": 0.339
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-wraith",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.217,
+      "sips": 0,
+      "idleFraction": 0.169
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.9,
+      "sips": 0,
+      "idleFraction": 0.318
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.95,
+      "sips": 0,
+      "idleFraction": 0.064
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.368
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.117,
+      "sips": 0,
+      "idleFraction": 0.241
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.05,
+      "sips": 0,
+      "idleFraction": 0.382
+    },
+    {
+      "tier": "ordinary",
+      "id": "vg-fisher",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.083,
+      "sips": 0,
+      "idleFraction": 0.246
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.967,
+      "sips": 0,
+      "idleFraction": 0.292
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1,
+      "sips": 0,
+      "idleFraction": 0.14
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.167,
+      "sips": 0,
+      "idleFraction": 0.344
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.2,
+      "sips": 0,
+      "idleFraction": 0.175
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.362
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-bob",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.172
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.9,
+      "sips": 0,
+      "idleFraction": 0.318
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.95,
+      "sips": 0,
+      "idleFraction": 0.064
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.368
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.117,
+      "sips": 0,
+      "idleFraction": 0.241
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.05,
+      "sips": 0,
+      "idleFraction": 0.382
+    },
+    {
+      "tier": "ordinary",
+      "id": "br-fisher",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.083,
+      "sips": 0,
+      "idleFraction": 0.246
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.967,
+      "sips": 0,
+      "idleFraction": 0.292
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1,
+      "sips": 0,
+      "idleFraction": 0.14
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.167,
+      "sips": 0,
+      "idleFraction": 0.344
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.2,
+      "sips": 0,
+      "idleFraction": 0.175
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.362
+    },
+    {
+      "tier": "ordinary",
+      "id": "fe-bob",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.172
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.783,
+      "sips": 0,
+      "idleFraction": 0.189
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.8,
+      "sips": 0,
+      "idleFraction": 0.105
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.086
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.219
+    },
+    {
+      "tier": "ordinary",
+      "id": "wr-crow",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.094
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.967,
+      "sips": 0,
+      "idleFraction": 0.292
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1,
+      "sips": 0,
+      "idleFraction": 0.14
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.167,
+      "sips": 0,
+      "idleFraction": 0.344
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.2,
+      "sips": 0,
+      "idleFraction": 0.175
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.362
+    },
+    {
+      "tier": "ordinary",
+      "id": "ow-bob",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.1,
+      "sips": 0,
+      "idleFraction": 0.172
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.783,
+      "sips": 0,
+      "idleFraction": 0.189
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.8,
+      "sips": 0,
+      "idleFraction": 0.105
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.733,
+      "sips": 0,
+      "idleFraction": 0.086
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.219
+    },
+    {
+      "tier": "ordinary",
+      "id": "ru-crow",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 0.667,
+      "sips": 0,
+      "idleFraction": 0.094
+    },
+    {
+      "tier": "ordinary",
+      "id": "solo-wraiths",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.667,
+      "sips": 0,
+      "idleFraction": 0.328
+    },
+    {
+      "tier": "ordinary",
+      "id": "solo-wraiths",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.683,
+      "sips": 0,
+      "idleFraction": 0.192
+    },
+    {
+      "tier": "ordinary",
+      "id": "solo-wraiths",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.35,
+      "sips": 0,
+      "idleFraction": 0.339
+    },
+    {
+      "tier": "ordinary",
+      "id": "solo-wraiths",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.5,
+      "sips": 0,
+      "idleFraction": 0.173
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.183,
+      "sips": 0,
+      "idleFraction": 0.3
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.25,
+      "sips": 0,
+      "idleFraction": 0.135
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.35,
+      "sips": 0,
+      "idleFraction": 0.35
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.567,
+      "sips": 0,
+      "idleFraction": 0.183
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.283,
+      "sips": 0,
+      "idleFraction": 0.368
+    },
+    {
+      "tier": "group",
+      "id": "mb-crow-bob",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 1.35,
+      "sips": 0,
+      "idleFraction": 0.175
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.217,
+      "sips": 0,
+      "idleFraction": 0.256
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.25,
+      "sips": 0,
+      "idleFraction": 0.181
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.295
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.417,
+      "sips": 0,
+      "idleFraction": 0.192
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.133,
+      "sips": 0,
+      "idleFraction": 0.308
+    },
+    {
+      "tier": "group",
+      "id": "vg-crow-fisher",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.174
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.65,
+      "sips": 0,
+      "idleFraction": 0.384
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.9,
+      "sips": 0,
+      "idleFraction": 0.154
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.067,
+      "sips": 0,
+      "idleFraction": 0.409
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 4.217,
+      "sips": 0,
+      "idleFraction": 0.23
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.8,
+      "sips": 0,
+      "idleFraction": 0.419
+    },
+    {
+      "tier": "group",
+      "id": "br-fisher-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.933,
+      "sips": 0,
+      "idleFraction": 0.231
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.467,
+      "sips": 0,
+      "idleFraction": 0.414
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.533,
+      "sips": 0,
+      "idleFraction": 0.199
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.9,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.017,
+      "sips": 0,
+      "idleFraction": 0.225
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.817,
+      "sips": 0,
+      "idleFraction": 0.446
+    },
+    {
+      "tier": "group",
+      "id": "fe-bob-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.883,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "group",
+      "id": "solo-wraith-sentinel",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.683,
+      "sips": 0,
+      "idleFraction": 0.344
+    },
+    {
+      "tier": "group",
+      "id": "solo-wraith-sentinel",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.617,
+      "sips": 0,
+      "idleFraction": 0.141
+    },
+    {
+      "tier": "group",
+      "id": "solo-wraith-sentinel",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.933,
+      "sips": 0,
+      "idleFraction": 0.4
+    },
+    {
+      "tier": "group",
+      "id": "solo-wraith-sentinel",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.133,
+      "sips": 0,
+      "idleFraction": 0.214
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "br-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "fe-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-1",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "sa-bear-2",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "ow-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "ch-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.033,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.167,
+      "sips": 0,
+      "idleFraction": 0.2
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "wi-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "miniboss",
+      "id": "solo-bear",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.2,
+      "sips": 0,
+      "idleFraction": 0.43
+    },
+    {
+      "tier": "miniboss",
+      "id": "solo-bear",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.333,
+      "sips": 0,
+      "idleFraction": 0.221
+    },
+    {
+      "tier": "miniboss",
+      "id": "solo-bear",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.117,
+      "sips": 0,
+      "idleFraction": 0.438
+    },
+    {
+      "tier": "miniboss",
+      "id": "solo-bear",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.15,
+      "sips": 0,
+      "idleFraction": 0.228
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-first",
+      "build": "early",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.817,
+      "sips": 0,
+      "idleFraction": 0.39
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-first",
+      "build": "early",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.833,
+      "sips": 0,
+      "idleFraction": 0.169
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-return",
+      "build": "middle",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.983,
+      "sips": 0,
+      "idleFraction": 0.412
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-return",
+      "build": "middle",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.1,
+      "sips": 0,
+      "idleFraction": 0.209
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-late",
+      "build": "late",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 2.867,
+      "sips": 0,
+      "idleFraction": 0.427
+    },
+    {
+      "tier": "major",
+      "id": "quarry-sentinel-late",
+      "build": "late",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.05,
+      "sips": 0,
+      "idleFraction": 0.234
+    },
+    {
+      "tier": "major",
+      "id": "soloverse-sentinel",
+      "build": "late-sphere",
+      "policy": "standard",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.1,
+      "sips": 0,
+      "idleFraction": 0.433
+    },
+    {
+      "tier": "major",
+      "id": "soloverse-sentinel",
+      "build": "late-sphere",
+      "policy": "assisted",
+      "won": true,
+      "damageTaken": 0,
+      "contacts": 0,
+      "ttk": 3.3,
+      "sips": 0,
+      "idleFraction": 0.237
+    }
+  ],
+  "recovery": {
+    "rules": {
+      "restoreSyrup": false,
+      "bowQuiver": 0,
+      "reason": "No access loss was demonstrated. resolveDeath already keeps relics, upgrades, townsCleared, keys, and bottles. The sugarhouse tin is rebuilt on every interior entry (interiors.ts int_sugar has no taken-flag). Arrow wipe matches wintersPassed>=14 and the authored erodeGrave cutoff at 8, and starter-iron spacing still clears the matrix, so ammo was not restored."
+    },
+    "before": {
+      "rows": [
+        {
+          "death": 1,
+          "winters": 14,
+          "mundaneKept": true,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 2,
+          "winters": 18,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 3,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 4,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 5,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 6,
+          "winters": 15,
+          "mundaneKept": true,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        }
+      ],
+      "mundaneKeepRate": 0.333
+    },
+    "after": {
+      "rows": [
+        {
+          "death": 1,
+          "winters": 14,
+          "mundaneKept": true,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 2,
+          "winters": 18,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 3,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 4,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 5,
+          "winters": 16,
+          "mundaneKept": false,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        },
+        {
+          "death": 6,
+          "winters": 15,
+          "mundaneKept": true,
+          "arrows": 0,
+          "bombs": 0,
+          "bottles": [
+            "empty",
+            "empty"
+          ],
+          "relics": [
+            "sword",
+            "shovel",
+            "bow",
+            "lantern",
+            "hammer"
+          ],
+          "townsCleared": [
+            "quarry"
+          ],
+          "vitality": 3,
+          "maxHpUnchanged": true
+        }
+      ],
+      "mundaneKeepRate": 0.333
+    },
+    "mundaneKeepOver400": {
+      "n": 400,
+      "kept": 91,
+      "rate": 0.228
+    },
+    "note": "Recovery patch is an invariant, not a stat edit. Before and after ledgers match."
+  },
+  "unchanged": [
+    "Contact damage",
+    "Enemy base HP and the +12% per cycle multiplier",
+    "Player max HP formula",
+    "Winters advanced (14 to 18)",
+    "Grave erosion probabilities",
+    "Incarnation unlock gates",
+    "Quarry lock tile (marbleWall) and isSolid",
+    "Sentinel dormant-until-damaged"
+  ]
+}

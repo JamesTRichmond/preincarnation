@@ -1,0 +1,39 @@
+{
+  "id": "no-punishment-spiral",
+  "status": "invariant-only",
+  "changesNumbers": false,
+  "whyNoNumericEdit": "The fight matrix cleared with zero contact damage on starter iron after death has already stripped weapons, arrows, and bombs. Adding health, ammo, or a heal would be a manufactured buff.",
+  "mustKeepOnDeath": [
+    "relics (including shovel, so a grave stays diggable)",
+    "upgrade ranks",
+    "townsCleared, fate flags, keys",
+    "bottles already in hand",
+    "incarnation unlock progress (cycle, crowns, mayor talked)",
+    "maxHp formula: form HP plus Spare Heart only"
+  ],
+  "mayStripOnDeath": [
+    "inventory other than starter iron",
+    "arrows and bombs on the body",
+    "mundane grave goods at the authored 0.22 keep after 14 winters"
+  ],
+  "mustNotDo": [
+    "raise maxHp to offset the +12% per cycle enemy HP term",
+    "cap or delete that cycle term while sentinel still dies in under 4s",
+    "respawn one-shot weapon caches (that would be a grind loop)",
+    "open the quarry lock, skip cracked-marble intent, or lower incarnation gates",
+    "redesign sentinel phases or add enemy tells that the engine does not have"
+  ],
+  "alreadyTrue": [
+    "src/game/rules.ts resolveDeath does not clear relics, upgrades, towns, or bottles",
+    "src/game/interiors.ts int_sugar pushes syrup-tin on every build, with no taken flag, so the sugarhouse heal comes back when you walk there",
+    "src/game/engine.ts shop bomb purchase uses max(current, 3), so kegs can be bought again",
+    "skillAwardForDeath still pays 2, or 3 while Finish-it and the quarry is open"
+  ],
+  "rejected": [
+    { "id": "rebirth-syrup", "reason": "Sugarhouse tin already respawns. A free bottle on the death screen would stack a second heal." },
+    { "id": "rebirth-arrows", "reason": "erodeGrave zeros arrows at 8 years and wintersPassed is 14 to 18. That wipe is reachable on purpose. Bow is not required to clear any evaluated fight." },
+    { "id": "fisher-normalize", "reason": "Steer peaks near 110px/s against a listed 68, but spacing and flee-from-30px both took 0 damage for every form, including officer with no speed flaw." },
+    { "id": "embryo-solid-cracked", "reason": "BFS on QUARRY_SRC: wanderer already reaches the sentinel (457 cells). Embryo adds void, which the blurb grants, and 8 cracked tiles that are not the only path." },
+    { "id": "cycle-hp-cap", "reason": "Cycle 5 tropoverse sentinel ttk 3.1s, 0 damage, starter iron. No health-bar solution." }
+  ]
+}

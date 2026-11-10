@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AshBendRouteImport } from './routes/ash-bend'
+import { Route as InputRouteImport } from './routes/input'
+import { Route as SatchelRouteImport } from './routes/satchel'
+import { Route as ScoreRouteImport } from './routes/score'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AshBendRoute = AshBendRouteImport.update({
+  id: '/ash-bend',
+  path: '/ash-bend',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InputRoute = InputRouteImport.update({
+  id: '/input',
+  path: '/input',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SatchelRoute = SatchelRouteImport.update({
+  id: '/satchel',
+  path: '/satchel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoreRoute = ScoreRouteImport.update({
+  id: '/score',
+  path: '/score',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
+  '/input': typeof InputRoute
+  '/satchel': typeof SatchelRoute
+  '/score': typeof ScoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
+  '/input': typeof InputRoute
+  '/satchel': typeof SatchelRoute
+  '/score': typeof ScoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ash-bend': typeof AshBendRoute
+  '/input': typeof InputRoute
+  '/satchel': typeof SatchelRoute
+  '/score': typeof ScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ash-bend' | '/input' | '/satchel' | '/score'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ash-bend' | '/input' | '/satchel' | '/score'
+  id: '__root__' | '/' | '/ash-bend' | '/input' | '/satchel' | '/score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AshBendRoute: typeof AshBendRoute
+  InputRoute: typeof InputRoute
+  SatchelRoute: typeof SatchelRoute
+  ScoreRoute: typeof ScoreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ash-bend': {
+      id: '/ash-bend'
+      path: '/ash-bend'
+      fullPath: '/ash-bend'
+      preLoaderRoute: typeof AshBendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/input': {
+      id: '/input'
+      path: '/input'
+      fullPath: '/input'
+      preLoaderRoute: typeof InputRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/satchel': {
+      id: '/satchel'
+      path: '/satchel'
+      fullPath: '/satchel'
+      preLoaderRoute: typeof SatchelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/score': {
+      id: '/score'
+      path: '/score'
+      fullPath: '/score'
+      preLoaderRoute: typeof ScoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AshBendRoute: AshBendRoute,
+  InputRoute: InputRoute,
+  SatchelRoute: SatchelRoute,
+  ScoreRoute: ScoreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

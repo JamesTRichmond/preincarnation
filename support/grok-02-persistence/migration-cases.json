@@ -1,0 +1,631 @@
+{
+  "contract": "grok-02-persistence-contract-1",
+  "warning": "Reference-contract fixtures only. No PREINCARNATION save module was present. These records are not captured game saves, and a pass is not a game pass. v1/v2 shapes are defined by this pack because no shipped schema was available to read.",
+  "generatedFrom": "src/define-cases.js",
+  "cases": [
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-01",
+      "category": "migration",
+      "title": "v1 year 0 becomes a new game and ignores an unknown flag",
+      "starting": "A flat v1 blob: year 0, walker, full hp, Middlebury green, plus an unknown seen:intro flag.",
+      "why": "The oldest shape has no layers. Migration must build them without treating an unknown flag as progress or completion.",
+      "systems": [
+        "migration"
+      ],
+      "themes": [
+        "older-version"
+      ],
+      "raw": {
+        "v": 1,
+        "year": 0,
+        "form": "walker",
+        "hp": 10,
+        "map": "middlebury-green",
+        "x": 12,
+        "y": 8,
+        "flags": [
+          "seen:intro"
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "ignoredFlags": [
+          "seen:intro"
+        ],
+        "assumptionsInclude": [
+          "v1-all-year-advances-counted-as-deaths",
+          "v1-unknown-flags-ignored"
+        ],
+        "match": {
+          "person.year": 0,
+          "person.deaths": 0,
+          "person.releases": 0,
+          "person.formsUnlocked": [
+            "walker"
+          ],
+          "person.campaignComplete": false,
+          "person.heart": 0,
+          "world.npcs.maeve.role": "sister",
+          "world.npcs.millwright.name": "Bram",
+          "meta.writeGeneration": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "world"
+      ],
+      "id": "MIG-02",
+      "category": "migration",
+      "title": "v1 year 14 derives a death, otter, the archive Maeve, and one cleared dungeon",
+      "starting": "v1 year 14, form otter, hp 8, culvert flagged cleared, plus an unknown flag.",
+      "why": "v1 cannot tell a Release from a death. This pack counts the advance as a death, derives otter, recomputes succession, and must not mark the campaign complete.",
+      "systems": [
+        "migration",
+        "npc",
+        "form",
+        "dungeon"
+      ],
+      "themes": [
+        "older-version",
+        "form-unlock",
+        "quest-succession"
+      ],
+      "raw": {
+        "v": 1,
+        "year": 14,
+        "form": "otter",
+        "hp": 8,
+        "map": "otter-creek-culvert",
+        "flags": [
+          "cleared:otter-creek-culvert",
+          "seen:intro"
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "ignoredFlags": [
+          "seen:intro"
+        ],
+        "assumptionsInclude": [
+          "v1-releases-unknown-and-set-to-zero",
+          "v1-no-ending-field-so-campaign-incomplete"
+        ],
+        "match": {
+          "person.year": 14,
+          "person.deaths": 1,
+          "person.releases": 0,
+          "body.form": "otter",
+          "body.hp": 8,
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "person.heart": 0,
+          "person.campaignComplete": false,
+          "world.dungeons.otter-creek-culvert.cleared": true,
+          "world.dungeons.otter-creek-culvert.bossDefeated": false,
+          "world.npcs.maeve.role": "archive-keeper",
+          "world.npcs.maeve.place": "ilsley-archive",
+          "world.npcs.cal.role": "harbormaster",
+          "world.npcs.millwright.name": "Willa",
+          "world.npcs.millwright.archived": [
+            "Bram"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-03",
+      "category": "migration",
+      "title": "v1 year 7 is rejected",
+      "starting": "v1 blob with year 7.",
+      "why": "Migration must not round a bad year onto an era.",
+      "systems": [
+        "migration",
+        "corrupt"
+      ],
+      "themes": [
+        "older-version",
+        "corrupt-value"
+      ],
+      "raw": {
+        "v": 1,
+        "year": 7,
+        "form": "walker"
+      },
+      "expect": {
+        "ok": false,
+        "error": "bad-year",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-04",
+      "category": "migration",
+      "title": "v1 without a year is rejected",
+      "starting": "v1 blob with a form and no year.",
+      "why": "Missing year must not migrate as year 0, because year 0 is a played era.",
+      "systems": [
+        "migration",
+        "missing-field"
+      ],
+      "themes": [
+        "older-version",
+        "missing-field"
+      ],
+      "raw": {
+        "v": 1,
+        "form": "walker",
+        "hp": 10
+      },
+      "expect": {
+        "ok": false,
+        "error": "missing-field",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-05",
+      "category": "migration",
+      "title": "v1 heron at year 0 is illegal",
+      "starting": "v1 year 0 claiming form heron.",
+      "why": "v1 has no Mayor flag. The migrator must not invent heron to make the body form fit.",
+      "systems": [
+        "migration",
+        "form"
+      ],
+      "themes": [
+        "older-version",
+        "form-unlock"
+      ],
+      "raw": {
+        "v": 1,
+        "year": 0,
+        "form": "heron"
+      },
+      "expect": {
+        "ok": false,
+        "error": "form-illegal",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-06",
+      "category": "migration",
+      "title": "v2 year 28 recomputes Ione even if the blob says Maeve is alive",
+      "starting": "v2 with deaths 2, releases 0, forms walker and otter, and a stale npcs.maeve string of alive.",
+      "why": "v2 did not store a full succession snapshot. The npc field is not trusted. Year 28 must be Ione, not a living Maeve at the bend.",
+      "systems": [
+        "migration",
+        "npc",
+        "time"
+      ],
+      "themes": [
+        "older-version",
+        "quest-succession"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 28,
+        "deaths": 2,
+        "releases": 0,
+        "form": "otter",
+        "forms": [
+          "walker",
+          "otter"
+        ],
+        "heart": 0,
+        "stride": 0,
+        "edge": 0,
+        "mayorSpoken": false,
+        "crowns": 0,
+        "npcs": {
+          "maeve": "alive"
+        }
+      },
+      "expect": {
+        "ok": true,
+        "ignoredFields": [
+          "npcs"
+        ],
+        "assumptionsInclude": [
+          "v2-npc-field-recomputed-not-trusted"
+        ],
+        "match": {
+          "person.year": 28,
+          "body.form": "otter",
+          "world.npcs.maeve.name": "Ione",
+          "world.npcs.maeve.age": 22,
+          "world.npcs.maeve.archived": [
+            "Maeve"
+          ],
+          "world.npcs.cal.age": 47,
+          "world.npcs.millwright.name": "Willa",
+          "world.npcs.mayor.name": "Quill",
+          "person.campaignComplete": false,
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-07",
+      "category": "migration",
+      "title": "A committed v2 ending is kept even when dungeon clears are incomplete",
+      "starting": "v2 year 0 with ending ledger and only the mill cellar cleared.",
+      "why": "Once an ending was stored as committed, migration must not relitigate its prereqs and strip completion. It also must not clear the missing dungeons in.",
+      "systems": [
+        "migration",
+        "ending",
+        "dungeon"
+      ],
+      "themes": [
+        "older-version",
+        "warp-ending"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "ending": "ledger",
+        "dungeonsCleared": [
+          "middlebury-mill-cellar"
+        ],
+        "heart": 0,
+        "stride": 0,
+        "edge": 0
+      },
+      "expect": {
+        "ok": true,
+        "assumptionsInclude": [
+          "v2-ending-prereqs-not-relitigated"
+        ],
+        "match": {
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "world.ending": "ledger",
+          "world.postCompletion": true,
+          "world.dungeons.middlebury-mill-cellar.cleared": true,
+          "world.dungeons.snake-mountain-cut.cleared": false,
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-08",
+      "category": "migration",
+      "title": "v2 Heart 4 is rejected instead of clamped",
+      "starting": "v2 year 0 with heart 4.",
+      "why": "Migration must not launder an out-of-range stat into the cap.",
+      "systems": [
+        "migration",
+        "upgrade",
+        "corrupt"
+      ],
+      "themes": [
+        "older-version",
+        "corrupt-value"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "heart": 4,
+        "stride": 0,
+        "edge": 0
+      },
+      "expect": {
+        "ok": false,
+        "error": "bad-range",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-09",
+      "category": "migration",
+      "title": "v2 missing Heart defaults to 0 when no Heart reward is claimed",
+      "starting": "v2 year 0 with no heart field and no rewards.",
+      "why": "Older blobs may omit stats that did not exist yet. The default is 0, not a guessed reward.",
+      "systems": [
+        "migration",
+        "missing-field"
+      ],
+      "themes": [
+        "older-version",
+        "missing-field"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "stride": 0,
+        "edge": 0
+      },
+      "expect": {
+        "ok": true,
+        "assumptionsInclude": [
+          "v2-missing-stats-default-0"
+        ],
+        "match": {
+          "person.heart": 0,
+          "person.stride": 0,
+          "person.edge": 0,
+          "world.rewardsClaimed": []
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-10",
+      "category": "migration",
+      "title": "v2 year and death counters that disagree are rejected",
+      "starting": "v2 year 28 with one death and zero releases.",
+      "why": "The migrator must not pick a favorite counter and rewrite the other.",
+      "systems": [
+        "migration",
+        "time",
+        "corrupt"
+      ],
+      "themes": [
+        "older-version",
+        "corrupt-value"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 28,
+        "deaths": 1,
+        "releases": 0,
+        "heart": 0,
+        "stride": 0,
+        "edge": 0
+      },
+      "expect": {
+        "ok": false,
+        "error": "year-equation",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-11",
+      "category": "migration",
+      "title": "v2 unknown dungeon id is rejected",
+      "starting": "v2 year 0 listing a dungeon that is not one of the sixteen.",
+      "why": "Unknown clears must not be dropped on the floor or added as a seventeenth dungeon.",
+      "systems": [
+        "migration",
+        "dungeon"
+      ],
+      "themes": [
+        "older-version"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "heart": 0,
+        "stride": 0,
+        "edge": 0,
+        "dungeonsCleared": [
+          "not-a-place"
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "error": "bad-dungeon",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-12",
+      "category": "migration",
+      "title": "A current v3 envelope loads without rewriting the new game",
+      "starting": "A checksummed v3 envelope of the new game, generation 0, produced by the reference serializer.",
+      "why": "The current schema must round-trip as itself. This file is generated by this pack's serializer; it is not a captured game save.",
+      "systems": [
+        "migration",
+        "save-load"
+      ],
+      "themes": [
+        "older-version",
+        "ordinary-save-load"
+      ],
+      "loadFile": "v3-new-game.json",
+      "expect": {
+        "ok": true,
+        "migratedFrom": 3,
+        "match": {
+          "person.year": 0,
+          "person.id": "ellis-perch",
+          "world.npcs.maeve.role": "sister",
+          "meta.writeGeneration": 0,
+          "person.formsUnlocked": [
+            "walker"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-13",
+      "category": "migration",
+      "title": "v2 skill nodes and a party are stripped and do not raise Edge",
+      "starting": "v2 year 0 carrying skillNodes and a party.",
+      "why": "Old or foreign progression systems are not a back door into Edge. They are removed and reported.",
+      "systems": [
+        "migration",
+        "upgrade"
+      ],
+      "themes": [
+        "older-version",
+        "corrupt-value"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "heart": 0,
+        "stride": 0,
+        "edge": 0,
+        "skillNodes": [
+          {
+            "id": "edge+",
+            "rank": 3
+          }
+        ],
+        "party": [
+          {
+            "name": "Cal"
+          }
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "strippedInclude": [
+          "skillNodes",
+          "party"
+        ],
+        "match": {
+          "person.edge": 0,
+          "person.heart": 0
+        },
+        "absent": [
+          "skillNodes",
+          "party"
+        ]
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "id": "MIG-14",
+      "category": "migration",
+      "title": "v2 Heart omitted while a Heart reward is claimed is rejected",
+      "starting": "v2 year 0, no heart field, rewardsClaimed contains the Snake Heart.",
+      "why": "Defaulting Heart to 0 would contradict the reward list. The migrator must not invent the missing number from the rewards either.",
+      "systems": [
+        "migration",
+        "missing-field",
+        "upgrade"
+      ],
+      "themes": [
+        "older-version",
+        "missing-field"
+      ],
+      "raw": {
+        "v": 2,
+        "year": 0,
+        "deaths": 0,
+        "releases": 0,
+        "stride": 0,
+        "edge": 0,
+        "rewardsClaimed": [
+          "reward-snake-heart"
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "error": "stat-divergence",
+        "stateIsNull": true
+      }
+    }
+  ]
+}
