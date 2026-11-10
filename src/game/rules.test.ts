@@ -30,7 +30,6 @@ import {
   spinDamage,
   stepSouthOffStoop,
   wintersPassed,
-  chapterSkillAward,
   lungeReach,
   lungeHits,
   sipRefusedAtFullHp,
