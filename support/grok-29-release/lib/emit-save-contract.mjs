@@ -21,8 +21,14 @@ const ORDER = [
 export function emitSaveContract(engineRoot, outDir) {
   const ts = workspaceTypeScript();
   mkdirSync(outDir, { recursive: true });
+
   const emitted = [];
-  for (const rel of ORDER) {
+  const seen = new Set();
+
+  function emit(rel) {
+    if (seen.has(rel)) return;
+    seen.add(rel);
+
     const source = readFileSync(join(engineRoot, rel), "utf8");
     const result = ts.transpileModule(source, {
       fileName: rel,
@@ -31,11 +37,29 @@ export function emitSaveContract(engineRoot, outDir) {
         module: ts.ModuleKind.ES2022,
       },
     });
+
     const js = result.outputText.replaceAll(".ts", ".js");
-    const dest = join(outDir, relative("src/game", rel).replace(/\.ts$/, ".js"));
+    const dest = join(
+      outDir,
+      relative("src/game", rel).replace(/\.ts$/, ".js"),
+    );
+
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, js);
     emitted.push(dest);
+
+    for (const dependency of ts.preProcessFile(js, true).importedFiles) {
+      const specifier = dependency.fileName;
+      if (!specifier.startsWith(".")) continue;
+
+      const sourcePath = specifier.endsWith(".js")
+        ? specifier.replace(/\.js$/, ".ts")
+        : `${specifier}.ts`;
+
+      emit(join(dirname(rel), sourcePath));
+    }
   }
+
+  for (const rel of ORDER) emit(rel);
   return emitted;
 }
