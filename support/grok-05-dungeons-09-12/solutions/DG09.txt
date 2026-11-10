@@ -1,0 +1,122 @@
+DG09 The Road That Refuses Tomorrow
+Site: The unfinished Crown Point Cutoff above Otter Slide
+Dependency:
+  ENTER -> dg09.L1
+  dg09.L1 -> dg09.A1
+  dg09.A1 -> dg09.L2
+  dg09.L2 -> dg09.A2
+  dg09.A2 -> dg09.L3
+  dg09.L3 -> dg09.hounds
+  dg09.hounds -> dg09.L4
+  dg09.L4 -> dg09.A4
+  dg09.L1 -> dg09.A4
+  dg09.L2 -> dg09.A4
+  dg09.L3 -> dg09.A4
+  dg09.A4 -> dg09.cleared
+Shortcut culvert: Turnout lamp and marble culvert skip the Marble Hounds and do not skip the coach lantern.
+Shortcut keg-return: Powder in the coach yard opens a one-room return to the center stones.
+
+== route main
+DG09-R01: move 4,3 → interact mile-r01 → move 9,1 → exit north
+DG09-R05: move 8,4 → interact bell → move 9,10 → exit south
+DG09-R01: move 16,6 → exit east
+DG09-R02: move 6,4 → interact stone-1 → move 8,4 → interact stone-2 → move 10,4 → interact stone-3 → move 16,6 → exit east
+DG09-R04: move 14,6 → interact plate-mile → move 16,6 → exit east
+DG09-R06: move 3,8 → interact seat-block → move 3,4 → interact hammer-pin → move 16,6 → exit east → tick → tick → tick
+DG09-R08: move 8,5 → interact orchard-stone → move 16,6 → exit east
+DG09-R10: miniboss begin → move 8,6 → miniboss shoot-chest bow → move 10,6 → miniboss shoot-chest bow → move 16,6 → exit east
+DG09-R11: move 8,4 → interact coach-lantern → move 9,1 → exit north
+DG09-R13: move 16,6 → exit east
+DG09-R14: move 7,6 → interact couple-wheel → move 9,1 → exit north
+DG09-R15: boss begin → move 6,6 → boss light-lantern → move 8,6 → boss light-lantern → move 10,6 → boss light-lantern → move 12,6 → boss light-lantern → move 9,6 → boss strike bow → boss snag → move 8,8 → boss socket → move 10,8 → boss socket → move 9,6 → boss strike hammer → assert item-count coach-token → assert not-item glass-shard → assert not-item hound-chip → assert not-item lost-satchel → assert flag dg09.hounds → assert room DG09-R15
+end DG09-R15 items coach-tokenx1
+
+== route shortcut
+DG09-R01: move 4,3 → interact mile-r01 → move 9,1 → exit north
+DG09-R05: move 8,4 → interact bell → move 9,10 → exit south
+DG09-R01: move 16,6 → exit east
+DG09-R02: move 6,4 → interact stone-1 → move 8,4 → interact stone-2 → move 10,4 → interact stone-3 → move 16,6 → exit east
+DG09-R04: move 14,6 → interact plate-mile → move 16,6 → exit east
+DG09-R06: move 3,8 → interact seat-block → move 3,4 → interact hammer-pin → move 16,6 → exit east → tick → tick → tick
+DG09-R08: move 8,5 → interact orchard-stone → move 9,1 → exit north
+DG09-R09: move 8,5 → interact turnout-lamp → move 16,6 → exit east
+DG09-R12: move 9,1 → exit north
+DG09-R11: move 8,4 → interact coach-lantern → move 9,1 → exit north
+DG09-R13: move 16,6 → exit east
+DG09-R14: move 7,6 → interact couple-wheel → move 9,1 → exit north
+DG09-R15: boss begin → move 6,6 → boss light-lantern → move 8,6 → boss light-lantern → move 10,6 → boss light-lantern → move 12,6 → boss light-lantern → move 9,6 → boss strike bow → boss snag → move 8,8 → boss socket → move 10,8 → boss socket → move 9,6 → boss strike hammer → assert flag dg09.hounds → assert item coach-token → assert flag dg09.L4
+end DG09-R15 items coach-tokenx1
+
+== room solution traces
+DG09-R01 main
+  solve: move 4,3 → interact mile-r01 → move 9,1 → exit north
+  fail leave-without-standing-on-the-door: exit north => NOT_ON_EXIT
+  recover: move 9,1 → exit north
+DG09-R02 main
+  solve: move 4,8 → interact mile-r02 → move 6,4 → interact stone-1 → move 8,4 → interact stone-2 → move 10,4 → interact stone-3 → move 16,6 → exit east
+  fail stones-out-of-order: interact stone-3 → assert flag dg09.A1 → assert text-includes => soft
+  recover: move 6,4 → interact stone-1 → move 8,4 → interact stone-2 → move 10,4 → interact stone-3
+DG09-R03 main
+  solve: move 12,3 → interact mile-r03 → move 5,7 → interact take-satchel → move 9,1 → exit north
+  fail wall-is-not-a-secret-exit: move 0,6 => NO_PATH
+  recover: move 9,1 → exit north
+DG09-R04 main
+  solve: move 3,3 → interact mile-r04 → move 14,6 → interact plate-mile → move 16,6 → exit east
+  fail god-form-does-not-remember-the-mile: interact plate-mile => FORM_REQUIRED
+  recover: set-form → interact plate-mile
+DG09-R05 main
+  solve: move 8,4 → interact bell → move 16,6 → exit east
+  fail bell-without-hammer: interact bell => TOOL_REQUIRED
+  recover: grant-tool → interact bell
+DG09-R06 main
+  solve: move 3,8 → interact seat-block → move 3,4 → interact hammer-pin → move 16,6 → exit east → tick → tick → tick
+  fail hammer-before-block: interact hammer-pin => FLAG_MISSING
+  recover: move 3,8 → interact seat-block → move 3,4 → interact hammer-pin
+DG09-R07 optional
+  solve: move 12,5 → interact take-glass → move 9,1 → exit north
+  fail gallery-join-shut-without-bridge: exit north => EXIT_CLOSED
+  recover: move 4,3 → interact mile-r07 → move 1,6 → exit west
+DG09-R08 main
+  solve: move 8,5 → interact orchard-stone → move 16,6 → exit east
+  fail crown-cut-before-the-stone: exit east => EXIT_CLOSED
+  recover: move 8,5 → interact orchard-stone → move 16,6 → exit east
+DG09-R09 optional
+  solve: move 8,5 → interact turnout-lamp → move 16,6 → exit east
+  fail culvert-before-lamp: exit east => EXIT_CLOSED
+  recover: move 8,5 → interact turnout-lamp → move 16,6 → exit east
+DG09-R10 main
+  solve: miniboss begin → move 8,6 → miniboss shoot-chest bow → move 10,6 → miniboss shoot-chest bow → move 16,6 → exit east
+  fail hounds-without-the-bow: miniboss begin → miniboss shoot-chest => TOOL_REQUIRED
+  recover: grant-tool → move 8,6 → miniboss shoot-chest bow → move 10,6 → miniboss shoot-chest bow
+DG09-R11 main
+  solve: move 8,4 → interact coach-lantern → move 9,1 → exit north
+  fail milepost-before-lantern: exit north => EXIT_CLOSED
+  recover: move 8,4 → interact coach-lantern → move 9,1 → exit north
+DG09-R12 optional
+  solve: move 4,3 → interact mile-r12 → move 9,1 → exit north
+  fail culvert-wall: move 0,1 => NO_PATH
+  recover: move 9,1 → exit north
+DG09-R13 main
+  solve: move 4,4 → interact mile-r13 → move 16,6 → exit east
+  fail yard-missing-the-drowned-mile: exit east => EXIT_CLOSED
+  recover: move 4,4 → interact mile-r13
+DG09-R14 main
+  solve: move 7,6 → interact couple-wheel → move 9,1 → exit north
+  fail boss-door-before-the-wheel: exit north => EXIT_CLOSED
+  recover: move 7,6 → interact couple-wheel → move 9,1 → exit north
+DG09-R15 main
+  solve: boss begin → move 6,6 → boss light-lantern → move 8,6 → boss light-lantern → move 10,6 → boss light-lantern → move 12,6 → boss light-lantern → move 9,6 → boss strike bow → boss snag → move 8,8 → boss socket → move 10,8 → boss socket → move 9,6 → boss strike hammer → assert item-count coach-token
+  fail god-light-does-not-keep-the-lanterns: boss begin → boss light-lantern => GOD_SEALED
+  recover: set-form → boss begin → move 6,6 → boss light-lantern → move 8,6 → boss light-lantern → move 10,6 → boss light-lantern → move 12,6 → boss light-lantern → move 9,6 → boss strike bow → boss snag → move 8,8 → boss socket → move 10,8 → boss socket → move 9,6 → boss strike hammer
+DG09-R16 optional
+  solve: move 8,6 → interact dig-spur
+  fail dig-without-shovel: interact dig-spur => TOOL_REQUIRED
+  recover: grant-tool → interact dig-spur
+DG09-R17 optional
+  solve: move 3,3 → interact mile-r17 → move 14,6 → interact overlook
+  fail bank-without-cape-or-as-god: move 14,6 => NO_PATH
+  recover: set-form → grant-tool → move 14,6 → interact overlook
+DG09-R18 optional
+  solve: move 6,6 → interact read-codex
+  fail drawer-jammed: interact read-codex => TOOL_REQUIRED
+  recover: grant-tool → interact read-codex

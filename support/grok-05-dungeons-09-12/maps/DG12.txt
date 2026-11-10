@@ -1,0 +1,308 @@
+DG12 The Moth Infirmary
+Boss: The Keeper of Unlived Years in DG12-R14. Miniboss in DG12-R11.
+Entry DG12-R01 @ 3,6.
+Legend: # ruin or wall, . floor, , road, ~ water, G gust, + gated, ! hazard. Letters are objects.
+
+DG12-R01  Admittance  [main]  18x12
+The Vein Ward's desk. The chart names every ward moth and says mercy will not open the Keeper.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+########.N.##.A.##
+########...##...##
+#####......##...##
+#.....*..........#
+#.....C..........#
+#W.@............E#
+#................#
+#..........#######
+#..........#######
+#........S.#######
+##################
+  east@16,6 -> DG12-R02 [walk] if open
+  north@9,1 -> DG12-R04 [walk] if open
+  south@9,10 -> DG12-R06 [walk] if open
+  west@1,6 -> DG12-R08 [walk] if open
+  up@14,1 -> DG12-R10 [walk] if open
+
+DG12-R02  Ash Perch  [main]  18x12
+Ash, a ward moth. The corridor east is a real crossing: death puts Ash back on the perch.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...#..........#
+#.......M........#
+#W..............E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R01 [walk] if open
+  east@16,6 -> DG12-R03 [walk] if open
+
+DG12-R03  Blue Lamp Gallery  [main]  18x12
+The blue lamp takes Ash and only Ash. An injured moth is spat back into the net.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+#.........########
+#.......L.########
+#W........########
+#.........########
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R02 [walk] if open
+
+DG12-R04  Birch Ward  [main]  18x12
+Birch's perch. Same corridor rule as Ash.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...#..........#
+#######.M........#
+#######.........E#
+#######..........#
+#######....#######
+#######....#######
+#######..S.#######
+##################
+  south@9,10 -> DG12-R01 [walk] if open
+  east@16,6 -> DG12-R05 [walk] if open
+
+DG12-R05  Green Lamp  [main]  18x12
+The green lamp takes Birch only.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+#.........########
+#.......L.########
+#W........########
+#.........########
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R04 [walk] if open
+
+DG12-R06  Cedar Cloister  [main]  18x12
+Cedar's perch. The gold lamp is the one the void will accept.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+#######..N.......#
+###...#..........#
+###.*.#..........#
+###...#..........#
+#######.M........#
+#######.........E#
+########.........#
+##################
+##################
+##################
+##################
+  north@9,1 -> DG12-R01 [walk] if open
+  east@16,6 -> DG12-R07 [walk] if open
+
+DG12-R07  Gold Lamp Stair  [main]  18x12
+Cedar's gold lamp. East is the fever stair. The void will not light itself.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+#................#
+#.......L........#
+#W..........,..,E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R06 [walk] if open
+  east@16,6 -> DG12-R11 [walk] if open
+
+DG12-R08  Injured Bay  [optional]  18x12
+Four injured moths. Releasing them is mercy. It is not the ward.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+###...############
+###.*.############
+###...############
+###..............#
+#...M.M.M.M......#
+#W..............E#
+#................#
+########...#######
+########...#######
+########.S.#######
+##################
+  west@1,6 -> DG12-R01 [walk] if open
+  east@16,6 -> DG12-R09 [walk] if open
+  south@9,10 -> DG12-R15 [walk] if open
+
+DG12-R09  Sky Grate  [optional]  18x12
+Releases injured moths only. Ward moths bounce back into the net. Mercy does not light a ward lamp.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...############
+#................#
+#W......G.......E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R08 [walk] if open
+  east@16,6 -> DG12-R12 [walk] if mercy.pip+mercy.rue+mercy.sol+mercy.wren
+
+DG12-R10  Dark Apothecary  [optional]  18x12
+Three labeled bottles on marked pans. Living light shows the order. They are placed, not combined.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###.........######
+#####.1.2.3.######
+#####.......######
+#####...##########
+#####...##########
+#####......#######
+#####....D.#######
+##################
+  down@9,10 -> DG12-R01 [walk] if open
+
+DG12-R11  Swarm Stair  [main]  18x12
+Miniboss fever swarm. Three light-marks along the stair. Living lamp-light or a netted moth scatters it. God-light does not. The grateful corridor skips this stair.
+persistent: miniboss-defeat, installed-lamps, flags
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##.....###########
+##..*........#####
+##...............#
+#................#
+#................#
+#W......,.......E#
+#................#
+#.......d........#
+######.....#######
+######.....#######
+##################
+  west@1,6 -> DG12-R07 [walk] if open
+  east@16,6 -> DG12-R16 [walk] if open
+
+DG12-R12  Grateful Corridor  [optional]  18x12
+Opens after one release and still does not reach the Keeper without the three lamps and the walked void. All four releases leave a thread.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...############
+#................#
+#W..............E#
+#................#
+####!##.t........#
+#######..........#
+##################
+##################
+  west@1,6 -> DG12-R09 [walk] if open
+  east@16,6 -> DG12-R16 [walk] if open
+
+DG12-R13  Keeper's Door  [main]  18x12
+The door names three lamps and the walked void. Mercy is not on the door.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+#................#
+#................#
+#................#
+#................#
+#...*............#
+#W......,...,...E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R16 [walk] if open
+  east@16,6 -> DG12-R14 [walk] if lamp.ash+lamp.birch+lamp.cedar+dg12.void_walked
+
+DG12-R14  The Keeper of Unlived Years  [main]  18x12
+The Keeper's round. Three year-marks, then the book, the lock, the grief crank, and a cape crossing. Netting is mercy. Arrows also open the door. The sign says which is which.
+persistent: collected-rewards, installed-lamps, flags
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##.......#########
+##..*.......######
+##.............###
+#................#
+#................#
+#.......,.......E#
+#................#
+#................#
+######...........#
+######...S.......#
+##################
+  south@9,10 -> DG12-R13 [walk] if open
+  east@16,6 -> COUNTY:VEIN-WARD [walk] if dg12.cleared
+
+DG12-R15  Recovery Cots  [optional]  18x12
+A cot list. Releasing moths is recorded as mercy, not as progress.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+#######..N.#######
+###...#....#######
+###.*.#....#######
+###...#...########
+#######...########
+#######.C.########
+#######...########
+##################
+##################
+##################
+##################
+  north@9,1 -> DG12-R08 [walk] if open
+
+DG12-R16  Void Crossing  [main]  18x12
+Gold light makes the span. The cape walks it. Embryonic God does not get to count that walk.
+persistent: flags, installed-lamps, released-moths, collected-rewards
+reset: enemy-positions, boss-phase-if-not-defeated, carried-object-on-transition-death
+##################
+#############....#
+#...#########....#
+#.*.#########....#
+#...#########..###
+#...#.......#....#
+#W...+++GGGG...X.#
+#...#.......#....#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG12-R11 [walk] if open
+  east@15,6 -> DG12-R13 [walk] if dg12.void_walked

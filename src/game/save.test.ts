@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
+import { applyDeath } from "./cooking/reduce.ts";
 import { TILE } from "./snes.ts";
-import { clearSave, defaultSave, loadSave, migrate, writeSave } from "./save.ts";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, migrate, undoLastSave, writeSave } from "./save.ts";
+import { resolveDeath } from "./rules.ts";
 import { SAVE_KEY, SAVE_VERSION, type SaveData } from "./types.ts";
 
 const mem = new Map<string, string>();
@@ -85,6 +87,36 @@ describe("migrate", () => {
     const s = migrate(defaultSave());
     assert.equal(s.flags.relics.includes("lantern"), false);
     assert.equal(s.cycle, 0);
+    assert.equal(s.version, SAVE_VERSION);
+  });
+
+  it("remembers a death's skill award when the kitchen raises the save", () => {
+    const raw = {
+      version: 8,
+      cycle: 4,
+      karma: 1,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: { vitality: 0, edge: 0, stride: 0, sight: 0, shadowStep: 0, wraithBond: 0 },
+      flags: {
+        returnedFromDeath: true,
+        townsCleared: ["quarry"],
+        lastDeed: "You spoke with Maeve on the Green",
+      },
+      maxHp: 5,
+      hp: 5,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", skillPoints: 2, created: true, idealId: "the_job" },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(SAVE_VERSION, 9);
+    assert.equal(s.flags.lastSkillAward, 2);
+    assert.ok(s.kitchen.known.length >= 12);
   });
 
   it("keeps a v8 life and remembers the skill that death already paid", () => {
@@ -145,5 +177,145 @@ describe("writeSave / loadSave", () => {
     writeSave(defaultSave());
     clearSave();
     assert.equal(mem.has(SAVE_KEY), false);
+  });
+
+  it("does not let a version stub inherit Middlebury and erase the backup", () => {
+    const ira = defaultSave();
+    ira.character.name = "Ira Fenn";
+    ira.character.created = true;
+    ira.cycle = 2;
+    writeSave(ira);
+    writeSave(ira);
+    mem.set(SAVE_KEY, JSON.stringify({ version: 8 }));
+    const loaded = loadSave();
+    assert.equal(loaded.character.name, "Ira Fenn");
+    assert.equal(loaded.cycle, 2);
+    writeSave(loaded);
+    const bak = JSON.parse(mem.get(SAVE_KEY + ".bak") ?? "null") as { character?: { name?: string } };
+    const primary = JSON.parse(mem.get(SAVE_KEY) ?? "null") as { character?: { name?: string } };
+    assert.equal(bak.character?.name, "Ira Fenn");
+    assert.equal(primary.character?.name, "Ira Fenn");
+  });
+
+  it("does not treat feet without a town or a year as a life", () => {
+    const ira = defaultSave();
+    ira.character.name = "Ira Fenn";
+    ira.character.created = true;
+    writeSave(ira);
+    writeSave(ira);
+    mem.set(SAVE_KEY, JSON.stringify({ x: 160, y: 160 }));
+    assert.equal(loadSave().character.name, "Ira Fenn");
+  });
+
+  it("still migrates a seventh life that already stood", () => {
+    const raw = {
+      version: 7,
+      cycle: 2,
+      karma: 4,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: { vitality: 1 },
+      flags: { relics: ["sword", "shovel"], talked: ["elder"] },
+      maxHp: 8,
+      hp: 8,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true, bondId: "maeve" },
+    };
+    mem.set(SAVE_KEY, JSON.stringify(raw));
+    const loaded = loadSave();
+    assert.equal(loaded.character.name, "Ira Fenn");
+    assert.equal(loaded.version, SAVE_VERSION);
+    assert.equal(loaded.flags.talked[0], "elder");
+    assert.equal(loaded.upgrades.vitality, 1);
+  });
+
+  it("forget does not resurrect the backup", () => {
+    const ira = defaultSave();
+    ira.character.name = "Ira Fenn";
+    ira.character.created = true;
+    ira.cycle = 6;
+    writeSave(ira);
+    writeSave(ira);
+    clearSave();
+    assert.equal(loadSave().character.name, "Ellis Perch");
+    assert.equal(loadSave().cycle, 0);
+    const bak = JSON.parse(mem.get(SAVE_KEY + ".bak") ?? "null") as { character?: { name?: string } };
+    assert.equal(bak.character?.name, "Ira Fenn");
+  });
+
+  it("swaps the last good life back when asked, and does not invent one", () => {
+    const first = defaultSave();
+    first.character.name = "Ira Fenn";
+    first.character.created = true;
+    first.character.skillPoints = 3;
+    writeSave(first);
+    writeSave(first);
+    const spent = structuredClone(loadSave());
+    spent.character.skillPoints = 2;
+    writeSave(spent);
+    const undone = undoLastSave();
+    assert.equal(undone?.character.skillPoints, 3);
+    assert.equal(loadSave().character.skillPoints, 3);
+    clearSave();
+    assert.equal(undoLastSave(), null);
+  });
+});
+
+describe("county kitchen on the life", () => {
+  it("gives a v8 life a kitchen and keeps the person", () => {
+    const raw = {
+      version: 8,
+      cycle: 4,
+      karma: 1,
+      crowns: 0,
+      incarnation: "wanderer",
+      upgrades: {},
+      flags: { talked: ["maeve"] },
+      maxHp: 5,
+      hp: 5,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", created: true },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, 9);
+    assert.equal(s.character.name, "Ira Fenn");
+    assert.ok(s.flags.talked.includes("maeve"));
+    assert.ok(s.kitchen.known.includes("spooned-oats"));
+    assert.ok((s.kitchen.pantry.milk ?? 0) > 0);
+    assert.equal(s.kitchen.effects.length, 0);
+  });
+
+  it("a chapter halves fresh food and keeps the cards", () => {
+    const save = defaultSave();
+    const milk = save.kitchen.pantry.milk ?? 0;
+    const dead = resolveDeath(save, { mapId: "middlebury", x: 8, y: 8 });
+    dead.kitchen = applyDeath(dead.kitchen);
+    assert.equal(dead.cycle, 1);
+    assert.equal(dead.kitchen.pantry.milk, Math.floor(milk / 2));
+    assert.equal(dead.kitchen.satchel.length, 0);
+    assert.equal(dead.kitchen.effects.length, 0);
+    assert.ok(dead.kitchen.known.includes("spooned-oats"));
+    assert.ok((dead.kitchen.pantry.oats ?? 0) > 0);
+  });
+});
+
+describe("export and import", () => {
+  it("round-trips a life and refuses a file that never stood", () => {
+    const life = defaultSave();
+    life.character.name = "Ira Fenn";
+    const raw = exportLifeBlob(life);
+    const back = importLifeBlob(raw);
+    assert.equal(back?.character.name, "Ira Fenn");
+    assert.equal(back?.version, SAVE_VERSION);
+    assert.equal(importLifeBlob("{"), null);
+    assert.equal(importLifeBlob("{}"), null);
   });
 });

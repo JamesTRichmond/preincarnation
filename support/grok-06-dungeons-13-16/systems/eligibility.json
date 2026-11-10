@@ -1,0 +1,63 @@
+{
+  "id": "eligibility.final-quarter",
+  "mappingStatus": "PENDING",
+  "mappingNote": "Flags below are semantic ids owned by this packet. Earlier chapters must map their runtime flags onto these names. Do not invent DG01–DG12 flag ids here.",
+  "reachedFlags": [
+    "dg13.emptyMayorAdjourned",
+    "dg14.otherShoreNamed",
+    "dg15.surveyorUnfinished",
+    "dg16.fiction.complete",
+    "dg16.fact.complete",
+    "dg16.history.complete",
+    "dg16.imagination.complete",
+    "dg16.heart.entered"
+  ],
+  "witnessFlags": [
+    "disc.erased.overseerBench",
+    "disc.erased.otterNightShift",
+    "disc.erased.foundryClock",
+    "disc.erased.grandListHole",
+    "disc.quiet.windowUnderIce",
+    "disc.quiet.rejectedPattern",
+    "disc.quiet.heartUnmapped",
+    "disc.quiet.nailPlaced"
+  ],
+  "witnessNote": "Refuse checks this fixed witness set. Each flag is produced by the critical-path action of one named room, and that room's forward door requires the flag. It is not an N-of-M collectible, and extra pickups do not count.",
+  "institutions": {
+    "farm": [
+      "prepared"
+    ],
+    "mill": [
+      "prepared"
+    ],
+    "crossing": [
+      "prepared"
+    ],
+    "family": [
+      "reunited"
+    ]
+  },
+  "institutionNote": "Distribute requires all four domains in the prepared set. 'unknown' is the engine value when a runtime mapping is still pending, and it does not count as prepared. Partial preparation does not unlock Distribute.",
+  "endings": {
+    "keep": {
+      "requiresReached": true,
+      "requiresWitnesses": false,
+      "requiresInstitutions": false
+    },
+    "close": {
+      "requiresReached": true,
+      "requiresWitnesses": false,
+      "requiresInstitutions": false
+    },
+    "distribute": {
+      "requiresReached": true,
+      "requiresWitnesses": false,
+      "requiresInstitutions": true
+    },
+    "refuse": {
+      "requiresReached": true,
+      "requiresWitnesses": true,
+      "requiresInstitutions": false
+    }
+  }
+}

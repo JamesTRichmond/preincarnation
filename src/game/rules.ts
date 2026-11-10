@@ -1,5 +1,7 @@
 import { INCARNATIONS, LIMBO_UPGRADES, type UpgradeDef } from "./content.ts";
+import { graveSnapshot, sipIndex } from "./bag.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
+import { T } from "./tile-ids.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
 import { spendableRanksLeft } from "./rewards.ts";
 import { starterWeapon } from "./weapons.ts";
@@ -138,11 +140,88 @@ export function sheetSpeedMul(flawId: string): number {
   return flawId === "cannot_rest" ? 1.1 : 1;
 }
 
-export function fillDialogueText(text: string, name: string, year: number, cycle: number) {
+export function fillDialogueText(
+  text: string,
+  name: string,
+  year: number,
+  cycle: number,
+  deed = "",
+  graves = 0,
+) {
   return text
     .replaceAll("{name}", name)
     .replaceAll("{year}", String(year))
-    .replaceAll("{cycle}", String(cycle));
+    .replaceAll("{cycle}", String(cycle))
+    .replaceAll("{deed}", deed || "you died with the Vein still quiet")
+    .replaceAll("{graves}", String(graves));
+}
+
+const STOOP_BAND = new Set<number>([T.rail, T.path, T.cliffLip, T.bridge, T.gravel]);
+
+/** Cracked marble outside the quarry still breaks. In the Vein the lamp must be open. */
+export function quarryHammerLands(onQuarry: boolean, hasLantern: boolean, lanternOn: boolean): boolean {
+  return !onQuarry || (hasLantern && lanternOn);
+}
+
+/** A later life is the same fight. Tropoverse is a place, applied once, not a tax on deaths. */
+export function enemyMaxHp(base: number, tropoverse: boolean): number {
+  return Math.round(base * (tropoverse ? 1.35 : 1));
+}
+
+/**
+ * Door exits start on the stoop. Walk south until the tile is grass-or-better:
+ * not solid, and not rail, path, cliff lip, bridge, or gravel.
+ */
+export function stepSouthOffStoop(
+  tx: number,
+  startTy: number,
+  tileAt: (x: number, y: number) => number | undefined,
+  isBlocked: (x: number, y: number) => boolean,
+): { tx: number; ty: number } | null {
+  let ty = startTy;
+  for (let i = 0; i < 8; i++) {
+    ty += 1;
+    const id = tileAt(tx, ty);
+    if (id == null) return null;
+    if (isBlocked(tx, ty) || STOOP_BAND.has(id)) continue;
+    return { tx, ty };
+  }
+  return null;
+}
+
+/** First return stays on *_return. A second death names the last deed. The Heart has no first-return node. */
+export function cycleReturnNode(who: "elder" | "farmer" | "mayor" | "heart", cycle: number): string | null {
+  if (cycle >= 2) return who + "_second";
+  if (cycle >= 1 && who !== "heart") return who + "_return";
+  return null;
+}
+
+/** County people who are not the Vein. A second talk is a person, not a quest. */
+const COUNTY_SIDE = new Set([
+  "hunter",
+  "ferry",
+  "rokeby",
+  "camper",
+  "conductor",
+  "cartog",
+  "creemee",
+  "prof",
+  "bud",
+  "hippie",
+  "artist",
+  "ranger",
+  "vmayor",
+  "millwright",
+  "lockkeep",
+  "legislator",
+  "intern",
+  "coolidge",
+  "spectrum",
+]);
+
+export function countyAgainNode(npc: string, alreadyTalked: boolean): string | null {
+  if (!alreadyTalked || !COUNTY_SIDE.has(npc)) return null;
+  return npc + "_again";
 }
 
 export function signedKarmaLabel(n: number): string {
@@ -160,8 +239,103 @@ export function chapterSkillAward(save: SaveData): number {
   return Math.min(raw, room);
 }
 
-export function wintersPassed(rand: () => number = Math.random): number {
-  return 14 + Math.floor(rand() * 5);
+export function wintersPassed(_rand: () => number = Math.random): number {
+  return 14;
+}
+
+/** Cardinal lunge stays 12. A diagonal bobcat or Sentinel coat is 3px tighter. */
+export const LUNGE_REACH = 12;
+export const DIAGONAL_COAT_PX = 3;
+
+export function lungeReach(kind: string, dx: number, dy: number): number {
+  if (kind !== "bobcat" && kind !== "sentinel") return LUNGE_REACH;
+  const ax = Math.abs(dx);
+  const ay = Math.abs(dy);
+  if (ax < 1 || ay < 1) return LUNGE_REACH;
+  const ratio = Math.max(ax, ay) / Math.min(ax, ay);
+  if (ratio > 1.6) return LUNGE_REACH;
+  return LUNGE_REACH - DIAGONAL_COAT_PX;
+}
+
+export function lungeHits(kind: string, dx: number, dy: number): boolean {
+  return Math.hypot(dx, dy) < lungeReach(kind, dx, dy);
+}
+
+/** Full blood, and the bottle in hand would not fill a dry well. */
+export function sipRefusedAtFullHp(
+  bottles: readonly string[],
+  hp: number,
+  maxHp: number,
+  mp: number,
+  maxMp: number,
+): boolean {
+  if (!(hp >= maxHp - 0.05)) return false;
+  const i = sipIndex(bottles as readonly ("empty" | "syrup" | "creemee" | "deluxe")[], hp, maxHp, mp, maxMp);
+  if (i < 0) return false;
+  const k = bottles[i];
+  const dry = mp < maxMp - 0.05;
+  if (dry && (k === "creemee" || k === "deluxe")) return false;
+  return true;
+}
+
+/** Two lines on the mound. Only the first return. Not a banner across the Green. */
+export function firstReturnStone(cycle: number, name: string): readonly [string, string] | null {
+  if (cycle !== 1) return null;
+  const who = (name.trim() || "Unknown").slice(0, 12);
+  return [who, "Fourteen winters."];
+}
+
+export const PAUSE_GRAVE_NOTE =
+  "A grave returns the numbered steel. Skill does not mint once every rank but a Crown is paid.";
+
+const HIGH_TIER = new Set(["bear", "bobcat", "fisher", "wraith"]);
+export const SEAM_MERCY = 0.65;
+
+/**
+ * The east screen of Middlebury, then the first screen of the Vein.
+ * The Green (west Middlebury) and the Sentinel are not in this set.
+ */
+export function veinSeamScreen(mapId: string, tileX: number): number | null {
+  if (mapId === "middlebury" && tileX >= 20) return 0;
+  if (mapId === "quarry" && tileX < 20) return 1;
+  return null;
+}
+
+export function graveSteelStanding(
+  graves: readonly { id: string; excavated: boolean; weapons: readonly { id: string; dmg?: number }[] }[],
+  inventoryIds: readonly string[],
+  passedIds: readonly string[],
+): "none" | "in-dirt" | "recovered" | "passed" {
+  const open = [...graves].reverse().find((g) => !g.excavated && g.weapons.some((w) => typeof w.dmg === "number"));
+  if (!open) return "none";
+  const numbered = open.weapons.filter((w) => typeof w.dmg === "number");
+  if (numbered.every((w) => inventoryIds.includes(w.id))) return "recovered";
+  if (passedIds.includes(open.id)) return "passed";
+  return "in-dirt";
+}
+
+export function seamSpawnWeight(
+  base: number,
+  kind: string,
+  mapId: string,
+  tileX: number,
+  cycle: number,
+  steel: "none" | "in-dirt" | "recovered" | "passed",
+): number {
+  if (!(base > 0)) return 0;
+  if (cycle < 1 || steel !== "in-dirt") return base;
+  if (kind === "sentinel" || !HIGH_TIER.has(kind)) return base;
+  const screen = veinSeamScreen(mapId, tileX);
+  if (screen == null || screen > 1) return base;
+  return base * SEAM_MERCY;
+}
+
+/** Stable skip. Weight 0.65 keeps about two of three. The same id does not flicker. */
+export function seamSkips(id: string, cycle: number, weight: number): boolean {
+  if (!(weight < 1)) return false;
+  let h = cycle * 17;
+  for (let i = 0; i < id.length; i++) h = (Math.imul(h, 33) + id.charCodeAt(i)) >>> 0;
+  return (h % 1000) / 1000 >= weight;
 }
 
 export function bondKeepsake(bondId: string): RelicId | null {
@@ -241,14 +415,7 @@ export function resolveDeath(
     x: where.x,
     y: where.y,
     year: save.flags.year,
-    weapons: save.inventory
-      .filter((w) => w.id !== "starter-iron")
-      .map((w) => ({
-        id: w.id,
-        name: w.name,
-        magic: w.affixes.some((a) => a.magic),
-        kind: w.kind,
-      })),
+    weapons: save.inventory.filter((w) => w.id !== "starter-iron").map((w) => graveSnapshot(w)),
     relics: relicsForGrave(save.flags.relics, save.character.bondId),
     arrows: save.flags.arrows,
     bombs: save.flags.bombs,

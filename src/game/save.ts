@@ -1,6 +1,8 @@
 import { TILE } from "./snes.ts";
 import { skillAwardForDeath } from "./rules.ts";
 import { starterWeapon } from "./weapons.ts";
+import { createKitchen } from "./cooking/state.ts";
+import { readKitchen } from "./cooking/save.ts";
 import {
   DEFAULT_CHARACTER,
   DEFAULT_FLAGS,
@@ -9,6 +11,8 @@ import {
   SAVE_VERSION,
   type SaveData,
 } from "./types.ts";
+
+export { SAVE_VERSION };
 
 export function defaultSave(): SaveData {
   const iron = starterWeapon();
@@ -42,7 +46,13 @@ export function defaultSave(): SaveData {
     inventory: [iron],
     equippedId: iron.id,
     character: { ...DEFAULT_CHARACTER },
+    kitchen: createKitchen(),
   };
+}
+
+/** Same numbers as skillAwardForDeath. This file is emitted alone; it cannot import rules. */
+function awardAlreadyPaid(idealId: string, townsCleared: readonly string[]): number {
+  return 2 + (idealId === "the_job" && !townsCleared.includes("quarry") ? 1 : 0);
 }
 
 export function migrate(save: SaveData): SaveData {
@@ -101,6 +111,13 @@ export function migrate(save: SaveData): SaveData {
     s.flags.lastDeed = s.flags.lastDeed ?? "";
     s.flags.returnedFromDeath = s.flags.returnedFromDeath ?? false;
   }
+  if (typeof save.flags?.lastSkillAward === "number") {
+    s.flags.lastSkillAward = save.flags.lastSkillAward;
+  } else {
+    s.flags.lastSkillAward = s.flags.returnedFromDeath
+      ? awardAlreadyPaid(s.character.idealId, s.flags.townsCleared ?? [])
+      : 0;
+  }
   s.flags.deck = s.flags.deck ?? { tracks: [], nowPlayingId: null, position: 0 };
   s.flags.chests = save.flags?.chests ?? [];
   s.flags.bushes = save.flags?.bushes ?? [];
@@ -118,16 +135,51 @@ export function migrate(save: SaveData): SaveData {
           ? skillAwardForDeath(s.character.idealId, s.flags.townsCleared ?? [])
           : 0;
   }
+  s.kitchen = readKitchen(save.kitchen);
   s.version = SAVE_VERSION;
   return s;
 }
 
-export function loadSave(): SaveData {
+/** A life the game writes names its version, its town, and where it stands. */
+function stands(parsed: unknown): parsed is SaveData {
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return false;
+  const rec = parsed as Record<string, unknown>;
+  return (
+    typeof rec.version === "number" &&
+    Number.isFinite(rec.version) &&
+    typeof rec.mapId === "string" &&
+    rec.mapId.length > 0 &&
+    typeof rec.x === "number" &&
+    Number.isFinite(rec.x) &&
+    typeof rec.y === "number" &&
+    Number.isFinite(rec.y)
+  );
+}
+
+function readLife(raw: string): SaveData | null {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) return defaultSave();
-    const parsed = JSON.parse(raw) as SaveData;
+    const parsed: unknown = JSON.parse(raw);
+    if (!stands(parsed)) return null;
     return migrate(parsed);
+  } catch {
+    return null;
+  }
+}
+
+export function loadSave(): SaveData {
+  let raw: string | null;
+  try {
+    raw = localStorage.getItem(SAVE_KEY);
+  } catch {
+    return defaultSave();
+  }
+  // A missing key is a new life, or Forget. Do not resurrect the backup.
+  if (!raw) return defaultSave();
+  const primary = readLife(raw);
+  if (primary) return primary;
+  try {
+    const bak = localStorage.getItem(SAVE_KEY + ".bak");
+    return (bak && readLife(bak)) || defaultSave();
   } catch {
     return defaultSave();
   }
@@ -136,11 +188,29 @@ export function loadSave(): SaveData {
 export function writeSave(data: SaveData) {
   try {
     const blob = JSON.stringify({ ...data, version: SAVE_VERSION });
-    localStorage.setItem(SAVE_KEY + ".bak", localStorage.getItem(SAVE_KEY) ?? "");
+    const current = localStorage.getItem(SAVE_KEY);
+    // A stub in the lock must not be copied over the last good life.
+    if (current) {
+      try {
+        const parsed: unknown = JSON.parse(current);
+        if (stands(parsed)) localStorage.setItem(SAVE_KEY + ".bak", current);
+      } catch {
+        /* keep the existing backup */
+      }
+    }
     localStorage.setItem(SAVE_KEY, blob);
   } catch {
     /* private mode */
   }
+}
+
+export function exportLifeBlob(data: SaveData): string {
+  return JSON.stringify({ ...data, version: SAVE_VERSION });
+}
+
+/** A file the player keeps. Garbage is refused. Nothing is uploaded. */
+export function importLifeBlob(raw: string): SaveData | null {
+  return readLife(raw);
 }
 
 export function clearSave() {
@@ -148,5 +218,30 @@ export function clearSave() {
     localStorage.removeItem(SAVE_KEY);
   } catch {
     /* ignore */
+  }
+}
+
+/** Put the previous life back. Forget still does not call this. */
+export function undoLastSave(): SaveData | null {
+  try {
+    const bak = localStorage.getItem(SAVE_KEY + ".bak");
+    const current = localStorage.getItem(SAVE_KEY);
+    if (!bak || !current) return null;
+    const restored = readLife(bak);
+    const live = readLife(current);
+    if (!restored || !live) return null;
+    if (
+      restored.character.skillPoints === live.character.skillPoints &&
+      restored.cycle === live.cycle &&
+      restored.equippedId === live.equippedId &&
+      restored.hp === live.hp
+    ) {
+      return null;
+    }
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ ...restored, version: SAVE_VERSION }));
+    localStorage.setItem(SAVE_KEY + ".bak", current);
+    return loadSave();
+  } catch {
+    return null;
   }
 }

@@ -1,10 +1,13 @@
+import type { KitRead } from "./kit-compare.ts";
 import type { Weapon } from "./weapons.ts";
 import type { Grave, LifePath, RelicId } from "./items.ts";
 import type { DeckMeta } from "./ipod.ts";
+import type { KitchenState } from "./cooking/types.ts";
 
 export type Dir = 0 | 1 | 2 | 3;
 export type IncarnationId = "wanderer" | "smuggler" | "officer" | "embryo";
-export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod";
+
+export type Mode = "title" | "create" | "intro" | "play" | "dialogue" | "pause" | "limbo" | "ending" | "codex" | "ipod" | "kitchen";
 export type MapId =
   | "addison"
   | "middlebury"
@@ -14,6 +17,7 @@ export type MapId =
   | "salisbury"
   | "rutland"
   | "quarry"
+  | "bell"
   | "montpelier"
   | "whiteriver"
   | "chittenden"
@@ -145,6 +149,8 @@ export type SaveData = {
   inventory: Weapon[];
   equippedId: string;
   character: CharacterSheet;
+  /** County kitchen. Plates are not wounds, and they are not the Vein. */
+  kitchen: KitchenState;
 };
 
 export type Choice = {
@@ -199,6 +205,8 @@ export type UiSnapshot = {
   tempF: number | null;
   weaponName: string;
   weaponTags: string;
+  bag: string;
+  kit: KitRead;
   geoLine: string | null;
   bottles: BottleKind[];
   tropoverse: boolean;
@@ -222,6 +230,7 @@ export type UiSnapshot = {
   afterlifeHost: AfterlifeHost | null;
   introBeat: number;
   job: string;
+  beacon: string | null;
   lastDeed: string;
   cycleLedger: CycleLedger;
 };

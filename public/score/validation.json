@@ -1,0 +1,2389 @@
+{
+  "method": "File measurement only. No human listening panel. No mastering chain.",
+  "thresholds": {
+    "peakDbfsMax": -1.0,
+    "fullScaleSamples": 0,
+    "absDcMax": 0.002,
+    "loopJoinRatioMax": 6,
+    "loopJoinBoundaryMinToFlag": 0.02,
+    "transitionSpikeRatioMax": 12
+  },
+  "missing": [],
+  "failureCount": 0,
+  "failures": [],
+  "cues": [
+    {
+      "id": "title",
+      "title": "Title",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 64.0,
+      "mix": {
+        "seconds": 64.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.69,
+        "rmsDbfs": -18.0,
+        "dc": [
+          0.0,
+          0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.006531,
+            "p95": 0.013245,
+            "ratio": 0.493
+          },
+          {
+            "boundary": 0.005737,
+            "p95": 0.016327,
+            "ratio": 0.351
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -3.59,
+          "rmsDbfs": -20.57,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.006531,
+              "p95": 0.005341,
+              "ratio": 1.223
+            },
+            {
+              "boundary": 0.005737,
+              "p95": 0.004944,
+              "ratio": 1.16
+            }
+          ],
+          "id": "slab"
+        },
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -7.38,
+          "rmsDbfs": -24.66,
+          "dc": [
+            -0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.008026,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.013031,
+              "ratio": 0.0
+            }
+          ],
+          "id": "voice"
+        },
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.8,
+          "rmsDbfs": -24.43,
+          "dc": [
+            2e-06,
+            2e-06
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.007751,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.006561,
+              "ratio": 0.0
+            }
+          ],
+          "id": "return"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 4.1508,
+            "midi": 50,
+            "timbre": "marble",
+            "hz": 146.83,
+            "ratio": 409376.09,
+            "pass": true
+          },
+          {
+            "time": 16.1558,
+            "midi": 46,
+            "timbre": "marble",
+            "hz": 116.54,
+            "ratio": 521148.76,
+            "pass": true
+          },
+          {
+            "time": 32.0135,
+            "midi": 69,
+            "timbre": "voice",
+            "hz": 440.0,
+            "ratio": 222521.23,
+            "pass": true
+          },
+          {
+            "time": 8.9991,
+            "midi": 62,
+            "timbre": "dulcimer",
+            "hz": 293.66,
+            "ratio": 684478.15,
+            "pass": true
+          },
+          {
+            "time": 36.9839,
+            "midi": 65,
+            "timbre": "dulcimer",
+            "hz": 349.23,
+            "ratio": 427663.51,
+            "pass": true
+          },
+          {
+            "time": 49.002,
+            "midi": 67,
+            "timbre": "dulcimer",
+            "hz": 392.0,
+            "ratio": 281235.1,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.004517,
+          "p95": 0.012573,
+          "ratio": 0.359
+        },
+        {
+          "boundary": 0.003479,
+          "p95": 0.015503,
+          "ratio": 0.224
+        }
+      ],
+      "mp3Seconds": 64.0
+    },
+    {
+      "id": "middlebury",
+      "title": "Middlebury",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 83.4783,
+      "mix": {
+        "seconds": 83.4783,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -19.05,
+        "dc": [
+          -0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.002625,
+            "p95": 0.011261,
+            "ratio": 0.233
+          },
+          {
+            "boundary": 0.002777,
+            "p95": 0.012848,
+            "ratio": 0.216
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 83.4783,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -5.01,
+          "rmsDbfs": -20.51,
+          "dc": [
+            -0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.002625,
+              "p95": 0.003357,
+              "ratio": 0.782
+            },
+            {
+              "boundary": 0.002777,
+              "p95": 0.003296,
+              "ratio": 0.843
+            }
+          ],
+          "id": "town"
+        },
+        {
+          "seconds": 83.4783,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -6.41,
+          "rmsDbfs": -24.77,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.011078,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.011749,
+              "ratio": 0.0
+            }
+          ],
+          "id": "street"
+        },
+        {
+          "seconds": 83.4783,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -13.94,
+          "rmsDbfs": -36.43,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.002258,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.004608,
+              "ratio": 0.0
+            }
+          ],
+          "id": "evening"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.0112,
+            "midi": 43,
+            "timbre": "bass",
+            "hz": 98.0,
+            "ratio": 917538.94,
+            "pass": true
+          },
+          {
+            "time": 23.4849,
+            "midi": 43,
+            "timbre": "bass",
+            "hz": 98.0,
+            "ratio": 267926.85,
+            "pass": true
+          },
+          {
+            "time": 49.5784,
+            "midi": 41,
+            "timbre": "bass",
+            "hz": 87.31,
+            "ratio": 629544.87,
+            "pass": true
+          },
+          {
+            "time": 73.0538,
+            "midi": 48,
+            "timbre": "bass",
+            "hz": 130.81,
+            "ratio": 324690.07,
+            "pass": true
+          },
+          {
+            "time": 22.1645,
+            "midi": 70,
+            "timbre": "dulcimer",
+            "hz": 466.16,
+            "ratio": 552807.07,
+            "pass": true
+          },
+          {
+            "time": 66.5228,
+            "midi": 73,
+            "timbre": "dulcimer",
+            "hz": 554.37,
+            "ratio": 355837.27,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.003265,
+          "p95": 0.010712,
+          "ratio": 0.305
+        },
+        {
+          "boundary": 0.003204,
+          "p95": 0.012207,
+          "ratio": 0.263
+        }
+      ],
+      "mp3Seconds": 83.4783
+    },
+    {
+      "id": "open-county",
+      "title": "Open county",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 96.0,
+      "mix": {
+        "seconds": 96.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -2.48,
+        "rmsDbfs": -18.0,
+        "dc": [
+          0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.003235,
+            "p95": 0.009369,
+            "ratio": 0.345
+          },
+          {
+            "boundary": 0.003326,
+            "p95": 0.011566,
+            "ratio": 0.288
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 96.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.37,
+          "rmsDbfs": -19.21,
+          "dc": [
+            0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.003235,
+              "p95": 0.002991,
+              "ratio": 1.082
+            },
+            {
+              "boundary": 0.003326,
+              "p95": 0.00296,
+              "ratio": 1.124
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 96.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -6.56,
+          "rmsDbfs": -24.56,
+          "dc": [
+            1e-06,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.008636,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.009735,
+              "ratio": 0.0
+            }
+          ],
+          "id": "path"
+        },
+        {
+          "seconds": 96.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -12.92,
+          "rmsDbfs": -34.47,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.003357,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.005005,
+              "ratio": 0.0
+            }
+          ],
+          "id": "weather"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.0688,
+            "midi": 38,
+            "timbre": "bass",
+            "hz": 73.42,
+            "ratio": 1547216.73,
+            "pass": true
+          },
+          {
+            "time": 48.0616,
+            "midi": 38,
+            "timbre": "bass",
+            "hz": 73.42,
+            "ratio": 488193.68,
+            "pass": true
+          },
+          {
+            "time": 2.9983,
+            "midi": 69,
+            "timbre": "dulcimer",
+            "hz": 440.0,
+            "ratio": 846605.56,
+            "pass": true
+          },
+          {
+            "time": 27.0018,
+            "midi": 76,
+            "timbre": "dulcimer",
+            "hz": 659.26,
+            "ratio": 144942.43,
+            "pass": true
+          },
+          {
+            "time": 56.9952,
+            "midi": 66,
+            "timbre": "dulcimer",
+            "hz": 369.99,
+            "ratio": 303831.03,
+            "pass": true
+          },
+          {
+            "time": 77.818,
+            "midi": 68,
+            "timbre": "dulcimer",
+            "hz": 415.3,
+            "ratio": 86844.97,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.002014,
+          "p95": 0.008911,
+          "ratio": 0.226
+        },
+        {
+          "boundary": 0.00177,
+          "p95": 0.010986,
+          "ratio": 0.161
+        }
+      ],
+      "mp3Seconds": 96.0
+    },
+    {
+      "id": "high-woods",
+      "title": "High woods",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 77.8378,
+      "mix": {
+        "seconds": 77.8378,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -18.3,
+        "dc": [
+          -0.0,
+          0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.010162,
+            "p95": 0.015198,
+            "ratio": 0.669
+          },
+          {
+            "boundary": 0.010498,
+            "p95": 0.018341,
+            "ratio": 0.572
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 77.8378,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -2.5,
+          "rmsDbfs": -20.1,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.010162,
+              "p95": 0.00647,
+              "ratio": 1.571
+            },
+            {
+              "boundary": 0.010498,
+              "p95": 0.006531,
+              "ratio": 1.607
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 77.8378,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.77,
+          "rmsDbfs": -26.81,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.006531,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.011108,
+              "ratio": 0.0
+            }
+          ],
+          "id": "canopy"
+        },
+        {
+          "seconds": 77.8378,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.5,
+          "rmsDbfs": -25.33,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.012207,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.013092,
+              "ratio": 0.0
+            }
+          ],
+          "id": "memory"
+        }
+      ],
+      "motifs": {
+        "checked": 4,
+        "passed": 4,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.8213,
+            "midi": 45,
+            "timbre": "marble",
+            "hz": 110.0,
+            "ratio": 420274.36,
+            "pass": true
+          },
+          {
+            "time": 12.9706,
+            "midi": 69,
+            "timbre": "dulcimer",
+            "hz": 440.0,
+            "ratio": 709986.84,
+            "pass": true
+          },
+          {
+            "time": 14.2036,
+            "midi": 72,
+            "timbre": "dulcimer",
+            "hz": 523.25,
+            "ratio": 724026.15,
+            "pass": true
+          },
+          {
+            "time": 15.3908,
+            "midi": 71,
+            "timbre": "dulcimer",
+            "hz": 493.88,
+            "ratio": 685412.43,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.009033,
+          "p95": 0.014435,
+          "ratio": 0.626
+        },
+        {
+          "boundary": 0.009338,
+          "p95": 0.017426,
+          "ratio": 0.536
+        }
+      ],
+      "mp3Seconds": 77.8378
+    },
+    {
+      "id": "water",
+      "title": "Water",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 70.5882,
+      "mix": {
+        "seconds": 70.5882,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.82,
+        "rmsDbfs": -18.0,
+        "dc": [
+          -0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.003571,
+            "p95": 0.009003,
+            "ratio": 0.397
+          },
+          {
+            "boundary": 0.003235,
+            "p95": 0.01178,
+            "ratio": 0.275
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 70.5882,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -5.16,
+          "rmsDbfs": -19.6,
+          "dc": [
+            0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.003571,
+              "p95": 0.003632,
+              "ratio": 0.983
+            },
+            {
+              "boundary": 0.003235,
+              "p95": 0.00351,
+              "ratio": 0.922
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 70.5882,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -10.79,
+          "rmsDbfs": -27.0,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.006622,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.010651,
+              "ratio": 0.0
+            }
+          ],
+          "id": "surface"
+        },
+        {
+          "seconds": 70.5882,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -6.38,
+          "rmsDbfs": -25.55,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.004211,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.003815,
+              "ratio": 0.0
+            }
+          ],
+          "id": "depth"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.0518,
+            "midi": 53,
+            "timbre": "dulcimer",
+            "hz": 174.61,
+            "ratio": 869254.86,
+            "pass": true
+          },
+          {
+            "time": 13.2909,
+            "midi": 46,
+            "timbre": "dulcimer",
+            "hz": 116.54,
+            "ratio": 533408.93,
+            "pass": true
+          },
+          {
+            "time": 30.9298,
+            "midi": 46,
+            "timbre": "dulcimer",
+            "hz": 116.54,
+            "ratio": 404053.46,
+            "pass": true
+          },
+          {
+            "time": 48.5765,
+            "midi": 46,
+            "timbre": "dulcimer",
+            "hz": 116.54,
+            "ratio": 392585.0,
+            "pass": true
+          },
+          {
+            "time": 66.2282,
+            "midi": 46,
+            "timbre": "dulcimer",
+            "hz": 116.54,
+            "ratio": 279507.41,
+            "pass": true
+          },
+          {
+            "time": 29.4761,
+            "midi": 59,
+            "timbre": "bass",
+            "hz": 246.94,
+            "ratio": 586404.54,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.000397,
+          "p95": 0.008545,
+          "ratio": 0.046
+        },
+        {
+          "boundary": 0.006348,
+          "p95": 0.0112,
+          "ratio": 0.567
+        }
+      ],
+      "mp3Seconds": 70.5882
+    },
+    {
+      "id": "quarry",
+      "title": "Quarry",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 71.1111,
+      "mix": {
+        "seconds": 71.1111,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -19.46,
+        "dc": [
+          0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.002228,
+            "p95": 0.008728,
+            "ratio": 0.255
+          },
+          {
+            "boundary": 0.002136,
+            "p95": 0.009277,
+            "ratio": 0.23
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 71.1111,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -7.28,
+          "rmsDbfs": -22.19,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.002228,
+              "p95": 0.002777,
+              "ratio": 0.802
+            },
+            {
+              "boundary": 0.002167,
+              "p95": 0.002777,
+              "ratio": 0.78
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 71.1111,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.55,
+          "rmsDbfs": -22.96,
+          "dc": [
+            2e-06,
+            2e-06
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.006927,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.007507,
+              "ratio": 0.0
+            }
+          ],
+          "id": "cut"
+        },
+        {
+          "seconds": 71.1111,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -13.62,
+          "rmsDbfs": -40.11,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.001556,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.001617,
+              "ratio": 0.0
+            }
+          ],
+          "id": "gallery"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.0204,
+            "midi": 64,
+            "timbre": "marble",
+            "hz": 329.63,
+            "ratio": 263644.84,
+            "pass": true
+          },
+          {
+            "time": 3.3527,
+            "midi": 58,
+            "timbre": "marble",
+            "hz": 233.08,
+            "ratio": 27056.77,
+            "pass": true
+          },
+          {
+            "time": 20.0307,
+            "midi": 54,
+            "timbre": "marble",
+            "hz": 185.0,
+            "ratio": 499239.26,
+            "pass": true
+          },
+          {
+            "time": 36.6941,
+            "midi": 59,
+            "timbre": "marble",
+            "hz": 246.94,
+            "ratio": 26360.85,
+            "pass": true
+          },
+          {
+            "time": 53.3517,
+            "midi": 64,
+            "timbre": "marble",
+            "hz": 329.63,
+            "ratio": 403935.57,
+            "pass": true
+          },
+          {
+            "time": 56.6875,
+            "midi": 58,
+            "timbre": "marble",
+            "hz": 233.08,
+            "ratio": 12813.41,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.00238,
+          "p95": 0.00827,
+          "ratio": 0.288
+        },
+        {
+          "boundary": 0.002289,
+          "p95": 0.008789,
+          "ratio": 0.26
+        }
+      ],
+      "mp3Seconds": 71.1111
+    },
+    {
+      "id": "ordinary-dungeon",
+      "title": "Ordinary dungeon",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 90.0,
+      "mix": {
+        "seconds": 90.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -19.0,
+        "dc": [
+          -0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.005432,
+            "p95": 0.010254,
+            "ratio": 0.53
+          },
+          {
+            "boundary": 0.005249,
+            "p95": 0.010162,
+            "ratio": 0.517
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 90.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -6.32,
+          "rmsDbfs": -19.96,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.005402,
+              "p95": 0.003784,
+              "ratio": 1.427
+            },
+            {
+              "boundary": 0.005249,
+              "p95": 0.003784,
+              "ratio": 1.387
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 90.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -9.39,
+          "rmsDbfs": -31.79,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.008362,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.007599,
+              "ratio": 0.0
+            }
+          ],
+          "id": "leak"
+        },
+        {
+          "seconds": 90.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -6.55,
+          "rmsDbfs": -27.42,
+          "dc": [
+            -4e-06,
+            -4e-06
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.001465,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.001587,
+              "ratio": 0.0
+            }
+          ],
+          "id": "pressure"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 6.5494,
+            "midi": 63,
+            "timbre": "other",
+            "hz": 311.13,
+            "ratio": 69897.84,
+            "pass": true
+          },
+          {
+            "time": 29.9991,
+            "midi": 68,
+            "timbre": "other",
+            "hz": 415.3,
+            "ratio": 78948.42,
+            "pass": true
+          },
+          {
+            "time": 73.1366,
+            "midi": 65,
+            "timbre": "other",
+            "hz": 349.23,
+            "ratio": 58239.99,
+            "pass": true
+          },
+          {
+            "time": 34.2151,
+            "midi": 61,
+            "timbre": "dulcimer",
+            "hz": 277.18,
+            "ratio": 277745.21,
+            "pass": true
+          },
+          {
+            "time": 64.2077,
+            "midi": 58,
+            "timbre": "dulcimer",
+            "hz": 233.08,
+            "ratio": 139039.92,
+            "pass": true
+          },
+          {
+            "time": 66.0777,
+            "midi": 64,
+            "timbre": "dulcimer",
+            "hz": 329.63,
+            "ratio": 193257.84,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.000763,
+          "p95": 0.009735,
+          "ratio": 0.078
+        },
+        {
+          "boundary": 0.010925,
+          "p95": 0.009644,
+          "ratio": 1.133
+        }
+      ],
+      "mp3Seconds": 90.0
+    },
+    {
+      "id": "danger",
+      "title": "Danger",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 64.0,
+      "mix": {
+        "seconds": 64.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -19.38,
+        "dc": [
+          -0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.002167,
+            "p95": 0.014832,
+            "ratio": 0.146
+          },
+          {
+            "boundary": 0.002197,
+            "p95": 0.015442,
+            "ratio": 0.142
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.02,
+          "rmsDbfs": -19.9,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.002167,
+              "p95": 0.013519,
+              "ratio": 0.16
+            },
+            {
+              "boundary": 0.002197,
+              "p95": 0.012299,
+              "ratio": 0.179
+            }
+          ],
+          "id": "alert"
+        },
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -5.66,
+          "rmsDbfs": -30.23,
+          "dc": [
+            -1e-06,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.001495,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.001251,
+              "ratio": 0.0
+            }
+          ],
+          "id": "engaged"
+        },
+        {
+          "seconds": 64.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -15.54,
+          "rmsDbfs": -35.98,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.005005,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.008881,
+              "ratio": 0.0
+            }
+          ],
+          "id": "crisis"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.7526,
+            "midi": 71,
+            "timbre": "dulcimer",
+            "hz": 493.88,
+            "ratio": 501021.71,
+            "pass": true
+          },
+          {
+            "time": 7.2562,
+            "midi": 70,
+            "timbre": "dulcimer",
+            "hz": 466.16,
+            "ratio": 571442.6,
+            "pass": true
+          },
+          {
+            "time": 28.7644,
+            "midi": 71,
+            "timbre": "dulcimer",
+            "hz": 493.88,
+            "ratio": 464231.12,
+            "pass": true
+          },
+          {
+            "time": 37.255,
+            "midi": 71,
+            "timbre": "dulcimer",
+            "hz": 493.88,
+            "ratio": 395048.11,
+            "pass": true
+          },
+          {
+            "time": 50.7525,
+            "midi": 77,
+            "timbre": "dulcimer",
+            "hz": 698.46,
+            "ratio": 220978.27,
+            "pass": true
+          },
+          {
+            "time": 54.0148,
+            "midi": 64,
+            "timbre": "marble",
+            "hz": 329.63,
+            "ratio": 11158.95,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.002319,
+          "p95": 0.014099,
+          "ratio": 0.165
+        },
+        {
+          "boundary": 0.002411,
+          "p95": 0.014679,
+          "ratio": 0.164
+        }
+      ],
+      "mp3Seconds": 64.0
+    },
+    {
+      "id": "boss",
+      "title": "Boss",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 67.3684,
+      "mix": {
+        "seconds": 67.3684,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -2.11,
+        "rmsDbfs": -18.0,
+        "dc": [
+          0.0,
+          0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.002625,
+            "p95": 0.014526,
+            "ratio": 0.181
+          },
+          {
+            "boundary": 0.002197,
+            "p95": 0.015686,
+            "ratio": 0.14
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 67.3684,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.56,
+          "rmsDbfs": -18.81,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.002625,
+              "p95": 0.003906,
+              "ratio": 0.672
+            },
+            {
+              "boundary": 0.002197,
+              "p95": 0.003113,
+              "ratio": 0.706
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 67.3684,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -10.82,
+          "rmsDbfs": -29.71,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.009491,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.010345,
+              "ratio": 0.0
+            }
+          ],
+          "id": "challenge"
+        },
+        {
+          "seconds": 67.3684,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -10.51,
+          "rmsDbfs": -28.01,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.009888,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.010376,
+              "ratio": 0.0
+            }
+          ],
+          "id": "crisis"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.0161,
+            "midi": 47,
+            "timbre": "bass",
+            "hz": 123.47,
+            "ratio": 1246543.16,
+            "pass": true
+          },
+          {
+            "time": 23.1859,
+            "midi": 41,
+            "timbre": "bass",
+            "hz": 87.31,
+            "ratio": 534297.1,
+            "pass": true
+          },
+          {
+            "time": 46.33,
+            "midi": 37,
+            "timbre": "bass",
+            "hz": 69.3,
+            "ratio": 23342.55,
+            "pass": true
+          },
+          {
+            "time": 4.2196,
+            "midi": 71,
+            "timbre": "voice",
+            "hz": 493.88,
+            "ratio": 328456.6,
+            "pass": true
+          },
+          {
+            "time": 18.1785,
+            "midi": 77,
+            "timbre": "dulcimer",
+            "hz": 698.46,
+            "ratio": 338655.2,
+            "pass": true
+          },
+          {
+            "time": 56.0841,
+            "midi": 77,
+            "timbre": "dulcimer",
+            "hz": 698.46,
+            "ratio": 233070.51,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.00296,
+          "p95": 0.013794,
+          "ratio": 0.215
+        },
+        {
+          "boundary": 0.002441,
+          "p95": 0.014893,
+          "ratio": 0.164
+        }
+      ],
+      "mp3Seconds": 67.3684
+    },
+    {
+      "id": "afterlife",
+      "title": "Afterlife",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 87.2727,
+      "mix": {
+        "seconds": 87.2727,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -18.16,
+        "dc": [
+          0.0,
+          0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.007538,
+            "p95": 0.029602,
+            "ratio": 0.255
+          },
+          {
+            "boundary": 0.006744,
+            "p95": 0.038666,
+            "ratio": 0.174
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 87.2727,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.24,
+          "rmsDbfs": -21.17,
+          "dc": [
+            0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.007538,
+              "p95": 0.004425,
+              "ratio": 1.703
+            },
+            {
+              "boundary": 0.006744,
+              "p95": 0.004028,
+              "ratio": 1.674
+            }
+          ],
+          "id": "drift"
+        },
+        {
+          "seconds": 87.2727,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -8.83,
+          "rmsDbfs": -21.33,
+          "dc": [
+            0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.028595,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.036224,
+              "ratio": 0.0
+            }
+          ],
+          "id": "memory"
+        },
+        {
+          "seconds": 87.2727,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -11.31,
+          "rmsDbfs": -35.76,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.004211,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.007721,
+              "ratio": 0.0
+            }
+          ],
+          "id": "pings"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 1.3591,
+            "midi": 50,
+            "timbre": "marble",
+            "hz": 146.83,
+            "ratio": 351187.79,
+            "pass": true
+          },
+          {
+            "time": 10.9269,
+            "midi": 45,
+            "timbre": "marble",
+            "hz": 110.0,
+            "ratio": 155298.66,
+            "pass": true
+          },
+          {
+            "time": 5.4377,
+            "midi": 74,
+            "timbre": "voice",
+            "hz": 587.33,
+            "ratio": 304954.35,
+            "pass": true
+          },
+          {
+            "time": 9.5695,
+            "midi": 77,
+            "timbre": "voice",
+            "hz": 698.46,
+            "ratio": 265338.26,
+            "pass": true
+          },
+          {
+            "time": 15.6759,
+            "midi": 76,
+            "timbre": "voice",
+            "hz": 659.26,
+            "ratio": 266978.24,
+            "pass": true
+          },
+          {
+            "time": 25.8882,
+            "midi": 80,
+            "timbre": "voice",
+            "hz": 830.61,
+            "ratio": 195887.59,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.007294,
+          "p95": 0.028107,
+          "ratio": 0.26
+        },
+        {
+          "boundary": 0.005859,
+          "p95": 0.036743,
+          "ratio": 0.159
+        }
+      ],
+      "mp3Seconds": 87.2727
+    },
+    {
+      "id": "reincarnation",
+      "title": "Reincarnation",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 80.0,
+      "mix": {
+        "seconds": 80.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.87,
+        "rmsDbfs": -18.0,
+        "dc": [
+          -0.0,
+          0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.005127,
+            "p95": 0.018372,
+            "ratio": 0.279
+          },
+          {
+            "boundary": 0.00531,
+            "p95": 0.021698,
+            "ratio": 0.245
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 80.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -10.28,
+          "rmsDbfs": -20.16,
+          "dc": [
+            -0.0,
+            0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.005127,
+              "p95": 0.003754,
+              "ratio": 1.366
+            },
+            {
+              "boundary": 0.00531,
+              "p95": 0.003784,
+              "ratio": 1.403
+            }
+          ],
+          "id": "bed"
+        },
+        {
+          "seconds": 80.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -4.94,
+          "rmsDbfs": -22.22,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.016846,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.018158,
+              "ratio": 0.0
+            }
+          ],
+          "id": "becoming"
+        },
+        {
+          "seconds": 80.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -12.31,
+          "rmsDbfs": -34.58,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.0,
+              "p95": 0.004913,
+              "ratio": 0.0
+            },
+            {
+              "boundary": 0.0,
+              "p95": 0.008148,
+              "ratio": 0.0
+            }
+          ],
+          "id": "union"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.848,
+            "midi": 62,
+            "timbre": "marble",
+            "hz": 293.66,
+            "ratio": 663207.85,
+            "pass": true
+          },
+          {
+            "time": 26.6728,
+            "midi": 70,
+            "timbre": "dulcimer",
+            "hz": 466.16,
+            "ratio": 521137.74,
+            "pass": true
+          },
+          {
+            "time": 40.4259,
+            "midi": 68,
+            "timbre": "voice",
+            "hz": 415.3,
+            "ratio": 351244.5,
+            "pass": true
+          },
+          {
+            "time": 42.9142,
+            "midi": 75,
+            "timbre": "voice",
+            "hz": 622.25,
+            "ratio": 177526.61,
+            "pass": true
+          },
+          {
+            "time": 54.5788,
+            "midi": 71,
+            "timbre": "dulcimer",
+            "hz": 493.88,
+            "ratio": 345344.35,
+            "pass": true
+          },
+          {
+            "time": 73.3196,
+            "midi": 72,
+            "timbre": "voice",
+            "hz": 523.25,
+            "ratio": 185729.39,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.005524,
+          "p95": 0.017456,
+          "ratio": 0.316
+        },
+        {
+          "boundary": 0.00531,
+          "p95": 0.02063,
+          "ratio": 0.257
+        }
+      ],
+      "mp3Seconds": 80.0
+    },
+    {
+      "id": "ending",
+      "title": "Ending",
+      "loop": false,
+      "loopStart": null,
+      "loopEnd": null,
+      "mix": {
+        "seconds": 102.7778,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -20.09,
+        "dc": [
+          -0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": null
+      },
+      "layers": [
+        {
+          "seconds": 102.7778,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -3.66,
+          "rmsDbfs": -21.3,
+          "dc": [
+            -0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": null,
+          "id": "ground"
+        },
+        {
+          "seconds": 102.7778,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -13.16,
+          "rmsDbfs": -30.78,
+          "dc": [
+            0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": null,
+          "id": "myth"
+        },
+        {
+          "seconds": 102.7778,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -8.29,
+          "rmsDbfs": -28.17,
+          "dc": [
+            1e-06,
+            1e-06
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": null,
+          "id": "return"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 57.7778,
+            "midi": 43,
+            "timbre": "bass",
+            "hz": 98.0,
+            "ratio": 481468.63,
+            "pass": true
+          },
+          {
+            "time": 31.109,
+            "midi": 44,
+            "timbre": "marble",
+            "hz": 103.83,
+            "ratio": 322555.16,
+            "pass": true
+          },
+          {
+            "time": 40.0017,
+            "midi": 66,
+            "timbre": "voice",
+            "hz": 369.99,
+            "ratio": 186663.11,
+            "pass": true
+          },
+          {
+            "time": 7.7858,
+            "midi": 69,
+            "timbre": "dulcimer",
+            "hz": 440.0,
+            "ratio": 653927.82,
+            "pass": true
+          },
+          {
+            "time": 60.545,
+            "midi": 64,
+            "timbre": "dulcimer",
+            "hz": 329.63,
+            "ratio": 326488.98,
+            "pass": true
+          },
+          {
+            "time": 81.3503,
+            "midi": 70,
+            "timbre": "voice",
+            "hz": 466.16,
+            "ratio": 249170.38,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": null,
+      "mp3Seconds": 102.7778
+    },
+    {
+      "id": "menu-veil",
+      "title": "Menu veil",
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 34.2857,
+      "mix": {
+        "seconds": 34.2857,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -5.97,
+        "rmsDbfs": -18.0,
+        "dc": [
+          0.0,
+          -0.0
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": [
+          {
+            "boundary": 0.007812,
+            "p95": 0.00943,
+            "ratio": 0.828
+          },
+          {
+            "boundary": 0.008057,
+            "p95": 0.01004,
+            "ratio": 0.802
+          }
+        ]
+      },
+      "layers": [
+        {
+          "seconds": 34.2857,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -5.97,
+          "rmsDbfs": -18.0,
+          "dc": [
+            0.0,
+            -0.0
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": [
+            {
+              "boundary": 0.007812,
+              "p95": 0.00943,
+              "ratio": 0.828
+            },
+            {
+              "boundary": 0.008057,
+              "p95": 0.01004,
+              "ratio": 0.802
+            }
+          ],
+          "id": "veil"
+        }
+      ],
+      "motifs": {
+        "checked": 0,
+        "passed": 0,
+        "pass": false,
+        "notes": []
+      },
+      "mp3Join": [
+        {
+          "boundary": 0.005524,
+          "p95": 0.008942,
+          "ratio": 0.618
+        },
+        {
+          "boundary": 0.005005,
+          "p95": 0.009552,
+          "ratio": 0.524
+        }
+      ],
+      "mp3Seconds": 34.2857
+    },
+    {
+      "id": "death-sting",
+      "title": "Death sting",
+      "loop": false,
+      "loopStart": null,
+      "loopEnd": null,
+      "mix": {
+        "seconds": 13.0,
+        "sampleRate": 44100,
+        "channels": 2,
+        "peakDbfs": -1.5,
+        "rmsDbfs": -18.93,
+        "dc": [
+          -7e-06,
+          -8e-06
+        ],
+        "fullScaleSamples": 0,
+        "loopJoin": null
+      },
+      "layers": [
+        {
+          "seconds": 13.0,
+          "sampleRate": 44100,
+          "channels": 2,
+          "peakDbfs": -1.5,
+          "rmsDbfs": -18.93,
+          "dc": [
+            -7e-06,
+            -8e-06
+          ],
+          "fullScaleSamples": 0,
+          "loopJoin": null,
+          "id": "sting"
+        }
+      ],
+      "motifs": {
+        "checked": 6,
+        "passed": 6,
+        "pass": true,
+        "notes": [
+          {
+            "time": 0.02,
+            "midi": 69,
+            "timbre": "marble",
+            "hz": 440.0,
+            "ratio": 764771.55,
+            "pass": true
+          },
+          {
+            "time": 0.02,
+            "midi": 68,
+            "timbre": "marble",
+            "hz": 415.3,
+            "ratio": 493635.25,
+            "pass": true
+          },
+          {
+            "time": 0.7,
+            "midi": 69,
+            "timbre": "dulcimer",
+            "hz": 440.0,
+            "ratio": 684540.63,
+            "pass": true
+          },
+          {
+            "time": 1.15,
+            "midi": 64,
+            "timbre": "dulcimer",
+            "hz": 329.63,
+            "ratio": 429745.46,
+            "pass": true
+          },
+          {
+            "time": 1.75,
+            "midi": 65,
+            "timbre": "dulcimer",
+            "hz": 349.23,
+            "ratio": 528269.07,
+            "pass": true
+          },
+          {
+            "time": 3.1,
+            "midi": 38,
+            "timbre": "bass",
+            "hz": 73.42,
+            "ratio": 1445486.39,
+            "pass": true
+          }
+        ]
+      },
+      "mp3Join": null,
+      "mp3Seconds": 13.0
+    }
+  ],
+  "transitions": [
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -5.43,
+      "clipped": false,
+      "stepSpike": 0.05398,
+      "sourceP95": 0.02863,
+      "spikeRatio": 1.886,
+      "from": "title",
+      "to": "middlebury"
+    },
+    {
+      "fadeSec": 2.4,
+      "peakDbfs": -7.21,
+      "clipped": false,
+      "stepSpike": 0.027,
+      "sourceP95": 0.00467,
+      "spikeRatio": 5.783,
+      "from": "middlebury",
+      "to": "open-county"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -4.38,
+      "clipped": false,
+      "stepSpike": 0.09639,
+      "sourceP95": 0.05005,
+      "spikeRatio": 1.926,
+      "from": "open-county",
+      "to": "high-woods"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -7.34,
+      "clipped": false,
+      "stepSpike": 0.07124,
+      "sourceP95": 0.03052,
+      "spikeRatio": 2.334,
+      "from": "high-woods",
+      "to": "water"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -3.23,
+      "clipped": false,
+      "stepSpike": 0.0392,
+      "sourceP95": 0.0184,
+      "spikeRatio": 2.13,
+      "from": "water",
+      "to": "quarry"
+    },
+    {
+      "fadeSec": 1.6,
+      "peakDbfs": -8.24,
+      "clipped": false,
+      "stepSpike": 0.01309,
+      "sourceP95": 0.00476,
+      "spikeRatio": 2.749,
+      "from": "quarry",
+      "to": "ordinary-dungeon"
+    },
+    {
+      "fadeSec": 2.2,
+      "peakDbfs": -3.28,
+      "clipped": false,
+      "stepSpike": 0.07284,
+      "sourceP95": 0.02878,
+      "spikeRatio": 2.531,
+      "from": "ordinary-dungeon",
+      "to": "danger"
+    },
+    {
+      "fadeSec": 0.7,
+      "peakDbfs": -12.76,
+      "clipped": false,
+      "stepSpike": 0.00467,
+      "sourceP95": 0.00558,
+      "spikeRatio": 0.836,
+      "from": "danger",
+      "to": "boss"
+    },
+    {
+      "fadeSec": 0.85,
+      "peakDbfs": -9.42,
+      "clipped": false,
+      "stepSpike": 0.04693,
+      "sourceP95": 0.02246,
+      "spikeRatio": 2.089,
+      "from": "boss",
+      "to": "afterlife"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -3.98,
+      "clipped": false,
+      "stepSpike": 0.12998,
+      "sourceP95": 0.0683,
+      "spikeRatio": 1.903,
+      "from": "afterlife",
+      "to": "reincarnation"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -5.01,
+      "clipped": false,
+      "stepSpike": 0.07849,
+      "sourceP95": 0.02594,
+      "spikeRatio": 3.026,
+      "from": "reincarnation",
+      "to": "ending"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -9.2,
+      "clipped": false,
+      "stepSpike": 0.041,
+      "sourceP95": 0.02216,
+      "spikeRatio": 1.85,
+      "from": "ending",
+      "to": "title"
+    },
+    {
+      "fadeSec": 0.7,
+      "peakDbfs": -7.88,
+      "clipped": false,
+      "stepSpike": 0.05063,
+      "sourceP95": 0.0217,
+      "spikeRatio": 2.333,
+      "from": "open-county",
+      "to": "danger"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -9.25,
+      "clipped": false,
+      "stepSpike": 0.01378,
+      "sourceP95": 0.00385,
+      "spikeRatio": 3.584,
+      "from": "danger",
+      "to": "afterlife"
+    },
+    {
+      "fadeSec": 0.85,
+      "peakDbfs": -13.01,
+      "clipped": false,
+      "stepSpike": 0.0271,
+      "sourceP95": 0.00626,
+      "spikeRatio": 4.331,
+      "from": "middlebury",
+      "to": "boss"
+    },
+    {
+      "fadeSec": 2.5,
+      "peakDbfs": -9.14,
+      "clipped": false,
+      "stepSpike": 0.0142,
+      "sourceP95": 0.00522,
+      "spikeRatio": 2.722,
+      "from": "quarry",
+      "to": "water"
+    }
+  ]
+}

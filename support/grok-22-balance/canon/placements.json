@@ -1,0 +1,119 @@
+{
+  "source": "src/game/maps.ts, src/game/raster.ts, src/game/soloverse.ts at c737e42",
+  "tile": 16,
+  "ordinary": [
+    { "id": "mb-crow", "map": "middlebury", "prop": "crow-1", "kind": "crow", "x": 6, "y": 2, "minCycle": 0 },
+    { "id": "mb-bob", "map": "middlebury", "prop": "bob-chipman", "kind": "bobcat", "x": 8, "y": 3, "minCycle": 0 },
+    { "id": "mb-fisher", "map": "middlebury", "prop": "fisher-1", "kind": "fisher", "x": 36, "y": 16, "minCycle": 0 },
+    { "id": "vg-crow", "map": "vergennes", "prop": "v-crow", "kind": "crow", "x": 6, "y": 2, "minCycle": 0 },
+    { "id": "vg-wraith", "map": "vergennes", "prop": "v-wraith", "kind": "wraith", "x": 20, "y": 12, "minCycle": 0 },
+    { "id": "vg-fisher", "map": "vergennes", "prop": "v-fisher", "kind": "fisher", "x": 3, "y": 8, "minCycle": 0 },
+    { "id": "br-bob", "map": "bristol", "prop": "b-bob", "kind": "bobcat", "x": 8, "y": 15, "minCycle": 0 },
+    { "id": "br-fisher", "map": "bristol", "prop": "b-fisher", "kind": "fisher", "x": 28, "y": 10, "minCycle": 0 },
+    { "id": "fe-bob", "map": "ferrisburgh", "prop": "f-bob", "kind": "bobcat", "x": 20, "y": 12, "minCycle": 0 },
+    { "id": "wr-crow", "map": "whiteriver", "prop": "w-crow", "kind": "crow", "x": 22, "y": 2, "minCycle": 0 },
+    { "id": "ow-bob", "map": "addison", "prop": "ow-bob", "kind": "bobcat", "x": 44, "y": 32, "minCycle": 0 },
+    { "id": "ru-crow", "map": "rutland", "prop": "crow-1", "kind": "crow", "x": 4, "y": 3, "minCycle": 0 },
+    { "id": "solo-wraiths", "map": "soloverse", "prop": "solo-wraith-a/b/c", "kind": "wraith", "minCycle": 1, "group": [
+      { "kind": "wraith", "x": 32, "y": 30, "id": "solo-wraith-a" },
+      { "kind": "wraith", "x": 38, "y": 38, "id": "solo-wraith-b" },
+      { "kind": "wraith", "x": 28, "y": 36, "id": "solo-wraith-c" }
+    ] }
+  ],
+  "minibosses": [
+    { "id": "br-bear", "map": "bristol", "prop": "b-bear", "kind": "bear", "x": 26, "y": 3, "tierNote": "No miniboss type exists. Tier is the bear stat block: hp 7, contact 1.5, aggro 64. Eight placed instances." },
+    { "id": "fe-bear", "map": "ferrisburgh", "prop": "f-bear", "kind": "bear", "x": 26, "y": 10 },
+    { "id": "sa-bear-1", "map": "salisbury", "prop": "s-bear1", "kind": "bear", "x": 6, "y": 2 },
+    { "id": "sa-bear-2", "map": "salisbury", "prop": "s-bear2", "kind": "bear", "x": 24, "y": 4 },
+    { "id": "ow-bear", "map": "addison", "prop": "ow-bear", "kind": "bear", "x": 50, "y": 16 },
+    { "id": "ch-bear", "map": "chittenden", "prop": "c-bear", "kind": "bear", "x": 40, "y": 18 },
+    { "id": "wi-bear", "map": "windsor", "prop": "w-bear", "kind": "bear", "x": 20, "y": 16 },
+    { "id": "solo-bear", "map": "soloverse", "prop": "solo-bear", "kind": "bear", "x": 9, "y": 36, "minCycle": 1 }
+  ],
+  "major": [
+    { "id": "quarry-sentinel-first", "map": "quarry", "prop": "sentinel", "kind": "sentinel", "x": 16, "y": 3, "checkpoint": "early-job", "tropoverse": false },
+    { "id": "quarry-sentinel-return", "map": "quarry", "prop": "sentinel", "kind": "sentinel", "x": 16, "y": 3, "checkpoint": "middle", "tropoverse": false },
+    { "id": "quarry-sentinel-late", "map": "quarry", "prop": "sentinel", "kind": "sentinel", "x": 16, "y": 3, "checkpoint": "late", "tropoverse": false },
+    { "id": "soloverse-sentinel", "map": "soloverse", "prop": "solo-sentinel", "kind": "sentinel", "x": 36, "y": 28, "checkpoint": "late-sphere", "tropoverse": true, "minCycle": 3, "gate": "sentinelFate !== release" }
+  ],
+  "groups": [
+    {
+      "id": "mb-crow-bob",
+      "map": "middlebury",
+      "kind": "mixed",
+      "minCycle": 0,
+      "why": "crow-1 and bob-chipman are 36px apart, inside one aggro radius",
+      "group": [
+        { "kind": "crow", "x": 6, "y": 2, "id": "crow-1" },
+        { "kind": "bobcat", "x": 8, "y": 3, "id": "bob-chipman" }
+      ]
+    },
+    {
+      "id": "vg-crow-fisher",
+      "map": "vergennes",
+      "kind": "mixed",
+      "minCycle": 0,
+      "why": "v-crow and v-fisher aggro circles overlap",
+      "group": [
+        { "kind": "crow", "x": 6, "y": 2, "id": "v-crow" },
+        { "kind": "fisher", "x": 3, "y": 8, "id": "v-fisher" }
+      ]
+    },
+    {
+      "id": "br-fisher-bear",
+      "map": "bristol",
+      "kind": "mixed",
+      "minCycle": 0,
+      "why": "b-fisher and b-bear aggro circles overlap",
+      "group": [
+        { "kind": "fisher", "x": 28, "y": 10, "id": "b-fisher" },
+        { "kind": "bear", "x": 26, "y": 3, "id": "b-bear" }
+      ]
+    },
+    {
+      "id": "fe-bob-bear",
+      "map": "ferrisburgh",
+      "kind": "mixed",
+      "minCycle": 0,
+      "why": "f-bob and f-bear aggro circles overlap",
+      "group": [
+        { "kind": "bobcat", "x": 20, "y": 12, "id": "f-bob" },
+        { "kind": "bear", "x": 26, "y": 10, "id": "f-bear" }
+      ]
+    },
+    {
+      "id": "solo-wraith-sentinel",
+      "map": "soloverse",
+      "kind": "mixed",
+      "minCycle": 1,
+      "why": "solo-wraith-a sits 72px from the soloverse sentinel",
+      "group": [
+        { "kind": "wraith", "x": 32, "y": 30, "id": "solo-wraith-a" },
+        { "kind": "sentinel", "x": 36, "y": 28, "id": "solo-sentinel" }
+      ]
+    }
+  ],
+  "unplaced": [
+    { "id": "resident-stat", "kind": "resident", "note": "ENEMY_HP and contact exist in engine.ts. No prop in maps, raster, interiors, or soloverse spawns this kind. Dialogue NPC only. Not given a fake arena." }
+  ],
+  "quarrySrc": [
+    "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+    "MvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvM",
+    "MvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmM",
+    "Mvmm............S.....C........mmM",
+    "Mvmm...........................mmM",
+    "MvmmmmmmmmmmmmxxxxxxxxmmmmmmmmmmmM",
+    "Mvmm..............H............mmM",
+    "Mvmm...........................mmM",
+    "MvmmmmmmmmmmmmmmLmmmmmmmmmmmmmmmmM",
+    "Mvmm.....ooooooooooo...........mmM",
+    "Mvmm.....o.........o...........mmM",
+    "Mvmm..k..o.........o...........mmM",
+    "Mvmm.....ooooooooooo...........mmM",
+    "Mvmm...........................mmM",
+    "Mvmm...........n...............mmM",
+    "Mvmm...........................mmM",
+    "Mvmmmmmmmmmmmmmm.mmmmmmmmmmmmmmmmM",
+    "MMMMMMMMMMMMMMMM.MMMMMMMMMMMMMMMMM"
+  ]
+}

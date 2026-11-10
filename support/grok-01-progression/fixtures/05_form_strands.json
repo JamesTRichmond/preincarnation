@@ -1,0 +1,2029 @@
+{
+  "meta": {
+    "id": "broken-05-form-strands",
+    "status": "proposed-reference-model",
+    "core_files": "unavailable",
+    "verifies_runtime": false,
+    "setting": "Addison County, Vermont only",
+    "protagonist": "Ellis Perch",
+    "death_advances_years": 14,
+    "targets": {
+      "major_dungeons": 16,
+      "districts": 12,
+      "endings": 4,
+      "hours_first_play_min": 120,
+      "hours_first_play_max": 160,
+      "hours_verified": false
+    },
+    "exclusions": [
+      "party",
+      "procedural_generation",
+      "crafting_economy",
+      "quest_compass",
+      "replacement_skill_tree",
+      "accounts",
+      "monetization"
+    ],
+    "contradictions": [
+      "Rutland Officer is a body name whose commission is extra-county, but playable space stays inside Addison County.",
+      "Crowns/cycles is implemented as two crown artifacts, not as two mandatory deaths. Godhood can occur at year 0.",
+      "Marble hammer dungeon is sited at Weybridge by compression; historic marble volume is outside the county.",
+      "Creek fins and the smuggler both relate to water. Creek terrain accepts either; the lake cut accepts fins or Embryonic God only.",
+      "Embryonic God keeps ground movement. The phrase 'crosses water and void' is read as added terrains, because the shrine exit is ground.",
+      "Tools persist once acquired (soulbound). A grave-stash reading is unresolved.",
+      "120-160 hours is an unverified target."
+    ],
+    "expect_violations": [
+      "form_change_strands_player"
+    ],
+    "forbid_violations": [],
+    "injected": "Embryonic God loses ground and water. The ridge shrine exit is a ground edge, and Middlebury has no void edge."
+  },
+  "start_location": "middlebury-green",
+  "recovery_hub": "middlebury-green",
+  "terrain_rules": {
+    "ground": {
+      "needs_movement": "ground"
+    },
+    "creek": {
+      "any": [
+        {
+          "needs_movement": "water"
+        },
+        {
+          "all": [
+            {
+              "needs_tool": "creek-fins"
+            },
+            {
+              "needs_movement": "ground"
+            }
+          ]
+        }
+      ]
+    },
+    "lake": {
+      "any": [
+        {
+          "needs_form": "embryonic-god"
+        },
+        {
+          "all": [
+            {
+              "needs_tool": "creek-fins"
+            },
+            {
+              "needs_movement": "ground"
+            }
+          ]
+        }
+      ]
+    },
+    "void": {
+      "needs_movement": "void"
+    },
+    "gap": {
+      "all": [
+        {
+          "needs_tool": "gap-boots"
+        },
+        {
+          "needs_movement": "ground"
+        }
+      ]
+    },
+    "hook": {
+      "all": [
+        {
+          "needs_tool": "sugar-line-hookshot"
+        },
+        {
+          "needs_movement": "ground"
+        }
+      ]
+    },
+    "dark": {
+      "all": [
+        {
+          "needs_tool": "oil-lamp"
+        },
+        {
+          "needs_movement": "ground"
+        }
+      ]
+    }
+  },
+  "era_rules": {
+    "principal_eras": [
+      0,
+      14,
+      28,
+      42,
+      56,
+      70
+    ],
+    "advance_years": 14,
+    "hard_year_cap": null,
+    "era_profiles": {
+      "year-0": {
+        "label": "First body"
+      },
+      "year-14": {
+        "label": "Second body"
+      },
+      "year-28": {
+        "label": "Third body, mayor gone"
+      },
+      "year-42": {
+        "label": "Fourth body"
+      },
+      "year-56": {
+        "label": "Fifth body"
+      },
+      "year-70": {
+        "label": "Sixth principal era"
+      }
+    },
+    "post_principal_policy": {
+      "supported": true,
+      "respawn": "middlebury-green",
+      "uses_era_profile": "year-70",
+      "representative_year": 84,
+      "formula": "70 + 14*n for integer n >= 1",
+      "mandatory_content_after_year_70": false,
+      "notes": "Later deaths stay playable. Geography remains the year-70 profile plus the potter's field stone at Middlebury Green."
+    }
+  },
+  "death": {
+    "advance_years": 14,
+    "respawn": "middlebury-green",
+    "always_available": true,
+    "flags_cleared": [
+      "scent-of-smoke"
+    ],
+    "tools_cleared": [],
+    "form_rule": "If both crowns are held, the body is Embryonic God. Else if this death is at least the first and mayor-spoken persists, the player may choose Rutland Officer or Otter Creek Smuggler. Else the body is Otter Creek Smuggler. Mortal Wanderer is only year 0."
+  },
+  "locations": [
+    {
+      "id": "middlebury-green",
+      "kind": "district",
+      "name": "Middlebury Green",
+      "blurb": "County seat. Graves, green, and mill bank. Ellis's respawn.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "otter-creek-narrows",
+      "kind": "district",
+      "name": "Otter Creek Narrows",
+      "blurb": "Creek bank north of Middlebury. Ground; the channel is separate.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "vergennes-falls",
+      "kind": "district",
+      "name": "Vergennes Falls",
+      "blurb": "The only city in Addison County. City hall and the falls.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "cornwall-flats",
+      "kind": "district",
+      "name": "Cornwall Flats",
+      "blurb": "Farmsteads and sugarhouses between Middlebury and Shoreham.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "bristol-notch",
+      "kind": "district",
+      "name": "Bristol Notch",
+      "blurb": "Bristol village and the notch road toward Lincoln.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "ferrisburgh-shore",
+      "kind": "district",
+      "name": "Ferrisburgh Shore",
+      "blurb": "Champlain shore in Ferrisburgh. Fins are cached on dry ground.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "shoreham-slate",
+      "kind": "district",
+      "name": "Shoreham Slate",
+      "blurb": "Southern slate cuts and the powder magazine seal.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "orwell-marshes",
+      "kind": "district",
+      "name": "Orwell Marshes",
+      "blurb": "Orwell wetlands. Stays inside Vermont; Crown Point is not entered.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "ripton-heights",
+      "kind": "district",
+      "name": "Ripton Heights",
+      "blurb": "High roads above Ripton. Fictional homesteads only.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "lincoln-gap",
+      "kind": "district",
+      "name": "Lincoln Gap",
+      "blurb": "Lincoln and the gap. Ash bow and the ridge shrine approach.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "monkton-ridge",
+      "kind": "district",
+      "name": "Monkton Ridge",
+      "blurb": "Monkton ridge. Lamp is in the lit mouth; the catacomb is dark.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "weybridge-marble",
+      "kind": "district",
+      "name": "Weybridge Marble",
+      "blurb": "Weybridge creek cuts. Marble works are a geographic compression.",
+      "open_eras": [
+        0,
+        14,
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "sealed_eras": []
+    },
+    {
+      "id": "grave-crypt",
+      "kind": "room",
+      "name": "Grave Crypt Mouth",
+      "dungeon": "grave-crypt"
+    },
+    {
+      "id": "grave-crypt-heart",
+      "kind": "room",
+      "name": "Grave Crypt Heart",
+      "dungeon": "grave-crypt"
+    },
+    {
+      "id": "creek-channel",
+      "kind": "crossing",
+      "name": "Creek Channel"
+    },
+    {
+      "id": "creek-depths",
+      "kind": "room",
+      "name": "Creek Crown Depths",
+      "dungeon": "creek-crown-depths"
+    },
+    {
+      "id": "lake-cut",
+      "kind": "crossing",
+      "name": "Lake Cut"
+    },
+    {
+      "id": "hook-span",
+      "kind": "crossing",
+      "name": "Sugar-Line Span"
+    },
+    {
+      "id": "glass-loft",
+      "kind": "room",
+      "name": "Homestead Glass Loft",
+      "dungeon": "glasshouse"
+    },
+    {
+      "id": "notch-span",
+      "kind": "room",
+      "name": "Notch Gallery",
+      "dungeon": "notch-gallery"
+    },
+    {
+      "id": "ridge-shrine",
+      "kind": "room",
+      "name": "Ridge Shrine",
+      "dungeon": "ridge-shrine"
+    },
+    {
+      "id": "void-margin",
+      "kind": "crossing",
+      "name": "Void Margin"
+    },
+    {
+      "id": "void-terminal",
+      "kind": "room",
+      "name": "Void Crossing",
+      "dungeon": "void-terminal"
+    },
+    {
+      "id": "cave-dark",
+      "kind": "room",
+      "name": "Monkton Catacomb",
+      "dungeon": "lamp-catacombs"
+    },
+    {
+      "id": "mayoral-archive",
+      "kind": "room",
+      "name": "Mayoral Archive",
+      "dungeon": "mayoral-archive"
+    }
+  ],
+  "edges": [
+    {
+      "id": "mg-gc",
+      "a": "middlebury-green",
+      "b": "grave-crypt",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "gc-heart",
+      "a": "grave-crypt",
+      "b": "grave-crypt-heart",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [
+        "grave-shovel"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "mg-oc",
+      "a": "middlebury-green",
+      "b": "otter-creek-narrows",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "mg-vf",
+      "a": "middlebury-green",
+      "b": "vergennes-falls",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "mg-cf",
+      "a": "middlebury-green",
+      "b": "cornwall-flats",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "mg-bn",
+      "a": "middlebury-green",
+      "b": "bristol-notch",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "cf-wm",
+      "a": "cornwall-flats",
+      "b": "weybridge-marble",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "cf-ss",
+      "a": "cornwall-flats",
+      "b": "shoreham-slate",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "ss-om",
+      "a": "shoreham-slate",
+      "b": "orwell-marshes",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "vf-fs",
+      "a": "vergennes-falls",
+      "b": "ferrisburgh-shore",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "vf-mr",
+      "a": "vergennes-falls",
+      "b": "monkton-ridge",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "oc-cc",
+      "a": "otter-creek-narrows",
+      "b": "creek-channel",
+      "terrain": "creek",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "cc-cd",
+      "a": "creek-channel",
+      "b": "creek-depths",
+      "terrain": "creek",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [
+        "oil-lamp"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "fs-lc",
+      "a": "ferrisburgh-shore",
+      "b": "lake-cut",
+      "terrain": "lake",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "cf-hs",
+      "a": "cornwall-flats",
+      "b": "hook-span",
+      "terrain": "hook",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "hs-gl",
+      "a": "hook-span",
+      "b": "glass-loft",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "bn-ns",
+      "a": "bristol-notch",
+      "b": "notch-span",
+      "terrain": "hook",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "ns-lg",
+      "a": "notch-span",
+      "b": "lincoln-gap",
+      "terrain": "gap",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "lg-rh",
+      "a": "lincoln-gap",
+      "b": "ripton-heights",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "lg-rs",
+      "a": "lincoln-gap",
+      "b": "ridge-shrine",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [
+        "ash-bow"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "lg-vm",
+      "a": "lincoln-gap",
+      "b": "void-margin",
+      "terrain": "void",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "vm-vt",
+      "a": "void-margin",
+      "b": "void-terminal",
+      "terrain": "void",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [
+        "grave-shovel",
+        "sugar-line-hookshot",
+        "gap-boots",
+        "creek-fins",
+        "oil-lamp",
+        "marble-hammer",
+        "bug-net",
+        "homestead-glass",
+        "shadow-cape",
+        "block-rod",
+        "ash-bow",
+        "powder-kegs"
+      ],
+      "requires_flags": [
+        "mayor-spoken",
+        "archive-read",
+        "crypt-cleared",
+        "catacomb-cleared"
+      ],
+      "requires_crowns": [
+        "crown-of-the-creek",
+        "crown-of-the-ridge"
+      ],
+      "requires_forms": []
+    },
+    {
+      "id": "mr-dark",
+      "a": "monkton-ridge",
+      "b": "cave-dark",
+      "terrain": "dark",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "vf-arc",
+      "a": "vergennes-falls",
+      "b": "mayoral-archive",
+      "terrain": "ground",
+      "directed": false,
+      "is_warp": false,
+      "requires_tools": [
+        "block-rod"
+      ],
+      "requires_flags": [
+        "mayor-spoken"
+      ],
+      "requires_crowns": [],
+      "requires_forms": []
+    },
+    {
+      "id": "glass-recall",
+      "a": "*",
+      "b": "middlebury-green",
+      "terrain": "ground",
+      "directed": true,
+      "is_warp": true,
+      "requires_tools": [
+        "homestead-glass"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_forms": [],
+      "grants_completion": false,
+      "notes": "Return home after the glass is earned. Destination is the start hub."
+    }
+  ],
+  "tools": [
+    {
+      "id": "grave-shovel",
+      "name": "grave shovel",
+      "found_at": "grave-crypt",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "sugar-line-hookshot",
+      "name": "sugar-line hookshot",
+      "found_at": "cornwall-flats",
+      "requires_tools": [
+        "grave-shovel"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "gap-boots",
+      "name": "gap boots",
+      "found_at": "notch-span",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "creek-fins",
+      "name": "creek fins",
+      "found_at": "ferrisburgh-shore",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "oil-lamp",
+      "name": "oil lamp",
+      "found_at": "monkton-ridge",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "marble-hammer",
+      "name": "marble hammer",
+      "found_at": "weybridge-marble",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "bug-net",
+      "name": "bug net",
+      "found_at": "orwell-marshes",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "homestead-glass",
+      "name": "homestead glass",
+      "found_at": "glass-loft",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "shadow-cape",
+      "name": "shadow cape",
+      "found_at": "ripton-heights",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "block-rod",
+      "name": "block rod",
+      "found_at": "vergennes-falls",
+      "requires_tools": [],
+      "requires_flags": [
+        "mayor-spoken"
+      ],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "ash-bow",
+      "name": "ash bow",
+      "found_at": "lincoln-gap",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    },
+    {
+      "id": "powder-kegs",
+      "name": "powder kegs",
+      "found_at": "shoreham-slate",
+      "requires_tools": [
+        "marble-hammer"
+      ],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "required_for_main": true
+    }
+  ],
+  "crowns": [
+    {
+      "id": "crown-of-the-creek",
+      "name": "Crown of the Creek",
+      "found_at": "creek-depths",
+      "requires_tools": [
+        "oil-lamp"
+      ],
+      "requires_flags": [],
+      "boss": "creek-warden"
+    },
+    {
+      "id": "crown-of-the-ridge",
+      "name": "Crown of the Ridge",
+      "found_at": "ridge-shrine",
+      "requires_tools": [
+        "ash-bow"
+      ],
+      "requires_flags": [],
+      "boss": "ridge-warden",
+      "transforms_into": "embryonic-god",
+      "notes": "Claiming this crown transforms Ellis in place. It is not behind void."
+    }
+  ],
+  "forms": [
+    {
+      "id": "mortal-wanderer",
+      "name": "Mortal Wanderer",
+      "movement": [
+        "ground"
+      ],
+      "irreversible": false,
+      "entry_locations": [
+        "middlebury-green"
+      ],
+      "respawn": "middlebury-green",
+      "obligations": [
+        "vergennes-falls"
+      ],
+      "unlock": {
+        "deaths_min": 0,
+        "crowns_min": 0,
+        "flags": []
+      },
+      "notes": "Initial body. Exists only in year 0. The first death replaces it."
+    },
+    {
+      "id": "otter-creek-smuggler",
+      "name": "Otter Creek Smuggler",
+      "movement": [
+        "ground",
+        "water"
+      ],
+      "irreversible": false,
+      "entry_locations": [
+        "middlebury-green"
+      ],
+      "respawn": "middlebury-green",
+      "obligations": [
+        "vergennes-falls",
+        "creek-channel"
+      ],
+      "unlock": {
+        "deaths_min": 1,
+        "flags": []
+      },
+      "notes": "Default body after a death while fewer than two crowns are held."
+    },
+    {
+      "id": "rutland-officer",
+      "name": "Rutland Officer",
+      "movement": [
+        "ground"
+      ],
+      "irreversible": false,
+      "entry_locations": [
+        "middlebury-green"
+      ],
+      "respawn": "middlebury-green",
+      "obligations": [
+        "vergennes-falls"
+      ],
+      "unlock": {
+        "deaths_min": 1,
+        "flags": [
+          "mayor-spoken"
+        ]
+      },
+      "notes": "Alternative body after one death if mayor-spoken persists. Same life cannot also be the smuggler."
+    },
+    {
+      "id": "embryonic-god",
+      "name": "Embryonic God",
+      "movement": [
+        "void"
+      ],
+      "irreversible": true,
+      "entry_locations": [
+        "ridge-shrine",
+        "middlebury-green"
+      ],
+      "respawn": "middlebury-green",
+      "obligations": [
+        "middlebury-green",
+        "void-terminal"
+      ],
+      "unlock": {
+        "crowns": [
+          "crown-of-the-creek",
+          "crown-of-the-ridge"
+        ],
+        "deaths_min": 0
+      },
+      "notes": "Immediate transform at the ridge shrine once both crowns are held. Keeps ground so the shrine exit works. Water and void are added. deaths_min 0 is an explicit reading of Crowns/cycles; see contradictions."
+    }
+  ],
+  "npcs": [
+    {
+      "id": "mayor-hester-lane",
+      "name": "Mayor Hester Lane",
+      "role": "Mayor of Vergennes",
+      "location": "vergennes-falls",
+      "essential": true,
+      "grants_flags": [
+        "mayor-spoken"
+      ],
+      "alive_eras": [
+        0,
+        14
+      ],
+      "dies_when": [
+        "enter-year-28"
+      ],
+      "successors": [
+        "clerk-ida-ross"
+      ]
+    },
+    {
+      "id": "clerk-ida-ross",
+      "name": "Clerk Ida Ross",
+      "role": "City clerk, successor speaker",
+      "location": "vergennes-falls",
+      "essential": true,
+      "grants_flags": [
+        "mayor-spoken"
+      ],
+      "alive_eras": [
+        28,
+        42,
+        56,
+        70,
+        "post"
+      ],
+      "dies_when": [],
+      "successors": []
+    },
+    {
+      "id": "heron-keeper-moss",
+      "name": "Moss Ell",
+      "role": "Marsh watcher",
+      "location": "orwell-marshes",
+      "essential": false,
+      "grants_flags": [
+        "heron-spared"
+      ],
+      "alive_eras": [
+        0,
+        14,
+        28
+      ],
+      "dies_when": [
+        "enter-year-42"
+      ],
+      "successors": []
+    }
+  ],
+  "quest_flags": [
+    {
+      "id": "mayor-spoken",
+      "required_for_main": true,
+      "persists_on_death": true
+    },
+    {
+      "id": "archive-read",
+      "required_for_main": true,
+      "persists_on_death": true
+    },
+    {
+      "id": "void-crossed",
+      "required_for_main": true,
+      "persists_on_death": true
+    },
+    {
+      "id": "crypt-cleared",
+      "required_for_main": true,
+      "persists_on_death": true
+    },
+    {
+      "id": "catacomb-cleared",
+      "required_for_main": true,
+      "persists_on_death": true
+    },
+    {
+      "id": "heron-spared",
+      "required_for_main": false,
+      "persists_on_death": true
+    },
+    {
+      "id": "scent-of-smoke",
+      "required_for_main": false,
+      "persists_on_death": false
+    },
+    {
+      "id": "refused-ridge-crown",
+      "required_for_main": false,
+      "persists_on_death": true
+    }
+  ],
+  "flag_sources": [
+    {
+      "flag": "crypt-cleared",
+      "at": "grave-crypt-heart",
+      "requires_tools": [
+        "grave-shovel"
+      ],
+      "requires_flags": [],
+      "requires_crowns": []
+    },
+    {
+      "flag": "catacomb-cleared",
+      "at": "cave-dark",
+      "requires_tools": [
+        "oil-lamp"
+      ],
+      "requires_flags": [],
+      "requires_crowns": []
+    },
+    {
+      "flag": "archive-read",
+      "at": "mayoral-archive",
+      "requires_tools": [
+        "block-rod"
+      ],
+      "requires_flags": [
+        "mayor-spoken"
+      ],
+      "requires_crowns": []
+    },
+    {
+      "flag": "void-crossed",
+      "at": "void-terminal",
+      "requires_tools": [],
+      "requires_flags": [],
+      "requires_crowns": [],
+      "requires_form": "embryonic-god"
+    }
+  ],
+  "keys": [
+    {
+      "id": "crypt-iron-key",
+      "copies": 1,
+      "consumed_when_used": true,
+      "uses": [
+        {
+          "id": "warden-door",
+          "mandatory": true,
+          "order": 1,
+          "can_precede_mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "glass-latch",
+      "copies": 1,
+      "consumed_when_used": false,
+      "uses": [
+        {
+          "id": "loft-door",
+          "mandatory": true,
+          "order": 1,
+          "can_precede_mandatory": false
+        },
+        {
+          "id": "cellar-door",
+          "mandatory": true,
+          "order": 2,
+          "can_precede_mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "marsh-reed-key",
+      "copies": 1,
+      "consumed_when_used": true,
+      "uses": [
+        {
+          "id": "marsh-queen-door",
+          "mandatory": true,
+          "order": 1,
+          "can_precede_mandatory": false
+        }
+      ]
+    }
+  ],
+  "bosses": [
+    {
+      "id": "crypt-warden",
+      "dungeon": "grave-crypt",
+      "location": "grave-crypt-heart",
+      "reward": "crypt-cleared",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "sugar-warden",
+      "dungeon": "sugarhouse",
+      "location": "cornwall-flats",
+      "reward": "sugar-line-hookshot",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "notch-warden",
+      "dungeon": "notch-gallery",
+      "location": "notch-span",
+      "reward": "gap-boots",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "fin-warden",
+      "dungeon": "fin-shack",
+      "location": "ferrisburgh-shore",
+      "reward": "creek-fins",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "catacomb-warden",
+      "dungeon": "lamp-catacombs",
+      "location": "cave-dark",
+      "reward": "catacomb-cleared",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "hammer-warden",
+      "dungeon": "hammer-cut",
+      "location": "weybridge-marble",
+      "reward": "marble-hammer",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "marsh-queen",
+      "dungeon": "marsh-vault",
+      "location": "orwell-marshes",
+      "reward": "bug-net",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "glass-warden",
+      "dungeon": "glasshouse",
+      "location": "glass-loft",
+      "reward": "homestead-glass",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "cape-warden",
+      "dungeon": "cape-loft",
+      "location": "ripton-heights",
+      "reward": "shadow-cape",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "foundry-warden",
+      "dungeon": "foundry",
+      "location": "vergennes-falls",
+      "reward": "block-rod",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "ash-warden",
+      "dungeon": "ash-range",
+      "location": "lincoln-gap",
+      "reward": "ash-bow",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "powder-warden",
+      "dungeon": "powder-magazine",
+      "location": "shoreham-slate",
+      "reward": "powder-kegs",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "creek-warden",
+      "dungeon": "creek-crown-depths",
+      "location": "creek-depths",
+      "reward": "crown-of-the-creek",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "ridge-warden",
+      "dungeon": "ridge-shrine",
+      "location": "ridge-shrine",
+      "reward": "crown-of-the-ridge",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "archive-keeper",
+      "dungeon": "mayoral-archive",
+      "location": "mayoral-archive",
+      "reward": "archive-read",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    },
+    {
+      "id": "void-pilot",
+      "dungeon": "void-terminal",
+      "location": "void-terminal",
+      "reward": "void-crossed",
+      "reward_unique": true,
+      "reentry_allowed": true,
+      "reentry_grants_reward": false
+    }
+  ],
+  "dungeons": [
+    {
+      "id": "grave-crypt",
+      "name": "Middlebury Grave Crypt",
+      "district": "middlebury-green",
+      "solver_node": "grave-crypt",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "shovel-cairn",
+          "kind": "pickup",
+          "grants": "grave-shovel",
+          "requires_tools": [],
+          "requires_keys": []
+        },
+        {
+          "id": "iron-cache",
+          "kind": "pickup",
+          "grants": "crypt-iron-key",
+          "requires_tools": [
+            "grave-shovel"
+          ],
+          "requires_keys": []
+        },
+        {
+          "id": "warden-door",
+          "kind": "door",
+          "requires_keys": [
+            "crypt-iron-key"
+          ],
+          "consumes_key": true,
+          "mandatory": true,
+          "requires_tools": [
+            "grave-shovel"
+          ]
+        },
+        {
+          "id": "crypt-warden",
+          "kind": "boss",
+          "boss_id": "crypt-warden"
+        }
+      ]
+    },
+    {
+      "id": "sugarhouse",
+      "name": "Cornwall Sugarhouse",
+      "district": "cornwall-flats",
+      "solver_node": "cornwall-flats",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "dig-cache",
+          "kind": "pickup",
+          "grants": "sugar-line-hookshot",
+          "requires_tools": [
+            "grave-shovel"
+          ],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "notch-gallery",
+      "name": "Notch Gap Gallery",
+      "district": "bristol-notch",
+      "solver_node": "notch-span",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "boot-peg",
+          "kind": "pickup",
+          "grants": "gap-boots",
+          "requires_tools": [],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "fin-shack",
+      "name": "Ferrisburgh Fin Shack",
+      "district": "ferrisburgh-shore",
+      "solver_node": "ferrisburgh-shore",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "fin-rack",
+          "kind": "pickup",
+          "grants": "creek-fins",
+          "requires_tools": [],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "lamp-catacombs",
+      "name": "Monkton Lamp Catacombs",
+      "district": "monkton-ridge",
+      "solver_node": "monkton-ridge",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "lamp-alcove",
+          "kind": "pickup",
+          "grants": "oil-lamp",
+          "requires_tools": [],
+          "requires_keys": []
+        },
+        {
+          "id": "catacomb-warden",
+          "kind": "boss",
+          "boss_id": "catacomb-warden",
+          "requires_tools": [
+            "oil-lamp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hammer-cut",
+      "name": "Weybridge Hammer Cut",
+      "district": "weybridge-marble",
+      "solver_node": "weybridge-marble",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "hammer-floor",
+          "kind": "pickup",
+          "grants": "marble-hammer",
+          "requires_tools": [],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "marsh-vault",
+      "name": "Orwell Marsh Vault",
+      "district": "orwell-marshes",
+      "solver_node": "orwell-marshes",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "net-hook",
+          "kind": "pickup",
+          "grants": "bug-net",
+          "requires_tools": [],
+          "requires_keys": []
+        },
+        {
+          "id": "marsh-queen-door",
+          "kind": "door",
+          "requires_keys": [
+            "marsh-reed-key"
+          ],
+          "consumes_key": true,
+          "mandatory": true,
+          "requires_tools": [
+            "bug-net"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "glasshouse",
+      "name": "Cornwall Glasshouse",
+      "district": "cornwall-flats",
+      "solver_node": "glass-loft",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "glass-case",
+          "kind": "pickup",
+          "grants": "homestead-glass",
+          "requires_tools": [],
+          "requires_keys": []
+        },
+        {
+          "id": "loft-door",
+          "kind": "door",
+          "requires_keys": [
+            "glass-latch"
+          ],
+          "consumes_key": false,
+          "mandatory": true
+        },
+        {
+          "id": "cellar-door",
+          "kind": "door",
+          "requires_keys": [
+            "glass-latch"
+          ],
+          "consumes_key": false,
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "id": "cape-loft",
+      "name": "Ripton Cape Loft",
+      "district": "ripton-heights",
+      "solver_node": "ripton-heights",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "cape-rail",
+          "kind": "pickup",
+          "grants": "shadow-cape",
+          "requires_tools": [],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "foundry",
+      "name": "Vergennes Foundry",
+      "district": "vergennes-falls",
+      "solver_node": "vergennes-falls",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "rod-rack",
+          "kind": "pickup",
+          "grants": "block-rod",
+          "requires_tools": [],
+          "requires_flags": [
+            "mayor-spoken"
+          ],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "ash-range",
+      "name": "Lincoln Ash Range",
+      "district": "lincoln-gap",
+      "solver_node": "lincoln-gap",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "bow-stand",
+          "kind": "pickup",
+          "grants": "ash-bow",
+          "requires_tools": [],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "powder-magazine",
+      "name": "Shoreham Powder Magazine",
+      "district": "shoreham-slate",
+      "solver_node": "shoreham-slate",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "magazine-seal",
+          "kind": "door",
+          "requires_tools": [
+            "marble-hammer"
+          ],
+          "requires_keys": [],
+          "mandatory": true
+        },
+        {
+          "id": "keg-crib",
+          "kind": "pickup",
+          "grants": "powder-kegs",
+          "requires_tools": [
+            "marble-hammer"
+          ],
+          "requires_keys": []
+        }
+      ]
+    },
+    {
+      "id": "creek-crown-depths",
+      "name": "Otter Crown Depths",
+      "district": "otter-creek-narrows",
+      "solver_node": "creek-depths",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "creek-warden",
+          "kind": "boss",
+          "boss_id": "creek-warden",
+          "requires_tools": [
+            "oil-lamp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ridge-shrine",
+      "name": "Lincoln Ridge Shrine",
+      "district": "lincoln-gap",
+      "solver_node": "ridge-shrine",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "ridge-warden",
+          "kind": "boss",
+          "boss_id": "ridge-warden",
+          "requires_tools": [
+            "ash-bow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayoral-archive",
+      "name": "Mayor's Archive",
+      "district": "vergennes-falls",
+      "solver_node": "mayoral-archive",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "archive-stack",
+          "kind": "door",
+          "requires_tools": [
+            "block-rod"
+          ],
+          "requires_flags": [
+            "mayor-spoken"
+          ],
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "id": "void-terminal",
+      "name": "Void Crossing Terminal",
+      "district": "lincoln-gap",
+      "solver_node": "void-terminal",
+      "required_for_main": true,
+      "internal_unlocks": [
+        {
+          "id": "void-seal",
+          "kind": "door",
+          "requires_tools": [
+            "grave-shovel",
+            "sugar-line-hookshot",
+            "gap-boots",
+            "creek-fins",
+            "oil-lamp",
+            "marble-hammer",
+            "bug-net",
+            "homestead-glass",
+            "shadow-cape",
+            "block-rod",
+            "ash-bow",
+            "powder-kegs"
+          ],
+          "requires_crowns": [
+            "crown-of-the-creek",
+            "crown-of-the-ridge"
+          ],
+          "mandatory": true
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "long-homestead",
+      "name": "The Long Homestead",
+      "summary": "Refuse the ridge crown, keep a mortal body, and reach the sixth era.",
+      "requirements": [
+        {
+          "kind": "year_min",
+          "value": 70
+        },
+        {
+          "kind": "form_in",
+          "values": [
+            "otter-creek-smuggler",
+            "rutland-officer"
+          ]
+        },
+        {
+          "kind": "flag",
+          "id": "mayor-spoken",
+          "equals": true
+        },
+        {
+          "kind": "flag",
+          "id": "refused-ridge-crown",
+          "equals": true
+        },
+        {
+          "kind": "crown",
+          "id": "crown-of-the-creek"
+        },
+        {
+          "kind": "crown_absent",
+          "id": "crown-of-the-ridge"
+        },
+        {
+          "kind": "tool",
+          "id": "homestead-glass"
+        }
+      ]
+    },
+    {
+      "id": "smugglers-litany",
+      "name": "Smuggler's Litany",
+      "summary": "Remain the Otter Creek Smuggler into the fifth era with the creek crown and fins.",
+      "requirements": [
+        {
+          "kind": "year_min",
+          "value": 56
+        },
+        {
+          "kind": "form",
+          "id": "otter-creek-smuggler"
+        },
+        {
+          "kind": "crown",
+          "id": "crown-of-the-creek"
+        },
+        {
+          "kind": "crown_absent",
+          "id": "crown-of-the-ridge"
+        },
+        {
+          "kind": "flag",
+          "id": "mayor-spoken",
+          "equals": true
+        },
+        {
+          "kind": "tool",
+          "id": "creek-fins"
+        }
+      ]
+    },
+    {
+      "id": "officers-quiet",
+      "name": "Officer's Quiet",
+      "summary": "Take the Rutland Officer body, read the archive, stop before the ridge crown.",
+      "requirements": [
+        {
+          "kind": "year_min",
+          "value": 42
+        },
+        {
+          "kind": "form",
+          "id": "rutland-officer"
+        },
+        {
+          "kind": "flag",
+          "id": "mayor-spoken",
+          "equals": true
+        },
+        {
+          "kind": "flag",
+          "id": "archive-read",
+          "equals": true
+        },
+        {
+          "kind": "crown_absent",
+          "id": "crown-of-the-ridge"
+        },
+        {
+          "kind": "tool",
+          "id": "block-rod"
+        }
+      ]
+    },
+    {
+      "id": "embryonic-crossing",
+      "name": "Embryonic Crossing",
+      "summary": "Both crowns, Embryonic God, cross the void terminal.",
+      "requirements": [
+        {
+          "kind": "form",
+          "id": "embryonic-god"
+        },
+        {
+          "kind": "crown",
+          "id": "crown-of-the-creek"
+        },
+        {
+          "kind": "crown",
+          "id": "crown-of-the-ridge"
+        },
+        {
+          "kind": "flag",
+          "id": "void-crossed",
+          "equals": true
+        },
+        {
+          "kind": "flag",
+          "id": "mayor-spoken",
+          "equals": true
+        },
+        {
+          "kind": "flag",
+          "id": "archive-read",
+          "equals": true
+        }
+      ]
+    }
+  ],
+  "optional_choices": [
+    {
+      "id": "spare-the-heron",
+      "optional": true,
+      "recovery_id": null,
+      "effects": [
+        {
+          "op": "set_flag",
+          "id": "heron-spared"
+        }
+      ],
+      "notes": "Side kindness. Does not touch tools, keys, or required flags."
+    },
+    {
+      "id": "empty-a-practice-keg",
+      "optional": true,
+      "recovery_id": null,
+      "effects": [
+        {
+          "op": "set_flag",
+          "id": "scent-of-smoke"
+        }
+      ],
+      "notes": "Scents a keg that is not the unique powder reward."
+    }
+  ],
+  "recovery_paths": [
+    {
+      "id": "soulbound-tools",
+      "restores": "acquired tools",
+      "when": "Death keeps every tool Ellis already acquired. Unacquired tools stay in their dungeons, which are not era-sealed."
+    },
+    {
+      "id": "required-flag-persistence",
+      "restores": "required quest flags",
+      "when": "Death does not clear required flags. scent-of-smoke is atmospheric and may drop."
+    },
+    {
+      "id": "clerk-succeeds-mayor",
+      "restores": "mayor-spoken",
+      "when": "From year 28 onward, including post-principal deaths, Clerk Ida Ross grants mayor-spoken."
+    },
+    {
+      "id": "missed-dungeon-reentry",
+      "restores": "dungeon access",
+      "when": "No main dungeon is sealed by era. A tool missed at year 0 can be taken later."
+    },
+    {
+      "id": "form-rechoice",
+      "restores": "smuggler or officer",
+      "when": "Each death before godhood chooses Otter Creek Smuggler, or Rutland Officer if mayor-spoken persists. Embryonic God is irreversible but retains ground, water, and void."
+    },
+    {
+      "id": "post-principal-grave",
+      "restores": "respawn after year 70",
+      "when": "Death at year 70 or later respawns at Middlebury Green on the year-70 profile plus the potter's field stone. No mandatory objective requires a year past 70."
+    },
+    {
+      "id": "boss-chest-once",
+      "restores": "unique boss rewards",
+      "when": "Re-entry is allowed and does not grant the unique reward again."
+    },
+    {
+      "id": "glass-recall",
+      "restores": "return to hub",
+      "when": "Homestead glass warps to Middlebury Green and does not grant completion or skip a necessary prerequisite."
+    }
+  ],
+  "objectives": [
+    {
+      "id": "shared-trunk",
+      "required_for_main": true,
+      "year_min": 0,
+      "notes": "The trunk is tool, crown, and void completion. It is not gated past year 70."
+    }
+  ],
+  "main_campaign": {
+    "definition": "All twelve tools, both crowns, mayor-spoken, archive-read, crypt-cleared, catacomb-cleared, and void-crossed. The three mortal endings are alternate termini that refuse the ridge crown; refusing it is an ending branch, not an optional choice.",
+    "tools": [
+      "grave-shovel",
+      "sugar-line-hookshot",
+      "gap-boots",
+      "creek-fins",
+      "oil-lamp",
+      "marble-hammer",
+      "bug-net",
+      "homestead-glass",
+      "shadow-cape",
+      "block-rod",
+      "ash-bow",
+      "powder-kegs"
+    ],
+    "crowns": [
+      "crown-of-the-creek",
+      "crown-of-the-ridge"
+    ],
+    "flags": [
+      "mayor-spoken",
+      "archive-read",
+      "void-crossed",
+      "crypt-cleared",
+      "catacomb-cleared"
+    ],
+    "terminus": "void-terminal"
+  },
+  "core": {
+    "description": "Bounded projection for exhaustive enumeration. Same map, fewer variables. Not the full game. Fins are included so creek and lake rules are searched, not assumed.",
+    "locations": [
+      "middlebury-green",
+      "grave-crypt",
+      "grave-crypt-heart",
+      "vergennes-falls",
+      "cornwall-flats",
+      "hook-span",
+      "otter-creek-narrows",
+      "creek-channel",
+      "ferrisburgh-shore",
+      "lake-cut"
+    ],
+    "tools": [
+      "grave-shovel",
+      "sugar-line-hookshot",
+      "creek-fins"
+    ],
+    "flags": [
+      "mayor-spoken"
+    ],
+    "bosses": [
+      "crypt-warden"
+    ],
+    "years": [
+      0,
+      14,
+      28
+    ],
+    "max_year_inclusive": 28,
+    "forms": [
+      "mortal-wanderer",
+      "otter-creek-smuggler",
+      "rutland-officer"
+    ],
+    "excluded": [
+      "embryonic-god",
+      "years 42, 56, 70 and every post-principal year",
+      "the nine tools other than grave shovel, sugar-line hookshot, and creek fins",
+      "both crowns and the void terminus",
+      "the seven districts with no core location"
+    ],
+    "year_form_pairs": [
+      [
+        0,
+        "mortal-wanderer"
+      ],
+      [
+        14,
+        "otter-creek-smuggler"
+      ],
+      [
+        14,
+        "rutland-officer"
+      ],
+      [
+        28,
+        "otter-creek-smuggler"
+      ],
+      [
+        28,
+        "rutland-officer"
+      ]
+    ],
+    "tracked_bits": [
+      "grave-shovel",
+      "sugar-line-hookshot",
+      "creek-fins",
+      "mayor-spoken",
+      "crypt-warden-cleared"
+    ],
+    "goal": {
+      "location": "hook-span",
+      "tools": [
+        "grave-shovel",
+        "sugar-line-hookshot"
+      ],
+      "flags": [
+        "mayor-spoken"
+      ],
+      "boss_cleared": "crypt-warden",
+      "year": 28
+    }
+  }
+}

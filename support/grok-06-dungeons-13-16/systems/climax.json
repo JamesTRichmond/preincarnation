@@ -1,0 +1,1341 @@
+{
+  "id": "climax.seam",
+  "name": "The Seam Chamber",
+  "initial": "CHAMBER",
+  "vignetteCount": 8,
+  "summary": "One chamber, four commits. Eligibility may overlap. The first successful confirm locks campaign.ending. Physical preparations (seal, chain, sockets, bell, nail, current coat) stay after a death; the unconfirmed lectern line and the embryonic form do not.",
+  "states": {
+    "CHAMBER": {
+      "transitions": [
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "eventArg",
+                "arg": "line",
+                "eq": "keep"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.seal"
+              }
+            ]
+          },
+          "reject": "conflict.keep-and-seal"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "eventArg",
+                "arg": "line",
+                "eq": "keep"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.chain"
+              }
+            ]
+          },
+          "reject": "conflict.keep-and-chain"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "eventArg",
+                "arg": "line",
+                "eq": "close"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.bell"
+              }
+            ]
+          },
+          "reject": "conflict.close-and-bell"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "eventArg",
+                "arg": "line",
+                "eq": "distribute"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.seal"
+              }
+            ]
+          },
+          "reject": "conflict.distribute-and-seal"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "flag",
+            "flag": "campaign.ending"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "eventArg",
+            "arg": "line",
+            "eq": "keep"
+          },
+          "set": [
+            {
+              "flag": "staged.line",
+              "value": "keep"
+            }
+          ]
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "eventArg",
+            "arg": "line",
+            "eq": "close"
+          },
+          "set": [
+            {
+              "flag": "staged.line",
+              "value": "close"
+            }
+          ]
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "eventArg",
+            "arg": "line",
+            "eq": "distribute"
+          },
+          "set": [
+            {
+              "flag": "staged.line",
+              "value": "distribute"
+            }
+          ]
+        },
+        {
+          "event": "clear-line",
+          "guard": {
+            "op": "always"
+          },
+          "clear": [
+            "staged.line"
+          ]
+        },
+        {
+          "event": "hang-coat",
+          "guard": {
+            "op": "absent",
+            "flag": "body.coatEquipped"
+          },
+          "reject": "coat-not-in-hand"
+        },
+        {
+          "event": "hang-coat",
+          "guard": {
+            "op": "flag",
+            "flag": "meta.embryonic"
+          },
+          "reject": "embryonic-cannot-hang"
+        },
+        {
+          "event": "hang-coat",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "body.coatEquipped"
+              },
+              {
+                "op": "absent",
+                "flag": "meta.embryonic"
+              }
+            ]
+          },
+          "set": [
+            {
+              "flag": "staged.coatOnSeamPeg",
+              "value": "current"
+            }
+          ],
+          "clear": [
+            "body.coatEquipped"
+          ]
+        },
+        {
+          "event": "retrieve-coat",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.coatOnSeamPeg"
+          },
+          "set": [
+            "body.coatEquipped"
+          ],
+          "clear": [
+            "staged.coatOnSeamPeg"
+          ]
+        },
+        {
+          "event": "stamp-seal",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.line",
+            "eq": "keep"
+          },
+          "reject": "conflict.keep-and-seal"
+        },
+        {
+          "event": "stamp-seal",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.line",
+            "eq": "distribute"
+          },
+          "reject": "conflict.distribute-and-seal"
+        },
+        {
+          "event": "stamp-seal",
+          "guard": {
+            "op": "tool",
+            "tool": "office-seal"
+          },
+          "set": [
+            "staged.seal"
+          ]
+        },
+        {
+          "event": "lift-seal",
+          "guard": {
+            "op": "flag",
+            "flag": "campaign.ending"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "lift-seal",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.seal"
+          },
+          "clear": [
+            "staged.seal"
+          ]
+        },
+        {
+          "event": "latch-chain",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.line",
+            "eq": "keep"
+          },
+          "reject": "conflict.keep-and-chain"
+        },
+        {
+          "event": "latch-chain",
+          "guard": {
+            "op": "tool",
+            "tool": "field-chain"
+          },
+          "set": [
+            "staged.chain"
+          ]
+        },
+        {
+          "event": "unlatch-chain",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.chain"
+          },
+          "clear": [
+            "staged.chain"
+          ]
+        },
+        {
+          "event": "fill-socket",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "eventInstitution",
+              "arg": "which"
+            }
+          },
+          "reject": "institution-unprepared"
+        },
+        {
+          "event": "fill-socket",
+          "guard": {
+            "op": "eventInstitution",
+            "arg": "which"
+          },
+          "set": [
+            {
+              "flagFromArg": "which",
+              "prefix": "socket."
+            }
+          ]
+        },
+        {
+          "event": "ring-bell",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "socket.farm"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.mill"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.crossing"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.family"
+                }
+              ]
+            }
+          },
+          "reject": "sockets-incomplete"
+        },
+        {
+          "event": "ring-bell",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "socket.farm"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.mill"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.crossing"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.family"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "tool",
+                "tool": "county-bell"
+              }
+            ]
+          },
+          "set": [
+            "staged.bell"
+          ]
+        },
+        {
+          "event": "place-needle",
+          "guard": {
+            "op": "tool",
+            "tool": "marble-needle"
+          },
+          "set": [
+            "staged.needleAtCrack"
+          ]
+        },
+        {
+          "event": "take-needle",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.needleAtCrack"
+          },
+          "clear": [
+            "staged.needleAtCrack"
+          ]
+        },
+        {
+          "event": "jam-nail",
+          "guard": {
+            "op": "absent",
+            "flag": "disc.quiet.nailPlaced"
+          },
+          "reject": "nail-not-placed"
+        },
+        {
+          "event": "jam-nail",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "endingEligible",
+              "ending": "refuse"
+            }
+          },
+          "reject": "refuse-ineligible"
+        },
+        {
+          "event": "jam-nail",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "absent",
+                  "flag": "staged.seal"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.chain"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.bell"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.line"
+                }
+              ]
+            }
+          },
+          "reject": "lectern-not-clear"
+        },
+        {
+          "event": "jam-nail",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "endingEligible",
+                "ending": "refuse"
+              },
+              {
+                "op": "flag",
+                "flag": "disc.quiet.nailPlaced"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.bell"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.line"
+              }
+            ]
+          },
+          "set": [
+            "staged.jam"
+          ]
+        },
+        {
+          "event": "read-pages",
+          "guard": {
+            "op": "absent",
+            "flag": "staged.jam"
+          },
+          "reject": "hinge-not-jammed"
+        },
+        {
+          "event": "read-pages",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "endingEligible",
+              "ending": "refuse"
+            }
+          },
+          "reject": "erased-pages-empty"
+        },
+        {
+          "event": "read-pages",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "staged.jam"
+              },
+              {
+                "op": "endingEligible",
+                "ending": "refuse"
+              }
+            ]
+          },
+          "set": [
+            "staged.pagesRead"
+          ]
+        },
+        {
+          "event": "enter-embryonic",
+          "guard": {
+            "op": "absent",
+            "flag": "body.coatEquipped"
+          },
+          "reject": "coat-is-hung-or-missing"
+        },
+        {
+          "event": "enter-embryonic",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.seal"
+          },
+          "reject": "seal-blocks-the-crack"
+        },
+        {
+          "event": "enter-embryonic",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "body.coatEquipped"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "tool",
+                "tool": "marble-needle"
+              },
+              {
+                "op": "tool",
+                "tool": "sounding-lead"
+              }
+            ]
+          },
+          "set": [
+            "meta.embryonic"
+          ]
+        },
+        {
+          "event": "exit-embryonic",
+          "guard": {
+            "op": "flag",
+            "flag": "meta.embryonic"
+          },
+          "clear": [
+            "meta.embryonic"
+          ]
+        },
+        {
+          "event": "confirm-keep",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.seal"
+          },
+          "reject": "conflict.keep-and-seal"
+        },
+        {
+          "event": "confirm-keep",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "staged.coatOnSeamPeg"
+              },
+              {
+                "op": "not",
+                "cond": {
+                  "op": "flag",
+                  "flag": "staged.coatOnSeamPeg",
+                  "eq": "current"
+                }
+              }
+            ]
+          },
+          "reject": "peg-holds-a-previous-body"
+        },
+        {
+          "event": "confirm-keep",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "endingEligible",
+                  "ending": "keep"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.line",
+                  "eq": "keep"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.coatOnSeamPeg",
+                  "eq": "current"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.needleAtCrack"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.seal"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.chain"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.bell"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.jam"
+                },
+                {
+                  "op": "absent",
+                  "flag": "meta.embryonic"
+                }
+              ]
+            }
+          },
+          "reject": "keep-unsatisfied"
+        },
+        {
+          "event": "confirm-keep",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "endingEligible",
+                "ending": "keep"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.line",
+                "eq": "keep"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.coatOnSeamPeg",
+                "eq": "current"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.needleAtCrack"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.bell"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.jam"
+              },
+              {
+                "op": "absent",
+                "flag": "meta.embryonic"
+              }
+            ]
+          },
+          "set": [
+            {
+              "flag": "campaign.ending",
+              "value": "keep"
+            },
+            {
+              "flag": "vignette.index",
+              "value": 0
+            },
+            {
+              "flag": "world.seamOpen",
+              "value": true
+            },
+            {
+              "flag": "world.fourteenYear",
+              "value": true
+            },
+            {
+              "flag": "world.holder",
+              "value": "ellis"
+            },
+            {
+              "flag": "world.administered",
+              "value": true
+            }
+          ],
+          "to": "PLAYING"
+        },
+        {
+          "event": "confirm-close",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.bell"
+          },
+          "reject": "conflict.close-and-bell"
+        },
+        {
+          "event": "confirm-close",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "endingEligible",
+                  "ending": "close"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.line",
+                  "eq": "close"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.coatOnSeamPeg"
+                },
+                {
+                  "op": "flag",
+                  "flag": "body.coatEquipped"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.seal"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.chain"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.bell"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.jam"
+                },
+                {
+                  "op": "absent",
+                  "flag": "meta.embryonic"
+                }
+              ]
+            }
+          },
+          "reject": "close-unsatisfied"
+        },
+        {
+          "event": "confirm-close",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "endingEligible",
+                "ending": "close"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.line",
+                "eq": "close"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.coatOnSeamPeg"
+              },
+              {
+                "op": "flag",
+                "flag": "body.coatEquipped"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.bell"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.jam"
+              },
+              {
+                "op": "absent",
+                "flag": "meta.embryonic"
+              }
+            ]
+          },
+          "set": [
+            {
+              "flag": "campaign.ending",
+              "value": "close"
+            },
+            {
+              "flag": "vignette.index",
+              "value": 0
+            },
+            {
+              "flag": "world.seamOpen",
+              "value": false
+            },
+            {
+              "flag": "world.fourteenYear",
+              "value": false
+            },
+            {
+              "flag": "world.holder",
+              "value": "none"
+            },
+            {
+              "flag": "world.administered",
+              "value": true
+            },
+            {
+              "flag": "world.deathIsFinal",
+              "value": true
+            }
+          ],
+          "to": "PLAYING"
+        },
+        {
+          "event": "confirm-distribute",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "socket.farm"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.mill"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.crossing"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.family"
+                }
+              ]
+            }
+          },
+          "reject": "sockets-incomplete"
+        },
+        {
+          "event": "confirm-distribute",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "endingEligible",
+              "ending": "distribute"
+            }
+          },
+          "reject": "distribute-ineligible"
+        },
+        {
+          "event": "confirm-distribute",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "endingEligible",
+                  "ending": "distribute"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.line",
+                  "eq": "distribute"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.farm"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.mill"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.crossing"
+                },
+                {
+                  "op": "flag",
+                  "flag": "socket.family"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.bell"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.needleAtCrack"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.coatOnSeamPeg"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.seal"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.chain"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.jam"
+                },
+                {
+                  "op": "absent",
+                  "flag": "meta.embryonic"
+                }
+              ]
+            }
+          },
+          "reject": "distribute-unsatisfied"
+        },
+        {
+          "event": "confirm-distribute",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "endingEligible",
+                "ending": "distribute"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.line",
+                "eq": "distribute"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.farm"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.mill"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.crossing"
+              },
+              {
+                "op": "flag",
+                "flag": "socket.family"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.bell"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.needleAtCrack"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.coatOnSeamPeg"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.jam"
+              },
+              {
+                "op": "absent",
+                "flag": "meta.embryonic"
+              }
+            ]
+          },
+          "set": [
+            {
+              "flag": "campaign.ending",
+              "value": "distribute"
+            },
+            {
+              "flag": "vignette.index",
+              "value": 0
+            },
+            {
+              "flag": "world.seamOpen",
+              "value": true
+            },
+            {
+              "flag": "world.fourteenYear",
+              "value": true
+            },
+            {
+              "flag": "world.holder",
+              "value": "institutions"
+            },
+            {
+              "flag": "world.administered",
+              "value": true
+            },
+            {
+              "flag": "world.newLifeAssignedBy",
+              "value": "prepared-institutions"
+            }
+          ],
+          "to": "PLAYING"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.bell"
+          },
+          "reject": "conflict.refuse-and-bell"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "flag",
+            "flag": "staged.seal"
+          },
+          "reject": "conflict.refuse-and-seal"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "endingEligible",
+              "ending": "refuse"
+            }
+          },
+          "reject": "refuse-ineligible"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "absent",
+            "flag": "staged.jam"
+          },
+          "reject": "hinge-not-jammed"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "absent",
+            "flag": "staged.pagesRead"
+          },
+          "reject": "pages-not-read"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "absent",
+            "flag": "meta.embryonic"
+          },
+          "reject": "not-embryonic"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "endingEligible",
+                  "ending": "refuse"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.jam"
+                },
+                {
+                  "op": "flag",
+                  "flag": "staged.pagesRead"
+                },
+                {
+                  "op": "flag",
+                  "flag": "meta.embryonic"
+                },
+                {
+                  "op": "flag",
+                  "flag": "body.coatEquipped"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.seal"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.chain"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.bell"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.line"
+                },
+                {
+                  "op": "absent",
+                  "flag": "staged.coatOnSeamPeg"
+                }
+              ]
+            }
+          },
+          "reject": "refuse-unsatisfied"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "endingEligible",
+                "ending": "refuse"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.jam"
+              },
+              {
+                "op": "flag",
+                "flag": "staged.pagesRead"
+              },
+              {
+                "op": "flag",
+                "flag": "meta.embryonic"
+              },
+              {
+                "op": "flag",
+                "flag": "body.coatEquipped"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.seal"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.chain"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.bell"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.line"
+              },
+              {
+                "op": "absent",
+                "flag": "staged.coatOnSeamPeg"
+              }
+            ]
+          },
+          "set": [
+            {
+              "flag": "campaign.ending",
+              "value": "refuse"
+            },
+            {
+              "flag": "vignette.index",
+              "value": 0
+            },
+            {
+              "flag": "world.seamOpen",
+              "value": true
+            },
+            {
+              "flag": "world.fourteenYear",
+              "value": false
+            },
+            {
+              "flag": "world.holder",
+              "value": "none"
+            },
+            {
+              "flag": "world.administered",
+              "value": false
+            }
+          ],
+          "clear": [
+            "meta.embryonic"
+          ],
+          "to": "PLAYING"
+        }
+      ]
+    },
+    "PLAYING": {
+      "transitions": [
+        {
+          "event": "confirm-keep",
+          "guard": {
+            "op": "always"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "confirm-close",
+          "guard": {
+            "op": "always"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "confirm-distribute",
+          "guard": {
+            "op": "always"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "cross-lintel",
+          "guard": {
+            "op": "always"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "write-line",
+          "guard": {
+            "op": "always"
+          },
+          "reject": "ending-locked"
+        },
+        {
+          "event": "advance-vignette",
+          "guard": {
+            "op": "flag",
+            "flag": "vignette.index",
+            "eq": 8
+          },
+          "reject": "vignettes-finished"
+        },
+        {
+          "event": "advance-vignette",
+          "guard": {
+            "op": "flag",
+            "flag": "campaign.ending"
+          },
+          "set": [
+            {
+              "flag": "vignette.index",
+              "op": "add",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "begin-credits",
+          "guard": {
+            "op": "not",
+            "cond": {
+              "op": "flag",
+              "flag": "vignette.index",
+              "eq": 8
+            }
+          },
+          "reject": "vignettes-unfinished"
+        },
+        {
+          "event": "begin-credits",
+          "guard": {
+            "op": "flag",
+            "flag": "vignette.index",
+            "eq": 8
+          },
+          "to": "CREDITS"
+        }
+      ]
+    },
+    "CREDITS": {
+      "transitions": [
+        {
+          "event": "finish-credits",
+          "guard": {
+            "op": "always"
+          },
+          "set": [
+            "meta.terminal",
+            "meta.yearFrozen",
+            {
+              "flag": "meta.deathEnabled",
+              "value": false
+            },
+            "meta.lecternLocked",
+            {
+              "flag": "meta.dungeonReentry",
+              "value": "museum"
+            },
+            {
+              "flag": "meta.bossesRespawn",
+              "value": false
+            },
+            "meta.toolsPreserved"
+          ],
+          "spawn": {
+            "room": "EPILOGUE.PORCH",
+            "x": 9,
+            "y": 7
+          },
+          "to": "TERMINAL"
+        }
+      ]
+    },
+    "TERMINAL": {
+      "terminal": true,
+      "success": true,
+      "transitions": []
+    }
+  }
+}

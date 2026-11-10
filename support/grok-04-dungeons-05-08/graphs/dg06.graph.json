@@ -1,0 +1,636 @@
+{
+  "dungeon": "dg06",
+  "nodes": [
+    {
+      "id": "dg06.r01",
+      "name": "Mill Race Door",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r02",
+      "name": "Sluice Hall",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r03",
+      "name": "Dry Dock",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r04",
+      "name": "Gauge House",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r05",
+      "name": "Lower Flume",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r06",
+      "name": "Ratchet Chamber",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r07",
+      "name": "Penstock Walk",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r08",
+      "name": "Upper Loft",
+      "optional": true,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r09",
+      "name": "Staff Gallery",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r10",
+      "name": "Valve Choir",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r11",
+      "name": "Sounding Lock",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r12",
+      "name": "The Surface That Isn't",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r13",
+      "name": "Creekfin Chapel",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r14",
+      "name": "Long Bank",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r15",
+      "name": "Surveyor's Landing",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r16",
+      "name": "The Drowned Surveyor",
+      "optional": false,
+      "requiresOptionalTool": null
+    },
+    {
+      "id": "dg06.r17",
+      "name": "Unsounded Cistern",
+      "optional": true,
+      "requiresOptionalTool": "creekFins"
+    }
+  ],
+  "edges": [
+    {
+      "from": "dg06.r01",
+      "to": "dg06.r02",
+      "id": "to-sluice",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r02",
+      "to": "dg06.r01",
+      "id": "to-race",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r02",
+      "to": "dg06.r03",
+      "id": "to-dock",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r02",
+      "to": "dg06.r04",
+      "id": "to-gauge-house",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r02",
+      "to": "dg06.r08",
+      "id": "bridge-to-loft",
+      "dir": "N",
+      "requiresFlags": [
+        "dg06.ratchet"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg06.r03",
+      "to": "dg06.r02",
+      "id": "back-sluice",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r04",
+      "to": "dg06.r02",
+      "id": "to-sluice",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r04",
+      "to": "dg06.r05",
+      "id": "to-flume",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r05",
+      "to": "dg06.r04",
+      "id": "to-gauge-house",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r05",
+      "to": "dg06.r06",
+      "id": "to-ratchet",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": [
+        0
+      ],
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r06",
+      "to": "dg06.r05",
+      "id": "to-flume",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": [
+        0
+      ],
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r06",
+      "to": "dg06.r07",
+      "id": "to-penstock",
+      "dir": "N",
+      "requiresFlags": [
+        "dg06.ratchet"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r07",
+      "to": "dg06.r06",
+      "id": "to-ratchet",
+      "dir": "S",
+      "requiresFlags": [
+        "dg06.ratchet"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r07",
+      "to": "dg06.r09",
+      "id": "to-staff",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r07",
+      "to": "dg06.r08",
+      "id": "to-loft",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r08",
+      "to": "dg06.r07",
+      "id": "to-penstock",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r08",
+      "to": "dg06.r02",
+      "id": "bridge-to-sluice",
+      "dir": "S",
+      "requiresFlags": [
+        "dg06.ratchet"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": true,
+      "optional": false
+    },
+    {
+      "from": "dg06.r09",
+      "to": "dg06.r07",
+      "id": "to-penstock",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r09",
+      "to": "dg06.r10",
+      "id": "to-valves",
+      "dir": "N",
+      "requiresFlags": [
+        "dg06.gauge"
+      ],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r10",
+      "to": "dg06.r09",
+      "id": "to-staff",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r10",
+      "to": "dg06.r11",
+      "id": "to-sounding",
+      "dir": "E",
+      "requiresFlags": [
+        "dg06.valves"
+      ],
+      "requiresKeys": [
+        "dg06.sk.penstock"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r11",
+      "to": "dg06.r10",
+      "id": "to-valves",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r11",
+      "to": "dg06.r12",
+      "id": "to-surface",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r11",
+      "to": "dg06.r17",
+      "id": "to-cistern",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [
+        "creekFins"
+      ],
+      "needFins": true,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": true
+    },
+    {
+      "from": "dg06.r12",
+      "to": "dg06.r11",
+      "id": "to-sounding",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r12",
+      "to": "dg06.r13",
+      "id": "to-chapel",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r13",
+      "to": "dg06.r12",
+      "id": "to-surface",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r13",
+      "to": "dg06.r14",
+      "id": "to-bank",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r13",
+      "to": "dg06.r15",
+      "id": "current-to-landing",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [
+        "creekFins"
+      ],
+      "needFins": true,
+      "openAtLevels": [
+        1,
+        2
+      ],
+      "shortcut": true,
+      "optional": true
+    },
+    {
+      "from": "dg06.r14",
+      "to": "dg06.r13",
+      "id": "to-chapel",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r14",
+      "to": "dg06.r15",
+      "id": "to-landing",
+      "dir": "E",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r15",
+      "to": "dg06.r14",
+      "id": "to-bank",
+      "dir": "W",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r15",
+      "to": "dg06.r16",
+      "id": "to-boss",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [
+        "dg06.bk.surveyor"
+      ],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r15",
+      "to": "dg06.r13",
+      "id": "current-to-chapel",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [
+        "creekFins"
+      ],
+      "needFins": true,
+      "openAtLevels": [
+        1,
+        2
+      ],
+      "shortcut": true,
+      "optional": true
+    },
+    {
+      "from": "dg06.r16",
+      "to": "dg06.r15",
+      "id": "to-landing",
+      "dir": "S",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    },
+    {
+      "from": "dg06.r17",
+      "to": "dg06.r11",
+      "id": "back-sounding",
+      "dir": "N",
+      "requiresFlags": [],
+      "requiresKeys": [],
+      "requiresTools": [],
+      "needFins": false,
+      "openAtLevels": null,
+      "shortcut": false,
+      "optional": false
+    }
+  ],
+  "flags": [
+    {
+      "flag": "dg06.ratchet",
+      "setIn": "dg06.r06",
+      "by": "pull-ratchet"
+    },
+    {
+      "flag": "dg06.gauge",
+      "setIn": "dg06.r09",
+      "by": "defeat-gauge"
+    },
+    {
+      "flag": "dg06.valves",
+      "setIn": "dg06.r10",
+      "by": "solve-valves"
+    },
+    {
+      "flag": "dg06.landing",
+      "setIn": "dg06.r15",
+      "by": "solve-landing"
+    },
+    {
+      "flag": "dg06.boss",
+      "setIn": "dg06.r16",
+      "by": "defeat-surveyor"
+    }
+  ]
+}
