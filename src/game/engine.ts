@@ -22,6 +22,7 @@ import { liveObjective } from "./quest";
 import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
+import { storeBottle } from "./rewards";
 import { applyUpgrade, bodyStats, countyAgainNode, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, firstReturnStone, graveSteelStanding, grantBondKeepsake, isIncarnationUnlocked, lungeHits, quarryHammerLands, resolveDeath, seamSkips, seamSpawnWeight, sheetSpeedMul, sipRefusedAtFullHp, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
@@ -668,12 +669,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     save.flags.lastDeed = s;
   };
 
-  const fillBottle = (kind: BottleKind) => {
-    const i = save.flags.bottles.findIndex((b) => b === "empty");
-    if (i < 0) return false;
-    const next = save.flags.bottles.slice();
-    next[i] = kind;
-    save.flags.bottles = next;
+  const fillBottle = (kind: Exclude<BottleKind, "empty">) => {
+    const stored = storeBottle(save.flags.bottles, kind);
+    if (!stored.stored) return false;
+    save.flags.bottles = stored.bottles;
     return true;
   };
 
@@ -725,7 +724,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (!dialogue?.choices) return;
     const c = dialogue.choices[index];
     if (!c) return;
-    if (c.flag?.syrupStash && !save.flags.bottles.includes("empty")) {
+    if (c.flag?.syrupStash && !fillBottle("syrup")) {
       say("Both bottles are full. The tin stays on the shelf.");
       dialogue = null;
       mode = "play";
@@ -743,7 +742,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (c.flag.bombs) save.flags.bombs = Math.max(save.flags.bombs, c.flag.bombs);
       if (c.flag.quarryOpen) save.flags.quarryOpen = true;
       if (c.flag.syrupStash) {
-        fillBottle("syrup");
         player.hp = Math.min(player.maxHp, player.hp + 2);
         save.hp = player.hp;
         say("Grade A dark. Bottled.");
@@ -912,6 +910,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         say("Both bottles are full. The tin stays.");
         return;
       }
+      save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
       say("Maple tin. Red bottle. V to drink.");
