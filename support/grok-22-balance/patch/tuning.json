@@ -1,0 +1,64 @@
+{
+  "sourceSha": "c737e42eb188148291438dfb8a5993d6ce2b77fa",
+  "appliesTo": "integrator overlay. Do not replace enemy definitions.",
+  "combat": {},
+  "decisions": {
+    "fisherNormalize": {
+      "enabled": false,
+      "reason": "spacing policy took no damage and cleared every tested fisher"
+    },
+    "enemyCycleMulCap": {
+      "enabled": false,
+      "reason": "sentinel checkpoints still die to starter iron inside 35s at cycle 5, including tropoverse. No health-pool cap.",
+      "rows": [
+        {
+          "id": "quarry-sentinel-first",
+          "won": true,
+          "ttk": 2.817,
+          "dmg": 0
+        },
+        {
+          "id": "quarry-sentinel-return",
+          "won": true,
+          "ttk": 2.983,
+          "dmg": 0
+        },
+        {
+          "id": "quarry-sentinel-late",
+          "won": true,
+          "ttk": 2.867,
+          "dmg": 0
+        },
+        {
+          "id": "soloverse-sentinel",
+          "won": true,
+          "ttk": 3.1,
+          "dmg": 0
+        }
+      ]
+    },
+    "embryoSolidity": {
+      "enabled": false,
+      "reason": "wanderer already reaches the sentinel. Embryo's extra cells are void (blurb) plus cracked tiles that are not the only path. isSolid left as authored.",
+      "gates": {
+        "wanderer": {
+          "reaches": true,
+          "cells": 457
+        },
+        "embryoLive": {
+          "reaches": true,
+          "cells": 512
+        },
+        "embryoIfCrackedSolid": {
+          "reaches": true,
+          "cells": 504
+        }
+      }
+    }
+  },
+  "recovery": {
+    "restoreSyrup": false,
+    "bowQuiver": 0,
+    "reason": "No access loss was demonstrated. resolveDeath already keeps relics, upgrades, townsCleared, keys, and bottles. The sugarhouse tin is rebuilt on every interior entry (interiors.ts int_sugar has no taken-flag). Arrow wipe matches wintersPassed>=14 and the authored erodeGrave cutoff at 8, and starter-iron spacing still clears the matrix, so ammo was not restored."
+  }
+}

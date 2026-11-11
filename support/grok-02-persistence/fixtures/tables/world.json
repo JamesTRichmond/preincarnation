@@ -1,0 +1,113 @@
+{
+  "contract": "grok-02-persistence-contract-1",
+  "note": "Reference-contract tables for the PREINCARNATION persistence pack. Not extracted from a game module. No such module was present when this pack was authored.",
+  "yearStep": 14,
+  "principalEras": [0, 14, 28, 42, 56, 70],
+  "contentFreezeYear": 70,
+  "mayorSealYear": 84,
+  "statCap": 3,
+  "baseHp": 10,
+  "hpPerHeart": 2,
+  "spawn": { "map": "middlebury-green", "x": 12, "y": 8, "facing": "s" },
+  "forms": ["walker", "otter", "heron", "crown"],
+  "endings": ["ledger", "crown", "archive", "remain"],
+  "crownRites": ["crown-east", "crown-west"],
+  "deathTokenCap": 32,
+  "dungeons": [
+    { "id": "middlebury-mill-cellar", "boss": null },
+    { "id": "otter-creek-culvert", "boss": null },
+    { "id": "ilsley-stacks", "boss": null },
+    { "id": "shard-villa-well", "boss": null },
+    { "id": "snake-mountain-cut", "boss": "boss-snake" },
+    { "id": "bread-loaf-ice", "boss": "boss-loaf" },
+    { "id": "lake-dunmore-shelf", "boss": "boss-dunmore" },
+    { "id": "brandon-gap-mine", "boss": "boss-gap" },
+    { "id": "chimney-point-crypt", "boss": "boss-chimney" },
+    { "id": "button-bay-wreck", "boss": "boss-bay" },
+    { "id": "mount-independence-gallery", "boss": "boss-independence" },
+    { "id": "weybridge-silo", "boss": null },
+    { "id": "cornwall-swamp-root", "boss": null },
+    { "id": "ripton-ledge", "boss": null },
+    { "id": "shoreham-covered-bridge", "boss": null },
+    { "id": "vergennes-falls-race", "boss": "boss-falls" }
+  ],
+  "rewards": [
+    { "id": "reward-snake-heart", "stat": "heart", "dungeon": "snake-mountain-cut", "requires": "boss" },
+    { "id": "reward-falls-heart", "stat": "heart", "dungeon": "vergennes-falls-race", "requires": "boss" },
+    { "id": "reward-chimney-heart", "stat": "heart", "dungeon": "chimney-point-crypt", "requires": "boss" },
+    { "id": "reward-swamp-heart", "stat": "heart", "dungeon": "cornwall-swamp-root", "requires": "clear" },
+    { "id": "reward-gap-stride", "stat": "stride", "dungeon": "brandon-gap-mine", "requires": "boss" },
+    { "id": "reward-loaf-stride", "stat": "stride", "dungeon": "bread-loaf-ice", "requires": "boss" },
+    { "id": "reward-silo-stride", "stat": "stride", "dungeon": "weybridge-silo", "requires": "clear" },
+    { "id": "reward-bay-edge", "stat": "edge", "dungeon": "button-bay-wreck", "requires": "boss" },
+    { "id": "reward-independence-edge", "stat": "edge", "dungeon": "mount-independence-gallery", "requires": "boss" },
+    { "id": "reward-dunmore-edge", "stat": "edge", "dungeon": "lake-dunmore-shelf", "requires": "boss" }
+  ],
+  "keys": [
+    { "id": "key-mill", "home": "middlebury-mill-cellar" },
+    { "id": "key-stacks", "home": "ilsley-stacks" },
+    { "id": "key-villa", "home": "shard-villa-well" },
+    { "id": "key-gap", "home": "brandon-gap-mine" },
+    { "id": "key-bridge", "home": "shoreham-covered-bridge" }
+  ],
+  "warps": [
+    { "id": "green-shrine", "x": 12, "y": 8, "requires": "always" },
+    { "id": "mill-shrine", "x": 4, "y": 4, "requires": "clear", "dungeon": "middlebury-mill-cellar" },
+    { "id": "archive-shrine", "x": 6, "y": 2, "requires": "clear", "dungeon": "ilsley-stacks" },
+    { "id": "gap-shrine", "x": 8, "y": 3, "requires": "boss", "dungeon": "brandon-gap-mine" },
+    { "id": "point-shrine", "x": 2, "y": 9, "requires": "boss", "dungeon": "chimney-point-crypt" },
+    { "id": "falls-shrine", "x": 5, "y": 5, "requires": "boss", "dungeon": "vergennes-falls-race" },
+    { "id": "crown-shrine", "x": 9, "y": 9, "requires": "crowns" }
+  ],
+  "quests": {
+    "lantern-debt": ["unstarted", "asked", "ledger-found", "repaid"],
+    "mill-gear": ["unstarted", "asked", "gear-cut", "installed", "archived-incomplete"]
+  },
+  "succession": {
+    "0": {
+      "maeve": { "status": "alive", "name": "Maeve", "age": 34, "role": "sister", "place": "weybridge-bend", "archived": [] },
+      "cal": { "status": "alive", "name": "Cal", "age": 19, "role": "dock-hand", "place": "otter-creek-docks", "archived": [] },
+      "millwright": { "status": "alive", "office": "open", "name": "Bram", "age": 52, "role": "millwright", "place": "middlebury-mill", "archived": [] },
+      "mayor": { "status": "alive", "name": "Adel", "age": 60, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": [] }
+    },
+    "14": {
+      "maeve": { "status": "alive", "name": "Maeve", "age": 48, "role": "archive-keeper", "place": "ilsley-archive", "archived": [] },
+      "cal": { "status": "alive", "name": "Cal", "age": 33, "role": "harbormaster", "place": "otter-creek-docks", "archived": [] },
+      "millwright": { "status": "successor", "office": "open", "name": "Willa", "age": 31, "role": "millwright", "place": "middlebury-mill", "archived": ["Bram"] },
+      "mayor": { "status": "alive", "name": "Adel", "age": 74, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": [] }
+    },
+    "28": {
+      "maeve": { "status": "successor", "name": "Ione", "age": 22, "role": "archive-keeper", "place": "ilsley-archive", "archived": ["Maeve"] },
+      "cal": { "status": "alive", "name": "Cal", "age": 47, "role": "harbormaster", "place": "otter-creek-docks", "archived": [] },
+      "millwright": { "status": "alive", "office": "open", "name": "Willa", "age": 45, "role": "millwright", "place": "middlebury-mill", "archived": ["Bram"] },
+      "mayor": { "status": "alive", "name": "Quill", "age": 44, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": ["Adel"] }
+    },
+    "42": {
+      "maeve": { "status": "alive", "name": "Ione", "age": 36, "role": "archive-keeper", "place": "ilsley-archive", "archived": ["Maeve"] },
+      "cal": { "status": "successor", "name": "Tad", "age": 20, "role": "dock-hand", "place": "otter-creek-docks", "archived": ["Cal"] },
+      "millwright": { "status": "successor", "office": "open", "name": "Soren", "age": 28, "role": "millwright", "place": "middlebury-mill", "archived": ["Bram", "Willa"] },
+      "mayor": { "status": "alive", "name": "Quill", "age": 58, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": ["Adel"] }
+    },
+    "56": {
+      "maeve": { "status": "successor", "name": "Nell", "age": 24, "role": "archive-keeper", "place": "ilsley-archive", "archived": ["Maeve", "Ione"] },
+      "cal": { "status": "alive", "name": "Tad", "age": 34, "role": "harbormaster", "place": "otter-creek-docks", "archived": ["Cal"] },
+      "millwright": { "status": "alive", "office": "open", "name": "Soren", "age": 42, "role": "millwright", "place": "middlebury-mill", "archived": ["Bram", "Willa"] },
+      "mayor": { "status": "alive", "name": "Pye", "age": 41, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": ["Adel", "Quill"] }
+    },
+    "70": {
+      "maeve": { "status": "alive", "name": "Nell", "age": 38, "role": "archive-keeper", "place": "ilsley-archive", "archived": ["Maeve", "Ione"] },
+      "cal": { "status": "successor", "name": "Rhee", "age": 26, "role": "dock-clerk", "place": "otter-creek-docks", "archived": ["Cal", "Tad"] },
+      "millwright": { "status": "archived", "office": "closed", "name": null, "age": null, "role": "archived", "place": "mill-ledger", "archived": ["Bram", "Willa", "Soren"] },
+      "mayor": { "status": "alive", "name": "Pye", "age": 55, "role": "mayor", "place": "town-hall", "canGrant": true, "archived": ["Adel", "Quill"] }
+    }
+  },
+  "mayorSeal": {
+    "status": "archived",
+    "name": "Pye",
+    "age": 55,
+    "role": "seal",
+    "place": "town-hall-archive",
+    "canGrant": true,
+    "archived": ["Adel", "Quill", "Pye"]
+  }
+}

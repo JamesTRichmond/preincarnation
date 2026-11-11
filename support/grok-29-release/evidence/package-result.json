@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "buildId": "web-c737e42eb188-save8",
+  "commit": "c737e42eb188148291438dfb8a5993d6ce2b77fa",
+  "tanstack": "1.168.60",
+  "output": "/tmp/preincarnation/.vercel/output",
+  "tar": "/workspace/support/grok-29-release/dist/preincarnation-web-c737e42eb188-save8.tar.gz",
+  "tarSha256": "c082210986b5840ce17977d1bee8f62af518dfb1aaea4f2ca4cedbe69b5a972a",
+  "rewritten": {
+    "files": 2,
+    "replacements": 32
+  }
+}

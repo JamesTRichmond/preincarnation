@@ -27,6 +27,7 @@ export type Actions = {
   bombPressed: boolean;
   dashPressed: boolean;
   cyclePressed: boolean;
+  weaponCyclePressed: boolean;
   usePressed: boolean;
   item: boolean;
   itemPressed: boolean;
@@ -88,6 +89,7 @@ export function createInput(target: HTMLElement) {
   let prevBomb = false;
   let prevDash = false;
   let prevCycle = false;
+  let prevWeaponCycle = false;
   let prevUse = false;
   let prevItem = false;
   const stick = { x: 0, y: 0 };
@@ -213,6 +215,7 @@ export function createInput(target: HTMLElement) {
     let dash = false;
     let use = false;
     let item = false;
+    let weaponCycle = false;
     let pause = false;
     let padLeft = false;
     let padRight = false;
@@ -229,13 +232,14 @@ export function createInput(target: HTMLElement) {
       if (pad.buttons[3]?.pressed) item = true;
       if (pad.buttons[5]?.pressed) dash = true;
       if (pad.buttons[4]?.pressed) use = true;
+      if (pad.buttons[8]?.pressed) weaponCycle = true;
       if (pad.buttons[9]?.pressed) pause = true;
       if (pad.buttons[12]?.pressed) padUp = true;
       if (pad.buttons[13]?.pressed) padDown = true;
       if (pad.buttons[14]?.pressed) padLeft = true;
       if (pad.buttons[15]?.pressed) padRight = true;
     }
-    return { x: gx, y: gy, attack, interact, release, bomb, dash, use, item, pause, padLeft, padRight, padUp, padDown };
+    return { x: gx, y: gy, attack, interact, release, bomb, dash, use, item, weaponCycle, pause, padLeft, padRight, padUp, padDown };
   };
 
   const sample = (): Actions => {
@@ -294,6 +298,7 @@ export function createInput(target: HTMLElement) {
     const bomb = has("KeyF") || has("KeyX") || virtual.bomb || pad.bomb;
     const dash = has("ShiftLeft") || has("ShiftRight") || has("KeyC") || virtual.dash || pad.dash;
     const cycle = has("KeyQ") || has("Tab");
+    const weaponCycle = has("Digit0") || pad.weaponCycle;
     const use = has("KeyV") || virtual.use || pad.use;
     const item = has("KeyY") || virtual.item || pad.item;
 
@@ -311,6 +316,7 @@ export function createInput(target: HTMLElement) {
       bombPressed: bomb && !prevBomb,
       dashPressed: dash && !prevDash,
       cyclePressed: cycle && !prevCycle,
+      weaponCyclePressed: weaponCycle && !prevWeaponCycle,
       usePressed: use && !prevUse,
       item: item,
       itemPressed: item && !prevItem,
@@ -328,6 +334,7 @@ export function createInput(target: HTMLElement) {
     prevBomb = bomb;
     prevDash = dash;
     prevCycle = cycle;
+    prevWeaponCycle = weaponCycle;
     prevUse = use;
     prevItem = item;
     return actions;

@@ -1,17 +1,24 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { defaultSave } from "./save.ts";
+import { DIALOGUE } from "./content.ts";
 import {
   applyUpgrade,
   bodyStats,
   bondKeepsake,
+  chapterSkillAward,
   cycleLedger,
+  countyAgainNode,
+  cycleReturnNode,
   devilThreshold,
+  enemyMaxHp,
   fillDialogueText,
   grantBondKeepsake,
   groundKeptLine,
   isIncarnationUnlocked,
   ownedUpgradeNames,
+  quarryHammerLands,
   relicsForGrave,
   resolveDeath,
   sheetDamageMul,
@@ -21,8 +28,20 @@ import {
   soloverseReady,
   spendSkillPoint,
   spinDamage,
+  stepSouthOffStoop,
   wintersPassed,
+  lungeReach,
+  lungeHits,
+  sipRefusedAtFullHp,
+  firstReturnStone,
+  PAUSE_GRAVE_NOTE,
+  veinSeamScreen,
+  graveSteelStanding,
+  seamSpawnWeight,
+  seamSkips,
+  SEAM_MERCY,
 } from "./rules.ts";
+import { spendableRanksLeft, storeBottle } from "./rewards.ts";
 import type { Grave } from "./items.ts";
 import type { SaveData } from "./types.ts";
 
@@ -106,9 +125,58 @@ describe("skill award", () => {
 });
 
 describe("wintersPassed", () => {
-  it("is fourteen to eighteen", () => {
+  it("is exactly fourteen", () => {
     assert.equal(wintersPassed(() => 0), 14);
-    assert.equal(wintersPassed(() => 0.99), 18);
+    assert.equal(wintersPassed(() => 0.99), 14);
+    assert.equal(wintersPassed(), 14);
+  });
+});
+
+describe("coat, glass, stone, seam", () => {
+  it("tightens only a diagonal bobcat or Sentinel lunge", () => {
+    assert.equal(lungeReach("bobcat", 10, 0), 12);
+    assert.equal(lungeReach("sentinel", 0, 10), 12);
+    assert.equal(lungeReach("bobcat", 8, 8), 9);
+    assert.equal(lungeReach("sentinel", 6, 7), 9);
+    assert.equal(lungeReach("fisher", 8, 8), 12);
+    assert.equal(lungeHits("bobcat", 8, 8), false);
+    assert.equal(lungeHits("bobcat", 6, 6), true);
+    assert.equal(lungeHits("bear", 11, 0), true);
+  });
+
+  it("refuses a sip at full blood unless the bottle is mana", () => {
+    assert.equal(sipRefusedAtFullHp(["syrup", "empty"], 6, 6, 2, 8), true);
+    assert.equal(sipRefusedAtFullHp(["creemee", "empty"], 6, 6, 2, 8), false);
+    assert.equal(sipRefusedAtFullHp(["syrup", "empty"], 4, 6, 8, 8), false);
+    assert.equal(sipRefusedAtFullHp(["empty", "empty"], 6, 6, 8, 8), false);
+  });
+
+  it("writes two lines on the first return and one pause line", () => {
+    assert.deepEqual(firstReturnStone(1, "Ellis Perch"), ["Ellis Perch", "Fourteen winters."]);
+    assert.equal(firstReturnStone(0, "Ellis"), null);
+    assert.equal(firstReturnStone(2, "Ellis"), null);
+    assert.equal(PAUSE_GRAVE_NOTE.includes("14-18"), false);
+    assert.match(PAUSE_GRAVE_NOTE, /numbered steel/);
+    assert.match(PAUSE_GRAVE_NOTE, /Crown/);
+  });
+
+  it("scales high-tier weight on the two seam screens until the steel is back or passed", () => {
+    assert.equal(veinSeamScreen("middlebury", 8), null);
+    assert.equal(veinSeamScreen("middlebury", 36), 0);
+    assert.equal(veinSeamScreen("quarry", 4), 1);
+    assert.equal(veinSeamScreen("quarry", 28), null);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "in-dirt"), SEAM_MERCY);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 8, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "sentinel", "quarry", 4, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "crow", "middlebury", 36, 1, "in-dirt"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "recovered"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 1, "passed"), 1);
+    assert.equal(seamSpawnWeight(1, "fisher", "middlebury", 36, 0, "in-dirt"), 1);
+    const graves = [{ id: "g", excavated: false, weapons: [{ id: "axe", dmg: 2 }] }];
+    assert.equal(graveSteelStanding(graves, [], []), "in-dirt");
+    assert.equal(graveSteelStanding(graves, ["axe"], []), "recovered");
+    assert.equal(graveSteelStanding(graves, [], ["g"]), "passed");
+    assert.equal(seamSkips("never", 1, 1), false);
   });
 });
 
@@ -202,6 +270,8 @@ describe("resolveDeath", () => {
       grave.weapons.map((w) => w.name),
       ["Farm axe"],
     );
+    assert.equal(grave.weapons[0].dmg, 2);
+    assert.deepEqual(grave.weapons[0].affixes, []);
     assert.ok(grave.relics.includes("shovel"));
     assert.equal(grave.relics.includes("lantern"), false);
     assert.ok(next.flags.relics.includes("lantern"));
@@ -235,6 +305,59 @@ describe("resolveDeath", () => {
     s.character.skillPoints = 0;
     resolveDeath(s, { mapId: "middlebury", x: 0, y: 0 }, 14);
     assert.equal(s.character.skillPoints, 2);
+  });
+
+  it("stops paying skill once the purse already covers every rank", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    s.upgrades.vitality = 3;
+    s.upgrades.edge = 3;
+    s.upgrades.stride = 3;
+    s.upgrades.sight = 1;
+    s.upgrades.shadowStep = 1;
+    s.upgrades.wraithBond = 1;
+    s.flags.chests = ["solo-fact"];
+    s.flags.bottles = ["syrup", "creemee"];
+    resolveDeath(s, { mapId: "quarry", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, 0);
+    assert.equal(s.flags.lastSkillAward, 0);
+    assert.equal(s.upgrades.vitality, 3);
+    assert.deepEqual(s.flags.chests, ["solo-fact"]);
+    assert.deepEqual(s.flags.bottles, ["empty", "empty"]);
+    assert.equal(s.cycle, 1);
+    assert.match(cycleLedger(s).thisLife, /Spend what you hold/);
+  });
+
+  it("pays only the ranks the purse is still short", () => {
+    const s = copy();
+    s.character.skillPoints = spendableRanksLeft(s.upgrades) - 1;
+    resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.flags.lastSkillAward, 1);
+    assert.equal(s.character.skillPoints, spendableRanksLeft(s.upgrades));
+    assert.equal(chapterSkillAward(s), 0);
+  });
+
+  it("twenty deaths do not mint skill past the ranks you can buy", () => {
+    const s = copy();
+    s.character.skillPoints = 0;
+    const cap = spendableRanksLeft(s.upgrades);
+    for (let i = 0; i < 20; i++) resolveDeath(s, { mapId: "middlebury", x: 1, y: 1 }, 14);
+    assert.equal(s.character.skillPoints, cap);
+    assert.equal(s.cycle, 20);
+    assert.equal(s.upgrades.vitality, 0);
+    assert.equal(s.upgrades.edge, 0);
+    assert.equal(chapterSkillAward(s), 0);
+  });
+});
+
+describe("storeBottle", () => {
+  it("fills an empty slot and leaves a full belt untouched", () => {
+    const open = storeBottle(["empty", "empty"], "syrup");
+    assert.equal(open.stored, true);
+    assert.deepEqual(open.bottles, ["syrup", "empty"]);
+    const full = storeBottle(["syrup", "creemee"], "deluxe");
+    assert.equal(full.stored, false);
+    assert.deepEqual(full.bottles, ["syrup", "creemee"]);
   });
 });
 
@@ -304,9 +427,36 @@ describe("spendSkillPoint", () => {
   });
 });
 
+describe("enemyMaxHp", () => {
+  it("does not fatten a body because you have died before", () => {
+    assert.equal(enemyMaxHp(10, false), 10);
+    assert.equal(enemyMaxHp(7, false), 7);
+    assert.equal(enemyMaxHp(10, false), enemyMaxHp(10, false));
+  });
+
+  it("tropoverse is one world, not a stack of deaths", () => {
+    assert.equal(enemyMaxHp(10, true), 14);
+    assert.equal(enemyMaxHp(2, true), 3);
+  });
+
+  it("the spawn line no longer multiplies by the cycle", () => {
+    const src = readFileSync(new URL("./engine.ts", import.meta.url), "utf8");
+    assert.equal(src.includes("cycle * 0.12"), false);
+    assert.match(src, /enemyMaxHp\(/);
+  });
+});
+
 describe("misc rules", () => {
   it("fills dialogue tokens", () => {
     assert.equal(fillDialogueText("{name}. {year}. c{cycle}.", "Ira", 2040, 1), "Ira. 2040. c1.");
+  });
+
+  it("names the last deed and grave count, and defaults a quiet death", () => {
+    assert.equal(
+      fillDialogueText("{deed}. {graves} graves.", "Ira", 2040, 2, "You spoke with Maeve on the Green", 3),
+      "You spoke with Maeve on the Green. 3 graves.",
+    );
+    assert.equal(fillDialogueText("{deed}", "Ira", 2040, 2, "", 0), "you died with the Vein still quiet");
   });
 
   it("flaw knobs", () => {
@@ -350,5 +500,75 @@ describe("misc rules", () => {
     assert.equal(next.karma, 12);
     assert.equal(next.upgrades.vitality, 1);
     assert.equal(s.karma, 20);
+  });
+});
+
+describe("second-cycle memory", () => {
+  it("keeps the first return, then names the last deed", () => {
+    assert.equal(cycleReturnNode("mayor", 2), "mayor_second");
+    assert.equal(cycleReturnNode("elder", 1), "elder_return");
+    assert.equal(cycleReturnNode("heart", 1), null);
+    assert.equal(cycleReturnNode("heart", 2), "heart_second");
+    assert.equal(cycleReturnNode("farmer", 0), null);
+  });
+});
+
+describe("county people, second talk", () => {
+  const side = [
+    "hunter",
+    "ferry",
+    "rokeby",
+    "camper",
+    "conductor",
+    "cartog",
+    "creemee",
+    "prof",
+    "bud",
+    "hippie",
+    "artist",
+    "ranger",
+    "vmayor",
+    "millwright",
+    "lockkeep",
+    "legislator",
+    "intern",
+    "coolidge",
+    "spectrum",
+  ];
+
+  it("gives a side person a second line and leaves the Vein alone", () => {
+    for (const npc of side) {
+      assert.equal(countyAgainNode(npc, false), null);
+      const id = countyAgainNode(npc, true);
+      assert.equal(id, npc + "_again");
+      const node = DIALOGUE[id ?? ""];
+      assert.ok(node, id ?? npc);
+      assert.ok(node.text.length >= 40, id ?? npc);
+      assert.equal(node.choices?.some((c) => c.flag || c.karma || c.crowns) ?? false, false);
+      assert.doesNotMatch(node.text, /14[–-]18/);
+      assert.doesNotMatch(node.text, /come with me|my party|second quest/i);
+    }
+    for (const plot of ["elder", "farmer", "mayor", "sentinel", "resident", "sugar", "heart"]) {
+      assert.equal(countyAgainNode(plot, true), null);
+    }
+  });
+});
+
+describe("quarry hammer", () => {
+  it("lands anywhere except a dark Vein", () => {
+    assert.equal(quarryHammerLands(false, false, false), true);
+    assert.equal(quarryHammerLands(true, true, false), false);
+    assert.equal(quarryHammerLands(true, false, true), false);
+    assert.equal(quarryHammerLands(true, true, true), true);
+  });
+});
+
+describe("house exit", () => {
+  it("steps south off rail onto grass and stops at the map edge", () => {
+    const row = [0, 17, 17, 0];
+    const tileAt = (_x: number, y: number) => row[y];
+    const open = () => false;
+    assert.deepEqual(stepSouthOffStoop(0, 0, tileAt, open), { tx: 0, ty: 3 });
+    assert.equal(stepSouthOffStoop(0, 3, tileAt, open), null);
   });
 });

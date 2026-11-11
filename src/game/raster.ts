@@ -129,7 +129,7 @@ export function rasterCounty(
   const props: RasterProp[] = [];
   props.push({ kind: "spawn", x: Math.floor(w / 2), y: Math.floor(h / 2), id: "spawn" });
 
-  const towns = TOWNS.filter((t) => t.county === county && t.id !== county && t.id !== "quarry" && t.id !== "addison");
+  const towns = TOWNS.filter((t) => t.county === county && t.id !== county && t.id !== "quarry" && t.id !== "bell" && t.id !== "addison");
   for (const t of towns) {
     const cell = projectCountyCell(county, t.lat, t.lng);
     if (!cell) continue;

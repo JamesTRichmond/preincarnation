@@ -1,0 +1,4517 @@
+{
+  "contract": "grok-02-persistence-contract-1",
+  "warning": "Reference-contract fixtures only. No PREINCARNATION save module was present. These records are not captured game saves, and a pass is not a game pass.",
+  "generatedFrom": "src/define-cases.js",
+  "bases": [
+    "new-game",
+    "year0-dungeon",
+    "year14-returned",
+    "year28-open",
+    "year56-mill-asked",
+    "year70-ready",
+    "year70-ledger"
+  ],
+  "cases": [
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load"
+      ],
+      "id": "ORD-01",
+      "category": "ordinary",
+      "title": "New-game save/load round trip",
+      "starting": "New game. Ellis Perch, walker, year 0, Middlebury green, Maeve still the sister at the bend.",
+      "why": "A plain save must reload the same person, body, and county. This catches dropped layers and accidental campaign completion.",
+      "base": "new-game",
+      "systems": [
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.id": "ellis-perch",
+          "person.name": "Ellis Perch",
+          "person.year": 0,
+          "person.deaths": 0,
+          "person.formsUnlocked": [
+            "walker"
+          ],
+          "person.campaignComplete": false,
+          "body.form": "walker",
+          "body.hp": 10,
+          "body.map": "middlebury-green",
+          "world.npcs.maeve.role": "sister",
+          "world.npcs.maeve.place": "weybridge-bend",
+          "meta.writeGeneration": 1,
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "hp": 4,
+          "x": 3,
+          "y": 9,
+          "facing": "e",
+          "map": "ripton-ledge"
+        }
+      },
+      "themes": [
+        "ordinary-save-load"
+      ],
+      "id": "ORD-02",
+      "category": "ordinary",
+      "title": "Body position and wounds survive save/load",
+      "starting": "Year 0 walker at Ripton ledge with hp 4, facing east. No return yet.",
+      "why": "Life-local wounds and coordinates are not person-state, but they must still survive an ordinary save.",
+      "base": "new-game",
+      "systems": [
+        "save-load",
+        "body"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.hp": 4,
+          "body.x": 3,
+          "body.y": 9,
+          "body.facing": "e",
+          "body.map": "ripton-ledge",
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load",
+        "boss-key-reward"
+      ],
+      "id": "ORD-03",
+      "category": "ordinary",
+      "title": "Carried key survives save/load inside one life",
+      "starting": "Year 0 inside Snake Mountain, carrying key-stacks, lantern-debt already asked.",
+      "why": "Keys are life-local once picked up. A save must not snap them home until a return.",
+      "base": "year0-dungeon",
+      "systems": [
+        "save-load",
+        "keys"
+      ],
+      "layers": [
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "life.carriedKeys": [
+            "key-stacks"
+          ],
+          "world.keys.key-stacks.state": "carried",
+          "body.map": "snake-mountain-cut",
+          "body.hp": 6
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load",
+        "quest-succession"
+      ],
+      "id": "ORD-04",
+      "category": "ordinary",
+      "title": "Committed quest step survives save/load",
+      "starting": "Year 0, lantern-debt asked, Ellis still in Snake Mountain.",
+      "why": "Quest steps are world-state. Reloading must not reset them to unstarted or skip them forward.",
+      "base": "year0-dungeon",
+      "systems": [
+        "save-load",
+        "quest"
+      ],
+      "layers": [
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "world.quests.lantern-debt.step": "asked",
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load"
+      ],
+      "id": "ORD-05",
+      "category": "ordinary",
+      "title": "Each save bumps writeGeneration",
+      "starting": "New game, never saved.",
+      "why": "Generation numbers are how a later torn write is told from the previous good envelope.",
+      "base": "new-game",
+      "systems": [
+        "save-load"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "save"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "meta.writeGeneration": 2,
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load"
+      ],
+      "id": "ORD-06",
+      "category": "ordinary",
+      "title": "Load reads the newest intact primary",
+      "starting": "New game. Ellis walks from x=1 to x=2, saving both times.",
+      "why": "A good primary must win over the backup so the older coordinate does not resurrect.",
+      "base": "new-game",
+      "systems": [
+        "save-load",
+        "body"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "move",
+          "x": 1,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "move",
+          "x": 2,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.x": 2,
+          "meta.writeGeneration": 2
+        },
+        "backupMatch": {
+          "body.x": 1
+        },
+        "recoveredFrom": null
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "ordinary-save-load",
+        "death",
+        "form-unlock"
+      ],
+      "id": "ORD-07",
+      "category": "ordinary",
+      "title": "Slot B's return does not leak into slot A",
+      "starting": "New game saved in slot A. A later return is saved only in slot B.",
+      "why": "Person-state is per save snapshot. Loading the older slot must not merge otter, year, or deaths from the other slot.",
+      "base": "new-game",
+      "systems": [
+        "save-load",
+        "death",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save",
+          "slot": "A"
+        },
+        {
+          "op": "combat-death",
+          "token": "slot-d"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        },
+        {
+          "op": "save",
+          "slot": "B"
+        },
+        {
+          "op": "load",
+          "slot": "A"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 0,
+          "person.deaths": 0,
+          "person.formsUnlocked": [
+            "walker"
+          ],
+          "body.form": "walker",
+          "body.map": "middlebury-green"
+        },
+        "slots": {
+          "B": {
+            "match": {
+              "person.year": 14,
+              "person.formsUnlocked": [
+                "walker",
+                "otter"
+              ],
+              "body.form": "otter"
+            }
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "tempBuffs": [
+            "haste"
+          ]
+        }
+      },
+      "themes": [
+        "ordinary-save-load",
+        "death"
+      ],
+      "id": "ORD-08",
+      "category": "ordinary",
+      "title": "Temp buffs persist across save and clear on return",
+      "starting": "Year 0 walker with a haste buff.",
+      "why": "Buffs are body-state for this life. They must survive reload and must not become permanent person-state after death.",
+      "base": "new-game",
+      "systems": [
+        "save-load",
+        "body",
+        "death"
+      ],
+      "layers": [
+        "body",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        },
+        {
+          "op": "checkpoint",
+          "name": "loaded"
+        },
+        {
+          "op": "combat-death",
+          "token": "buff-d"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.tempBuffs": [],
+          "person.year": 14,
+          "body.form": "walker"
+        },
+        "checkpointMatch": {
+          "loaded": {
+            "body.tempBuffs": [
+              "haste"
+            ],
+            "person.year": 0
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "death",
+        "form-unlock",
+        "quest-succession"
+      ],
+      "id": "DTH-01",
+      "category": "death-release",
+      "title": "Combat death advances 14 years and changes Maeve, Cal, and the millwright",
+      "starting": "New game, year 0. Bram is millwright, Cal is a dock-hand, Maeve is the sister at Weybridge bend.",
+      "why": "The first return is the campaign's persistence hinge. Time, otter, and all three mortal lines must move together, and releases must stay 0.",
+      "base": "new-game",
+      "systems": [
+        "death",
+        "time",
+        "npc",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-01"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 14,
+          "world.year": 14,
+          "person.deaths": 1,
+          "person.releases": 0,
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "body.form": "walker",
+          "body.map": "middlebury-green",
+          "body.hp": 10,
+          "meta.phase": "play",
+          "world.npcs.maeve.name": "Maeve",
+          "world.npcs.maeve.age": 48,
+          "world.npcs.maeve.role": "archive-keeper",
+          "world.npcs.maeve.place": "ilsley-archive",
+          "world.npcs.cal.name": "Cal",
+          "world.npcs.cal.age": 33,
+          "world.npcs.cal.role": "harbormaster",
+          "world.npcs.millwright.name": "Willa",
+          "world.npcs.millwright.age": 31,
+          "world.npcs.millwright.archived": [
+            "Bram"
+          ],
+          "world.npcs.mayor.name": "Adel",
+          "world.npcs.mayor.age": 74
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "shrine-release",
+        "death",
+        "quest-succession"
+      ],
+      "id": "DTH-02",
+      "category": "death-release",
+      "title": "Shrine Release advances time without counting a combat death",
+      "starting": "New game, year 0, standing at a shrine on purpose.",
+      "why": "Release and death both return Ellis, but the counters must stay distinct or a shrine can be misread as a kill.",
+      "base": "new-game",
+      "systems": [
+        "release",
+        "time",
+        "npc",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "world",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "shrine-release",
+          "token": "rel-02"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 14,
+          "person.deaths": 0,
+          "person.releases": 1,
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "world.npcs.maeve.role": "archive-keeper",
+          "world.npcs.cal.role": "harbormaster",
+          "world.npcs.millwright.name": "Willa"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "heart-same-as-start"
+      ],
+      "patch": null,
+      "themes": [
+        "death",
+        "boss-key-reward"
+      ],
+      "id": "DTH-04",
+      "category": "death-release",
+      "title": "Heart survives a return",
+      "starting": "Year 14 otter who already claimed the Snake Mountain heart.",
+      "why": "Heart is permanent person-state. Death must not refund it to 0 or push it past the cap.",
+      "base": "year14-returned",
+      "systems": [
+        "death",
+        "upgrade"
+      ],
+      "layers": [
+        "person",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-04"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.heart": 1,
+          "person.year": 28,
+          "body.hpMax": 12,
+          "body.hp": 12,
+          "world.rewardsClaimed": [
+            "reward-snake-heart"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "hp": 3
+        }
+      },
+      "themes": [
+        "death"
+      ],
+      "id": "DTH-05",
+      "category": "death-release",
+      "title": "The new body is fully healed from Heart",
+      "starting": "Year 14, heart 1, current hp wounded to 3.",
+      "why": "Wounds are body-state. The next life starts at the permanent maximum, not at the leftover hp.",
+      "base": "year14-returned",
+      "systems": [
+        "death",
+        "body",
+        "upgrade"
+      ],
+      "layers": [
+        "body",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-05"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.hp": 12,
+          "body.hpMax": 12,
+          "person.heart": 1,
+          "person.year": 28
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "inCombat": true,
+          "tempBuffs": [
+            "bleed"
+          ]
+        }
+      },
+      "themes": [
+        "death"
+      ],
+      "id": "DTH-06",
+      "category": "death-release",
+      "title": "Combat flags drop when the body dies",
+      "starting": "Year 0 walker in combat with a bleed buff.",
+      "why": "A saved afterlife must not resume the fight or the buff of the corpse.",
+      "base": "new-game",
+      "systems": [
+        "death",
+        "body"
+      ],
+      "layers": [
+        "body",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-06"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "meta.phase": "afterlife",
+          "body.inCombat": false,
+          "body.tempBuffs": [],
+          "body.hp": 0,
+          "body.map": "afterlife",
+          "body.form": null
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "duplicate-death",
+        "death"
+      ],
+      "id": "DTH-07",
+      "category": "death-release",
+      "title": "Replaying a death token does not advance a second era",
+      "starting": "New game.",
+      "why": "Duplicate death events are a real double-submit bug. The same token must be idempotent.",
+      "base": "new-game",
+      "systems": [
+        "death"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "same-token"
+        },
+        {
+          "op": "combat-death",
+          "token": "same-token"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "idempotent": true,
+        "match": {
+          "person.year": 14,
+          "person.deaths": 1,
+          "person.appliedDeathTokens": [
+            "same-token"
+          ],
+          "meta.phase": "afterlife",
+          "world.npcs.maeve.name": "Maeve"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "shrine-release",
+        "duplicate-death"
+      ],
+      "id": "DTH-09",
+      "category": "death-release",
+      "title": "Release is rejected in the afterlife",
+      "starting": "New game, already killed once and not yet reborn.",
+      "why": "A shrine Release is deliberate. It must not stack on an in-flight death and skip Maeve's next state.",
+      "base": "new-game",
+      "systems": [
+        "release",
+        "death"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-09"
+        },
+        {
+          "op": "shrine-release",
+          "token": "rel-09"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "release-not-deliberate",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.year": 14,
+          "person.deaths": 1,
+          "person.releases": 0,
+          "person.appliedDeathTokens": [
+            "dth-09"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "duplicate-death",
+        "death"
+      ],
+      "id": "DTH-10",
+      "category": "death-release",
+      "title": "A second new token during afterlife is ignored",
+      "starting": "New game.",
+      "why": "A different token while already dead must not be recorded, or a retry skips an era.",
+      "base": "new-game",
+      "systems": [
+        "death"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-10a"
+        },
+        {
+          "op": "combat-death",
+          "token": "dth-10b"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "already-afterlife",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.year": 14,
+          "person.appliedDeathTokens": [
+            "dth-10a"
+          ],
+          "world.npcs.maeve.role": "archive-keeper"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "death",
+        "save-in-afterlife"
+      ],
+      "id": "DTH-13",
+      "category": "death-release",
+      "title": "Afterlife is a savable phase, not a corpse on the dungeon map",
+      "starting": "New game.",
+      "why": "Death has committed as soon as the afterlife opens. The body must not still be standing in the world at 0 hp.",
+      "base": "new-game",
+      "systems": [
+        "death",
+        "body"
+      ],
+      "layers": [
+        "body",
+        "life",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-13"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "meta.phase": "afterlife",
+          "body.map": "afterlife",
+          "body.form": null,
+          "body.hp": 0,
+          "person.year": 14,
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "life.carriedKeys": []
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "death"
+      ],
+      "id": "DTH-14",
+      "category": "death-release",
+      "title": "Rebirth spawns on the green, not at the death map",
+      "starting": "Inside Snake Mountain, year 0.",
+      "why": "Body position is life-local. The next life must not resume on the tile that killed Ellis.",
+      "base": "year0-dungeon",
+      "systems": [
+        "death",
+        "body"
+      ],
+      "layers": [
+        "body",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dth-14"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.map": "middlebury-green",
+          "body.x": 12,
+          "body.y": 8,
+          "person.year": 14
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "shrine-release"
+      ],
+      "id": "DTH-16",
+      "category": "death-release",
+      "title": "Release away from a shrine does not advance time",
+      "starting": "New game, not at a shrine.",
+      "why": "An accidental release input must not burn fourteen years.",
+      "base": "new-game",
+      "systems": [
+        "release"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "shrine-release",
+          "token": "rel-16",
+          "atShrine": false
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "not-at-shrine",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.year": 0,
+          "person.releases": 0,
+          "person.deaths": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock",
+        "death"
+      ],
+      "id": "FRM-01",
+      "category": "forms",
+      "title": "Heron cannot be worn on the first return",
+      "starting": "New game. Mayor never spoken to.",
+      "why": "Death unlocks otter only. Choosing a form that was not unlocked must leave Ellis in the afterlife.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "death"
+      ],
+      "layers": [
+        "person",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "frm-01"
+        },
+        {
+          "op": "choose-form",
+          "form": "heron"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "form-locked",
+        "stateIsNull": true,
+        "liveMatch": {
+          "meta.phase": "afterlife",
+          "person.year": 14,
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "body.form": null
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock",
+        "death"
+      ],
+      "id": "FRM-02",
+      "category": "forms",
+      "title": "Otter is selectable after the first death",
+      "starting": "New game.",
+      "why": "The death-unlocked form has to be wearable on the life that follows, not only recorded.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "death"
+      ],
+      "layers": [
+        "person",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "frm-02"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.form": "otter",
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "meta.phase": "play",
+          "person.year": 14
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock"
+      ],
+      "id": "FRM-03",
+      "category": "forms",
+      "title": "Mayor Adel grants heron without a return",
+      "starting": "Year 0. Adel is alive in the town hall. Otter is still locked.",
+      "why": "Heron comes from the Mayor conversation, not from death. The grant must not also pretend a return happened.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "npc"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "talk-mayor"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.mayorSpoken": true,
+          "person.formsUnlocked": [
+            "walker",
+            "heron"
+          ],
+          "person.year": 0,
+          "person.deaths": 0,
+          "world.npcs.mayor.name": "Adel",
+          "world.npcs.mayor.age": 60,
+          "body.form": "walker"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock"
+      ],
+      "id": "FRM-04",
+      "category": "forms",
+      "title": "A second Mayor conversation does not stack heron",
+      "starting": "Year 0.",
+      "why": "Form unlocks are a set. Talking twice must not duplicate the form or reset the year.",
+      "base": "new-game",
+      "systems": [
+        "form"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "talk-mayor"
+        },
+        {
+          "op": "talk-mayor"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.formsUnlocked": [
+            "walker",
+            "heron"
+          ],
+          "person.year": 0,
+          "person.mayorSpoken": true
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock",
+        "warp-ending"
+      ],
+      "id": "FRM-08",
+      "category": "forms",
+      "title": "Two crown rites unlock crown and the crown shrine before any death",
+      "starting": "Year 0, no rites.",
+      "why": "Crown is a two-cycle unlock, not a skill node and not a death form. One rite must be insufficient; the second opens the shrine.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "warp"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "complete-crown",
+          "riteId": "crown-east"
+        },
+        {
+          "op": "complete-crown",
+          "riteId": "crown-west"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.crowns": 2,
+          "person.crownRites": [
+            "crown-east",
+            "crown-west"
+          ],
+          "person.formsUnlocked": [
+            "walker",
+            "crown"
+          ],
+          "person.year": 0,
+          "person.deaths": 0
+        },
+        "includes": {
+          "world.warpsUnlocked": [
+            "green-shrine",
+            "crown-shrine"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock"
+      ],
+      "id": "FRM-09",
+      "category": "forms",
+      "title": "A crown rite cannot be repeated",
+      "starting": "Year 0.",
+      "why": "Repeating the east rite must not count as the second crown.",
+      "base": "new-game",
+      "systems": [
+        "form"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "complete-crown",
+          "riteId": "crown-east"
+        },
+        {
+          "op": "complete-crown",
+          "riteId": "crown-east"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "rite-done",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.crowns": 1,
+          "person.crownRites": [
+            "crown-east"
+          ],
+          "person.formsUnlocked": [
+            "walker"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "quest-succession"
+      ],
+      "id": "NPC-01",
+      "category": "quest-npc",
+      "title": "Year 0 trio is Maeve the sister, Cal the dock-hand, Bram the millwright",
+      "starting": "New game. No action yet.",
+      "why": "The later succession asserts are only meaningful if year 0 is this exact trio, not an already-archived county.",
+      "base": "new-game",
+      "systems": [
+        "npc"
+      ],
+      "layers": [
+        "world"
+      ],
+      "actions": [],
+      "expect": {
+        "ok": true,
+        "match": {
+          "world.npcs.maeve": {
+            "status": "alive",
+            "name": "Maeve",
+            "age": 34,
+            "role": "sister",
+            "place": "weybridge-bend",
+            "archived": []
+          },
+          "world.npcs.cal": {
+            "status": "alive",
+            "name": "Cal",
+            "age": 19,
+            "role": "dock-hand",
+            "place": "otter-creek-docks",
+            "archived": []
+          },
+          "world.npcs.millwright": {
+            "status": "alive",
+            "office": "open",
+            "name": "Bram",
+            "age": 52,
+            "role": "millwright",
+            "place": "middlebury-mill",
+            "archived": []
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "quest-succession"
+      ],
+      "id": "NPC-09",
+      "category": "quest-npc",
+      "title": "Quest commit applies one step and clears the transition",
+      "starting": "Year 0, lantern-debt unstarted.",
+      "why": "The committed step and the in-flight transition are different layers. Commit must not leave both set.",
+      "base": "new-game",
+      "systems": [
+        "quest"
+      ],
+      "layers": [
+        "world",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "commit-quest"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "world.quests.lantern-debt.step": "asked",
+          "life.transition": null,
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "quest-transition-save",
+        "quest-succession"
+      ],
+      "id": "NPC-10",
+      "category": "quest-npc",
+      "title": "Save/load during a quest transition does not commit the step",
+      "starting": "Year 0, lantern-debt unstarted, transition opened toward asked.",
+      "why": "A reload in the middle of handing over a quest must restore the pre-commit step, not apply it and not drop the transition.",
+      "base": "new-game",
+      "systems": [
+        "quest",
+        "save-load"
+      ],
+      "layers": [
+        "world",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "meta.phase": "quest-transition",
+          "world.quests.lantern-debt.step": "unstarted",
+          "life.transition": {
+            "quest": "lantern-debt",
+            "from": "unstarted",
+            "to": "asked"
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "quest-succession",
+        "death"
+      ],
+      "id": "NPC-11",
+      "category": "quest-npc",
+      "title": "A repaid lantern debt stays repaid after death",
+      "starting": "Year 0, lantern-debt not yet started.",
+      "why": "World quest completion is not life-local. Dying after repayment must not reopen Maeve's debt.",
+      "base": "new-game",
+      "systems": [
+        "quest",
+        "death"
+      ],
+      "layers": [
+        "world",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "ledger-found"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "repaid"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "combat-death",
+          "token": "npc-11"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "world.quests.lantern-debt.step": "repaid",
+          "person.year": 14,
+          "life.dialogueSeenThisLife": []
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "quest-succession",
+        "death"
+      ],
+      "id": "NPC-13",
+      "category": "quest-npc",
+      "title": "An open mill-gear quest archives when the office closes",
+      "starting": "Year 56. Soren is still millwright. mill-gear was asked and never installed.",
+      "why": "When the mill office closes at year 70 the unfinished quest must become archived-incomplete, not stay askable and not silently count as installed.",
+      "base": "year56-mill-asked",
+      "systems": [
+        "death",
+        "quest",
+        "npc",
+        "time"
+      ],
+      "layers": [
+        "world",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "npc-13"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 70,
+          "world.quests.mill-gear.step": "archived-incomplete",
+          "world.npcs.millwright.office": "closed",
+          "world.npcs.millwright.name": null,
+          "world.npcs.millwright.archived": [
+            "Bram",
+            "Willa",
+            "Soren"
+          ],
+          "world.npcs.maeve.name": "Nell",
+          "world.npcs.maeve.age": 38,
+          "world.npcs.cal.name": "Rhee",
+          "world.npcs.mayor.name": "Pye",
+          "world.npcs.mayor.role": "mayor"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": {
+        "world": {
+          "quests": {
+            "mill-gear": {
+              "step": "unstarted"
+            }
+          }
+        }
+      },
+      "themes": [
+        "quest-succession"
+      ],
+      "id": "NPC-14",
+      "category": "quest-npc",
+      "title": "A closed mill cannot start mill-gear",
+      "starting": "Year 70 ledger ending. The mill office is already closed and the quest was never started in this snapshot.",
+      "why": "Successors stop. The archive must not grow a new millwright just so an old quest can begin.",
+      "base": "year70-ledger",
+      "systems": [
+        "quest",
+        "npc",
+        "time"
+      ],
+      "layers": [
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "begin-transition",
+          "quest": "mill-gear",
+          "to": "asked"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "office-closed",
+        "stateIsNull": true,
+        "liveMatch": {
+          "world.quests.mill-gear.step": "unstarted",
+          "world.npcs.millwright.office": "closed",
+          "person.year": 70
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward",
+        "death"
+      ],
+      "id": "BOS-01",
+      "category": "boss-key-reward",
+      "title": "A defeated boss stays defeated after death",
+      "starting": "Year 0, Snake Mountain boss still alive.",
+      "why": "Boss defeat is world-state. A return must not revive the boss or uncleare the dungeon.",
+      "base": "new-game",
+      "systems": [
+        "boss",
+        "death"
+      ],
+      "layers": [
+        "world",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "boss-defeat",
+          "dungeonId": "snake-mountain-cut"
+        },
+        {
+          "op": "combat-death",
+          "token": "bos-01"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "world.dungeons.snake-mountain-cut.bossDefeated": true,
+          "world.dungeons.snake-mountain-cut.cleared": true,
+          "person.year": 14,
+          "person.heart": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward"
+      ],
+      "id": "BOS-04",
+      "category": "boss-key-reward",
+      "title": "The same boss reward cannot raise Heart twice",
+      "starting": "Year 0.",
+      "why": "Reward ids are idempotent. A second claim must not be a second Heart.",
+      "base": "new-game",
+      "systems": [
+        "boss",
+        "upgrade"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "boss-defeat",
+          "dungeonId": "snake-mountain-cut"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-snake-heart"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-snake-heart"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "reward-unavailable",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.heart": 1,
+          "world.rewardsClaimed": [
+            "reward-snake-heart"
+          ],
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward"
+      ],
+      "id": "BOS-05",
+      "category": "boss-key-reward",
+      "title": "The fourth Heart reward clamps at 3",
+      "starting": "Year 0. Four distinct Heart sources exist; the cap is 3.",
+      "why": "Permanent stats are bounded. The fourth grant must stay claimed but must not wrap or exceed 3.",
+      "base": "new-game",
+      "systems": [
+        "upgrade",
+        "boss"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "boss-defeat",
+          "dungeonId": "snake-mountain-cut"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-snake-heart"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "boss-defeat",
+          "dungeonId": "vergennes-falls-race"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-falls-heart"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "boss-defeat",
+          "dungeonId": "chimney-point-crypt"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-chimney-heart"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "clear-dungeon",
+          "dungeonId": "cornwall-swamp-root"
+        },
+        {
+          "op": "claim-chest",
+          "rewardId": "reward-swamp-heart"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.heart": 3,
+          "person.stride": 0,
+          "person.edge": 0,
+          "body.hpMax": 16,
+          "world.rewardsClaimed": [
+            "reward-snake-heart",
+            "reward-falls-heart",
+            "reward-chimney-heart",
+            "reward-swamp-heart"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward",
+        "ordinary-save-load"
+      ],
+      "id": "BOS-08",
+      "category": "boss-key-reward",
+      "title": "A carried key reloads as carried",
+      "starting": "Year 0, key-mill still at home.",
+      "why": "Pickup is not a socket. Save/load must preserve the carry.",
+      "base": "new-game",
+      "systems": [
+        "keys",
+        "save-load"
+      ],
+      "layers": [
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "pickup-key",
+          "keyId": "key-mill"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "life.carriedKeys": [
+            "key-mill"
+          ],
+          "world.keys.key-mill.state": "carried"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward"
+      ],
+      "id": "BOS-09",
+      "category": "boss-key-reward",
+      "title": "Edge and Stride advance independently of Heart",
+      "starting": "Year 0, all stats 0.",
+      "why": "The three permanent stats are not one shared skill track. Gaining Edge must not increment Heart.",
+      "base": "new-game",
+      "systems": [
+        "upgrade"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "boss-defeat",
+          "dungeonId": "button-bay-wreck"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-bay-edge"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "clear-dungeon",
+          "dungeonId": "weybridge-silo"
+        },
+        {
+          "op": "claim-chest",
+          "rewardId": "reward-silo-stride"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.edge": 1,
+          "person.stride": 1,
+          "person.heart": 0,
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward"
+      ],
+      "id": "BOS-11",
+      "category": "boss-key-reward",
+      "title": "A chest reward grants immediately and stays in play",
+      "starting": "Year 0, silo uncleared.",
+      "why": "Chest grants are not the pending boss-reward phase. They must not leave Ellis unable to act, and they must move Stride.",
+      "base": "new-game",
+      "systems": [
+        "upgrade",
+        "dungeon"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "clear-dungeon",
+          "dungeonId": "weybridge-silo"
+        },
+        {
+          "op": "claim-chest",
+          "rewardId": "reward-silo-stride"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.stride": 1,
+          "meta.phase": "play",
+          "life.pendingReward": null,
+          "world.dungeons.weybridge-silo.cleared": true,
+          "world.dungeons.weybridge-silo.bossDefeated": false
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "death"
+      ],
+      "id": "WRP-01",
+      "category": "warp-ending",
+      "title": "An unlocked warp survives death and can be used in the next life",
+      "starting": "Year 0. Mill cellar uncleared, mill shrine locked.",
+      "why": "Warp unlocks are world-state. The new body starts on the green, but the shrine list must still work.",
+      "base": "new-game",
+      "systems": [
+        "warp",
+        "dungeon",
+        "death"
+      ],
+      "layers": [
+        "world",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "clear-dungeon",
+          "dungeonId": "middlebury-mill-cellar"
+        },
+        {
+          "op": "unlock-warp",
+          "warpId": "mill-shrine"
+        },
+        {
+          "op": "combat-death",
+          "token": "wrp-01"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "warp",
+          "warpId": "mill-shrine"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "body.map": "mill-shrine",
+          "person.year": 14
+        },
+        "includes": {
+          "world.warpsUnlocked": [
+            "mill-shrine",
+            "green-shrine"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "death"
+      ],
+      "id": "WRP-02",
+      "category": "warp-ending",
+      "title": "Warping is blocked in the afterlife",
+      "starting": "New game.",
+      "why": "The afterlife is not a place you can shrine-hop out of. Doing so would skip form choice.",
+      "base": "new-game",
+      "systems": [
+        "warp",
+        "death"
+      ],
+      "layers": [
+        "body",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "wrp-02"
+        },
+        {
+          "op": "warp",
+          "warpId": "green-shrine"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-phase",
+        "stateIsNull": true,
+        "liveMatch": {
+          "meta.phase": "afterlife",
+          "body.map": "afterlife"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "quest-transition-save"
+      ],
+      "id": "WRP-03",
+      "category": "warp-ending",
+      "title": "Warping is blocked during a quest transition",
+      "starting": "Year 0, mill shrine already available would not matter: the transition itself blocks travel.",
+      "why": "A quest handover is atomic with respect to leaving the map. Warp must not commit or discard the step.",
+      "base": "new-game",
+      "systems": [
+        "warp",
+        "quest"
+      ],
+      "layers": [
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "clear-dungeon",
+          "dungeonId": "middlebury-mill-cellar"
+        },
+        {
+          "op": "unlock-warp",
+          "warpId": "mill-shrine"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "warp",
+          "warpId": "mill-shrine"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-phase",
+        "stateIsNull": true,
+        "liveMatch": {
+          "meta.phase": "quest-transition",
+          "world.quests.lantern-debt.step": "unstarted"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "boss-key-reward"
+      ],
+      "id": "WRP-04",
+      "category": "warp-ending",
+      "title": "Warping is blocked while a boss reward is pending",
+      "starting": "Year 0.",
+      "why": "Leaving during an unclaimed reward must not auto-claim it and must not be a way to dodge the pending phase.",
+      "base": "new-game",
+      "systems": [
+        "warp",
+        "boss"
+      ],
+      "layers": [
+        "life",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "boss-defeat",
+          "dungeonId": "snake-mountain-cut"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-snake-heart"
+        },
+        {
+          "op": "warp",
+          "warpId": "green-shrine"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-phase",
+        "stateIsNull": true,
+        "liveMatch": {
+          "meta.phase": "boss-reward",
+          "person.heart": 0,
+          "life.pendingReward.id": "reward-snake-heart"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending"
+      ],
+      "id": "END-01",
+      "category": "warp-ending",
+      "title": "Ledger ending sets person and world completion together",
+      "starting": "Year 70, all 16 dungeons cleared, no ending committed.",
+      "why": "Campaign completion lives in both person-state and world-state. One side without the other is a torn ending.",
+      "base": "year70-ready",
+      "systems": [
+        "ending",
+        "dungeon"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "commit-ending",
+          "endingId": "ledger"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "clearedCount": 16,
+        "match": {
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "world.postCompletion": true,
+          "world.ending": "ledger",
+          "person.year": 70,
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending"
+      ],
+      "id": "END-03",
+      "category": "warp-ending",
+      "title": "A second ending appends and does not erase the first",
+      "starting": "Year 70, ledger already recorded.",
+      "why": "Four endings can be seen across lives. Recording remain must not delete ledger or clear completion.",
+      "base": "year70-ledger",
+      "systems": [
+        "ending"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "commit-ending",
+          "endingId": "remain"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.endingsSeen": [
+            "ledger",
+            "remain"
+          ],
+          "world.ending": "remain",
+          "person.campaignComplete": true,
+          "person.year": 70
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "ordinary-save-load"
+      ],
+      "id": "END-04",
+      "category": "warp-ending",
+      "title": "Saving during the ending cinematic does not complete the campaign",
+      "starting": "Year 70, dungeons clear, ending not begun.",
+      "why": "The cinematic is uncommitted. A save there must reload the cinematic, not a finished campaign and not a cancelled one.",
+      "base": "year70-ready",
+      "systems": [
+        "ending",
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "begin-ending",
+          "endingId": "ledger"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "meta.phase": "ending-cinematic",
+          "life.pendingEnding": "ledger",
+          "person.campaignComplete": false,
+          "person.endingsSeen": [],
+          "world.ending": null
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "dungeon-clears-same",
+        "completion-same-as-start"
+      ],
+      "patch": null,
+      "themes": [
+        "ending-then-death",
+        "death"
+      ],
+      "id": "END-05",
+      "category": "warp-ending",
+      "title": "Death during the ending cinematic does not record the ending",
+      "starting": "Year 70, ledger cinematic open, not committed.",
+      "why": "Dying in the cinematic is not finishing the campaign. Clears stay. The ending must not appear, and the year still advances.",
+      "base": "year70-ready",
+      "systems": [
+        "ending",
+        "death",
+        "dungeon"
+      ],
+      "layers": [
+        "person",
+        "world",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "begin-ending",
+          "endingId": "ledger"
+        },
+        {
+          "op": "combat-death",
+          "token": "end-05"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 84,
+          "person.campaignComplete": false,
+          "person.endingsSeen": [],
+          "life.pendingEnding": null,
+          "world.ending": null,
+          "meta.phase": "afterlife"
+        },
+        "clearedCount": 16
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value",
+        "warp-ending"
+      ],
+      "id": "END-06",
+      "category": "warp-ending",
+      "title": "An unknown ending id is rejected",
+      "starting": "Year 70 ledger save, then the ending field is overwritten with a fake id.",
+      "why": "A corrupt ending must not become a fifth ending or a completed campaign under a new name.",
+      "base": "year70-ledger",
+      "systems": [
+        "ending",
+        "corrupt"
+      ],
+      "layers": [
+        "world",
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "sets": [
+            {
+              "path": "world.ending",
+              "value": "ascended"
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "copyFrom": "primary"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-ending",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "form-unlock"
+      ],
+      "id": "END-07",
+      "category": "warp-ending",
+      "title": "Crown ending requires the crown shrine and both rites",
+      "starting": "Year 70, both rites already done, no ending yet, crown shrine unlocked.",
+      "why": "The crown ending is a place plus two cycles. It must record only crown, and it must be reachable after year 70 without wiping dungeon clears.",
+      "base": "year70-ready",
+      "systems": [
+        "ending",
+        "warp",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "world",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "warp",
+          "warpId": "crown-shrine"
+        },
+        {
+          "op": "commit-ending",
+          "endingId": "crown"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.endingsSeen": [
+            "crown"
+          ],
+          "world.ending": "crown",
+          "body.map": "crown-shrine",
+          "person.crowns": 2,
+          "person.campaignComplete": true
+        },
+        "clearedCount": 16
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "warp-ending",
+        "quest-succession"
+      ],
+      "id": "END-08",
+      "category": "warp-ending",
+      "title": "Archive ending is available once the three lines have left the living county",
+      "starting": "Year 70, offices archived, no ending yet.",
+      "why": "The archive ending is world succession plus the year, not a new form. It must set completion without clearing the ledger dungeons.",
+      "base": "year70-ready",
+      "systems": [
+        "ending",
+        "npc",
+        "time"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "commit-ending",
+          "endingId": "archive"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.endingsSeen": [
+            "archive"
+          ],
+          "world.npcs.millwright.office": "closed",
+          "world.npcs.maeve.archived": [
+            "Maeve",
+            "Ione"
+          ],
+          "world.npcs.cal.archived": [
+            "Cal",
+            "Tad"
+          ],
+          "person.campaignComplete": true
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "x": 4
+        }
+      },
+      "themes": [
+        "interrupted-write"
+      ],
+      "id": "INT-01",
+      "category": "integrity",
+      "title": "Truncated primary falls back to the backup",
+      "starting": "New game saved once, then the primary envelope is cut off.",
+      "why": "An interrupted write must not destroy the last good copy or invent a completed campaign.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "save-load"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "truncate": 12
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "primaryError": "corrupt",
+        "match": {
+          "body.x": 4,
+          "person.campaignComplete": false,
+          "meta.writeGeneration": 1
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write"
+      ],
+      "id": "INT-02",
+      "category": "integrity",
+      "title": "A torn backup does not hide a good primary",
+      "starting": "Two saves, x=1 then x=2. Only the backup is truncated.",
+      "why": "Recovery must prefer a valid primary. Truncating the backup is not a reason to roll back.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "save-load"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "move",
+          "x": 1,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "move",
+          "x": 2,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "truncate": 8
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": null,
+        "match": {
+          "body.x": 2,
+          "meta.writeGeneration": 2
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write",
+        "warp-ending"
+      ],
+      "id": "INT-03",
+      "category": "integrity",
+      "title": "Both copies torn yields corrupt and no synthetic completion",
+      "starting": "Year 70 ledger campaign, both envelopes truncated.",
+      "why": "The dangerous failure is a loader that, unable to parse, emits a fresh 'complete' campaign. The result must be null.",
+      "base": "year70-ledger",
+      "systems": [
+        "interrupt",
+        "save-load",
+        "ending"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "truncate": 10
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "truncate": 10
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "corrupt",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write",
+        "corrupt-value"
+      ],
+      "id": "INT-04",
+      "category": "integrity",
+      "title": "Checksum mismatch rejects the primary and keeps the backup",
+      "starting": "One good save of a new game.",
+      "why": "A flipped checksum is a torn or tampered envelope. It must not load, and the backup generation must stay 1 rather than looking like a brand-new file.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "save-load"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "badChecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "primaryError": "checksum",
+        "match": {
+          "meta.writeGeneration": 1,
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write"
+      ],
+      "id": "INT-05",
+      "category": "integrity",
+      "title": "Envelope generation that disagrees with the payload is stale",
+      "starting": "Save at x=1, save at x=2, then the primary's envelope generation is forced to 99.",
+      "why": "A mismatched generation means the envelope and the body were not written as one record. The older backup must load.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "save-load"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "move",
+          "x": 1,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "move",
+          "x": 2,
+          "y": 8
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "envelopeSets": {
+            "generation": 99
+          }
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "primaryError": "stale-generation",
+        "match": {
+          "body.x": 1,
+          "meta.writeGeneration": 1
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "missing-field"
+      ],
+      "id": "INT-06",
+      "category": "integrity",
+      "title": "v3 missing Heart is rejected rather than defaulted",
+      "starting": "New game saved, Heart key removed from both copies, checksums repaired.",
+      "why": "On the current schema Heart is required. Defaulting a missing permanent stat to 0 hides a torn file that used to have Heart.",
+      "base": "new-game",
+      "systems": [
+        "missing-field",
+        "save-load"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "delete": "person.heart",
+          "rechecksum": true
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "copyFrom": "primary"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "missing-field",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "missing-field"
+      ],
+      "id": "INT-07",
+      "category": "integrity",
+      "title": "Missing year is rejected",
+      "starting": "Saved new game with person.year removed from both copies.",
+      "why": "Year 0 is a real era. A missing year must not be treated as a fresh campaign.",
+      "base": "new-game",
+      "systems": [
+        "missing-field"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "delete": "person.year",
+          "rechecksum": true
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "copyFrom": "primary"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "missing-field",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "missing-field"
+      ],
+      "id": "INT-08",
+      "category": "integrity",
+      "title": "Missing person id is rejected",
+      "starting": "Saved new game with person.id removed.",
+      "why": "The persistent person is Ellis Perch. A blob without that id is not this campaign.",
+      "base": "new-game",
+      "systems": [
+        "missing-field"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "delete": "person.id",
+          "rechecksum": true
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "copyFrom": "primary"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "missing-field",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": {
+        "body": {
+          "tempBuffs": [
+            "haste"
+          ]
+        }
+      },
+      "themes": [
+        "missing-field",
+        "ordinary-save-load"
+      ],
+      "id": "INT-09",
+      "category": "integrity",
+      "title": "Missing tempBuffs defaults to empty",
+      "starting": "Year 0 with haste, then the field is removed from both copies.",
+      "why": "Cosmetic body fields may default. The default is empty, not a restored buff and not a crash.",
+      "base": "new-game",
+      "systems": [
+        "missing-field",
+        "body"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "delete": "body.tempBuffs",
+          "rechecksum": true
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "backup"
+          ],
+          "copyFrom": "primary"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "defaultsApplied": [
+          "body.tempBuffs"
+        ],
+        "match": {
+          "body.tempBuffs": [],
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-10",
+      "category": "integrity",
+      "title": "Year 7 is rejected",
+      "starting": "Saved new game with the year forced to 7.",
+      "why": "Eras move by 14. A non-multiple is corrupt, not an off-by-seven county.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "time"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.year",
+              "value": 7
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-year",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-11",
+      "category": "integrity",
+      "title": "Heart 99 is rejected and not clamped",
+      "starting": "Saved new game with Heart set to 99.",
+      "why": "Clamping a tampered stat would quietly grant the cap. Out-of-range Heart must fail the load.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "upgrade"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.heart",
+              "value": 99
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-range",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-12",
+      "category": "integrity",
+      "title": "A string Heart is rejected",
+      "starting": "Saved new game with Heart set to the string \"3\".",
+      "why": "Type confusion must not coerce into a permanent stat.",
+      "base": "new-game",
+      "systems": [
+        "corrupt"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.heart",
+              "value": "3"
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-type",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-13",
+      "category": "integrity",
+      "title": "Null coordinate is rejected",
+      "starting": "Saved new game with body.x set to null.",
+      "why": "Null is not a position. It must not load as 0 and move Ellis.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "body"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "body.x",
+              "value": null
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-type",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-14",
+      "category": "integrity",
+      "title": "Deaths plus releases must equal year divided by 14",
+      "starting": "Saved new game edited to year 28 with only one death.",
+      "why": "The year counter and the return counters are one fact. A mismatch is corrupt, not a new era rule.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "time"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.year",
+              "value": 28
+            },
+            {
+              "path": "world.year",
+              "value": 28
+            },
+            {
+              "path": "person.deaths",
+              "value": 1
+            },
+            {
+              "path": "person.releases",
+              "value": 0
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "year-equation",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value"
+      ],
+      "id": "INT-15",
+      "category": "integrity",
+      "title": "Party, skill nodes, and a procgen seed are stripped and grant nothing",
+      "starting": "Saved new game with a party, a skill node that would raise Edge, and a world seed injected.",
+      "why": "The campaign has no party, no replacement skill tree, and no procedural generation. Foreign progression must not apply.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "upgrade"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "skillNodes",
+              "value": [
+                {
+                  "id": "edge+",
+                  "rank": 5
+                }
+              ]
+            },
+            {
+              "path": "party",
+              "value": [
+                {
+                  "name": "Cal"
+                }
+              ]
+            },
+            {
+              "path": "world.seed",
+              "value": 12345
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.edge": 0,
+          "person.year": 0
+        },
+        "absent": [
+          "skillNodes",
+          "party",
+          "world.seed"
+        ],
+        "strippedInclude": [
+          "skillNodes",
+          "party",
+          "world.seed"
+        ],
+        "clearedCount": 0
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value",
+        "quest-succession"
+      ],
+      "id": "INT-16",
+      "category": "integrity",
+      "title": "A v3 snapshot with Maeve still the sister at year 14 is stale",
+      "starting": "Year 14 save, Maeve's role hand-edited back to sister.",
+      "why": "Current-schema saves must already contain the succession row. Loading must not resurrect year-0 Maeve and must not quietly rewrite her either.",
+      "base": "year14-returned",
+      "systems": [
+        "corrupt",
+        "npc"
+      ],
+      "layers": [
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "world.npcs.maeve.role",
+              "value": "sister"
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "stale-npc",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value",
+        "warp-ending"
+      ],
+      "id": "INT-17",
+      "category": "integrity",
+      "title": "campaignComplete without an ending is rejected",
+      "starting": "Saved new game with campaignComplete forced true and no endingsSeen.",
+      "why": "Completion without an ending is the torn-ending bug. It must not load as a finished campaign.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "ending"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.campaignComplete",
+              "value": true
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "campaign-integrity",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value",
+        "death"
+      ],
+      "id": "INT-18",
+      "category": "integrity",
+      "title": "Zero hp in the play phase is rejected",
+      "starting": "Saved new game with hp 0 while phase is still play.",
+      "why": "A dead body in the world means the death did not commit. That blob is corrupt, not an afterlife.",
+      "base": "new-game",
+      "systems": [
+        "corrupt",
+        "body"
+      ],
+      "layers": [
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "body.hp",
+              "value": 0
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "bad-hp",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "corrupt-value",
+        "form-unlock"
+      ],
+      "id": "INT-19",
+      "category": "integrity",
+      "title": "Heron in the unlock list without the Mayor flag is rejected",
+      "starting": "Year 14 otter save with heron inserted into formsUnlocked.",
+      "why": "Form lists are derived from death, the Mayor, and crowns. A hand-added form must not load.",
+      "base": "year14-returned",
+      "systems": [
+        "corrupt",
+        "form"
+      ],
+      "layers": [
+        "person"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary",
+            "backup"
+          ],
+          "sets": [
+            {
+              "path": "person.formsUnlocked",
+              "value": [
+                "walker",
+                "otter",
+                "heron"
+              ]
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "form-illegal",
+        "stateIsNull": true
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "death",
+        "quest-succession",
+        "boss-key-reward",
+        "form-unlock",
+        "ordinary-save-load"
+      ],
+      "id": "X-01",
+      "category": "death-release",
+      "title": "Dungeon death, quest, key, succession, otter, then an older save",
+      "starting": "Year 0 in Snake Mountain, lantern-debt asked, key-stacks carried, boss still alive, hp 6.",
+      "why": "This is the hybrid-save bug. The return must change quest-adjacent life state, the key, the three mortals, and the form; loading the older snapshot must restore all of them together, not keep otter on a year-0 Maeve.",
+      "base": "year0-dungeon",
+      "systems": [
+        "death",
+        "quest",
+        "keys",
+        "npc",
+        "form",
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "checkpoint",
+          "name": "start"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-01"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        },
+        {
+          "op": "checkpoint",
+          "name": "future"
+        },
+        {
+          "op": "load-checkpoint",
+          "name": "start"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "equalsCheckpoint": "start",
+        "match": {
+          "person.year": 0,
+          "person.formsUnlocked": [
+            "walker"
+          ],
+          "life.carriedKeys": [
+            "key-stacks"
+          ],
+          "world.npcs.maeve.role": "sister",
+          "body.map": "snake-mountain-cut",
+          "body.hp": 6
+        },
+        "checkpointMatch": {
+          "future": {
+            "person.year": 14,
+            "person.deaths": 1,
+            "person.formsUnlocked": [
+              "walker",
+              "otter"
+            ],
+            "body.form": "otter",
+            "body.map": "middlebury-green",
+            "life.carriedKeys": [],
+            "life.dialogueSeenThisLife": [],
+            "world.keys.key-stacks.state": "home",
+            "world.quests.lantern-debt.step": "asked",
+            "world.npcs.maeve.role": "archive-keeper",
+            "world.npcs.maeve.place": "ilsley-archive",
+            "world.npcs.cal.role": "harbormaster",
+            "world.npcs.millwright.name": "Willa",
+            "world.dungeons.snake-mountain-cut.cleared": false,
+            "meta.phase": "play"
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "stats-same-as-start"
+      ],
+      "patch": null,
+      "themes": [
+        "death-during-boss-reward",
+        "death",
+        "quest-succession",
+        "form-unlock"
+      ],
+      "id": "X-02",
+      "category": "boss-key-reward",
+      "title": "Death during a pending boss reward keeps the boss and drops the Edge",
+      "starting": "Year 14 otter, Snake Heart already claimed. Lantern debt is then committed to ledger-found, Bay boss is defeated, Edge is pending, Mayor already granted heron.",
+      "why": "Boss defeat commits before the reward. Dying in the reward phase must not grant Edge, must not roll back the boss, must not roll back the quest, and must still age the county and offer heron.",
+      "base": "year14-returned",
+      "systems": [
+        "death",
+        "boss",
+        "quest",
+        "npc",
+        "form",
+        "upgrade"
+      ],
+      "layers": [
+        "person",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "talk-mayor"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "ledger-found"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "boss-defeat",
+          "dungeonId": "button-bay-wreck"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-bay-edge"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-02"
+        },
+        {
+          "op": "choose-form",
+          "form": "heron"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 28,
+          "person.deaths": 2,
+          "person.heart": 1,
+          "person.edge": 0,
+          "person.stride": 0,
+          "world.rewardsClaimed": [
+            "reward-snake-heart"
+          ],
+          "world.dungeons.button-bay-wreck.bossDefeated": true,
+          "world.quests.lantern-debt.step": "ledger-found",
+          "body.form": "heron",
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "heron"
+          ],
+          "life.pendingReward": null,
+          "meta.phase": "play",
+          "world.npcs.maeve.name": "Ione",
+          "world.npcs.maeve.age": 22,
+          "world.npcs.maeve.archived": [
+            "Maeve"
+          ],
+          "world.npcs.millwright.name": "Willa",
+          "world.npcs.millwright.age": 45,
+          "world.npcs.cal.name": "Cal",
+          "world.npcs.cal.age": 47,
+          "world.npcs.cal.role": "harbormaster"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "completion-same-as-start",
+        "stats-same-as-start"
+      ],
+      "patch": null,
+      "themes": [
+        "shrine-release",
+        "ending-then-death",
+        "repeated-returns-after-70"
+      ],
+      "id": "X-03",
+      "category": "warp-ending",
+      "title": "Release after the ledger ending enters year 84 without erasing completion",
+      "starting": "Year 70, ledger recorded, crown form available, Heart/Stride/Edge at cap, mill office closed.",
+      "why": "A finished campaign still returns. Release must add a release, not a death, keep the ending, and freeze the year-70 people while the Mayor seal replaces the living mayor.",
+      "base": "year70-ledger",
+      "systems": [
+        "release",
+        "ending",
+        "form",
+        "npc",
+        "time"
+      ],
+      "layers": [
+        "person",
+        "world",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "shrine-release",
+          "token": "rel-70"
+        },
+        {
+          "op": "choose-form",
+          "form": "crown"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "clearedCount": 16,
+        "match": {
+          "person.year": 84,
+          "person.deaths": 5,
+          "person.releases": 1,
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "world.postCompletion": true,
+          "body.form": "crown",
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "heron",
+            "crown"
+          ],
+          "person.heart": 3,
+          "world.npcs.maeve.name": "Nell",
+          "world.npcs.maeve.age": 38,
+          "world.npcs.cal.name": "Rhee",
+          "world.npcs.millwright.office": "closed",
+          "world.npcs.mayor.role": "seal",
+          "world.npcs.mayor.name": "Pye"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "save-in-afterlife",
+        "form-unlock",
+        "quest-succession"
+      ],
+      "id": "X-04",
+      "category": "forms",
+      "title": "Save and load in the afterlife after Quill grants heron",
+      "starting": "Year 28. Quill is mayor. Heron is locked. Ione keeps the archive. Two deaths already counted.",
+      "why": "The afterlife save must keep the already-advanced year, the unchosen body, Quill's grant, and the year-42 succession. It must not snap back to Adel or auto-pick a form.",
+      "base": "year28-open",
+      "systems": [
+        "form",
+        "death",
+        "save-load",
+        "npc",
+        "time"
+      ],
+      "layers": [
+        "person",
+        "body",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "talk-mayor"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-04"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": null,
+        "match": {
+          "meta.phase": "afterlife",
+          "person.year": 42,
+          "body.form": null,
+          "body.map": "afterlife",
+          "person.mayorSpoken": true,
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "heron"
+          ],
+          "meta.writeGeneration": 1,
+          "world.npcs.mayor.name": "Quill",
+          "world.npcs.mayor.age": 58,
+          "world.npcs.maeve.name": "Ione",
+          "world.npcs.maeve.age": 36,
+          "world.npcs.cal.name": "Tad",
+          "world.npcs.cal.age": 20,
+          "world.npcs.cal.role": "dock-hand",
+          "world.npcs.millwright.name": "Soren",
+          "world.npcs.millwright.age": 28,
+          "life.pendingReward": null
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "boss-key-reward",
+        "warp-ending",
+        "death"
+      ],
+      "id": "X-05",
+      "category": "boss-key-reward",
+      "title": "Socket, boss, Stride, and warp survive death; the body does not",
+      "starting": "Year 14, Snake Heart already owned. key-gap is still at home.",
+      "why": "Socketed keys, boss clears, claimed stats, and warps are world-state. The warp destination the body was standing on is not.",
+      "base": "year14-returned",
+      "systems": [
+        "keys",
+        "boss",
+        "upgrade",
+        "warp",
+        "death"
+      ],
+      "layers": [
+        "world",
+        "person",
+        "body",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "pickup-key",
+          "keyId": "key-gap"
+        },
+        {
+          "op": "socket-key",
+          "keyId": "key-gap"
+        },
+        {
+          "op": "boss-defeat",
+          "dungeonId": "brandon-gap-mine"
+        },
+        {
+          "op": "begin-reward",
+          "rewardId": "reward-gap-stride"
+        },
+        {
+          "op": "claim-reward"
+        },
+        {
+          "op": "unlock-warp",
+          "warpId": "gap-shrine"
+        },
+        {
+          "op": "warp",
+          "warpId": "gap-shrine"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-05"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 28,
+          "person.stride": 1,
+          "person.heart": 1,
+          "person.edge": 0,
+          "world.keys.key-gap.state": "socketed",
+          "life.carriedKeys": [],
+          "world.dungeons.brandon-gap-mine.bossDefeated": true,
+          "body.map": "middlebury-green",
+          "body.form": "otter"
+        },
+        "includes": {
+          "world.warpsUnlocked": [
+            "gap-shrine"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "duplicate-death",
+        "quest-succession"
+      ],
+      "id": "X-06",
+      "category": "death-release",
+      "title": "A duplicate death token does not skip Maeve a generation",
+      "starting": "New game.",
+      "why": "If a duplicate event applied twice, year 14 Maeve would be replaced by Ione. Idempotence is a succession test, not only a counter test.",
+      "base": "new-game",
+      "systems": [
+        "death",
+        "npc",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "dup-1"
+        },
+        {
+          "op": "combat-death",
+          "token": "dup-1"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "idempotent": true,
+        "match": {
+          "person.year": 14,
+          "world.npcs.maeve.name": "Maeve",
+          "world.npcs.maeve.age": 48,
+          "world.npcs.maeve.role": "archive-keeper",
+          "world.npcs.millwright.name": "Willa",
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write",
+        "quest-transition-save"
+      ],
+      "id": "X-07",
+      "category": "integrity",
+      "title": "A torn primary during a quest transition restores the pre-commit backup",
+      "starting": "New game saved before the transition, then saved again with the transition open, then the primary is truncated.",
+      "why": "Interrupted writes during a handover must not commit the step and must not grant a reward that was never in the transition.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "quest",
+        "save-load"
+      ],
+      "layers": [
+        "world",
+        "life"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "begin-transition",
+          "quest": "lantern-debt",
+          "to": "asked"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "truncate": 16
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "match": {
+          "world.quests.lantern-debt.step": "unstarted",
+          "life.transition": null,
+          "meta.phase": "play",
+          "person.heart": 0,
+          "person.year": 0
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "completion-same-as-start",
+        "stats-same-as-start"
+      ],
+      "patch": null,
+      "themes": [
+        "ending-then-death",
+        "corrupt-value",
+        "interrupted-write"
+      ],
+      "id": "X-09",
+      "category": "integrity",
+      "title": "Death after an ending, then a corrupt Heart, falls back to the completed backup",
+      "starting": "Year 70 ledger, Heart 3. The return to year 84 is saved, then that primary's Heart is set to 99.",
+      "why": "The newer file is illegal. Recovery must keep campaign completion and Heart 3 from the backup, not clamp 99 to 3 and not drop the ending. The year-84 life is lost with the torn primary; that is the backup contract.",
+      "base": "year70-ledger",
+      "systems": [
+        "ending",
+        "death",
+        "corrupt",
+        "upgrade",
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-09"
+        },
+        {
+          "op": "choose-form",
+          "form": "crown"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "mutate-saved",
+          "targets": [
+            "primary"
+          ],
+          "sets": [
+            {
+              "path": "person.heart",
+              "value": 99
+            }
+          ],
+          "rechecksum": true
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "primaryError": "bad-range",
+        "match": {
+          "person.year": 70,
+          "person.heart": 3,
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "person.deaths": 5
+        }
+      }
+    },
+    {
+      "invariants": [
+        "no-synthetic-state"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock",
+        "death",
+        "quest-succession"
+      ],
+      "id": "X-10",
+      "category": "forms",
+      "title": "One crown, a death, the second crown, and a rejected repeat",
+      "starting": "Year 0, no rites.",
+      "why": "Crown progress is person-state across a return. Cal must age on that return, the form must unlock only at two rites, and the first rite must still be closed.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "death",
+        "npc",
+        "warp"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "complete-crown",
+          "riteId": "crown-east"
+        },
+        {
+          "op": "combat-death",
+          "token": "x-10"
+        },
+        {
+          "op": "choose-form",
+          "form": "otter"
+        },
+        {
+          "op": "complete-crown",
+          "riteId": "crown-west"
+        },
+        {
+          "op": "complete-crown",
+          "riteId": "crown-east"
+        }
+      ],
+      "expect": {
+        "ok": false,
+        "error": "rite-done",
+        "stateIsNull": true,
+        "liveMatch": {
+          "person.crowns": 2,
+          "person.crownRites": [
+            "crown-east",
+            "crown-west"
+          ],
+          "person.year": 14,
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "crown"
+          ],
+          "world.npcs.cal.role": "harbormaster",
+          "world.npcs.cal.age": 33
+        },
+        "liveIncludes": {
+          "world.warpsUnlocked": [
+            "crown-shrine"
+          ]
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "shrine-release",
+        "boss-key-reward",
+        "quest-succession"
+      ],
+      "id": "X-11",
+      "category": "death-release",
+      "title": "Release while carrying the mill key, with mill-gear already asked",
+      "starting": "Year 0. Bram has asked for the gear. key-mill is in hand.",
+      "why": "Release is not a death. The key goes home, the quest stays asked for Willa, otter unlocks, and Bram is archived.",
+      "base": "new-game",
+      "systems": [
+        "release",
+        "keys",
+        "quest",
+        "npc",
+        "form"
+      ],
+      "layers": [
+        "person",
+        "life",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "begin-transition",
+          "quest": "mill-gear",
+          "to": "asked"
+        },
+        {
+          "op": "commit-quest"
+        },
+        {
+          "op": "pickup-key",
+          "keyId": "key-mill"
+        },
+        {
+          "op": "shrine-release",
+          "token": "rel-11"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.deaths": 0,
+          "person.releases": 1,
+          "person.year": 14,
+          "world.quests.mill-gear.step": "asked",
+          "world.keys.key-mill.state": "home",
+          "life.carriedKeys": [],
+          "world.npcs.millwright.name": "Willa",
+          "world.npcs.millwright.archived": [
+            "Bram"
+          ],
+          "world.npcs.maeve.role": "archive-keeper",
+          "body.form": "walker",
+          "person.formsUnlocked": [
+            "walker",
+            "otter"
+          ],
+          "meta.phase": "play"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "completion-same-as-start",
+        "stats-same-as-start",
+        "dungeon-clears-same"
+      ],
+      "patch": null,
+      "themes": [
+        "repeated-returns-after-70",
+        "ending-then-death",
+        "quest-succession"
+      ],
+      "id": "X-12",
+      "category": "warp-ending",
+      "title": "Three further returns after year 70 do not invent a seventh generation",
+      "starting": "Year 70 ledger. Nell, Rhee, and the closed mill are the last living succession row.",
+      "why": "Time keeps moving after the last principal era. The snapshot must freeze. Campaign completion, caps, and dungeon clears stay. No new successor is generated.",
+      "base": "year70-ledger",
+      "systems": [
+        "time",
+        "npc",
+        "ending",
+        "death",
+        "upgrade"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "x12-1"
+        },
+        {
+          "op": "choose-form",
+          "form": "crown"
+        },
+        {
+          "op": "combat-death",
+          "token": "x12-2"
+        },
+        {
+          "op": "choose-form",
+          "form": "crown"
+        },
+        {
+          "op": "combat-death",
+          "token": "x12-3"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "clearedCount": 16,
+        "match": {
+          "person.year": 112,
+          "person.deaths": 8,
+          "person.releases": 0,
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "person.heart": 3,
+          "body.form": "walker",
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "heron",
+            "crown"
+          ],
+          "world.npcs.maeve.name": "Nell",
+          "world.npcs.maeve.age": 38,
+          "world.npcs.cal.name": "Rhee",
+          "world.npcs.cal.age": 26,
+          "world.npcs.cal.role": "dock-clerk",
+          "world.npcs.millwright.office": "closed",
+          "world.npcs.millwright.name": null,
+          "world.npcs.millwright.archived": [
+            "Bram",
+            "Willa",
+            "Soren"
+          ],
+          "world.npcs.mayor.role": "seal"
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "interrupted-write",
+        "boss-key-reward",
+        "quest-succession"
+      ],
+      "id": "X-13",
+      "category": "integrity",
+      "title": "A partial JSON fragment cannot apply a quest and a boss by itself",
+      "starting": "New game saved as a whole envelope. The primary is then replaced by a fragment that claims Heart 3, a repaid debt, and a defeated Dunmore boss.",
+      "why": "The contract is one checksummed envelope. A split or partial write must not apply some systems and not others; the backup remains the whole previous state.",
+      "base": "new-game",
+      "systems": [
+        "interrupt",
+        "quest",
+        "boss",
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "save"
+        },
+        {
+          "op": "replace-primary-raw",
+          "value": {
+            "person": {
+              "heart": 3
+            },
+            "world": {
+              "quests": {
+                "lantern-debt": {
+                  "step": "repaid"
+                }
+              },
+              "dungeons": {
+                "lake-dunmore-shelf": {
+                  "cleared": true,
+                  "bossDefeated": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "recoveredFrom": "backup",
+        "match": {
+          "person.heart": 0,
+          "person.year": 0,
+          "world.quests.lantern-debt.step": "unstarted",
+          "world.dungeons.lake-dunmore-shelf.cleared": false,
+          "world.dungeons.lake-dunmore-shelf.bossDefeated": false
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core"
+      ],
+      "patch": null,
+      "themes": [
+        "form-unlock",
+        "repeated-returns-after-70",
+        "quest-succession"
+      ],
+      "id": "X-14",
+      "category": "forms",
+      "title": "The Mayor's seal still grants heron after year 70",
+      "starting": "New game. Ellis returns six times without ever speaking to a living mayor.",
+      "why": "Heron must not become missable just because the living mayors have died, and the seal must not cost another fourteen years or invent a new mayor.",
+      "base": "new-game",
+      "systems": [
+        "form",
+        "time",
+        "npc",
+        "death"
+      ],
+      "layers": [
+        "person",
+        "world"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "seal-1"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "combat-death",
+          "token": "seal-2"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "combat-death",
+          "token": "seal-3"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "combat-death",
+          "token": "seal-4"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "combat-death",
+          "token": "seal-5"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "combat-death",
+          "token": "seal-6"
+        },
+        {
+          "op": "choose-form",
+          "form": "walker"
+        },
+        {
+          "op": "checkpoint",
+          "name": "before-mayor"
+        },
+        {
+          "op": "talk-mayor"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "match": {
+          "person.year": 84,
+          "person.deaths": 6,
+          "person.mayorSpoken": true,
+          "person.formsUnlocked": [
+            "walker",
+            "otter",
+            "heron"
+          ],
+          "person.campaignComplete": false,
+          "world.npcs.mayor.role": "seal",
+          "world.npcs.mayor.name": "Pye",
+          "world.npcs.maeve.name": "Nell",
+          "world.npcs.maeve.age": 38
+        },
+        "checkpointMatch": {
+          "before-mayor": {
+            "person.mayorSpoken": false,
+            "person.formsUnlocked": [
+              "walker",
+              "otter"
+            ],
+            "person.year": 84
+          }
+        }
+      }
+    },
+    {
+      "invariants": [
+        "core",
+        "completion-same-as-start",
+        "stats-same-as-start",
+        "dungeon-clears-same"
+      ],
+      "patch": null,
+      "themes": [
+        "ending-then-death",
+        "warp-ending",
+        "ordinary-save-load"
+      ],
+      "id": "X-15",
+      "category": "warp-ending",
+      "title": "Ending, death, save, and load keep clears, crown, and warps",
+      "starting": "Year 70 ledger, all 16 dungeons clear, crown shrine unlocked, stats capped.",
+      "why": "Death after completion is the campaign's main persistence promise. A reload of that next life must not drop clears, the ending, the crown form, or the shrine.",
+      "base": "year70-ledger",
+      "systems": [
+        "ending",
+        "death",
+        "dungeon",
+        "form",
+        "warp",
+        "save-load"
+      ],
+      "layers": [
+        "person",
+        "world",
+        "body"
+      ],
+      "actions": [
+        {
+          "op": "combat-death",
+          "token": "x-15"
+        },
+        {
+          "op": "choose-form",
+          "form": "crown"
+        },
+        {
+          "op": "save"
+        },
+        {
+          "op": "load"
+        }
+      ],
+      "expect": {
+        "ok": true,
+        "clearedCount": 16,
+        "match": {
+          "person.year": 84,
+          "person.campaignComplete": true,
+          "person.endingsSeen": [
+            "ledger"
+          ],
+          "world.postCompletion": true,
+          "body.form": "crown",
+          "person.heart": 3,
+          "world.dungeons.snake-mountain-cut.cleared": true,
+          "meta.phase": "play"
+        },
+        "includes": {
+          "world.warpsUnlocked": [
+            "green-shrine",
+            "crown-shrine"
+          ]
+        }
+      }
+    }
+  ]
+}

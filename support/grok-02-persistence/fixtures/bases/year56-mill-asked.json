@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 3,
+  "person": {
+    "id": "ellis-perch",
+    "name": "Ellis Perch",
+    "deaths": 4,
+    "releases": 0,
+    "year": 56,
+    "crowns": 0,
+    "crownRites": [],
+    "formsUnlocked": [
+      "walker",
+      "otter"
+    ],
+    "heart": 0,
+    "stride": 0,
+    "edge": 0,
+    "endingsSeen": [],
+    "campaignComplete": false,
+    "mayorSpoken": false,
+    "appliedDeathTokens": [
+      "mill-1",
+      "mill-2",
+      "mill-3",
+      "mill-4"
+    ]
+  },
+  "body": {
+    "form": "otter",
+    "hp": 10,
+    "hpMax": 10,
+    "map": "middlebury-green",
+    "x": 12,
+    "y": 8,
+    "facing": "s",
+    "inCombat": false,
+    "tempBuffs": []
+  },
+  "life": {
+    "lifeId": 5,
+    "startedYear": 56,
+    "dialogueSeenThisLife": [],
+    "carriedKeys": [],
+    "pendingReward": null,
+    "transition": null,
+    "pendingEnding": null
+  },
+  "world": {
+    "year": 56,
+    "npcs": {
+      "maeve": {
+        "status": "successor",
+        "name": "Nell",
+        "age": 24,
+        "role": "archive-keeper",
+        "place": "ilsley-archive",
+        "archived": [
+          "Maeve",
+          "Ione"
+        ]
+      },
+      "cal": {
+        "status": "alive",
+        "name": "Tad",
+        "age": 34,
+        "role": "harbormaster",
+        "place": "otter-creek-docks",
+        "archived": [
+          "Cal"
+        ]
+      },
+      "millwright": {
+        "status": "alive",
+        "office": "open",
+        "name": "Soren",
+        "age": 42,
+        "role": "millwright",
+        "place": "middlebury-mill",
+        "archived": [
+          "Bram",
+          "Willa"
+        ]
+      },
+      "mayor": {
+        "status": "alive",
+        "name": "Pye",
+        "age": 41,
+        "role": "mayor",
+        "place": "town-hall",
+        "canGrant": true,
+        "archived": [
+          "Adel",
+          "Quill"
+        ]
+      }
+    },
+    "dungeons": {
+      "middlebury-mill-cellar": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "otter-creek-culvert": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "ilsley-stacks": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "shard-villa-well": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "snake-mountain-cut": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "bread-loaf-ice": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "lake-dunmore-shelf": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "brandon-gap-mine": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "chimney-point-crypt": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "button-bay-wreck": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "mount-independence-gallery": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "weybridge-silo": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "cornwall-swamp-root": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "ripton-ledge": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "shoreham-covered-bridge": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      },
+      "vergennes-falls-race": {
+        "discovered": false,
+        "cleared": false,
+        "bossDefeated": false
+      }
+    },
+    "quests": {
+      "lantern-debt": {
+        "step": "unstarted"
+      },
+      "mill-gear": {
+        "step": "asked"
+      }
+    },
+    "keys": {
+      "key-mill": {
+        "state": "home",
+        "home": "middlebury-mill-cellar"
+      },
+      "key-stacks": {
+        "state": "home",
+        "home": "ilsley-stacks"
+      },
+      "key-villa": {
+        "state": "home",
+        "home": "shard-villa-well"
+      },
+      "key-gap": {
+        "state": "home",
+        "home": "brandon-gap-mine"
+      },
+      "key-bridge": {
+        "state": "home",
+        "home": "shoreham-covered-bridge"
+      }
+    },
+    "rewardsClaimed": [],
+    "warpsUnlocked": [
+      "green-shrine"
+    ],
+    "ending": null,
+    "postCompletion": false
+  },
+  "meta": {
+    "phase": "play",
+    "writeGeneration": 0
+  }
+}

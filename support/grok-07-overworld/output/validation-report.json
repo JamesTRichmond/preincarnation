@@ -1,0 +1,163 @@
+{
+  "ok": true,
+  "counts": {
+    "screens": 192,
+    "hubs": 10,
+    "interiors": 60,
+    "dungeons": 16,
+    "eraChanges": 48
+  },
+  "perDistrict": {
+    "bristol": 16,
+    "ferrisburgh": 16,
+    "lincoln": 16,
+    "middlebury": 16,
+    "new_haven": 16,
+    "orwell": 16,
+    "quarry": 16,
+    "ripton": 16,
+    "salisbury": 16,
+    "shoreham": 16,
+    "vergennes": 16,
+    "west_lakeshore": 16
+  },
+  "eraChangesByDistrict": {
+    "ferrisburgh": 4,
+    "bristol": 5,
+    "vergennes": 5,
+    "new_haven": 4,
+    "lincoln": 5,
+    "ripton": 5,
+    "middlebury": 5,
+    "quarry": 4,
+    "salisbury": 4,
+    "shoreham": 4,
+    "orwell": 5,
+    "west_lakeshore": 4
+  },
+  "adjacency": {
+    "ferrisburgh": [
+      "new_haven",
+      "vergennes"
+    ],
+    "new_haven": [
+      "bristol",
+      "ferrisburgh",
+      "middlebury",
+      "quarry"
+    ],
+    "bristol": [
+      "lincoln",
+      "middlebury",
+      "new_haven",
+      "ripton"
+    ],
+    "lincoln": [
+      "bristol",
+      "ripton"
+    ],
+    "west_lakeshore": [
+      "shoreham",
+      "vergennes"
+    ],
+    "vergennes": [
+      "ferrisburgh",
+      "quarry",
+      "shoreham",
+      "west_lakeshore"
+    ],
+    "quarry": [
+      "middlebury",
+      "new_haven",
+      "orwell",
+      "salisbury",
+      "shoreham",
+      "vergennes"
+    ],
+    "middlebury": [
+      "bristol",
+      "new_haven",
+      "quarry",
+      "ripton",
+      "salisbury"
+    ],
+    "ripton": [
+      "bristol",
+      "lincoln",
+      "middlebury",
+      "salisbury"
+    ],
+    "shoreham": [
+      "orwell",
+      "quarry",
+      "vergennes",
+      "west_lakeshore"
+    ],
+    "salisbury": [
+      "middlebury",
+      "quarry",
+      "ripton"
+    ],
+    "orwell": [
+      "quarry",
+      "shoreham"
+    ]
+  },
+  "conditionalAdjacency": [
+    {
+      "districts": [
+        "ferrisburgh",
+        "bristol"
+      ],
+      "via": "span-monkton",
+      "era": 70
+    },
+    {
+      "districts": [
+        "new_haven",
+        "vergennes"
+      ],
+      "via": "span-belden",
+      "era": 70,
+      "need": [
+        "creek_boots"
+      ]
+    },
+    {
+      "districts": [
+        "bristol",
+        "lincoln"
+      ],
+      "via": "span-appalachian",
+      "era": 70,
+      "needAny": [
+        "void_oar",
+        "frost_notch"
+      ]
+    }
+  ],
+  "era0NoTools": 186,
+  "gatedAtEra0NoTools": [
+    "LIN-16",
+    "ORW-12",
+    "RIP-09",
+    "RIP-10",
+    "RIP-13",
+    "RIP-14"
+  ],
+  "voidOarDeltaEra56": [
+    "ORW-12",
+    "SAL-06"
+  ],
+  "voidOarDeltaEra70": [
+    "QRY-15",
+    "SAL-06"
+  ],
+  "warpSample": {
+    "from": "FER-04",
+    "to": "ORW-14",
+    "walking": 12,
+    "withKnownWarps": 6
+  },
+  "errors": []
+}

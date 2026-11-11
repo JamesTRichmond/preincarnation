@@ -1,0 +1,49 @@
+flowchart TD
+  dg08_r01["Night Stair"]
+  dg08_r02["Docket Hall"]
+  dg08_r03["Sconce Gallery"]
+  dg08_r04["Shadow Bar"]
+  dg08_r05["Witness Benches"]
+  dg08_r06["Clerk's Well"]
+  dg08_r07["The Bailiff of Shade"]
+  dg08_r08["Evidence Cage"]
+  dg08_r09["Lantern Stairs"]
+  dg08_r10["Cross-Examination"]
+  dg08_r11["Jury Loft"]
+  dg08_r12["The Playable Record"]
+  dg08_r13["Face Gallery"]
+  dg08_r14["Crown Threshold"]
+  dg08_r15["Court is in Session"]
+  dg08_r16["The Witness Without a Face"]
+  dg08_r01 -->|N dg08.night| dg08_r02
+  dg08_r02 -->|S| dg08_r01
+  dg08_r02 -->|N| dg08_r03
+  dg08_r02 -->|E dg08.record| dg08_r14
+  dg08_r03 -->|S| dg08_r02
+  dg08_r03 -->|N dg08.sconces| dg08_r04
+  dg08_r04 -->|S| dg08_r03
+  dg08_r04 -->|N dg08.shadow| dg08_r05
+  dg08_r05 -->|S| dg08_r04
+  dg08_r05 -->|N| dg08_r06
+  dg08_r06 -->|S| dg08_r05
+  dg08_r06 -->|N dg08.well| dg08_r07
+  dg08_r07 -->|S| dg08_r06
+  dg08_r07 -->|N dg08.bailiff dg08.sk.cage| dg08_r08
+  dg08_r08 -->|S| dg08_r07
+  dg08_r08 -->|N dg08.exhibit| dg08_r09
+  dg08_r09 -->|S| dg08_r08
+  dg08_r09 -->|N dg08.lanterns| dg08_r10
+  dg08_r10 -->|S| dg08_r09
+  dg08_r10 -->|N dg08.cross| dg08_r12
+  dg08_r10 -->|E| dg08_r11
+  dg08_r11 -->|W| dg08_r10
+  dg08_r12 -->|S| dg08_r10
+  dg08_r12 -->|N dg08.record| dg08_r14
+  dg08_r13 -->|E| dg08_r14
+  dg08_r14 -->|S| dg08_r12
+  dg08_r14 -->|N| dg08_r15
+  dg08_r14 -->|W| dg08_r13
+  dg08_r14 -->|E dg08.record| dg08_r02
+  dg08_r15 -->|S| dg08_r14
+  dg08_r15 -->|N dg08.bk.lantern| dg08_r16
+  dg08_r16 -->|S| dg08_r15

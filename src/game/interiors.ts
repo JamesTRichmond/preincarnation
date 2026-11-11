@@ -228,7 +228,9 @@ export function buildInterior(
   }
   if (id === "int_sugar") {
     const u = marks.U?.[0] ?? { x: 3, y: 2 };
-    props.push({ kind: "syrup", x: u.x + 1, y: u.y, id: "syrup-tin" });
+    if (!flags.caches.includes("syrup-tin")) {
+      props.push({ kind: "syrup", x: u.x + 1, y: u.y, id: "syrup-tin" });
+    }
   }
   if (id === "int_home") {
     if (!flags.relics?.includes("mirror")) {
