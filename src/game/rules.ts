@@ -3,6 +3,7 @@ import { graveSnapshot, sipIndex } from "./bag.ts";
 import { RELIC_BY_ID, type Grave, type RelicId } from "./items.ts";
 import { T } from "./tile-ids.ts";
 import type { CycleLedger, Flags, IncarnationId, SaveData, Upgrades } from "./types.ts";
+import { spendableRanksLeft } from "./rewards.ts";
 import { starterWeapon } from "./weapons.ts";
 
 export function isIncarnationUnlocked(
@@ -231,16 +232,6 @@ export function skillAwardForDeath(idealId: string, townsCleared: readonly strin
   return 2 + (idealId === "the_job" && !townsCleared.includes("quarry") ? 1 : 0);
 }
 
-/** Ranks still buyable with skill. Crowns are not skill. */
-export function spendableRanksLeft(upgrades: Upgrades): number {
-  let left = 0;
-  for (const def of LIMBO_UPGRADES) {
-    if (def.polarity === "crown") continue;
-    left += Math.max(0, def.max - ownedLevel(upgrades, def.key));
-  }
-  return left;
-}
-
 /** Death pays skill only while a rank is still unbought. Held points already count. */
 export function chapterSkillAward(save: SaveData): number {
   const raw = skillAwardForDeath(save.character.idealId, save.flags.townsCleared ?? []);
@@ -388,7 +379,9 @@ export function groundKeptLine(grave: Grave | undefined): string {
 }
 
 export function cycleLedger(save: SaveData): CycleLedger {
-  const awarded = save.flags.returnedFromDeath ? (save.flags.lastSkillAward ?? 0) : chapterSkillAward(save);
+  const awarded = save.flags.returnedFromDeath
+    ? (save.flags.lastSkillAward ?? 0)
+    : chapterSkillAward(save);
   const deed = save.flags.lastDeed || "You died with the Vein still quiet";
   const thisLife =
     awarded > 0
@@ -438,6 +431,7 @@ export function resolveDeath(
   const award = chapterSkillAward(save);
   save.character.skillPoints += award;
   save.flags.lastSkillAward = award;
+  save.flags.bottles = save.flags.bottles.map(() => "empty");
   save.flags.afterlifeHost = save.karma < devilThreshold(save.character.flawId) ? "devil" : "god";
   save.flags.returnedFromDeath = true;
   return save;
