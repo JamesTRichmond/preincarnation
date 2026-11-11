@@ -1,0 +1,21 @@
+{
+  "package": "dist/preincarnation-web-c737e42eb188-save8.tar.gz",
+  "tarSha256": "c082210986b5840ce17977d1bee8f62af518dfb1aaea4f2ca4cedbe69b5a972a",
+  "serverFunction": {
+    "entry": "web-output/functions/__server.func/index.mjs",
+    "runtime": "nodejs22.x",
+    "request": "GET /",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "cacheControlFromFunction": null,
+    "bootGuardBeforeModule": true,
+    "note": "no-store for / is a Vercel Build Output route in web-output/config.json. Invoking the function directly skips that router, so the function response itself has no cache-control header."
+  },
+  "packagedSaveModule": {
+    "SAVE_KEY": "preincarnation.save.v1",
+    "SAVE_VERSION": 8,
+    "v7Name": "Ira Fenn",
+    "v7LastDeed": ""
+  },
+  "desktop": "No application shell. electron-to-chromium and playwright-core are transitive libraries, not a desktop build. No .exe, no Steam app id, no Tauri config."
+}

@@ -1,0 +1,512 @@
+import type { DocumentDef, InvestigationDef } from "./types.ts";
+
+/**
+ * Twenty-four papers: six maps, eight letters, ten pieces of evidence.
+ * Every one is protected. None of them is a thumbnail with nowhere to go.
+ */
+
+export const DOCUMENTS: DocumentDef[] = [
+  {
+    id: "doc-01",
+    kind: "map",
+    title: "Eli's sugar ridge, 1979",
+    protected: true,
+    year: 1979,
+    from: "Eli",
+    to: "Whoever boils after me",
+    huntId: "hunt-sugar",
+    response: {
+      speaker: "Eli",
+      text: "I wrote it plain so a child could walk it without me. If you need a mark in the sky, you are not ready for what is under the stone.",
+    },
+    later: {
+      year: 1996,
+      text: "Lena can still walk the oak, but she already knows the tree is dying. The directions are true and also about to become a story. She copies them before the landmark leaves.",
+    },
+    body: "Stand at the sugarhouse door. The west stone wall runs to the lightning oak. On the brook side of the oak the first capstone is bare, the second capstone is cracked, and the tin is under the third capstone. Count them. Do not trust a feeling about the middle of the wall.",
+  },
+  {
+    id: "doc-02",
+    kind: "map",
+    title: "Lena's copy, after the oak",
+    protected: true,
+    year: 1996,
+    from: "Lena",
+    to: "Nell, when she is old enough",
+    huntId: "hunt-sugar",
+    response: {
+      speaker: "Lena",
+      text: "The oak is gone and the tin is not. I am writing the new landmarks so you do not have to inherit a tree.",
+    },
+    later: {
+      year: 2011,
+      text: "Fifteen years on, Nell sees that Lena did not update the map for accuracy alone. She updated it so a granddaughter could find Eli without standing in front of a stump and being told what used to be there.",
+    },
+    body: "From the new cupola, take the steel gate to the oak stump. Brook-side of the stump you pass the first capstone and the second capstone. The tin is still under the third capstone. The stump is the oak. Do not dig the stump.",
+  },
+  {
+    id: "doc-03",
+    kind: "map",
+    title: "Pell's note on the ledge",
+    protected: true,
+    year: 1986,
+    from: "Mr. Pell",
+    to: "Ada Brown",
+    huntId: "hunt-chapel",
+    response: {
+      speaker: "Mr. Pell",
+      text: "I will not put the boy's name on a bill. If you want what he hid, walk it yourself. I have already decided not to fine him.",
+    },
+    later: {
+      year: 2001,
+      text: "Fifteen years later the horse shed is a store room and Pell is dead. The note still walks. What changed is that Ada no longer needs it to decide about a fine. She needs it to decide about forgiveness, which she already gave.",
+    },
+    body: "From the parish steps go into the horse shed, then up the cedar line until the ledge breaks the sky. At the east end the east loose slate rings if you tap it. The box is under that slate. Do not lift the others. They are the roof of nothing.",
+  },
+  {
+    id: "doc-04",
+    kind: "map",
+    title: "Jonah's way, after the ramp",
+    protected: true,
+    year: 2001,
+    from: "Jonah",
+    to: "Whoever still has the key",
+    huntId: "hunt-chapel",
+    response: {
+      speaker: "Jonah",
+      text: "They poured concrete over the way I ran. The slate did not move. I am not asking to be forgiven in a letter. I am asking the box to be found by someone who already knows.",
+    },
+    later: {
+      year: 2016,
+      text: "Nell reads this after the bell has been recast. The ramp map is no longer a boy's evasion. It is the only approach that still exists, and the confession under the slate matters more than which crack was frost and which was his hands.",
+    },
+    body: "From the parish steps take the new ramp to the memorial bench, which sits where the first cedar stood, then onto the ledge. The east loose slate is unchanged. Tap it. If it rings, you are in the right winter.",
+  },
+  {
+    id: "doc-05",
+    kind: "map",
+    title: "Mae's river lot, 1998",
+    protected: true,
+    year: 1998,
+    from: "Mae",
+    to: "Herself, so she will not forget the count",
+    huntId: "hunt-river",
+    response: {
+      speaker: "Mae",
+      text: "I am writing the true count because I also painted a lie. If I die in a thaw I do not want the lie to be the one that survives.",
+    },
+    later: {
+      year: 2012,
+      text: "Ruth, fourteen years later, finally believes the painted stake was a decoy and not the family's bad luck. The map did not change. Her willingness to count past the first white post did.",
+    },
+    body: "From the landing, cross the log boom to the leaning willow. Downstream of the willow: the painted stake is empty, the bent stake is empty, and the jar is at the third flood stake. Skip the white one. I painted it so a glance would stop.",
+  },
+  {
+    id: "doc-06",
+    kind: "map",
+    title: "Ruth's copy, after the willow snapped",
+    protected: true,
+    year: 2012,
+    from: "Ruth",
+    to: "Nell",
+    huntId: "hunt-river",
+    response: {
+      speaker: "Ruth",
+      text: "The willow snapped in '08 and I am tired of pretending I do not know which stake. Walk it with me on the paper if you will not walk it on the ice.",
+    },
+    later: {
+      year: 2026,
+      text: "Nell walks it alone. The copy is not an accusation anymore. It is Ruth handing over the last place she was angry, and asking that the anger be buried with the empty jar rather than with Mae.",
+    },
+    body: "From the landing, the boat ramp leads to the culvert. The willow stump is the pale wood there. Downstream of the stump, pass the painted stake and the bent stake. Dig at the third flood stake. The painted one is still a liar.",
+  },
+  {
+    id: "doc-07",
+    kind: "letter",
+    title: "Ruth to Mae, March 4, 1998",
+    protected: true,
+    year: 1998,
+    from: "Ruth",
+    to: "Mae",
+    investigationId: "inv-corn",
+    response: {
+      speaker: "Mae",
+      text: "In the margin, the same night: I took it. The lot will not feed anyone if I don't. I could not make the words face the front of the page.",
+    },
+    later: {
+      year: 2012,
+      text: "The margin note looked like theft for fourteen years. After the jar comes up empty of everything but one kernel, it reads as planting. Ruth's question was never only an accusation. It was a door she left open.",
+    },
+    body: "Mae. The jar was not in the cellar this morning. The ledger still says full. If you took it to the river lot, say so to me and not to the room. I will not call it lost if you call it used. If you say nothing I will have to ask Harris, and I do not want his version. Ruth.",
+  },
+  {
+    id: "doc-08",
+    kind: "letter",
+    title: "Mae to Harris, unsent",
+    protected: true,
+    year: 1998,
+    from: "Mae",
+    to: "Harris",
+    investigationId: "inv-corn",
+    grants: ["doc-16"],
+    response: {
+      speaker: "Harris",
+      text: "I never got this. In 2012 I read the copy and I am telling you plain: the lot was yours alone. I walked the bank in Ruth's boots once, looking, and I did not take a kernel. The nail in the envelope is from that heel.",
+    },
+    later: {
+      year: 2012,
+      text: "Unsent, the letter made Harris look guilty to anyone who found only the boots. Sent, in effect, by the envelope's debris, it clears him. The fourteen years were a missing addressee, not a missing conscience.",
+    },
+    body: "Harris. If Ruth asks, I had the jar. Do not help me by inventing a buyer. Do not help me by being seen at the lot. I wore her boots so the tray would blame the wrong sister if blame was all we were going to have. I am sorry about the boots. I am not sorry about the corn. Mae. This stayed in the book.",
+  },
+  {
+    id: "doc-09",
+    kind: "letter",
+    title: "Ruth to the house, 2012",
+    protected: true,
+    year: 2012,
+    from: "Ruth",
+    to: "The house",
+    investigationId: "inv-corn",
+    response: {
+      speaker: "Nell",
+      text: "She was not accusing anymore. She was asking to be told the truth while she could still hear it from the chair, not from a box after.",
+    },
+    later: {
+      year: 2026,
+      text: "Nell, another fourteen years on, hears the letter as instructions to herself. The person who keeps the ledger does not get to call a thing lost because the count is easier that way.",
+    },
+    body: "I have decided the seed was not stolen. I have not decided I forgive the silence. If the jar is in the river lot, I want it found and I want it empty. Empty I can live with. Full I cannot, because full would mean she saved it from us. Look at the third stake. I am writing this so Nell does not inherit my pride along with the key.",
+  },
+  {
+    id: "doc-10",
+    kind: "letter",
+    title: "Pell to Ada, the week of the crack",
+    protected: true,
+    year: 1986,
+    from: "Mr. Pell",
+    to: "Ada Brown",
+    investigationId: "inv-bell",
+    grants: ["doc-18"],
+    response: {
+      speaker: "Ada Brown",
+      text: "Don't fine the boy. Frost did half of it. I walked the horse shed and the rope was already glass. Whatever he finished, he finished a thing the weather had started.",
+    },
+    later: {
+      year: 2001,
+      text: "Ada's answer was mercy in 1986 and, fifteen years later, still the right division of blame. What aged poorly was Pell's decision to let the boy think the mercy was ignorance.",
+    },
+    body: "Ada. The bell cracked on the north side. I found rope fibers in the ice on the step and a fresh cut farther up, where a boy would yank. Jonah rang that morning. I can put it on a bill or I can put it in a drawer. Tell me which man you want ringing beside you. The fibers came off my glove onto this page. Keep them if you mean to decide with your eyes.",
+  },
+  {
+    id: "doc-11",
+    kind: "letter",
+    title: "Jonah, grown, 2001",
+    protected: true,
+    year: 2001,
+    from: "Jonah",
+    to: "Mr. Pell",
+    investigationId: "inv-bell",
+    grants: ["doc-19"],
+    response: {
+      speaker: "Mr. Pell",
+      text: "I knew the whole time. I wanted him to say it before I said I knew. That was pride dressed as discipline. The photograph of the frost was mine. I took it so I could prove the weather if I ever had to defend him.",
+    },
+    later: {
+      year: 2016,
+      text: "Read after the recasting, Jonah's letter is not a request to be let off. It is a request to be believed about the frost. Pell's withheld defense did more damage than the fine he never wrote.",
+    },
+    body: "Mr. Pell. I pulled the rope. The rope was already frozen into a shape and I made it worse. I was nine. I am not nine. I left a copy of what I did under the slate because I could not hand it to you while you were alive to look disappointed in a particular way. The frost picture you took is still in the vestry drawer if Ada has not moved it. Look at the crack before you look at me.",
+  },
+  {
+    id: "doc-12",
+    kind: "letter",
+    title: "Vesper's invoice, order 741",
+    protected: true,
+    year: 1974,
+    from: "Mr. Vesper",
+    to: "Ida",
+    investigationId: "inv-photo",
+    grants: ["doc-21"],
+    response: {
+      speaker: "Ida",
+      text: "He charged extra to leave the brother out. I paid it. I want that said in my voice, not discovered as if the camera had blinked.",
+    },
+    later: {
+      year: 1990,
+      text: "Sixteen years later the invoice stops being a bill and becomes Ida's signature on an absence. Cal reading it does not need the print to know he was the line item.",
+    },
+    body: "Mrs. Hearth. Order 741, wedding reprint, one figure removed at your instruction, extra as agreed. The negative strip is in the sleeve. I do not destroy negatives. If you want the strip you may have it. I will not print the uncropped frame again unless you ask in writing. Vesper, White River Junction.",
+  },
+  {
+    id: "doc-13",
+    kind: "letter",
+    title: "Cal to Ida, 1990",
+    protected: true,
+    year: 1990,
+    from: "Cal",
+    to: "Ida",
+    investigationId: "inv-photo",
+    grants: ["doc-22"],
+    response: {
+      speaker: "Nell",
+      text: "Ida wrote under his last line, years after she could not post an answer: I was ashamed of the fight, not of him. Nell reads that as the true reply, late and in the house.",
+    },
+    later: {
+      year: 2004,
+      text: "By 2004 the letter is how Nell learns the crop was a fight between brothers, muddy and specific, not a moral fog. Cal asked to be in the picture. The family budgeted him out.",
+    },
+    body: "Mother. I saw the reprint at Ada's. I am the one not in it. If you have the paper where you asked for that, I want it. I am not coming for Christmas to stand just out of frame again. You can write me at the Junction, general delivery. I still answer to the name you would not let the caption have. Cal.",
+  },
+  {
+    id: "doc-14",
+    kind: "letter",
+    title: "Eli: do not crop the living",
+    protected: true,
+    year: 1974,
+    from: "Eli",
+    to: "Ida",
+    investigationId: "inv-photo",
+    response: {
+      speaker: "Lena",
+      text: "He hid this with the print because he lost the argument in the kitchen and would not lose it in the ground. I am his daughter and I am only now on his side of it.",
+    },
+    later: {
+      year: 2004,
+      text: "Thirty years on, Eli's note is not a rebuke of Ida's shame. Lena reads it as the family's other method: if you cannot stop a cropping, you keep a complete copy where the cropper will not think to look.",
+    },
+    body: "Ida. Do not crop the living. They were muddy. That is all the fight was. If you will not have him in the frame on the mantel, I will have him in the tin, and the tin will outlast the mat. Eli.",
+  },
+  {
+    id: "doc-15",
+    kind: "evidence",
+    title: "Cellar ledger scrap",
+    protected: true,
+    year: 1998,
+    from: "Ruth",
+    to: "The ledger",
+    investigationId: "inv-corn",
+    finding: "The week before the jar vanished, Ruth's hand records it full: flint corn, one jar, cellar shelf, right.",
+    later: {
+      year: 2012,
+      text: "The scrap was treated as proof of theft. It is proof of inventory. A full jar can be planted. The ledger cannot tell those apart, which is why a ledger is not a verdict.",
+    },
+    body: "Torn from the cellar book. In Ruth's pencil: 'March 1, flint corn, one jar, full, right shelf, do not cook.' Under it, March 4: 'jar gone.' The paper still has cellar damp in it. It is the start of the count, not the end.",
+  },
+  {
+    id: "doc-16",
+    kind: "evidence",
+    title: "Boot nail from the envelope",
+    protected: true,
+    year: 1998,
+    from: "The left boot",
+    to: "The tray",
+    investigationId: "inv-corn",
+    finding: "The nail matches the empty hole in the left heel on the boot tray. Mae walked the lot in Ruth's boots.",
+    later: {
+      year: 2012,
+      text: "For years the nail meant Harris or Mae had stolen while disguised as Ruth. It only ever meant Mae did not want the first tracks to be hers. Disguise is not the same act as taking.",
+    },
+    body: "A square-shank boot nail, bent once, river silt in the threads. It fell out of Mae's unsent envelope when the flap was worked open. The left boot in the tray has a bright hole of the same shank. This is the nail. It is not a second story about a different boot.",
+  },
+  {
+    id: "doc-17",
+    kind: "evidence",
+    title: "Seed jar from the third stake",
+    protected: true,
+    year: 1998,
+    from: "Mae",
+    to: "The river lot",
+    investigationId: "inv-corn",
+    finding: "The jar is empty except one kernel stuck to the glass. The corn was planted, not hoarded and not sold.",
+    later: {
+      year: 2012,
+      text: "Ruth said she could live with empty. Holding the jar, empty is not a loss. It is the lot's first honest year, and the kernel is Mae refusing to make the story perfectly clean.",
+    },
+    body: "A quart jar, lid waxed, the wax broken from the outside. No corn to speak of. One flint kernel is stuck to the shoulder, planted against the glass by damp and left as if on purpose. The gravel that covered it is still in the threads.",
+  },
+  {
+    id: "doc-18",
+    kind: "evidence",
+    title: "Rope fibers in the frost",
+    protected: true,
+    year: 1986,
+    from: "The bell rope",
+    to: "Pell's glove",
+    investigationId: "inv-bell",
+    finding: "The fibers are cut at one end and glazed with ice at the other. The rope was frozen, and then it was yanked.",
+    later: {
+      year: 2001,
+      text: "Seen with the frost photograph, the fibers stop being a child's vandalism. They are a sequence: weather, then a hand. Pell had the sequence in his glove and still waited to be asked.",
+    },
+    body: "A twist of hemp, one end clean-cut, the other darkened and shiny where ice held it. Pell shook them out of his glove onto the letter. They are brittle. They are the rope's own testimony, which does not include a name.",
+  },
+  {
+    id: "doc-19",
+    kind: "evidence",
+    title: "Photograph of the frosted crack",
+    protected: true,
+    year: 1986,
+    from: "Mr. Pell",
+    to: "The vestry drawer",
+    investigationId: "inv-bell",
+    finding: "The print shows frost feathering the crack before anyone would have rung. The damage started in the night.",
+    later: {
+      year: 2001,
+      text: "Jonah asked Pell to look at the crack before looking at the boy. Pell already had. The photograph is the look he would not show, and withholding it was the actual harm.",
+    },
+    body: "A small print, chapel light, the bell's north lip. Frost writes a white tree into a crack that does not yet cross the whole lip. No hand is in the frame. On the back, in Pell's letters: 'before service.'",
+  },
+  {
+    id: "doc-20",
+    kind: "evidence",
+    title: "Jonah's copy under the slate",
+    protected: true,
+    year: 1986,
+    from: "Jonah",
+    to: "The ledge",
+    investigationId: "inv-bell",
+    finding: "The copy says he pulled a frozen rope and heard the crack finish. He hid it because he could not hand it over.",
+    later: {
+      year: 2016,
+      text: "After the recast, the copy is not evidence of a crime the parish needs. It is evidence the boy tried to tell the truth in the only place that would make a sound back.",
+    },
+    body: "Pencil on a hymn half-sheet, childish hand, then a neater hand under it from 2001 confirming the words. 'I pulled. It was already icy. It cracked on my pull. I am sorry. I will pay for the rope if not the bell.' The paper was dry, which the ledge was not.",
+  },
+  {
+    id: "doc-21",
+    kind: "evidence",
+    title: "Negative strip, order 741",
+    protected: true,
+    year: 1974,
+    from: "Mr. Vesper",
+    to: "Ida",
+    investigationId: "inv-photo",
+    grants: [],
+    followUp: {
+      id: "doc-24",
+      label: "Take the 1971 school register down from the town shelf",
+    },
+    finding: "Held to the light, a second child stands at the edge of the wedding group, shoulder in, face turned.",
+    later: {
+      year: 1990,
+      text: "The strip is how Cal stops being a rumor. Ida paid to remove a person the emulsion still knows. The later shame is not that she cropped a fight. It is that she cropped a brother and kept the proof.",
+    },
+    body: "A short strip of glass-plate contact, sleeve marked 741. Most frames match the mantel photograph. The last frame is wider. A boy stands half out of it, mud on his knees, mouth open as if answering someone. The mantel crop begins exactly at his sleeve.",
+  },
+  {
+    id: "doc-22",
+    kind: "evidence",
+    title: "Ida's written request to crop",
+    protected: true,
+    year: 1974,
+    from: "Ida",
+    to: "Mr. Vesper",
+    investigationId: "inv-photo",
+    finding: "In Ida's hand: remove the boy at the right. She names the fight, not a flaw in the plate.",
+    later: {
+      year: 2004,
+      text: "Nell expected a cruel sentence. The request is tired and specific. Ida did not deny Cal. She refused to look at the fight every day on the mantel. That is smaller than the family legend, and worse, because it was maintainable.",
+    },
+    body: "A slip from Vesper's order book, Ida's writing. 'Please reprint without the boy on the right. We had words. I will not have the words on the mantel. Charge what you charged the last time I asked to be cowardly.' She signed it. Cal asked for this paper and here it is.",
+  },
+  {
+    id: "doc-23",
+    kind: "evidence",
+    title: "Uncropped print from the tin",
+    protected: true,
+    year: 1974,
+    from: "Eli",
+    to: "The sugar ridge",
+    investigationId: "inv-photo",
+    finding: "Both children are in the print. They are muddy. There is no second, secret injury. The fight was a fight.",
+    later: {
+      year: 2004,
+      text: "Eli was right that the tin would outlast the mat. He was wrong that hiding the whole picture was so different from cropping it. Nell puts this one where the cropped one stood.",
+    },
+    body: "A print that matches the negative's last frame, kept flat in Eli's tin. Ida, Eli, Lena small, and Cal at the edge with mud to the knee, laughing at something outside the group. Nobody is wounded. Somebody is about to be sent to wash.",
+  },
+  {
+    id: "doc-24",
+    kind: "evidence",
+    title: "School register, 1971",
+    protected: true,
+    year: 1971,
+    from: "The town shelf",
+    to: "The keeping room",
+    investigationId: "inv-photo",
+    finding: "The register lists Cal in the same hand as Lena, present most of that winter. He was not a visitor who wandered into a photograph.",
+    later: {
+      year: 1990,
+      text: "Cal's letter asked to be answered at general delivery under his name. The register is the town agreeing the name existed before any darkroom did. Cropping did not unmake a pupil.",
+    },
+    body: "A bound school register, 1971, taken down from the town shelf after the negative gave you a face to look up. Cal Hearth is on the roll beside Lena. Absences are ordinary. No note says he left the district. The ink is the same ink as the other children.",
+  },
+];
+
+export const INVESTIGATIONS: InvestigationDef[] = [
+  {
+    id: "inv-corn",
+    title: "The missing seed corn",
+    question: "Was the 1998 flint corn stolen, sold, or planted?",
+    evidence: ["doc-15", "doc-16", "doc-17"],
+    verdict: {
+      speaker: "Ruth",
+      text: "Then it was not lost. It was planted. I can live with planted. I should have walked to the third stake in 1998 instead of learning how to say stolen.",
+    },
+  },
+  {
+    id: "inv-bell",
+    title: "Who cracked the chapel bell",
+    question: "Did Jonah break the bell, or did he finish what the frost started?",
+    evidence: ["doc-18", "doc-19", "doc-20"],
+    verdict: {
+      speaker: "Ada Brown",
+      text: "Fourteen winters of a secret, and the bell still rang on the uncracked side. Frost opened it. The boy finished it. Pell's silence finished the boy. I will not have that called a fine.",
+    },
+  },
+  {
+    id: "inv-photo",
+    title: "The cropped brother",
+    question: "Who stood at the edge of order 741, and who paid to remove him?",
+    evidence: ["doc-21", "doc-22", "doc-23", "doc-24"],
+    verdict: {
+      speaker: "Cal",
+      text: "We were only muddy. You can stop explaining me. Put the whole print up or put none of them up. I am not a line item who will come to Christmas as a correction.",
+    },
+  },
+];
+
+const byId = new Map(DOCUMENTS.map((doc) => [doc.id, doc]));
+
+export function getDocument(id: string): DocumentDef | undefined {
+  return byId.get(id);
+}
+
+export function mustDocument(id: string): DocumentDef {
+  const doc = byId.get(id);
+  if (!doc) throw new Error(`Unknown document ${id}`);
+  return doc;
+}
+
+export function getInvestigation(id: string): InvestigationDef | undefined {
+  return INVESTIGATIONS.find((item) => item.id === id);
+}
+
+/** Papers in the desk when the keeping room is first opened. */
+export const STARTER_DOCUMENTS = [
+  "doc-01",
+  "doc-02",
+  "doc-03",
+  "doc-04",
+  "doc-05",
+  "doc-06",
+  "doc-07",
+  "doc-08",
+  "doc-09",
+  "doc-10",
+  "doc-11",
+  "doc-12",
+  "doc-13",
+  "doc-15",
+];

@@ -1,11 +1,13 @@
 /** Procedural mixer — unlocked on the first gesture. */
+import { bedSpec, clampVolume, glassClink, stepVoice, strikeVoice, type AudioBed } from "./audio-bed.ts";
+
 export function createAudio() {
   let ctx: AudioContext | null = null;
   let master: GainNode | null = null;
   let sfx: GainNode | null = null;
   let music: GainNode | null = null;
   let muted = false;
-  const voices: { osc: OscillatorNode; gain: GainNode }[] = [];
+  const voices: { osc: OscillatorNode; gain: GainNode; lfo?: OscillatorNode }[] = [];
 
   const ensure = () => {
     if (ctx) {
@@ -50,17 +52,32 @@ export function createAudio() {
     beep(420 + Math.random() * 50, 0.08, "square", 0.07, -180);
     beep(880 + Math.random() * 40, 0.04, "triangle", 0.04, -240);
   };
-  const hit = () => {
-    beep(160 + Math.random() * 30, 0.14, "sawtooth", 0.16, -90);
-    beep(90, 0.1, "square", 0.08, -40);
+  const hit = (kind = "") => {
+    const v = strikeVoice(kind);
+    beep(v.freq, v.dur, v.type, kind === "fisher" ? 0.07 : 0.14, v.slide);
+    if (kind === "bear" || kind === "sentinel") beep(Math.max(40, v.freq * 0.5), v.dur, "square", 0.07, -16);
+  };
+  const clink = () => {
+    const v = glassClink();
+    beep(v.freq, v.dur, v.type, 0.028, v.slide);
+    setTimeout(() => beep(v.freq * 1.48, 0.02, "sine", 0.014, 30), 26);
   };
   const pickup = () => beep(660, 0.14, "triangle", 0.09, 220);
+  let stepLeft = false;
+  const step = (tile: number) => {
+    const v = stepVoice(tile);
+    stepLeft = !stepLeft;
+    beep(v.freq * (stepLeft ? 1 : 0.93), v.dur, v.type, 0.032, v.slide);
+  };
   const hurt = () => beep(140, 0.2, "square", 0.12, -90);
   const die = () => {
     beep(220, 0.4, "sine", 0.12, -160);
     setTimeout(() => beep(110, 0.6, "triangle", 0.1, -40), 120);
   };
-  const talk = () => beep(520 + Math.random() * 80, 0.05, "triangle", 0.05);
+  const talk = () => {
+    beep(480 + Math.random() * 30, 0.045, "triangle", 0.045);
+    setTimeout(() => beep(620 + Math.random() * 24, 0.04, "triangle", 0.03), 68);
+  };
   const crown = () => {
     beep(523, 0.18, "sine", 0.1, 0);
     setTimeout(() => beep(659, 0.2, "sine", 0.1), 90);
@@ -74,7 +91,7 @@ export function createAudio() {
   };
   document.addEventListener("visibilitychange", onVis);
 
-  const stopVoice = (v: { osc: OscillatorNode; gain: GainNode }) => {
+  const stopVoice = (v: { osc: OscillatorNode; gain: GainNode; lfo?: OscillatorNode }) => {
     try {
       v.osc.stop();
     } catch {
@@ -90,6 +107,17 @@ export function createAudio() {
     } catch {
       /* already disconnected */
     }
+    if (!v.lfo) return;
+    try {
+      v.lfo.stop();
+    } catch {
+      /* already stopped */
+    }
+    try {
+      v.lfo.disconnect();
+    } catch {
+      /* already disconnected */
+    }
   };
 
   const stopDrone = () => {
@@ -97,7 +125,7 @@ export function createAudio() {
     voices.length = 0;
   };
 
-  const addVoice = (type: OscillatorType, freq: number, target: number, tau: number) => {
+  const addVoice = (type: OscillatorType, freq: number, target: number, tau: number, wobble = 0) => {
     if (!ctx || !music) return;
     const o = ctx.createOscillator();
     const g = ctx.createGain();
@@ -108,15 +136,40 @@ export function createAudio() {
     o.connect(g);
     g.connect(music);
     o.start();
-    voices.push({ osc: o, gain: g });
+    let lfo: OscillatorNode | undefined;
+    if (wobble > 0) {
+      lfo = ctx.createOscillator();
+      const depth = ctx.createGain();
+      lfo.frequency.value = 0.07;
+      depth.gain.value = wobble;
+      lfo.connect(depth);
+      depth.connect(o.frequency);
+      lfo.start();
+    }
+    voices.push({ osc: o, gain: g, lfo });
   };
 
-  const startDrone = (limbo: boolean) => {
+  const tell = () => beep(740, 0.06, "square", 0.05, 80);
+  const winter = () => {
+    beep(392, 0.22, "sine", 0.08, -40);
+    setTimeout(() => beep(330, 0.28, "triangle", 0.07, -20), 140);
+  };
+  const kitchen = () => beep(520, 0.08, "triangle", 0.05, 40);
+
+  const setVolumes = (musicLevel: number, sfxLevel: number) => {
+    if (!ctx || !music || !sfx) return;
+    music.gain.setTargetAtTime(muted ? 0.0001 : 0.18 * clampVolume(musicLevel), ctx.currentTime, 0.05);
+    sfx.gain.setTargetAtTime(muted ? 0.0001 : 0.5 * clampVolume(sfxLevel), ctx.currentTime, 0.05);
+  };
+
+  const startDrone = (limboOrBed: boolean | AudioBed = false) => {
     ensure();
     if (!music || !ctx) return;
+    const bed: AudioBed = typeof limboOrBed === "boolean" ? (limboOrBed ? "limbo" : "county") : limboOrBed;
+    const spec = bedSpec(bed);
     stopDrone();
-    addVoice(limbo ? "sine" : "triangle", limbo ? 55 : 98, limbo ? 0.08 : 0.04, 0.4);
-    if (!limbo) addVoice("sine", 147, 0.02, 0.8);
+    addVoice(spec.limbo ? "sine" : "triangle", spec.root, spec.limbo ? 0.08 : 0.04, 0.4, spec.wobble);
+    if (spec.fifth) addVoice("sine", spec.fifth, 0.02, 0.8, spec.wobble * 0.5);
   };
 
   const setDuck = (on: boolean) => {
@@ -141,5 +194,5 @@ export function createAudio() {
     if (c) void c.close();
   };
 
-  return { unlock, slash, hit, pickup, hurt, die, talk, crown, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
+  return { unlock, slash, hit, step, clink, pickup, hurt, die, talk, crown, tell, winter, kitchen, setVolumes, startDrone, stopDrone, setMuted, setDuck, dispose, get muted() { return muted; } };
 }

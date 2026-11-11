@@ -1,3 +1,5 @@
+import type { GraveWeapon } from "./bag.ts";
+
 export type RelicId =
   | "shovel"
   | "hookshot"
@@ -58,7 +60,7 @@ export type Grave = {
   x: number;
   y: number;
   year: number;
-  weapons: { id: string; name: string; magic: boolean; kind: string }[];
+  weapons: GraveWeapon[];
   relics: RelicId[];
   arrows: number;
   bombs: number;

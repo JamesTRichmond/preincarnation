@@ -1,0 +1,352 @@
+DG09 The Road That Refuses Tomorrow
+Boss: The Last Coachman in DG09-R15. Miniboss in DG09-R10.
+Entry DG09-R01 @ 3,6.
+Legend: # ruin or wall, . floor, , road, ~ water, G gust, + gated, ! hazard. Letters are objects.
+
+DG09-R01  Tollhouse Threshold  [main]  18x12
+The cutoff's tollhouse, where mileposts admit the road will not open an unremembered exit.
+persistent: flags, witnessed-landmarks
+reset: enemy-positions, hazards
+##################
+########.N.......#
+###..............#
+###.*.....####...#
+###.......#..##..#
+##...............#
+##.@..,,,,,,,,,,E#
+##...............#
+##############...#
+##############.^.#
+##############...#
+##################
+  east@16,6 -> DG09-R02 [walk] if open
+  north@9,1 -> DG09-R05 [walk] if open
+  down@15,9 -> DG09-R18 [walk] if open
+
+DG09-R02  Three Center Stones  [main]  18x12
+A straight cutoff whose east exit is the fold until three stones are stepped in order.
+persistent: flags, witnessed-landmarks
+reset: sequence-if-incomplete, hazards
+##################
+#############.K.##
+#############...##
+#####............#
+#####.1.2.3......#
+#................#
+#W....,,,,,,,,,,E#
+#................#
+###.*............#
+###..............#
+#####....S.......#
+##################
+  west@1,6 -> DG09-R01 [walk] if open
+  east@16,6 -> DG09-R04 [walk] if dg09.A1 else DG09-R03
+  south@9,10 -> DG09-R03 [walk] if open
+  gap@14,1 -> DG09-R14 [walk] if dg09.keg
+
+DG09-R03  Fold of Yesterday  [main]  18x12
+The same cutoff, one refusal old. North always returns to the stones. Nothing here is consumed.
+persistent: collected-rewards, flags
+reset: hazards
+##################
+####.....N.#######
+####.....,....####
+####.....,..*.####
+####.....,....####
+#........,.......#
+#....,,,,,.......#
+#....S...........#
+####.......#######
+##################
+##################
+##################
+  north@9,1 -> DG09-R02 [walk] if open
+
+DG09-R04  Drowned Mile  [main]  18x12
+A walked mile in the Otter Slide flood, remembered only if mortal boots stand on the plate.
+persistent: flags, witnessed-landmarks
+reset: hazards
+##################
+########.N.#######
+##..............##
+##.*............##
+##..............##
+#...~~~~~~~~~~~..#
+#W..,,,,,,,,,,*,E#
+#...~~~~~~~~~~~..#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG09-R02 [walk] if open
+  east@16,6 -> DG09-R06 [walk] if dg09.L2
+  north@9,1 -> DG09-R16 [walk] if open
+
+DG09-R05  Bell Cut  [main]  18x12
+The cracked toll bell. One hammer-blow on the wedge is the first landmark.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+##################
+##################
+#######..........#
+#######.H........#
+#######.,........#
+#######.,,,,,,,,E#
+###...#....###...#
+###.*.#....#######
+###...#....#######
+#######..S.#######
+##################
+  south@9,10 -> DG09-R01 [walk] if open
+  east@16,6 -> DG09-R07 [walk] if dg09.L1
+
+DG09-R06  Shard Bridge  [main]  18x12
+A void in the cutoff. Block and hammer make the span; god-flight does not.
+persistent: flags, blown-shortcuts
+reset: hazards, carried-object-on-transition-death
+##################
+##################
+#...##############
+#.*..............#
+#..H.............#
+#................#
+#W..!VVVVVVVV...E#
+#................#
+##.B.............#
+##.R.............#
+##...............#
+##################
+  west@1,6 -> DG09-R04 [walk] if open
+  east@16,6 -> DG09-R08 [walk] if dg09.A2
+  god-skip-void@4,6 -> DG09-R08 [walk] if open
+
+DG09-R07  Switchback Gallery  [optional]  18x12
+Optional gallery above the cut. A homestead-glass shard, and a door back to the orchard once the bridge exists.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+###......N.......#
+#................#
+#...*.##.........#
+#.....##......#..#
+#...........g....#
+#W..,,,,,,,,,...E#
+#................#
+##################
+##################
+##################
+##################
+  west@1,6 -> DG09-R05 [walk] if open
+  north@9,1 -> DG09-R08 [walk] if dg09.A2+dg09.L1
+  east@16,6 -> DG09-R17 [walk] if open
+
+DG09-R08  Orchard Gate Stone  [main]  18x12
+A stone cut with a road that was never built. Reading it is the third landmark.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+########.N.#######
+###...##...#######
+###.*.##...#######
+###...#..........#
+#.......*........#
+#W......,,,,,,,,E#
+#................#
+#####......#######
+#####......#######
+#####.S....#######
+##################
+  west@1,6 -> DG09-R06 [walk] if open
+  south@6,10 -> DG09-R07 [walk] if open
+  north@9,1 -> DG09-R09 [walk] if open
+  east@16,6 -> DG09-R10 [walk] if dg09.L3
+
+DG09-R09  Unbuilt Turnout  [optional]  18x12
+Optional shortcut mouth. Light the turnout lamp and leave it; the tool-lamp stays with Ellis.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+##################
+###...############
+###.*.############
+###...#..........#
+#######.L........#
+#######.,,,,,,,,E#
+#######..........#
+#######...########
+#######....#######
+#######..S.#######
+##################
+  south@9,10 -> DG09-R08 [walk] if open
+  east@16,6 -> DG09-R12 [walk] if dg09.A3
+
+DG09-R10  Crown Cut  [main]  18x12
+Miniboss chamber of two marble hounds. Each chest is a mark on the cut. West always flees. East opens only after both fall.
+persistent: miniboss-defeat, flags, collected-rewards
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##.....###########
+##..*..###########
+##...........#####
+#................#
+#................#
+#W......,,,.....E#
+#................#
+#.......c........#
+######.....#######
+######.....#######
+##################
+  west@1,6 -> DG09-R08 [walk] if open
+  east@16,6 -> DG09-R11 [walk] if dg09.hounds
+
+DG09-R11  Coach Lantern  [main]  18x12
+The last lit coach lamp of the cutoff. Lighting it is the fourth landmark.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+#........N.#######
+#........,.#######
+#........,.#######
+#..####.L,.#######
+#.......,,.#######
+#W......,..#######
+#..........#######
+###.*.#....#######
+###...#....#######
+#######..S.#######
+##################
+  west@1,6 -> DG09-R10 [walk] if dg09.hounds
+  south@9,10 -> DG09-R12 [walk] if open
+  north@9,1 -> DG09-R13 [walk] if dg09.L4
+
+DG09-R12  Shortcut Culvert  [optional]  18x12
+Marble glow, not the lamp tool, lights this skip around the hounds. The lantern is still ahead.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+########.N.#######
+###......,.#######
+###.*....,.#######
+###......,.#######
+#........,.#######
+#W..,,,,,,.#######
+#..........#######
+##################
+##################
+##################
+##################
+  west@1,6 -> DG09-R09 [walk] if dg09.A3
+  north@9,1 -> DG09-R11 [walk] if open
+
+DG09-R13  Last Milepost  [main]  18x12
+The four landmarks are checked in writing on one post. Missing any one, the yard stays shut.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+##################
+##################
+###..............#
+###.*............#
+###..............#
+###.,,,,,,,,,,,,E#
+###..............#
+###...##...####..#
+###..............#
+###......S.......#
+##################
+  south@9,10 -> DG09-R11 [walk] if open
+  east@16,6 -> DG09-R14 [walk] if dg09.L1+dg09.L2+dg09.L3+dg09.L4
+
+DG09-R14  Coach Yard  [main]  18x12
+Couple the loose wheel to face the coachman. Powder here is a return tunnel, not a toll.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+#........N....####
+#.............####
+#..*..........####
+#....#........####
+#.............#..#
+#w.....W,,,,,.#.E#
+#...........,....#
+####.k.####.K....#
+####...####......#
+#############...##
+##################
+  west@1,6 -> DG09-R13 [walk] if open
+  north@9,1 -> DG09-R15 [walk] if dg09.A4
+  gap@16,6 -> DG09-R02 [walk] if dg09.keg
+
+DG09-R15  The Last Coachman  [main]  18x12
+Arena of the Last Coachman. Four lantern marks, then the reins, then two socket posts. God-light does not count.
+persistent: collected-rewards, flags, miniboss-defeat
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##.....###########
+##..*..###########
+##.............###
+##...............#
+####..L.L.L.L....#
+####....,,,.....E#
+####.....,.......#
+####.....,.......#
+####.....,...#####
+####.....S...#####
+##################
+  south@9,10 -> DG09-R14 [walk] if open
+  east@16,6 -> COUNTY:ADDISON-EAST [walk] if dg09.cleared
+
+DG09-R16  Spur of Fourteen Years  [optional]  18x12
+Optional dig north of the drowned mile. A year-mark, not a key.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+##################
+###...############
+###.*.############
+###...############
+#######...########
+#######.S.########
+#######.,,########
+#######..,########
+#######..,.#######
+#######..s.#######
+##################
+  south@9,10 -> DG09-R04 [walk] if open
+
+DG09-R17  High Bank  [optional]  18x12
+Optional cape gust over a void bank. God-form cannot take the cape's path.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+##################
+##.....###########
+##.*...###########
+##.....###########
+#......#....#...##
+#W......GGGG..g.##
+#......#....#...##
+##################
+##################
+##################
+##################
+  west@1,6 -> DG09-R07 [walk] if open
+
+DG09-R18  Toll Cellar  [optional]  18x12
+Optional codex. The sugar-line pulls a drawer that writes every exit rule onto the mileposts.
+persistent: flags, witnessed-landmarks, collected-rewards
+reset: enemy-positions, hazards
+##################
+#####....^.#######
+#####......#######
+##.........#######
+##.*....##########
+##......##########
+#####.D,,,########
+#####...##########
+##################
+##################
+##################
+##################
+  up@9,1 -> DG09-R01 [walk] if open

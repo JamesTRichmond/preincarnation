@@ -1,0 +1,45 @@
+{
+  "id": "traversal.embryonic-god",
+  "mappingStatus": "PENDING",
+  "name": "Embryonic God traversal",
+  "notAMythology": true,
+  "summary": "A late-game body state for crossing water and void, already established before this packet. It is not a cult, a second pantheon, or a companion. The name is the surveyors' name for an unfinished life that can lie on a surface a finished body falls through.",
+  "enterWhen": {
+    "op": "and",
+    "conds": [
+      {
+        "op": "tool",
+        "tool": "marble-needle"
+      },
+      {
+        "op": "tool",
+        "tool": "sounding-lead"
+      },
+      {
+        "op": "flag",
+        "flag": "body.coatEquipped"
+      }
+    ]
+  },
+  "anchor": "Hang borrowed-coat on a shore peg in the same room before entering. The peg is the return point.",
+  "whileActive": {
+    "canUse": [
+      "transit-glass",
+      "field-book",
+      "marble-needle",
+      "sounding-lead",
+      "plumb-bob"
+    ],
+    "cannotUse": [
+      "office-seal",
+      "county-bell",
+      "field-chain",
+      "range-rod",
+      "office-lamp",
+      "field-knife"
+    ],
+    "reason": "An unfinished life has no civic voice and no office weight."
+  },
+  "death": "Embryonic death returns you to the coat anchor if one was set, otherwise to the region checkpoint. The coat stays on the peg as a previous body. Year advances 14. The form ends.",
+  "exit": "Step onto a stand tile and the form ends. The solution traces in DG14, DG15, and DG16 do this before leaving the room."
+}

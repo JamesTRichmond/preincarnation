@@ -1,0 +1,747 @@
+{
+  "boss.empty-mayor": {
+    "id": "boss.empty-mayor",
+    "name": "The Empty Mayor",
+    "dungeon": "DG13",
+    "initial": "PHASE_VACANT",
+    "summary": "The mayor is the vacancy. It appoints by pulling a body into the chair. You adjourn it by leaving the peg empty and writing the chair as vacant. Filling the chair is a delay, not a solution.",
+    "entryOrder": [
+      {
+        "state": "PHASE_ADJOURN",
+        "ifFlag": "dg13.emptyMayorAdjourned"
+      },
+      {
+        "state": "PHASE_ORDINANCE",
+        "ifFlag": "dg13.boss.rollcallDone"
+      },
+      {
+        "state": "PHASE_ROLLCALL",
+        "ifFlag": "dg13.boss.vacantDone"
+      },
+      {
+        "state": "PHASE_VACANT",
+        "always": true
+      }
+    ],
+    "states": {
+      "PHASE_VACANT": {
+        "onEnter": [],
+        "transitions": [
+          {
+            "event": "leave-dais",
+            "guard": {
+              "op": "flag",
+              "flag": "dg13.boss.progress.seated"
+            },
+            "reject": "The ribbon holds you."
+          },
+          {
+            "event": "sit",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              "dg13.boss.progress.seated"
+            ]
+          },
+          {
+            "event": "cut-ribbon",
+            "guard": {
+              "op": "flag",
+              "flag": "dg13.boss.progress.seated"
+            },
+            "clear": [
+              "dg13.boss.progress.seated"
+            ]
+          },
+          {
+            "event": "cut-ribbon",
+            "guard": {
+              "op": "absent",
+              "flag": "dg13.boss.progress.seated"
+            },
+            "reject": "There is no ribbon until you sit."
+          },
+          {
+            "event": "leave-dais",
+            "guard": {
+              "op": "absent",
+              "flag": "dg13.boss.progress.seated"
+            },
+            "set": [
+              "dg13.boss.vacantDone"
+            ],
+            "to": "PHASE_ROLLCALL"
+          }
+        ]
+      },
+      "PHASE_ROLLCALL": {
+        "onEnter": [
+          {
+            "flag": "dg13.boss.progress.rollIndex",
+            "value": 0
+          }
+        ],
+        "transitions": [
+          {
+            "event": "ring",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "dg13.boss.progress.rollIndex",
+                  "eq": 0
+                },
+                {
+                  "op": "eventArg",
+                  "arg": "door",
+                  "eq": 1
+                }
+              ]
+            },
+            "set": [
+              {
+                "flag": "dg13.boss.progress.rollIndex",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "event": "ring",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "dg13.boss.progress.rollIndex",
+                  "eq": 1
+                },
+                {
+                  "op": "eventArg",
+                  "arg": "door",
+                  "eq": 2
+                }
+              ]
+            },
+            "set": [
+              {
+                "flag": "dg13.boss.progress.rollIndex",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "event": "ring",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "dg13.boss.progress.rollIndex",
+                  "eq": 2
+                },
+                {
+                  "op": "eventArg",
+                  "arg": "door",
+                  "eq": 3
+                }
+              ]
+            },
+            "set": [
+              {
+                "flag": "dg13.boss.rollcallDone",
+                "value": true
+              },
+              {
+                "flag": "dg13.boss.progress.rollIndex",
+                "value": 3
+              }
+            ],
+            "to": "PHASE_ORDINANCE"
+          },
+          {
+            "event": "ring",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg13.boss",
+              "eq": 2
+            },
+            "set": [
+              {
+                "flag": "strike.dg13.boss",
+                "value": 3
+              }
+            ],
+            "to": "STATE_DEATH"
+          },
+          {
+            "event": "ring",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg13.boss",
+              "eq": 1
+            },
+            "set": [
+              {
+                "flag": "strike.dg13.boss",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "event": "ring",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              {
+                "flag": "strike.dg13.boss",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "PHASE_ORDINANCE": {
+        "transitions": [
+          {
+            "event": "write-vacant",
+            "guard": {
+              "op": "tool",
+              "tool": "field-book"
+            },
+            "set": [
+              "dg13.mayorWrittenVacant",
+              "dg13.emptyMayorAdjourned"
+            ],
+            "to": "PHASE_ADJOURN"
+          },
+          {
+            "event": "stamp-vacant",
+            "guard": {
+              "op": "tool",
+              "tool": "office-seal"
+            },
+            "set": [
+              "dg13.mayorSealedVacant",
+              "dg13.emptyMayorAdjourned"
+            ],
+            "to": "PHASE_ADJOURN"
+          }
+        ]
+      },
+      "PHASE_ADJOURN": {
+        "terminal": true,
+        "success": true,
+        "onEnter": [
+          "dg13.emptyMayorAdjourned"
+        ],
+        "transitions": []
+      },
+      "STATE_DEATH": {
+        "terminal": true,
+        "success": false,
+        "failureReason": "death-crush",
+        "transitions": []
+      }
+    }
+  },
+  "boss.other-shore": {
+    "id": "boss.other-shore",
+    "name": "The Lake's Other Shore",
+    "dungeon": "DG14",
+    "initial": "PHASE_MIRROR",
+    "summary": "The far shore claims to be the original. The glass swaps which side holds you, the lamp and bell still the snow, and the embryonic crossing lets you write the name 'other' so the reflection cannot keep it.",
+    "entryOrder": [
+      {
+        "state": "PHASE_RECEDED",
+        "ifFlag": "dg14.otherShoreNamed"
+      },
+      {
+        "state": "PHASE_VOID",
+        "ifFlag": "dg14.boss.snowDone"
+      },
+      {
+        "state": "PHASE_SNOW",
+        "ifFlag": "dg14.boss.mirrorDone"
+      },
+      {
+        "state": "PHASE_MIRROR",
+        "always": true
+      }
+    ],
+    "states": {
+      "PHASE_MIRROR": {
+        "transitions": [
+          {
+            "event": "step-true-shore",
+            "guard": {
+              "op": "absent",
+              "flag": "dg14.boss.progress.glassUp"
+            },
+            "reject": "The glass is down. Both shores claim you."
+          },
+          {
+            "event": "raise-glass",
+            "guard": {
+              "op": "tool",
+              "tool": "transit-glass"
+            },
+            "set": [
+              "dg14.boss.progress.glassUp"
+            ]
+          },
+          {
+            "event": "step-true-shore",
+            "guard": {
+              "op": "flag",
+              "flag": "dg14.boss.progress.glassUp"
+            },
+            "set": [
+              "dg14.boss.mirrorDone"
+            ],
+            "clear": [
+              "dg14.boss.progress.glassUp"
+            ],
+            "to": "PHASE_SNOW"
+          },
+          {
+            "event": "step-false-shore",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg14.boss",
+              "eq": 2
+            },
+            "set": [
+              {
+                "flag": "strike.dg14.boss",
+                "value": 3
+              }
+            ],
+            "to": "STATE_DEATH"
+          },
+          {
+            "event": "step-false-shore",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg14.boss",
+              "eq": 1
+            },
+            "set": [
+              {
+                "flag": "strike.dg14.boss",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "event": "step-false-shore",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              {
+                "flag": "strike.dg14.boss",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "PHASE_SNOW": {
+        "transitions": [
+          {
+            "event": "ring-bell",
+            "guard": {
+              "op": "absent",
+              "flag": "dg14.boss.progress.thawed"
+            },
+            "reject": "Snow is in the bell."
+          },
+          {
+            "event": "use-lamp",
+            "guard": {
+              "op": "tool",
+              "tool": "office-lamp"
+            },
+            "set": [
+              "dg14.boss.progress.thawed"
+            ]
+          },
+          {
+            "event": "ring-bell",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "dg14.boss.progress.thawed"
+                },
+                {
+                  "op": "tool",
+                  "tool": "county-bell"
+                }
+              ]
+            },
+            "set": [
+              "dg14.boss.snowDone"
+            ],
+            "to": "PHASE_VOID"
+          }
+        ]
+      },
+      "PHASE_VOID": {
+        "transitions": [
+          {
+            "event": "enter-embryonic",
+            "guard": {
+              "op": "absent",
+              "flag": "dg14.boss.progress.anchor"
+            },
+            "reject": "Hang the coat on the true-shore peg first."
+          },
+          {
+            "event": "anchor-coat",
+            "guard": {
+              "op": "tool",
+              "tool": "borrowed-coat"
+            },
+            "set": [
+              "dg14.boss.progress.anchor"
+            ]
+          },
+          {
+            "event": "enter-embryonic",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "dg14.boss.progress.anchor"
+                },
+                {
+                  "op": "tool",
+                  "tool": "marble-needle"
+                },
+                {
+                  "op": "tool",
+                  "tool": "sounding-lead"
+                }
+              ]
+            },
+            "set": [
+              "meta.embryonic"
+            ]
+          },
+          {
+            "event": "sound-lead",
+            "guard": {
+              "op": "absent",
+              "flag": "meta.embryonic"
+            },
+            "reject": "The lead only speaks while you are embryonic over the void."
+          },
+          {
+            "event": "sound-lead",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "meta.embryonic"
+                },
+                {
+                  "op": "tool",
+                  "tool": "sounding-lead"
+                }
+              ]
+            },
+            "set": [
+              "dg14.boss.progress.sounded"
+            ]
+          },
+          {
+            "event": "write-other",
+            "guard": {
+              "op": "absent",
+              "flag": "dg14.boss.progress.sounded"
+            },
+            "reject": "Sound the center before you name the shore."
+          },
+          {
+            "event": "write-other",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "flag",
+                  "flag": "meta.embryonic"
+                },
+                {
+                  "op": "flag",
+                  "flag": "dg14.boss.progress.sounded"
+                },
+                {
+                  "op": "tool",
+                  "tool": "field-book"
+                }
+              ]
+            },
+            "set": [
+              "dg14.otherShoreNamed",
+              "dg14.boss.voidDone"
+            ],
+            "clear": [
+              "meta.embryonic"
+            ],
+            "to": "PHASE_RECEDED"
+          }
+        ]
+      },
+      "PHASE_RECEDED": {
+        "terminal": true,
+        "success": true,
+        "onEnter": [
+          "dg14.otherShoreNamed"
+        ],
+        "transitions": []
+      },
+      "STATE_DEATH": {
+        "terminal": true,
+        "success": false,
+        "failureReason": "death-reflection",
+        "transitions": []
+      }
+    }
+  },
+  "boss.surveyor-of-ellis": {
+    "id": "boss.surveyor-of-ellis",
+    "name": "The Surveyor of Ellis",
+    "dungeon": "DG15",
+    "initial": "PHASE_INTRODUCTION",
+    "summary": "The office has poured one authorized Ellis. You stop the ladle, record that the measured plot overflows the county, and leave the pouring unfinished. Stamping the plot 'as drawn' is a mistake with a visible recovery: the plumb cracks the false boundary.",
+    "entryOrder": [
+      {
+        "state": "PHASE_DRAIN",
+        "ifFlag": "dg15.surveyorUnfinished"
+      },
+      {
+        "state": "PHASE_UNPOURED",
+        "ifFlag": "dg15.boss.sealDone"
+      },
+      {
+        "state": "PHASE_SEAL_HARD",
+        "ifFlag": "dg15.boss.stampedAsDrawn"
+      },
+      {
+        "state": "PHASE_SEAL",
+        "ifFlag": "dg15.boss.overflowRecorded"
+      },
+      {
+        "state": "PHASE_MEASURE",
+        "ifFlag": "dg15.boss.castingDone"
+      },
+      {
+        "state": "PHASE_CASTING",
+        "ifFlag": "dg15.boss.introDone"
+      },
+      {
+        "state": "PHASE_INTRODUCTION",
+        "always": true
+      }
+    ],
+    "states": {
+      "PHASE_INTRODUCTION": {
+        "transitions": [
+          {
+            "event": "step-off",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              "dg15.boss.introDone"
+            ],
+            "to": "PHASE_CASTING"
+          }
+        ]
+      },
+      "PHASE_CASTING": {
+        "transitions": [
+          {
+            "event": "pull-ladle",
+            "guard": {
+              "op": "tool",
+              "tool": "field-chain"
+            },
+            "set": [
+              "dg15.boss.castingDone"
+            ],
+            "to": "PHASE_MEASURE"
+          },
+          {
+            "event": "touch-copy",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg15.boss",
+              "eq": 2
+            },
+            "set": [
+              {
+                "flag": "strike.dg15.boss",
+                "value": 3
+              }
+            ],
+            "to": "STATE_DEATH"
+          },
+          {
+            "event": "touch-copy",
+            "guard": {
+              "op": "flag",
+              "flag": "strike.dg15.boss",
+              "eq": 1
+            },
+            "set": [
+              {
+                "flag": "strike.dg15.boss",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "event": "touch-copy",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              {
+                "flag": "strike.dg15.boss",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "PHASE_MEASURE": {
+        "transitions": [
+          {
+            "event": "record-overflow",
+            "guard": {
+              "op": "and",
+              "conds": [
+                {
+                  "op": "tool",
+                  "tool": "transit-glass"
+                },
+                {
+                  "op": "tool",
+                  "tool": "field-book"
+                }
+              ]
+            },
+            "set": [
+              "dg15.boss.measureDone",
+              "dg15.boss.overflowRecorded"
+            ],
+            "to": "PHASE_SEAL"
+          },
+          {
+            "event": "stamp-as-drawn",
+            "guard": {
+              "op": "tool",
+              "tool": "office-seal"
+            },
+            "set": [
+              "dg15.boss.measureDone",
+              "dg15.boss.stampedAsDrawn"
+            ],
+            "to": "PHASE_SEAL_HARD"
+          }
+        ]
+      },
+      "PHASE_SEAL": {
+        "transitions": [
+          {
+            "event": "stand-outside",
+            "guard": {
+              "op": "absent",
+              "flag": "dg15.boss.progress.ticks"
+            },
+            "reject": "The lamp has not shown the overflow ticks."
+          },
+          {
+            "event": "lamp-ticks",
+            "guard": {
+              "op": "tool",
+              "tool": "office-lamp"
+            },
+            "set": [
+              "dg15.boss.progress.ticks"
+            ]
+          },
+          {
+            "event": "stand-outside",
+            "guard": {
+              "op": "flag",
+              "flag": "dg15.boss.progress.ticks"
+            },
+            "set": [
+              "dg15.boss.sealDone"
+            ],
+            "to": "PHASE_UNPOURED"
+          }
+        ]
+      },
+      "PHASE_SEAL_HARD": {
+        "transitions": [
+          {
+            "event": "stand-outside",
+            "guard": {
+              "op": "always"
+            },
+            "reject": "The stamped plot has no visible outside until the plumb cracks it."
+          },
+          {
+            "event": "plumb-crack",
+            "guard": {
+              "op": "tool",
+              "tool": "plumb-bob"
+            },
+            "set": [
+              "dg15.boss.sealDone"
+            ],
+            "to": "PHASE_UNPOURED"
+          }
+        ]
+      },
+      "PHASE_UNPOURED": {
+        "transitions": [
+          {
+            "event": "leave-unfinished",
+            "guard": {
+              "op": "always"
+            },
+            "set": [
+              "dg15.surveyorUnfinished"
+            ],
+            "to": "PHASE_DRAIN"
+          }
+        ]
+      },
+      "PHASE_DRAIN": {
+        "terminal": true,
+        "success": true,
+        "onEnter": [
+          "dg15.surveyorUnfinished"
+        ],
+        "transitions": []
+      },
+      "STATE_DEATH": {
+        "terminal": true,
+        "success": false,
+        "failureReason": "death-cast",
+        "transitions": []
+      }
+    }
+  }
+}

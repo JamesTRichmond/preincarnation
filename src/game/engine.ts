@@ -1,14 +1,29 @@
 import { DIALOGUE, INCARNATIONS, INTRO_BEATS, LIMBO_UPGRADES, NPC_NODE, OBJECTIVES } from "./content";
 import { createAudio } from "./audio";
+import { boneFlashAlpha } from "./a11y";
+import { bedFor, stepDue, type AudioBed } from "./audio-bed";
+import { FLOAT_CAP, PARTICLE_CAP, SLASH_CAP, trimCapped, unstickSpot } from "./fx";
 import { createDeck, EMPTY_DECK } from "./ipod";
-import { locatePlayer, TOWN_BY_ID } from "./geography";
-import { gpsOnCounty } from "./raster";
+import { TOWN_BY_ID } from "./geography";
 import { isInterior } from "./interiors";
 import { createInput, type Actions } from "./input";
+import {
+  lipStep,
+  noteAttackDuringHitstop,
+  releaseAttackBuffer,
+  resolveFacing,
+  scaleHitstop,
+  stepCamera,
+  type AxisMem,
+} from "./feel";
 import { T, buildMap, isSolid, type PropSpec } from "./maps";
+import { crackRole, stepSentinel, strikeMarble, type SentinelBeat } from "./marble";
+import { liveObjective } from "./quest";
+import { TELL_S, countyTell, placeUnderfoot, tellPixels } from "./place";
 import { BELL_SLUICE } from "./bell";
 import { HUD_H, SNES_H, SNES_W, TILE, VIEW_H } from "./snes";
-import { applyUpgrade, bodyStats, cycleLedger, cycleReturnNode, fillDialogueText, grantBondKeepsake, isIncarnationUnlocked, quarryHammerLands, resolveDeath, sheetSpeedMul, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
+import { storeBottle } from "./rewards";
+import { applyUpgrade, bodyStats, countyAgainNode, cycleLedger, cycleReturnNode, enemyMaxHp, fillDialogueText, firstReturnStone, graveSteelStanding, grantBondKeepsake, isIncarnationUnlocked, lungeHits, quarryHammerLands, resolveDeath, seamSkips, seamSpawnWeight, sheetSpeedMul, sipRefusedAtFullHp, slashDamage, soloverseReady, spendSkillPoint, spinDamage, stepSouthOffStoop } from "./rules";
 import {
   paintCache,
   paintBearFallback,
@@ -30,9 +45,11 @@ import {
   paintLock16,
   paintCave16,
 } from "./pix";
-import { clearSave, defaultSave, loadSave, writeSave } from "./save";
+import { sipIndex, weaponFromGrave } from "./bag";
+import { clearSave, defaultSave, exportLifeBlob, importLifeBlob, loadSave, undoLastSave, writeSave } from "./save";
+import { readKit, wearNextWeapon } from "./kit-compare";
+import { applyDeath } from "./cooking/reduce.ts";
 import { summarizeWeapon, rollWeapon, starterWeapon, weaponMoveMod, type Weapon } from "./weapons";
-import { fetchWeather, requestGeo, weatherSpeed, type WeatherState } from "./weather";
 import { erodeGrave, RELIC_BY_ID, type RelicId, type LifePath } from "./items";
 import type { BottleKind, DialogueNode, Dir, EnemyKind, IncarnationId, MapId, Mode, SaveData, UiSnapshot } from "./types";
 
@@ -52,6 +69,9 @@ type Actor = {
   slow: number;
   burn: number;
   stoned: number;
+  beat: SentinelBeat;
+  tell: number;
+  warned: boolean;
 };
 
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; g?: number };
@@ -131,6 +151,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     slow: 0,
     burn: 0,
     stoned: 0,
+    beat: "still",
+    tell: 0,
+    warned: false,
   };
   let enemies: Actor[] = [];
   let particles: Particle[] = [];
@@ -161,6 +184,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let ritual = 0;
   let dashT = 0;
   let hitstop = 0;
+  let stepCarry = 0;
+  const passedGraves = new Set<string>();
+  const nearedGraves = new Set<string>();
+  let attackQueued = false;
+  let faceMem: AxisMem = null;
   let trauma = 0;
   let camX = save.x;
   let camY = save.y;
@@ -174,12 +202,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   let last = performance.now();
   let acc = 0;
   let running = true;
-  let reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   let shakeOn = !reduced;
   let probeYaw = 0;
-  let weather: WeatherState | null = null;
   let playerStoned = 0;
   let flash = 0;
+  let reducedFlash = false;
+  let audioBed: AudioBed = "county";
   const images = new Map<string, HTMLImageElement>();
   let ready = false;
   let showControls = false;
@@ -240,9 +269,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const spawnEnemies = () => {
     enemies = [];
+    const held = save.inventory.map((w) => w.id);
+    const steel = graveSteelStanding(save.flags.graves ?? [], held, [...passedGraves]);
     for (const p of props) {
       if (p.kind !== "enemy" || !p.enemy) continue;
-      const hp = Math.round((ENEMY_HP[p.enemy] ?? 2) * (1 + save.cycle * 0.12) * (save.flags.tropoverse ? 1.35 : 1));
+      const weight = seamSpawnWeight(1, p.enemy, mapId, p.x, save.cycle, steel);
+      if (seamSkips(p.id, save.cycle, weight)) continue;
+      const hp = enemyMaxHp(ENEMY_HP[p.enemy] ?? 2, save.flags.tropoverse);
       enemies.push({
         id: p.id,
         x: p.x * TILE + 8,
@@ -259,6 +292,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         slow: 0,
         burn: 0,
         stoned: 0,
+        beat: "still",
+        tell: 0,
+        warned: false,
       });
     }
   };
@@ -327,7 +363,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const enterLimbo = (_reason: string) => {
     audio.die();
+    audio.winter();
     save = resolveDeath(save, { mapId, x: player.x, y: player.y });
+    save.kitchen = applyDeath(save.kitchen);
     mode = "limbo";
     audio.startDrone(true);
     persist();
@@ -376,49 +414,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     say("Fourteen winters. " + save.flags.year + ". Same hands. The county aged. The job did not.");
   };
 
-  const applyLocation = (lat: number, lng: number, announce: boolean) => {
-    const loc = locatePlayer(lat, lng);
-    save.flags.geoLat = lat;
-    save.flags.geoLng = lng;
-    save.flags.geoTown = loc.town.id;
-    save.flags.homeX = loc.localX;
-    save.flags.homeY = loc.localY;
-    void fetchWeather(loc.town.lat, loc.town.lng).then((w) => {
-      weather = w ?? {
-        tempF: 52,
-        code: 2,
-        wind: 4,
-        isDay: vtHour() >= 6 && vtHour() < 20,
-        precip: 0,
-        label: { id: "cloud", name: "Cloudy" },
-        lat: loc.town.lat,
-        lng: loc.town.lng,
-      };
-    });
-    if (announce) {
-      const where = loc.inVermont
-        ? loc.km < 18
-          ? "You woke in " + loc.town.name + "."
-          : loc.town.name + " is the nearest town (" + Math.round(loc.km) + " km)."
-        : "Far from Vermont. The county borrowed your shadow — " + loc.town.name + ".";
-      say(where + " Houses open. Rifles hang. The map is the land.");
-    }
-    return loc;
-  };
-
-  const senseWorld = async (warp: boolean) => {
-    const pos = await requestGeo();
-    const coords = pos ?? { lat: 44.0153, lng: -73.1673 };
-    const loc = applyLocation(coords.lat, coords.lng, true);
-    if (warp) {
-      if (loc.onOverworld) {
-        const dest = gpsOnCounty(loc.town.county, coords.lat, coords.lng);
-        loadWorld(dest.map, dest.x * TILE + 8, dest.y * TILE + 8);
-      } else {
-        loadWorld(loc.town.id);
-      }
-      persist();
-    }
+  const senseWorld = () => {
+    /* The county is authored. No device location, no forecast. */
   };
 
   const startNew = () => {
@@ -438,7 +435,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     } catch {
       /* ignore */
     }
-    void senseWorld(false);
   };
 
   const continueGame = () => {
@@ -461,14 +457,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     audio.unlock();
     audio.startDrone(mode === "limbo");
     lastUi = "";
-    if (save.flags.geoLat != null && save.flags.geoLng != null) {
-      void fetchWeather(save.flags.geoLat, save.flags.geoLng).then((w) => {
-        weather = w;
-      });
-    } else {
-      const t = TOWN_BY_ID[save.mapId];
-      if (t) void fetchWeather(t.lat, t.lng).then((w) => (weather = w));
-    }
     try {
       cvs.focus();
     } catch {
@@ -540,27 +528,23 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     lastUi = "";
   };
 
-  const objective = () => {
-    if (mode === "limbo") return OBJECTIVES.limbo;
-    if (mapId === "soloverse") return OBJECTIVES.spectrum;
-    if (mapId === "quarry") {
-      if (!save.flags.relics.includes("lantern")) return "TAKE the lamp by the door. The Vein is blind without it.";
-      if (!save.flags.lanternOn) return "OPEN the lamp. The hammer does not land in the dark.";
-      if (!save.flags.chests.includes("q-key")) return "TAKE the key in the west alcove.";
-      if (!save.flags.chests.includes("q-lock-a")) return "USE the key on the north lock.";
-      if (!save.flags.relics.includes("hammer")) return "TAKE the marble hammer past the lock.";
-      if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null)
-        return "SMASH the cracked marble — lamp open — then FACE the Sentinel.";
-      return "WALK west, or die here and come back with the shovel.";
-    }
-    if (!save.flags.talked.includes("elder") && mapId === "middlebury") return OBJECTIVES.start;
-    if (!save.flags.relics.includes("shovel")) return "TAKE the shovel by the stone.";
-    if (mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save))
-      return OBJECTIVES.seam;
-    if (!save.flags.townsCleared.includes("quarry") && save.flags.sentinelFate == null) return OBJECTIVES.quarry;
-    if ((save.flags.graves ?? []).some((g) => !g.excavated)) return "DIG the grave of your last skin. The shovel is the verb.";
-    return OBJECTIVES.county;
-  };
+  const objective = () =>
+    liveObjective({
+      mode,
+      mapId,
+      talkedElder: save.flags.talked.includes("elder"),
+      hasShovel: save.flags.relics.includes("shovel"),
+      hasLantern: save.flags.relics.includes("lantern"),
+      lanternOn: !!save.flags.lanternOn,
+      hasKey: save.flags.chests.includes("q-key"),
+      lockOpen: save.flags.chests.includes("q-lock-a"),
+      hasHammer: save.flags.relics.includes("hammer"),
+      quarryQuiet: save.flags.townsCleared.includes("quarry"),
+      sentinelFaced: save.flags.sentinelFate != null,
+      cycle: save.cycle,
+      seamThin: mapId === "middlebury" && save.cycle >= 1 && !save.flags.tropoverse && !soloverseReady(save),
+      graveWaiting: (save.flags.graves ?? []).some((g) => !g.excavated),
+    });
 
   const atProp = (p: PropSpec, label: string) => ({ x: p.x * TILE + 8, y: p.y * TILE + 8, label });
 
@@ -685,24 +669,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     save.flags.lastDeed = s;
   };
 
-  const fillBottle = (kind: BottleKind) => {
-    const i = save.flags.bottles.findIndex((b) => b === "empty");
-    if (i >= 0) {
-      const next = save.flags.bottles.slice();
-      next[i] = kind;
-      save.flags.bottles = next;
-      return true;
-    }
-    if (kind === "syrup" || kind === "deluxe") {
-      player.hp = Math.min(player.maxHp, player.hp + 4);
-      save.hp = player.hp;
-    }
-    if (kind === "creemee" || kind === "deluxe") save.mp = save.maxMp;
-    return false;
+  const fillBottle = (kind: Exclude<BottleKind, "empty">) => {
+    const stored = storeBottle(save.flags.bottles, kind);
+    if (!stored.stored) return false;
+    save.flags.bottles = stored.bottles;
+    return true;
   };
 
   const sip = () => {
-    const i = save.flags.bottles.findIndex((b) => b !== "empty");
+    const i = sipIndex(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp);
+    if (sipRefusedAtFullHp(save.flags.bottles, player.hp, player.maxHp, save.mp, save.maxMp)) {
+      audio.clink();
+      say("Full. The glass only clicks.");
+      return;
+    }
     if (i < 0) {
       say("No bottles.");
       return;
@@ -744,6 +724,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (!dialogue?.choices) return;
     const c = dialogue.choices[index];
     if (!c) return;
+    if (c.flag?.syrupStash && !fillBottle("syrup")) {
+      say("Both bottles are full. The tin stays on the shelf.");
+      dialogue = null;
+      mode = "play";
+      persist();
+      return;
+    }
     if (c.karma) addKarma(c.karma);
     if (c.crowns) {
       save.crowns += c.crowns;
@@ -755,7 +742,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       if (c.flag.bombs) save.flags.bombs = Math.max(save.flags.bombs, c.flag.bombs);
       if (c.flag.quarryOpen) save.flags.quarryOpen = true;
       if (c.flag.syrupStash) {
-        fillBottle("syrup");
         player.hp = Math.min(player.maxHp, player.hp + 2);
         save.hp = player.hp;
         say("Grade A dark. Bottled.");
@@ -795,7 +781,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
 
   const interactWith = (p: PropSpec) => {
     if (p.kind === "npc") {
-      if (!save.flags.talked.includes(p.id)) save.flags.talked = [...save.flags.talked, p.id];
+      const known = save.flags.talked.includes(p.id);
+      if (!known) save.flags.talked = [...save.flags.talked, p.id];
       save.flags.returnedFromDeath = false;
       if (p.npc === "elder") {
         if (save.flags.elderFate) openDialogue(save.flags.elderFate === "release" ? "elder_release" : "elder_bind");
@@ -842,7 +829,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
           else openDialogue("heart_1");
         }
       } else if (p.npc && NPC_NODE[p.npc]) {
-        openDialogue(NPC_NODE[p.npc]);
+        openDialogue(countyAgainNode(p.npc, known) ?? NPC_NODE[p.npc]);
       }
     } else if (p.kind === "sheep") {
       openDialogue("sheep_1");
@@ -919,13 +906,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       save.flags.ySlot = "shovel";
       dig();
     } else if (p.kind === "syrup") {
-      fillBottle("syrup");
+      if (!fillBottle("syrup")) {
+        say("Both bottles are full. The tin stays.");
+        return;
+      }
+      save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
       say("Maple tin. Red bottle. V to drink.");
       persist();
     } else if (p.kind === "creemee") {
-      fillBottle("creemee");
+      if (!fillBottle("creemee")) {
+        say("Both bottles are full. The cup stays.");
+        return;
+      }
       save.flags.caches = [...save.flags.caches, p.id];
       props = props.filter((x) => x.id !== p.id);
       audio.pickup();
@@ -1000,42 +994,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     return false;
   };
 
-  const unstick = (px: number, py: number) => {
-    if (!blocked(px, py, 4)) return { x: px, y: py };
-    const tx0 = Math.floor(px / TILE);
-    const ty0 = Math.floor(py / TILE);
-    const prefer = [
-      [0, 1],
-      [1, 1],
-      [-1, 1],
-      [1, 0],
-      [-1, 0],
-      [2, 1],
-      [-2, 1],
-      [0, 2],
-      [1, 2],
-      [-1, 2],
-      [0, -1],
-      [1, -1],
-      [-1, -1],
-    ];
-    for (const [dx, dy] of prefer) {
-      const x = (tx0 + dx) * TILE + 8;
-      const y = (ty0 + dy) * TILE + 8;
-      if (!blocked(x, y, 4)) return { x, y };
-    }
-    for (let r = 1; r <= 16; r++) {
-      for (let dy = -r; dy <= r; dy++) {
-        for (let dx = -r; dx <= r; dx++) {
-          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
-          const x = (tx0 + dx) * TILE + 8;
-          const y = (ty0 + dy) * TILE + 8;
-          if (!blocked(x, y, 4)) return { x, y };
-        }
-      }
-    }
-    return { x: px, y: py };
-  };
+  const unstick = (px: number, py: number) => unstickSpot(px, py, (x, y) => blocked(x, y, 4));
 
   const plantSouthOfStoop = () => {
     const tx = Math.floor(player.x / TILE);
@@ -1082,10 +1041,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   };
 
   const moveActor = (a: Actor, dx: number, dy: number) => {
-    if (dx && !blocked(a.x + dx, a.y)) a.x += dx;
-    else if (dx && !blocked(a.x + dx * 0.5, a.y)) a.x += dx * 0.5;
-    if (dy && !blocked(a.x, a.y + dy)) a.y += dy;
-    else if (dy && !blocked(a.x, a.y + dy * 0.5)) a.y += dy * 0.5;
+    const next = lipStep(a.x, a.y, dx, dy, (x, y) => blocked(x, y));
+    a.x = next.x;
+    a.y = next.y;
   };
 
   const burst = (x: number, y: number, color: string, n = 8) => {
@@ -1109,12 +1067,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     e.hp -= dmg;
     e.hurt = 0.22;
     const k = DIRS[dir];
-    e.x += k.x * 10;
-    e.y += k.y * 10;
+    moveActor(e, k.x * 10, k.y * 10);
     burst(e.x, e.y, "#f4efe2", 10);
     floats.push({ x: e.x, y: e.y - 10, t: 0.55, text: String(Math.max(1, Math.round(dmg))), color: "#f4efe2" });
-    audio.hit();
-    hitstop = 0.07;
+    audio.hit(e.kind);
+    hitstop = scaleHitstop(0.07, reduced);
     trauma = Math.min(1, trauma + 0.32);
     if (aff?.lifesteal) {
       player.hp = Math.min(player.maxHp, player.hp + aff.lifesteal);
@@ -1126,7 +1083,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (e.hp <= 0) {
       e.alive = false;
       burst(e.x, e.y, "#c45c4a", 22);
-      hitstop = 0.11;
+      hitstop = scaleHitstop(0.11, reduced);
       trauma = Math.min(1, trauma + 0.45);
       noteDeed("You killed a " + e.kind + " in " + mapId);
       if (save.character.idealId !== "mercy") addKarma(aff?.karmaOnKill ? 2 + aff.karmaOnKill : 1);
@@ -1145,13 +1102,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
-  const hurtPlayer = (amt: number) => {
+  const hurtPlayer = (amt: number, fromX = player.x, fromY = player.y) => {
     if (invuln > 0) return;
     player.hp -= amt;
     save.hp = player.hp;
     invuln = 0.85;
+    const away = Math.hypot(player.x - fromX, player.y - fromY) || 1;
+    moveActor(player, ((player.x - fromX) / away) * 8, ((player.y - fromY) / away) * 8);
     audio.hurt();
     trauma = Math.min(1, trauma + 0.55);
+    hitstop = scaleHitstop(Math.max(hitstop, 0.05), reduced);
     if (player.hp <= 0) enterLimbo("The body fails. The cycle completes. You will be louder.");
   };
 
@@ -1229,9 +1189,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     }
   };
 
+  const noteBladeOnMarble = () => {
+    const k = DIRS[player.dir];
+    const tx = Math.floor((player.x + k.x * 12) / TILE);
+    const ty = Math.floor((player.y + k.y * 12) / TILE);
+    if (world.tiles[ty]?.[tx] !== T.cracked) return;
+    say(strikeMarble("blade", crackRole(mapId, tx, ty)).line);
+  };
+
   const startCombo = () => {
     fireSlash();
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.1;
   };
 
@@ -1248,6 +1217,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
     cutGrass();
+    noteBladeOnMarble();
     attackT = 0.18;
     charge = 0;
   };
@@ -1305,6 +1275,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const lands = quarryHammerLands(mapId === "quarry", save.flags.relics.includes("lantern"), save.flags.lanternOn);
     let opened = false;
     let blind = false;
+    let decoy = false;
     for (const [ox, oy] of [
       [0, 0],
       [-1, 0],
@@ -1315,6 +1286,10 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const x = tx + ox;
       const y = ty + oy;
       if (world.tiles[y]?.[x] !== T.cracked) continue;
+      if (crackRole(mapId, x, y) === "decoy") {
+        decoy = true;
+        continue;
+      }
       if (!lands) {
         blind = true;
         continue;
@@ -1326,11 +1301,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       burst(x * TILE + 8, y * TILE + 8, "#c4bba8", 12);
       opened = true;
     }
-    if (blind && !opened) say("The marble is blind. Open the lamp, then the hammer.");
-    else if (opened) {
-      say("The plug gives. North is open.");
+    if (opened) {
+      say(strikeMarble("hammer", "true").line);
       persist();
-    }
+    } else if (blind) say("The marble is blind. Open the lamp, then the hammer.");
+    else if (decoy) say(strikeMarble("hammer", "decoy").line);
     fireSlash();
     attackT = 0.2;
   };
@@ -1351,9 +1326,12 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     g0.excavated = true;
     props = props.filter((p) => p.id !== near.id);
     for (const w of g.weapons) {
-      const rolled = rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
-      rolled.id = w.id;
-      rolled.name = w.name;
+      const remembered = weaponFromGrave(w);
+      const rolled = remembered ?? rollWeapon(w.id, w.kind === "rifle" ? "farmhouse" : "woods", save.cycle);
+      if (!remembered) {
+        rolled.id = w.id;
+        rolled.name = w.name;
+      }
       save.inventory = [...save.inventory, rolled];
     }
     for (const r of g.relics) {
@@ -1371,8 +1349,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     for (const e of enemies) {
       if (!e.alive || e.kind !== "crow") continue;
       if (Math.hypot(e.x - player.x, e.y - player.y) < 22) {
+        if (!fillBottle("deluxe")) {
+          say("Both bottles are full. The crow keeps the light.");
+          continue;
+        }
         e.alive = false;
-        fillBottle("deluxe");
         say("A light in the net. Bottled.");
         audio.pickup();
       }
@@ -1432,7 +1413,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (dashT > 0) dashT -= dt;
     if (playerStoned > 0) playerStoned -= dt;
     if (flash > 0) flash -= dt;
-    if (weather?.label.id === "storm" && Math.random() < dt * 0.15) flash = 0.08;
     if (messageT > 0) {
       messageT -= dt;
       if (messageT <= 0) message = null;
@@ -1453,9 +1433,8 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     const spec = INCARNATIONS[save.incarnation];
     const wpn = equipped();
     const wx = 1 + weaponMoveMod(wpn);
-    const wMul = weatherSpeed(weather);
     const stonedMul = playerStoned > 0 ? 0.82 : 1;
-    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * wMul * stonedMul * sheetSpeedMul(save.character.flawId);
+    const speed = spec.speed * (1 + save.upgrades.stride * 0.12) * wx * stonedMul * sheetSpeedMul(save.character.flawId);
     let mx = actions.moveX;
     let my = actions.moveY;
     if (actions.scheme === "keyboard" || actions.scheme === "gamepad") {
@@ -1495,9 +1474,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       my += Math.cos(animT * 2.2) * 0.1;
     }
     if (mx || my) {
-      if (Math.abs(mx) > Math.abs(my)) player.dir = mx < 0 ? 1 : 2;
-      else player.dir = my < 0 ? 3 : 0;
-    }
+      if (actions.fromKeys) {
+        if (Math.abs(mx) > Math.abs(my)) {
+          player.dir = mx < 0 ? 1 : 2;
+          faceMem = "x";
+        } else {
+          player.dir = my < 0 ? 3 : 0;
+          faceMem = "y";
+        }
+      } else {
+        const faced = resolveFacing(mx, my, player.dir, faceMem);
+        player.dir = faced.dir;
+        faceMem = faced.mem;
+      }
+    } else faceMem = null;
 
     const ySlot = save.flags.ySlot;
     const rifleOut = equipped().kind === "rifle";
@@ -1570,6 +1560,15 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     player.vx = mx * spd;
     player.vy = my * spd;
     moveActor(player, player.vx * dt, player.vy * dt);
+    const paced = stepDue(stepCarry, Math.hypot(player.vx * dt, player.vy * dt));
+    stepCarry = paced.carry;
+    if (paced.fire) audio.step(tileAt(player.x, player.y));
+    for (const g of props) {
+      if (g.kind !== "grave") continue;
+      const d = Math.hypot(g.x * TILE + 8 - player.x, g.y * TILE + 8 - player.y);
+      if (d < 18) nearedGraves.add(g.id);
+      else if (nearedGraves.has(g.id) && d > 56) passedGraves.add(g.id);
+    }
     const pushing = Math.hypot(mx, my) > 0.25;
     if (pushing && blocked(player.x, player.y, 4)) {
       shoveT += dt;
@@ -1605,8 +1604,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         save.flags.ySlot = next;
         say(RELIC_BY_ID[next].name + " — " + RELIC_BY_ID[next].verb);
       } else if (save.inventory.length > 1) {
-        const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-        const next = save.inventory[(i + 1) % save.inventory.length];
+        const next = wearNextWeapon(save.inventory, save.equippedId);
+        if (next) {
+          save.equippedId = next.id;
+          say(next.name);
+        }
+      }
+    }
+    if (actions.weaponCyclePressed) {
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (next) {
         save.equippedId = next.id;
         say(next.name);
       }
@@ -1623,10 +1630,13 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const tx = Math.floor(bx / TILE);
       const ty = Math.floor(by / TILE);
       if (world.tiles[ty]?.[tx] === T.cracked) {
-        world.tiles[ty][tx] = T.gravel;
-        tileCache.dirty(tx, ty);
-        save.flags.quarryOpen = true;
-        say("The vein gives. The quarry opens.");
+        const verdict = strikeMarble("bomb", crackRole(mapId, tx, ty));
+        if (verdict.open) {
+          world.tiles[ty][tx] = T.gravel;
+          tileCache.dirty(tx, ty);
+          save.flags.quarryOpen = true;
+        }
+        say(verdict.line);
       }
       for (const e of enemies) {
         if (e.alive && Math.hypot(e.x - bx, e.y - by) < 22) hitEnemy(e, 2, player.dir);
@@ -1710,30 +1720,81 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       sp *= bond;
       if (e.slow > 0) sp *= 0.45;
       const aggro = e.kind === "bear" ? 64 : e.kind === "resident" ? 52 : 78;
+      if (e.kind === "sentinel" && dist >= aggro) {
+        e.beat = "still";
+        e.tell = 0;
+      }
       if (e.stoned > 0) {
+        if (e.kind !== "sentinel") {
+          e.tell = 0;
+          e.warned = false;
+        }
         e.vx = Math.sin(animT * 2 + e.x) * sp * 0.4;
         e.vy = Math.cos(animT * 1.7 + e.y) * sp * 0.4;
         moveActor(e, e.vx * dt, e.vy * dt);
       } else if (dist < aggro) {
-        if (e.kind === "sentinel" && e.hp >= e.maxHp) {
+        const sentinel =
+          e.kind === "sentinel"
+            ? stepSentinel({
+                hp: e.hp,
+                maxHp: e.maxHp,
+                inRange: true,
+                beat: e.beat,
+                tell: e.tell,
+                dt,
+              })
+            : null;
+        if (sentinel) {
+          e.beat = sentinel.beat;
+          e.tell = sentinel.tell;
+        }
+        if (sentinel && !sentinel.moves) {
           e.vx = 0;
           e.vy = 0;
-        } else {
-          let ix = dx / dist;
-          let iy = dy / dist;
-          if (e.kind === "fisher") {
-            ix += Math.sin(animT * 8) * 0.45;
-            iy += Math.cos(animT * 6) * 0.45;
-          }
+        } else if (sentinel) {
+          const ix = dx / dist;
+          const iy = dy / dist;
           moveActor(e, ix * sp * dt, iy * sp * dt);
           if (Math.abs(ix) > Math.abs(iy)) e.dir = ix < 0 ? 1 : 2;
           else e.dir = iy < 0 ? 3 : 0;
-          if (dist < 12 && e.hurt <= 0) {
-            const dmg = e.kind === "bear" ? 1.5 : e.kind === "sentinel" ? 1 : e.kind === "resident" ? 1.2 : 1;
-            hurtPlayer(dmg);
+          if (lungeHits("sentinel", player.x - e.x, player.y - e.y) && e.hurt <= 0) {
+            hurtPlayer(1, e.x, e.y);
             e.hurt = 0.4;
           }
+        } else {
+          const beforeTell = e.tell;
+          const step = countyTell(e.kind, dist, e.tell, e.warned, dt);
+          e.tell = step.tell;
+          e.warned = step.warned;
+          if (beforeTell === 0 && step.step === "tell") audio.tell();
+          if (Math.abs(dx) > Math.abs(dy)) e.dir = dx < 0 ? 1 : 2;
+          else e.dir = dy < 0 ? 3 : 0;
+          if (step.step === "tell") {
+            e.vx = 0;
+            e.vy = 0;
+          } else {
+            let ix = dx / dist;
+            let iy = dy / dist;
+            if (e.kind === "fisher") {
+              ix += Math.sin(animT * 8) * 0.45;
+              iy += Math.cos(animT * 6) * 0.45;
+            }
+            moveActor(e, ix * sp * dt, iy * sp * dt);
+            const bite =
+              e.kind === "bobcat"
+                ? lungeHits("bobcat", player.x - e.x, player.y - e.y)
+                : dist < 12;
+            if (step.step === "bite" && bite && e.hurt <= 0) {
+              const dmg = e.kind === "bear" ? 1.5 : e.kind === "resident" ? 1.2 : 1;
+              hurtPlayer(dmg, e.x, e.y);
+              e.hurt = 0.4;
+              e.warned = false;
+            }
+          }
         }
+      } else if (e.kind !== "sentinel") {
+        e.tell = 0;
+        e.warned = false;
       }
     }
 
@@ -1795,23 +1856,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       return f.t > 0;
     });
 
-    if (weather && (weather.label.id === "rain" || weather.label.id === "storm" || weather.label.id === "snow")) {
-      const n = weather.label.id === "snow" ? 2 : 3;
-      for (let i = 0; i < n; i++) {
-        particles.push({
-          x: camX + (Math.random() - 0.5) * SNES_W,
-          y: camY - VIEW_H / 2 - 4,
-          vx: weather.label.id === "snow" ? 8 : 40 + weather.wind,
-          vy: weather.label.id === "snow" ? 22 : 70,
-          life: 0.9,
-          color: weather.label.id === "snow" ? "#f4efe2" : "#8eb4d4",
-          size: 1,
-        });
-      }
+    const fighting = enemies.some((e) => e.alive && Math.hypot(e.x - player.x, e.y - player.y) < 78);
+    const nextBed = bedFor({ mode, mapId, fighting });
+    if (nextBed !== audioBed) {
+      audioBed = nextBed;
+      audio.startDrone(nextBed);
     }
 
     beacon = questBeacon();
-    if (!reduced && particles.length < 240 && mapId !== "soloverse") {
+    trimCapped(slashes, SLASH_CAP);
+    trimCapped(particles, PARTICLE_CAP);
+    trimCapped(floats, FLOAT_CAP);
+    if (particles.length < PARTICLE_CAP && !reduced && mapId !== "soloverse") {
       const moving = Math.abs(mx) + Math.abs(my) > 0.2;
       if (moving) {
         stepAcc += dt;
@@ -1874,10 +1930,14 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
 
-    const lerp = 1 - Math.exp(-10 * dt);
     const look = DIRS[player.dir];
-    camX += (player.x + look.x * 16 - camX) * lerp;
-    camY += (player.y + look.y * 10 - camY) * lerp;
+    const cam = stepCamera(camX, camY, player.x + look.x * 16, player.y + look.y * 10, dt, {
+      deadX: 4,
+      deadY: 3,
+      stiffness: reduced ? 18 : 10,
+    });
+    camX = cam.x;
+    camY = cam.y;
   };
 
   const drawSheet = (
@@ -1907,7 +1967,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
   const drawHudBar = () => {
     const town = TOWN_BY_ID[mapId]?.name ?? (isInterior(mapId) ? "Inside" : mapId);
     const clock = String(localHour).padStart(2, "0") + "h";
-    const wx = weather ? weather.label.name.slice(0, 8) : "";
+    const wx = "";
     const sig = [
       player.hp,
       player.maxHp,
@@ -2037,7 +2097,19 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       } else if (p.kind === "warp") {
         bctx.fillStyle = "rgba(232,195,106,0.4)";
         bctx.fillRect(dx + 5, dy + 5, 6, 6);
-      } else if (p.kind === "grave") paintGrave16(bctx, dx, dy);
+      } else if (p.kind === "grave") {
+        paintGrave16(bctx, dx, dy);
+        const stone = firstReturnStone(save.cycle, save.character.name);
+        const latest = [...(save.flags.graves ?? [])].reverse().find((g) => !g.excavated);
+        if (stone && latest && latest.id === p.id) {
+          bctx.font = "8px monospace";
+          bctx.fillStyle = "#f4efe2";
+          bctx.textAlign = "center";
+          bctx.fillText(stone[0], dx + 8, dy - 10);
+          bctx.fillText(stone[1], dx + 8, dy - 2);
+          bctx.textAlign = "left";
+        }
+      }
       else if (p.kind === "key") paintKey16(bctx, dx, dy);
       else if (p.kind === "lock") paintLock16(bctx, dx, dy);
       else if (p.kind === "wheel") {
@@ -2112,6 +2184,18 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
             }
           }
           bctx.globalAlpha = 1;
+          if (a.kind === "sentinel" && a.beat === "gold") {
+            bctx.globalAlpha = 0.95;
+            bctx.fillStyle = "#e8c36a";
+            bctx.fillRect(dx + 2, dy + 1, 12, 3);
+            bctx.globalAlpha = 1;
+          }
+          if (a.tell > 0 && a.kind !== "sentinel") {
+            bctx.fillStyle = "#f4efe2";
+            for (const [mx, my] of tellPixels(a.x, a.y, player.x, player.y, a.tell, TELL_S)) {
+              bctx.fillRect(worldX(mx), worldY(my), 1, 1);
+            }
+          }
           if (a.hp < a.maxHp) {
             bctx.fillStyle = "#2a2018";
             bctx.fillRect(dx, dy - 3, 16, 2);
@@ -2178,7 +2262,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       bctx.fillText(f.text, Math.round((f.x - viewX) * zoom) - 10, Math.round((f.y - viewY) * zoom));
     }
 
-    if (flash > 0) {
+    if (boneFlashAlpha(flash, reducedFlash) > 0) {
       bctx.fillStyle = "rgba(244,239,226,0.25)";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
     }
@@ -2210,15 +2294,6 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       const lamp = save.flags.lanternOn ? 0.1 : 0.2;
       bctx.fillStyle = "rgba(12,18,48," + lamp + ")";
       bctx.fillRect(0, 0, SNES_W, SNES_H);
-    }
-    if (weather?.label.id === "rain" || weather?.label.id === "storm") {
-      bctx.fillStyle = "rgba(200,220,240,0.55)";
-      for (let i = 0; i < 22; i++) {
-        const rx = Math.floor((animT * 140 + i * 37) % SNES_W);
-        const ry = Math.floor((animT * 180 + i * 53) % SNES_H);
-        bctx.fillRect(rx, ry, 1, 3);
-        bctx.fillRect(rx + 1, ry + 3, 1, 2);
-      }
     }
     if (charge > 0.05) {
       bctx.fillStyle = "#2a2018";
@@ -2299,6 +2374,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       }
     }
 
+    if (mode === "play") {
+      const line = placeUnderfoot(tileAt(player.x, player.y), mapId);
+      bctx.font = "8px monospace";
+      const tw = Math.min(140, bctx.measureText(line).width);
+      bctx.fillStyle = "#14100c";
+      bctx.fillRect(4, 40, tw + 4, 9);
+      bctx.fillStyle = "#f4efe2";
+      bctx.fillText(line, 6, 47);
+    }
+
     drawHudBar();
     bctx.fillStyle = "#e8c36a";
     bctx.font = "8px monospace";
@@ -2359,10 +2444,34 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         : mapId === "soloverse"
           ? "Soloverse"
           : (town?.name ?? mapId),
-      weatherName: weather ? weather.label.name + " " + weather.tempF + "°" : "…",
-      tempF: weather?.tempF ?? null,
+      weatherName: "…",
+      tempF: null,
       weaponName: wpn.name,
       weaponTags: summarizeWeapon(wpn),
+      bag: [
+        ...save.inventory.map((weapon) => weapon.name),
+        ...save.flags.relics
+          .filter((id) => id !== "sword")
+          .map((id) => RELIC_BY_ID[id]?.name)
+          .filter((name): name is string => !!name),
+        ...save.flags.bottles
+          .filter((bottle) => bottle !== "empty")
+          .map((bottle) => (bottle === "deluxe" ? "Deluxe creemee" : bottle === "creemee" ? "Creemee" : "Syrup")),
+        ...(save.flags.arrows > 0 ? [`Arrows ×${save.flags.arrows}`] : []),
+        ...(save.flags.bombs > 0 ? [`Powder kegs ×${save.flags.bombs}`] : []),
+        ...(save.flags.keys > 0 ? [`Keys ×${save.flags.keys}`] : []),
+      ].join(" · ") || "Nothing",
+      kit: readKit(
+        save.inventory,
+        save.equippedId,
+        {
+          incarnationDamage: INCARNATIONS[save.incarnation].damage,
+          edge: save.upgrades.edge,
+          tropoverse: save.flags.tropoverse,
+          flawId: save.character.flawId,
+        },
+        save.flags.ySlot,
+      ),
       geoLine: save.flags.geoTown
         ? save.flags.geoTown === mapId
           ? "You are here"
@@ -2389,7 +2498,7 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       character: save.character,
       afterlifeHost: save.flags.afterlifeHost,
       introBeat,
-      job: save.flags.townsCleared.includes("quarry") ? OBJECTIVES.county : OBJECTIVES.job,
+      job: objective(),
       beacon: beaconLine(),
       lastDeed: save.flags.lastDeed,
       cycleLedger: mode === "limbo" ? cycleLedger(save) : { thisLife: "", youKeep: "", theGround: "" },
@@ -2403,8 +2512,11 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.cycle,
       snap.incarnation,
       snap.bombs,
+      snap.objective,
+      snap.job,
       snap.interactHint,
       snap.message,
+      snap.job,
       dialogue?.id,
       endingBeat,
       showHelp,
@@ -2412,6 +2524,9 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
       snap.townName,
       snap.weatherName,
       snap.weaponName,
+      snap.bag,
+      snap.kit.handName,
+      snap.kit.lead,
       snap.showControls,
       snap.tropoverse,
       snap.spectrumReady,
@@ -2444,13 +2559,20 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     if (mode === "play" && actions.pausePressed) {
       mode = "pause";
       persist();
+    } else if (mode === "kitchen" && actions.pausePressed) {
+      mode = "play";
     } else if (mode === "pause" && actions.pausePressed && !showHelp) {
       mode = "play";
     } else if (mode === "ipod" && actions.pausePressed) {
       mode = "play";
     }
-    if (hitstop > 0) hitstop -= raw;
-    else {
+    if (mode === "play") attackQueued = noteAttackDuringHitstop(attackQueued, actions.attackPressed, hitstop);
+    if (hitstop > 0) {
+      hitstop = Math.max(0, hitstop - raw);
+      const released = releaseAttackBuffer(attackQueued, hitstop, attackBuf);
+      attackQueued = released.queued;
+      attackBuf = released.buffer;
+    } else {
       acc += raw;
       const step = 1 / 60;
       while (acc >= step) {
@@ -2745,6 +2867,17 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     setShake: (v: boolean) => {
       shakeOn = v;
     },
+    setReducedFlash: (v: boolean) => {
+      reducedFlash = v;
+    },
+    setVolumes: (music: number, sfx: number) => audio.setVolumes(music, sfx),
+    exportLife: () => exportLifeBlob(save),
+    importLife: (raw: string) => {
+      const next = importLifeBlob(raw);
+      if (!next) return false;
+      writeSave(next);
+      return true;
+    },
     toggleMute: () => audio.setMuted(!audio.muted),
     dismissHelp: () => {
       showHelp = false;
@@ -2767,6 +2900,29 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
     pause: () => {
       if (mode === "play") mode = "pause";
     },
+    openKitchen: () => {
+      if (mode !== "pause") return;
+      mode = "kitchen";
+      showHelp = false;
+      lastUi = "";
+      audio.kitchen();
+    },
+    closeKitchen: () => {
+      if (mode === "kitchen") {
+        mode = "play";
+        lastUi = "";
+        try {
+          cvs.focus();
+        } catch {
+          /* ignore */
+        }
+      }
+    },
+    getKitchen: () => save.kitchen,
+    setKitchen: (kitchen: SaveData["kitchen"]) => {
+      save.kitchen = kitchen;
+      persist();
+    },
     resume: () => {
       if (mode === "pause") {
         showHelp = false;
@@ -2779,14 +2935,16 @@ export function createGame(canvas: HTMLElement, onUi: (ui: UiSnapshot) => void) 
         }
       }
     },
-    senseWorld: () => void senseWorld(mode !== "title"),
+    senseWorld: () => senseWorld(),
     cycleWeapon: () => {
-      if (save.inventory.length < 2) return;
-      const i = save.inventory.findIndex((w) => w.id === save.equippedId);
-      const next = save.inventory[(i + 1) % save.inventory.length];
+      if (save.inventory.length < 2) return false;
+      const next = wearNextWeapon(save.inventory, save.equippedId);
+      if (!next) return false;
       save.equippedId = next.id;
       say(next.name);
+      return true;
     },
+    undoLastSave: () => undoLastSave() !== null,
     sip,
     dispose: () => {
       running = false;

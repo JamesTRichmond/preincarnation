@@ -1,0 +1,146 @@
+{
+  "passed": 30,
+  "failed": 0,
+  "rooms": 85,
+  "byDungeon": {
+    "DG13": 16,
+    "DG14": 17,
+    "DG15": 17,
+    "DG16": 35
+  },
+  "environments": {
+    "fiction": 8,
+    "fact": 8,
+    "history": 8,
+    "imagination": 8
+  },
+  "endings": [
+    "keep",
+    "close",
+    "distribute",
+    "refuse"
+  ],
+  "graphEdges": 172,
+  "results": [
+    {
+      "name": "room counts",
+      "ok": true
+    },
+    {
+      "name": "geometry, traces, no softlocks in main solutions",
+      "ok": true
+    },
+    {
+      "name": "prepared graph reaches every dungeon room and not the porch",
+      "ok": true
+    },
+    {
+      "name": "graph clears on decision profile prepared",
+      "ok": true
+    },
+    {
+      "name": "graph clears on decision profile neglected",
+      "ok": true
+    },
+    {
+      "name": "graph clears on decision profile opposed",
+      "ok": true
+    },
+    {
+      "name": "graph clears on decision profile unknown",
+      "ok": true
+    },
+    {
+      "name": "witness doors require the witness flag",
+      "ok": true
+    },
+    {
+      "name": "alternates that match the prepared entry state also solve",
+      "ok": true
+    },
+    {
+      "name": "prepared ferry casting chains into imagination",
+      "ok": true
+    },
+    {
+      "name": "all twelve tool roles appear in a solution, boss script, or ending",
+      "ok": true
+    },
+    {
+      "name": "decision echoes are complete and distinct",
+      "ok": true
+    },
+    {
+      "name": "forbidden structures",
+      "ok": true
+    },
+    {
+      "name": "ordered puzzles accept the posted order and reject a repeat",
+      "ok": true
+    },
+    {
+      "name": "boss machines reach their success terminals",
+      "ok": true
+    },
+    {
+      "name": "boss failure scripts die in a named way",
+      "ok": true
+    },
+    {
+      "name": "boss re-entry uses the last completed phase",
+      "ok": true
+    },
+    {
+      "name": "all four endings eligible together, and commits are exclusive",
+      "ok": true
+    },
+    {
+      "name": "close, distribute, and refuse each commit alone",
+      "ok": true
+    },
+    {
+      "name": "contradictions fail before a commit",
+      "ok": true
+    },
+    {
+      "name": "each single missing institution or witness blocks only its ending",
+      "ok": true
+    },
+    {
+      "name": "ending sequences play through vignettes, credits, and the terminal save",
+      "ok": true
+    },
+    {
+      "name": "vignette matrix covers four decisions and eight scenes",
+      "ok": true
+    },
+    {
+      "name": "death in an environment returns to that environment checkpoint",
+      "ok": true
+    },
+    {
+      "name": "embryonic death with and without an anchor",
+      "ok": true
+    },
+    {
+      "name": "death in the seam before commit keeps sockets and drops the lectern line",
+      "ok": true
+    },
+    {
+      "name": "previous coat cannot confirm keep until the current coat is hung",
+      "ok": true
+    },
+    {
+      "name": "death after commit resumes the vignette and does not change the ending",
+      "ok": true
+    },
+    {
+      "name": "two deaths do not skip a checkpoint or invent a witness",
+      "ok": true
+    },
+    {
+      "name": "early dungeon death does not dump you into the vein",
+      "ok": true
+    }
+  ]
+}

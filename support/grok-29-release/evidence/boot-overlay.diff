@@ -1,0 +1,12 @@
+diff --git a/src/routes/__root.tsx b/src/routes/__root.tsx
+index a8fb0e8..696e9bd 100644
+--- a/src/routes/__root.tsx
++++ b/src/routes/__root.tsx
+@@ -31,6 +31,7 @@ export const Route = createRootRoute({
+   component: () => (
+     <html lang="en" suppressHydrationWarning>
+       <head>
++        <script id="preincarnation-boot-guard" dangerouslySetInnerHTML={{ __html: "(function(){\n\"use strict\";\nvar KEY=\"preincarnation.save.v1\";\nvar MAX=8;\nvar report={storage:\"ok\",action:\"none\",saveMax:MAX};\nfunction finish(action){report.action=action;return report;}\ntry{\n  var raw=localStorage.getItem(KEY);\n  if(raw==null||raw===\"\")return finish(\"fresh\");\n  var parsed;\n  try{parsed=JSON.parse(raw);}catch(e){\n    try{localStorage.setItem(KEY+\".unreadable\",raw);}catch(ignore){}\n    return finish(\"unreadable-kept\");\n  }\n  var v=parsed&&typeof parsed.version===\"number\"?parsed.version:1;\n  if(v>MAX){\n    try{\n      localStorage.setItem(KEY+\".future\",raw);\n      localStorage.removeItem(KEY);\n      var bak=localStorage.getItem(KEY+\".bak\");\n      if(bak){\n        try{\n          var b=JSON.parse(bak);\n          var bv=b&&typeof b.version===\"number\"?b.version:1;\n          if(bv<=MAX)localStorage.setItem(KEY,bak);\n        }catch(ignoreBak){}\n      }\n      try{localStorage.setItem(\"preincarnation.release.blocked\",\"future-save\");}catch(ignoreFlag){}\n    }catch(err){\n      try{localStorage.setItem(KEY,raw);}catch(ignoreRestore){}\n      report.storage=\"unavailable\";\n      report.error=String(err&&err.name||err);\n      return finish(\"untouched\");\n    }\n    return finish(\"quarantine-future\");\n  }\n  if(v<MAX){\n    try{\n      if(!localStorage.getItem(KEY+\".premigration\"))localStorage.setItem(KEY+\".premigration\",raw);\n    }catch(err){\n      report.storage=\"unavailable\";\n      report.error=String(err&&err.name||err);\n      return finish(\"untouched\");\n    }\n    return finish(\"snapshot-premigration\");\n  }\n  return finish(\"current\");\n}catch(err){\n  report.storage=\"unavailable\";\n  report.error=String(err&&err.name||err);\n  return finish(\"untouched\");\n}\n})()" }} />
+         <HeadContent />
+       </head>
+       <body>

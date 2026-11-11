@@ -1,0 +1,4715 @@
+{
+  "id": "DG13",
+  "name": "The House Built Out of Names",
+  "mappingStatus": "PENDING",
+  "rooms": [
+    {
+      "id": "DG13.R01",
+      "dungeon": "DG13",
+      "name": "Road of Appointments",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": true,
+      "purpose": "The house ahead is built of civic roles. Read the three plates that are physically here. Nothing outside this road is required.",
+      "layoutNote": "A straight approach. Four fence posts split the verges. Three plates stand in the south half. The north door is the house.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "civic-gravel",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..#..#.....#..#.#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "##################"
+        ]
+      },
+      "exits": [
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R02",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.platesRead"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "road-clerk",
+          "name": "A plate-painter",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "road-clerk.line1",
+              "text": "The doors inside are offices. If a role has no plate, it has no floor."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "plate-clerk",
+          "name": "Clerk plate",
+          "kind": "nameplate",
+          "pos": {
+            "x": 3,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "CLERK",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "plate-lister",
+          "name": "Lister plate",
+          "kind": "nameplate",
+          "pos": {
+            "x": 6,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "LISTER",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "plate-fence",
+          "name": "Fence-viewer plate",
+          "kind": "nameplate",
+          "pos": {
+            "x": 13,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "FENCE VIEWER",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "milestone",
+          "name": "House milestone",
+          "kind": "marker",
+          "pos": {
+            "x": 12,
+            "y": 2
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE HOUSE ADMITS WHO HAS READ THE THREE PLATES.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R01.interact.plate-clerk",
+          "kind": "interact",
+          "target": "plate-clerk",
+          "tool": null,
+          "sets": [
+            "dg13.plate.clerk"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R01.interact.plate-lister",
+          "kind": "interact",
+          "target": "plate-lister",
+          "tool": null,
+          "sets": [
+            "dg13.plate.lister"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R01.interact.plate-fence",
+          "kind": "interact",
+          "target": "plate-fence",
+          "tool": null,
+          "sets": [
+            "dg13.plate.fence"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R01.interact.milestone",
+          "kind": "interact",
+          "target": "milestone",
+          "tool": null,
+          "sets": [
+            "dg13.platesRead"
+          ],
+          "requires": [
+            "dg13.plate.clerk",
+            "dg13.plate.lister",
+            "dg13.plate.fence"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R01.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.platesRead"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R02",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R01",
+        "survivesDeath": [
+          "dg13.plate.clerk",
+          "dg13.plate.lister",
+          "dg13.plate.fence",
+          "dg13.platesRead",
+          "cleared.DG13.R01",
+          "visited.DG13.R01"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R01",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R01"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the clerk plate on the west verge.",
+            "target": "plate-clerk",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.plate.clerk"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Read the lister plate.",
+            "target": "plate-lister",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.plate.lister"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Read the fence-viewer plate.",
+            "target": "plate-fence",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.plate.fence"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Touch the milestone once all three plates are read. The north door unlatches.",
+            "target": "milestone",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.plate.clerk",
+              "dg13.plate.lister",
+              "dg13.plate.fence"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.platesRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the house.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.platesRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the clerk plate on the west verge. | action=interact | target=plate-clerk | tool=none | requires=none | sets=dg13.plate.clerk",
+        "2. Read the lister plate. | action=interact | target=plate-lister | tool=none | requires=none | sets=dg13.plate.lister",
+        "3. Read the fence-viewer plate. | action=interact | target=plate-fence | tool=none | requires=none | sets=dg13.plate.fence",
+        "4. Touch the milestone once all three plates are read. The north door unlatches. | action=interact | target=milestone | tool=none | requires=dg13.plate.clerk & dg13.plate.lister & dg13.plate.fence | sets=dg13.platesRead",
+        "5. Enter the house. | action=traverse | exit=north | tool=none | requires=dg13.platesRead | sets=none",
+        "6. Room clear is recorded as cleared.DG13.R01. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.plate.clerk",
+        "dg13.plate.lister",
+        "dg13.plate.fence",
+        "dg13.platesRead",
+        "cleared.DG13.R01",
+        "visited.DG13.R01"
+      ]
+    },
+    {
+      "id": "DG13.R02",
+      "dungeon": "DG13",
+      "name": "Vestibule of Offices",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Only the clerk's door is an office yet. The other labels are painted on plaster and do not open.",
+      "layoutNote": "A counter broken at the center aisle. The clerk plate is east of the aisle. North is the cage. South returns to the road.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.#####....#####.#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R01",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R03",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.clerkPlate"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "vestibule-voice",
+          "name": "Speaking tube",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "vestibule-voice.line1",
+              "text": "State the office you are entering. The tube only answers to the plate."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "clerk-plate",
+          "name": "Vestibule clerk plate",
+          "kind": "nameplate",
+          "pos": {
+            "x": 12,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "CLERK — CAGE NORTH",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R02.interact.clerk-plate",
+          "kind": "interact",
+          "target": "clerk-plate",
+          "tool": null,
+          "sets": [
+            "dg13.clerkPlate"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R02.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.clerkPlate"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R03",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R02",
+        "survivesDeath": [
+          "dg13.clerkPlate",
+          "cleared.DG13.R02",
+          "visited.DG13.R02"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R02",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R02"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the vestibule plate. The north door opens.",
+            "target": "clerk-plate",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.clerkPlate"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go to the clerk's cage.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.clerkPlate"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the vestibule plate. The north door opens. | action=interact | target=clerk-plate | tool=none | requires=none | sets=dg13.clerkPlate",
+        "2. Go to the clerk's cage. | action=traverse | exit=north | tool=none | requires=dg13.clerkPlate | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R02. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.clerkPlate",
+        "cleared.DG13.R02",
+        "visited.DG13.R02"
+      ]
+    },
+    {
+      "id": "DG13.R03",
+      "dungeon": "DG13",
+      "name": "Clerk's Cage",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Copy the day's appointments into the field book. The book, not memory, is what later rooms check.",
+      "layoutNote": "A cage of bars occupies the east. The book-ledge is west of the bars. The appointment board is fixed to the south of the cage.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#...........####.#",
+          "#...........#....#",
+          "#...........#....#",
+          "#...........#....#",
+          "#...........#....#",
+          "#...........#....#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R02",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R04",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.appointmentsCopied"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "clerk",
+          "name": "The Clerk",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 3
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "clerk.line1",
+              "text": "Copy the board. I do not repeat names that are not on it."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 3
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "appointment-board",
+          "name": "Appointment board",
+          "kind": "board",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "TODAY: CLERK, LISTER, FENCE VIEWER, CONSTABLE, SELECTBOARD, ROAD COMMISSIONER, OVERSEER, TRUSTEE, MILL AGENT, FERRY TENDER.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R03.use-tool.appointment-board",
+          "kind": "use-tool",
+          "target": "appointment-board",
+          "tool": "field-book",
+          "sets": [
+            "dg13.appointmentsCopied"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R03.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.appointmentsCopied"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R04",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R03",
+        "survivesDeath": [
+          "dg13.appointmentsCopied",
+          "cleared.DG13.R03",
+          "visited.DG13.R03"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R03",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R03"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Copy the board into the field book. The action copies the inscription; it does not ask you to retype it.",
+            "target": "appointment-board",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.appointmentsCopied"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The cage gate opens onto the listers.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.appointmentsCopied"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Copy the board into the field book. The action copies the inscription; it does not ask you to retype it. | action=use-tool | target=appointment-board | tool=field-book | requires=none | sets=dg13.appointmentsCopied",
+        "2. The cage gate opens onto the listers. | action=traverse | exit=north | tool=none | requires=dg13.appointmentsCopied | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R03. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.appointmentsCopied",
+        "cleared.DG13.R03",
+        "visited.DG13.R03"
+      ]
+    },
+    {
+      "id": "DG13.R04",
+      "dungeon": "DG13",
+      "name": "Listers' Gallery",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "A disputed lot line is drawn on the floor. Measure it with the chain. The length is painted on the wall of this room.",
+      "layoutNote": "A long gallery. A false wall stands west of the aisle. The painted length is on the east plaster. The lot line runs along y=6 from x=3 to x=7.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#..####..........#",
+          "#................#",
+          "#................#",
+          "#..+++++.........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R03",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R05",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.lotMeasured"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "lister",
+          "name": "A Lister",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "lister.line1",
+              "text": "The paint says four rods. Your chain agrees or the false wall stays."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "length-paint",
+          "name": "Painted length",
+          "kind": "inscription",
+          "pos": {
+            "x": 13,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "DISPUTED LINE: 4 RODS",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "lot-line",
+          "name": "Disputed lot line",
+          "kind": "measure-target",
+          "pos": {
+            "x": 5,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The chain latches only at the painted length of 4."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R04.interact.length-paint",
+          "kind": "interact",
+          "target": "length-paint",
+          "tool": null,
+          "sets": [
+            "dg13.lengthRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R04.use-tool.lot-line",
+          "kind": "use-tool",
+          "target": "lot-line",
+          "tool": "field-chain",
+          "sets": [
+            "dg13.lotMeasured"
+          ],
+          "requires": [
+            "dg13.lengthRead"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R04.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.lotMeasured"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R05",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R04",
+        "survivesDeath": [
+          "dg13.lengthRead",
+          "dg13.lotMeasured",
+          "cleared.DG13.R04",
+          "visited.DG13.R04"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R04",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R04"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the painted length. It says 4 rods.",
+            "target": "length-paint",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.lengthRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Stretch the chain along the marked line to the painted length. The false wall drops.",
+            "target": "lot-line",
+            "tool": "field-chain",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.lengthRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.lotMeasured"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Pass the dropped wall.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.lotMeasured"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the painted length. It says 4 rods. | action=interact | target=length-paint | tool=none | requires=none | sets=dg13.lengthRead",
+        "2. Stretch the chain along the marked line to the painted length. The false wall drops. | action=use-tool | target=lot-line | tool=field-chain | requires=dg13.lengthRead | sets=dg13.lotMeasured",
+        "3. Pass the dropped wall. | action=traverse | exit=north | tool=none | requires=dg13.lotMeasured | sets=none",
+        "4. Room clear is recorded as cleared.DG13.R04. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.lengthRead",
+        "dg13.lotMeasured",
+        "cleared.DG13.R04",
+        "visited.DG13.R04"
+      ]
+    },
+    {
+      "id": "DG13.R05",
+      "dungeon": "DG13",
+      "name": "Fence Viewers' Walk",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "The legal width of the walk is one coat less than a body. Hang the coat, then hold the gate with the rod.",
+      "layoutNote": "A narrow stile. The west wall thickens into a passage one tile wide at x=7,y=5..7, leaving x=8 open beside the center aisle's neighbor. Peg and gate are south of the stile.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.#####....#####.#",
+          "#.#####..........#",
+          "#.#####..........#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R04",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R06",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.fenceHeld"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "viewer",
+          "name": "Fence Viewer",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 2
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "viewer.line1",
+              "text": "A body with its coat on does not fit the viewer's width."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 2
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "stile-peg",
+          "name": "Stile peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Holds the current coat."
+        },
+        {
+          "id": "viewer-gate",
+          "name": "Viewer gate",
+          "kind": "gate",
+          "pos": {
+            "x": 13,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Falls shut unless a range rod is planted in the socket."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R05.use-tool.stile-peg",
+          "kind": "use-tool",
+          "target": "stile-peg",
+          "tool": "borrowed-coat",
+          "sets": [
+            "dg13.fence.slim"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R05.use-tool.viewer-gate",
+          "kind": "use-tool",
+          "target": "viewer-gate",
+          "tool": "range-rod",
+          "sets": [
+            "dg13.fenceHeld"
+          ],
+          "requires": [
+            "dg13.fence.slim"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R05.interact.stile-peg",
+          "kind": "interact",
+          "target": "stile-peg",
+          "tool": null,
+          "sets": [
+            "dg13.fence.coatBack"
+          ],
+          "requires": [
+            "dg13.fenceHeld"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R05.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.fenceHeld"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R06",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R05",
+        "survivesDeath": [
+          "dg13.fence.slim",
+          "dg13.fenceHeld",
+          "dg13.fence.coatBack",
+          "cleared.DG13.R05",
+          "visited.DG13.R05"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R05",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R05"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Hang the coat. The stile admits you.",
+            "target": "stile-peg",
+            "tool": "borrowed-coat",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.fence.slim"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Plant the rod so the gate stays open.",
+            "target": "viewer-gate",
+            "tool": "range-rod",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.fence.slim"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.fenceHeld"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Take the coat back. The gate remains held.",
+            "target": "stile-peg",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.fenceHeld"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.fence.coatBack"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave through the held gate.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.fenceHeld"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Hang the coat. The stile admits you. | action=use-tool | target=stile-peg | tool=borrowed-coat | requires=none | sets=dg13.fence.slim",
+        "2. Plant the rod so the gate stays open. | action=use-tool | target=viewer-gate | tool=range-rod | requires=dg13.fence.slim | sets=dg13.fenceHeld",
+        "3. Take the coat back. The gate remains held. | action=interact | target=stile-peg | tool=none | requires=dg13.fenceHeld | sets=dg13.fence.coatBack",
+        "4. Leave through the held gate. | action=traverse | exit=north | tool=none | requires=dg13.fenceHeld | sets=none",
+        "5. Room clear is recorded as cleared.DG13.R05. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.fence.slim",
+        "dg13.fenceHeld",
+        "dg13.fence.coatBack",
+        "cleared.DG13.R05",
+        "visited.DG13.R05"
+      ]
+    },
+    {
+      "id": "DG13.R06",
+      "dungeon": "DG13",
+      "name": "Constable's Lock",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "A filled warrant is tied to the lock with red tape. Cut the tape or stamp the warrant. Either opens the lock. The method is remembered and does not gate the house.",
+      "layoutNote": "A lockup bench against the west wall. The warrant hangs east. The aisle stays open.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R05",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R07",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.constableOpen"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "constable",
+          "name": "The Constable",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "constable.line1",
+              "text": "The tape is the lock. The seal is also the lock. I accept either."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "warrant",
+          "name": "Filled warrant",
+          "kind": "document",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "WARRANT ALREADY NAMED. TAPE IS RED. SEAL BOX IS OPEN.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R06.use-tool.warrant",
+          "kind": "use-tool",
+          "target": "warrant",
+          "tool": "field-knife",
+          "sets": [
+            {
+              "flag": "dg13.constableOpen",
+              "value": true
+            },
+            {
+              "flag": "dg13.constableMethod",
+              "value": "knife"
+            }
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R06.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.constableOpen"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R07",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R06",
+        "survivesDeath": [
+          "dg13.constableOpen",
+          "dg13.constableMethod",
+          "cleared.DG13.R06",
+          "visited.DG13.R06"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R06",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R06"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Cut the red tape. The lock opens.",
+            "target": "warrant",
+            "tool": "field-knife",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              {
+                "flag": "dg13.constableOpen",
+                "value": true
+              },
+              {
+                "flag": "dg13.constableMethod",
+                "value": "knife"
+              }
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave the lockup.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.constableOpen"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "seal-warrant",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Stamp the warrant instead of cutting it.",
+              "target": "warrant",
+              "tool": "office-seal",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                {
+                  "flag": "dg13.constableOpen",
+                  "value": true
+                },
+                {
+                  "flag": "dg13.constableMethod",
+                  "value": "seal"
+                }
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Leave the lockup.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg13.constableOpen"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Cut the red tape. The lock opens. | action=use-tool | target=warrant | tool=field-knife | requires=none | sets=[object Object] & [object Object]",
+        "2. Leave the lockup. | action=traverse | exit=north | tool=none | requires=dg13.constableOpen | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R06. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.constableOpen",
+        "dg13.constableMethod",
+        "cleared.DG13.R06",
+        "visited.DG13.R06"
+      ]
+    },
+    {
+      "id": "DG13.R07",
+      "dungeon": "DG13",
+      "name": "Selectboard Horseshoe",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Three chairs. The roll board lists the ring order. Ring each marked spot once, in that order. A repeat before the next name stands the member back up.",
+      "layoutNote": "Horseshoe of benches leaving the center aisle. Three bell spots sit on the inner curve. The board is north of them.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..###......###..#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R06",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R08",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.boardSeated"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "chair-voice",
+          "name": "Empty chairs",
+          "kind": "fixture",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "chair-voice.line1",
+              "text": "We sit when the bell hits the right spot in the right order."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "roll-board",
+          "name": "Roll board",
+          "kind": "board",
+          "pos": {
+            "x": 13,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "ORDER: SPOT A, SPOT B, SPOT C.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "spot-a",
+          "name": "Bell spot A",
+          "kind": "bell-spot",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "spot-b",
+          "name": "Bell spot B",
+          "kind": "bell-spot",
+          "pos": {
+            "x": 7,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "spot-c",
+          "name": "Bell spot C",
+          "kind": "bell-spot",
+          "pos": {
+            "x": 13,
+            "y": 5
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R07.interact.roll-board",
+          "kind": "interact",
+          "target": "roll-board",
+          "tool": null,
+          "sets": [
+            "dg13.rollRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R07.use-tool.spot-a",
+          "kind": "use-tool",
+          "target": "spot-a",
+          "tool": "county-bell",
+          "sets": [
+            "dg13.sel.1"
+          ],
+          "requires": [
+            "dg13.rollRead"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R07.use-tool.spot-b",
+          "kind": "use-tool",
+          "target": "spot-b",
+          "tool": "county-bell",
+          "sets": [
+            "dg13.sel.2"
+          ],
+          "requires": [
+            "dg13.sel.1"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R07.use-tool.spot-c",
+          "kind": "use-tool",
+          "target": "spot-c",
+          "tool": "county-bell",
+          "sets": [
+            "dg13.boardSeated"
+          ],
+          "requires": [
+            "dg13.sel.2"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R07.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.boardSeated"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R08",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R07",
+        "survivesDeath": [
+          "dg13.rollRead",
+          "dg13.sel.1",
+          "dg13.sel.2",
+          "dg13.boardSeated",
+          "cleared.DG13.R07",
+          "visited.DG13.R07"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R07",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R07"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the order: A, then B, then C.",
+            "target": "roll-board",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.rollRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring spot A.",
+            "target": "spot-a",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.rollRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.sel.1"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring spot B.",
+            "target": "spot-b",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.sel.1"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.sel.2"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Ring spot C. The board votes the road door open.",
+            "target": "spot-c",
+            "tool": "county-bell",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.sel.2"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.boardSeated"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Take the road commissioner's door.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.boardSeated"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the order: A, then B, then C. | action=interact | target=roll-board | tool=none | requires=none | sets=dg13.rollRead",
+        "2. Ring spot A. | action=use-tool | target=spot-a | tool=county-bell | requires=dg13.rollRead | sets=dg13.sel.1",
+        "3. Ring spot B. | action=use-tool | target=spot-b | tool=county-bell | requires=dg13.sel.1 | sets=dg13.sel.2",
+        "4. Ring spot C. The board votes the road door open. | action=use-tool | target=spot-c | tool=county-bell | requires=dg13.sel.2 | sets=dg13.boardSeated",
+        "5. Take the road commissioner's door. | action=traverse | exit=north | tool=none | requires=dg13.boardSeated | sets=none",
+        "6. Room clear is recorded as cleared.DG13.R07. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": {
+        "id": "selectboard",
+        "sequence": [
+          "spot-a",
+          "spot-b",
+          "spot-c"
+        ],
+        "completeFlag": "dg13.boardSeated",
+        "resetOnMismatch": true,
+        "deathAt": 3
+      },
+      "produces": [
+        "dg13.rollRead",
+        "dg13.sel.1",
+        "dg13.sel.2",
+        "dg13.boardSeated",
+        "cleared.DG13.R07",
+        "visited.DG13.R07"
+      ]
+    },
+    {
+      "id": "DG13.R08",
+      "dungeon": "DG13",
+      "name": "Commissioner's Cut",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "The floor road is broken by a gap of the length painted beside it. The chain bridges that posted length and no other.",
+      "layoutNote": "Center aisle interrupted by void at (9,5). Side floors let you stand at the near post (9 is void, so the post is at x=7,y=5 and the far hook at x=11,y=5).",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#...##...........#",
+          "#................#",
+          "#........V.......#",
+          "#................#",
+          "#...........###..#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R07",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R09",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.gapBridged"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "commissioner",
+          "name": "Road Commissioner",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "commissioner.line1",
+              "text": "The paint says the gap is one chain-length, marked 4. I will not tell you a second number."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "gap-paint",
+          "name": "Gap paint",
+          "kind": "inscription",
+          "pos": {
+            "x": 4,
+            "y": 2
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "GAP: 4 LINKS",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "near-post",
+          "name": "Near post",
+          "kind": "post",
+          "pos": {
+            "x": 7,
+            "y": 5
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R08.interact.gap-paint",
+          "kind": "interact",
+          "target": "gap-paint",
+          "tool": null,
+          "sets": [
+            "dg13.gapRead"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R08.use-tool.near-post",
+          "kind": "use-tool",
+          "target": "near-post",
+          "tool": "field-chain",
+          "sets": [
+            "dg13.gapBridged"
+          ],
+          "requires": [
+            "dg13.gapRead"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R08.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.gapBridged"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R09",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R08",
+        "survivesDeath": [
+          "dg13.gapRead",
+          "dg13.gapBridged",
+          "cleared.DG13.R08",
+          "visited.DG13.R08"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R08",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R08"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the gap length.",
+            "target": "gap-paint",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.gapRead"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Latch the chain from the near post across the painted gap.",
+            "target": "near-post",
+            "tool": "field-chain",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.gapRead"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.gapBridged"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Cross and leave north.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.gapBridged"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the gap length. | action=interact | target=gap-paint | tool=none | requires=none | sets=dg13.gapRead",
+        "2. Latch the chain from the near post across the painted gap. | action=use-tool | target=near-post | tool=field-chain | requires=dg13.gapRead | sets=dg13.gapBridged",
+        "3. Cross and leave north. | action=traverse | exit=north | tool=none | requires=dg13.gapBridged | sets=none",
+        "4. Room clear is recorded as cleared.DG13.R08. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "commissioner-gap",
+            "tiles": [
+              {
+                "x": 9,
+                "y": 5
+              }
+            ],
+            "tell": "gap-paint",
+            "fatal": true,
+            "effect": "fall",
+            "note": "Walking the void tile without the bridge is a fall."
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.gapRead",
+        "dg13.gapBridged",
+        "cleared.DG13.R08",
+        "visited.DG13.R08"
+      ]
+    },
+    {
+      "id": "DG13.R09",
+      "dungeon": "DG13",
+      "name": "Overseer's Bench",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Critical witness. The bench looks blank until the lamp shows gouged names. Reading them is the same act as opening the north door.",
+      "layoutNote": "A waiting room. The bench fills the west. The north door is dark until the scratches are lit.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.######.........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R08",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R10",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "disc.erased.overseerBench"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "overseer",
+          "name": "Overseer of the Poor",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "overseer.line1",
+              "text": "If the bench is blank, you have not lit it. I do not keep a second list."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "waiting-bench",
+          "name": "Gouged bench",
+          "kind": "bench",
+          "pos": {
+            "x": 4,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "UNDER THE LAMP: OTTER CREW, NIGHT, NO LINE ON THE LIST.",
+          "text": null,
+          "textByDecision": null,
+          "note": "The inscription is not visible until the lamp is used. The use writes it into the field book."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R09.use-tool.waiting-bench",
+          "kind": "use-tool",
+          "target": "waiting-bench",
+          "tool": "office-lamp",
+          "sets": [
+            "disc.erased.overseerBench"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R09.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "disc.erased.overseerBench"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R10",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R09",
+        "survivesDeath": [
+          "disc.erased.overseerBench",
+          "cleared.DG13.R09",
+          "visited.DG13.R09"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R09",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R09"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Lamp the bench. The scratches become readable and are copied into the field book.",
+            "target": "waiting-bench",
+            "tool": "office-lamp",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "disc.erased.overseerBench"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The north door opens because the names were seen.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "disc.erased.overseerBench"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Lamp the bench. The scratches become readable and are copied into the field book. | action=use-tool | target=waiting-bench | tool=office-lamp | requires=none | sets=disc.erased.overseerBench",
+        "2. The north door opens because the names were seen. | action=traverse | exit=north | tool=none | requires=disc.erased.overseerBench | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R09. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "disc.erased.overseerBench",
+        "cleared.DG13.R09",
+        "visited.DG13.R09"
+      ]
+    },
+    {
+      "id": "DG13.R10",
+      "dungeon": "DG13",
+      "name": "Trustee's Landings",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Three landings pretend to be the stair. The plumb shows the vertical one. The other two return you to the bottom without a death.",
+      "layoutNote": "Three pads at y=4. Only the center-east pad is true. A sign at the bottom states that the bob, not the banister, is the stair.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#...+..+.....+...#",
+          "#................#",
+          "#..##........##..#",
+          "#..##........##..#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R09",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R11",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.landingTrue"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "trustee",
+          "name": "School Trustee",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "trustee.line1",
+              "text": "Children are not in this stair. Grades are landings. Only one is vertical."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "sign-landings",
+          "name": "Landing sign",
+          "kind": "sign",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THE BOB NAMES THE TRUE LANDING. FALSE LANDINGS PUT YOU BACK AT THIS SIGN.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "landing-west",
+          "name": "West landing",
+          "kind": "landing",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "False. Returns you to the sign."
+        },
+        {
+          "id": "landing-mid",
+          "name": "Mid landing",
+          "kind": "landing",
+          "pos": {
+            "x": 7,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "False. Returns you to the sign."
+        },
+        {
+          "id": "landing-true",
+          "name": "True landing",
+          "kind": "landing",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The plumb hangs square only here."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R10.interact.sign-landings",
+          "kind": "interact",
+          "target": "sign-landings",
+          "tool": null,
+          "sets": [
+            "dg13.landingSign"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R10.use-tool.landing-true",
+          "kind": "use-tool",
+          "target": "landing-true",
+          "tool": "plumb-bob",
+          "sets": [
+            "dg13.landingTrue"
+          ],
+          "requires": [
+            "dg13.landingSign"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R10.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.landingTrue"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R11",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R10",
+        "survivesDeath": [
+          "dg13.landingSign",
+          "dg13.landingTrue",
+          "cleared.DG13.R10",
+          "visited.DG13.R10"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R10",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R10"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read the sign.",
+            "target": "sign-landings",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.landingSign"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Hang the plumb over the true landing. It squares. The north stair opens.",
+            "target": "landing-true",
+            "tool": "plumb-bob",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.landingSign"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.landingTrue"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Climb the true landing.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.landingTrue"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read the sign. | action=interact | target=sign-landings | tool=none | requires=none | sets=dg13.landingSign",
+        "2. Hang the plumb over the true landing. It squares. The north stair opens. | action=use-tool | target=landing-true | tool=plumb-bob | requires=dg13.landingSign | sets=dg13.landingTrue",
+        "3. Climb the true landing. | action=traverse | exit=north | tool=none | requires=dg13.landingTrue | sets=none",
+        "4. Room clear is recorded as cleared.DG13.R10. Death does not erase it."
+      ],
+      "death": {
+        "hazards": [
+          {
+            "id": "false-landings",
+            "tiles": [
+              {
+                "x": 4,
+                "y": 4
+              },
+              {
+                "x": 7,
+                "y": 4
+              }
+            ],
+            "tell": "sign-landings",
+            "fatal": false,
+            "effect": "return-to-bottom"
+          }
+        ]
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.landingSign",
+        "dg13.landingTrue",
+        "cleared.DG13.R10",
+        "visited.DG13.R10"
+      ]
+    },
+    {
+      "id": "DG13.R11",
+      "dungeon": "DG13",
+      "name": "Mill Agent's Desk",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Align the glass on the two posts whose numbers match. The mill decision changes the desk's papers and never the door.",
+      "layoutNote": "A desk west. Two numbered posts stand east of the aisle, off the landing column.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.####...........#",
+          "#.####...........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R10",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R12",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.millAligned"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "agent",
+          "name": "Mill Agent",
+          "kind": "npc",
+          "pos": {
+            "x": 4,
+            "y": 6
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "agent.line1",
+              "text": "I file whatever the mill became. The posts are the door, not my papers."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 6
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "post-4",
+          "name": "Post marked 4",
+          "kind": "post",
+          "pos": {
+            "x": 12,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "4",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "post-9",
+          "name": "Post marked 9",
+          "kind": "post",
+          "pos": {
+            "x": 14,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "9",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "desk-mill",
+          "name": "Agent desk",
+          "kind": "desk",
+          "pos": {
+            "x": 3,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": {
+            "domain": "mill",
+            "prepared": "The settlement you helped the mill keep is copied here, unsigned by the office.",
+            "neglected": "The desk's mill page is blank. No one wrote that you helped.",
+            "opposed": "The page records you with the office against the mill's unlisted race.",
+            "unknown": "The mill page has no record yet. The posts still work."
+          },
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R11.interact.post-4",
+          "kind": "interact",
+          "target": "post-4",
+          "tool": null,
+          "sets": [
+            "dg13.post4"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R11.interact.post-9",
+          "kind": "interact",
+          "target": "post-9",
+          "tool": null,
+          "sets": [
+            "dg13.post9"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R11.use-tool.post-4",
+          "kind": "use-tool",
+          "target": "post-4",
+          "tool": "transit-glass",
+          "sets": [
+            "dg13.millAligned"
+          ],
+          "requires": [
+            "dg13.post4",
+            "dg13.post9"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R11.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.millAligned"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R12",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R11",
+        "survivesDeath": [
+          "dg13.post4",
+          "dg13.post9",
+          "dg13.millAligned",
+          "cleared.DG13.R11",
+          "visited.DG13.R11"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R11",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R11"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Read post 4.",
+            "target": "post-4",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.post4"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "interact",
+            "note": "Read post 9. The glass wants the pair.",
+            "target": "post-9",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.post9"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "use-tool",
+            "note": "Sight from post 4 to post 9. The line is the door.",
+            "target": "post-4",
+            "tool": "transit-glass",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.post4",
+              "dg13.post9"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.millAligned"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Take the aligned door.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.millAligned"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Read post 4. | action=interact | target=post-4 | tool=none | requires=none | sets=dg13.post4",
+        "2. Read post 9. The glass wants the pair. | action=interact | target=post-9 | tool=none | requires=none | sets=dg13.post9",
+        "3. Sight from post 4 to post 9. The line is the door. | action=use-tool | target=post-4 | tool=transit-glass | requires=dg13.post4 & dg13.post9 | sets=dg13.millAligned",
+        "4. Take the aligned door. | action=traverse | exit=north | tool=none | requires=dg13.millAligned | sets=none",
+        "5. Room clear is recorded as cleared.DG13.R11. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.post4",
+        "dg13.post9",
+        "dg13.millAligned",
+        "cleared.DG13.R11",
+        "visited.DG13.R11"
+      ]
+    },
+    {
+      "id": "DG13.R12",
+      "dungeon": "DG13",
+      "name": "Ferry Tender's Window",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "A window onto water that is not there. The lead reports snow waiting. That report opens the archive.",
+      "layoutNote": "The north wall is mostly window. A dry sill projects at x=12,y=3. No water tiles yet.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..####..........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R11",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R13",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.noWaterYet"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "tender",
+          "name": "Ferry Tender",
+          "kind": "npc",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "tender.line1",
+              "text": "Don't step through. Sound it. I already know it is not water."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "dry-sill",
+          "name": "Dry sill",
+          "kind": "window",
+          "pos": {
+            "x": 12,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "SOUND BEFORE YOU TRUST A WINDOW.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R12.use-tool.dry-sill",
+          "kind": "use-tool",
+          "target": "dry-sill",
+          "tool": "sounding-lead",
+          "sets": [
+            "dg13.noWaterYet"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R12.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.noWaterYet"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R13",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R12",
+        "survivesDeath": [
+          "dg13.noWaterYet",
+          "cleared.DG13.R12",
+          "visited.DG13.R12"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R12",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R12"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Drop the lead through the window. It reports: no water, snow waiting.",
+            "target": "dry-sill",
+            "tool": "sounding-lead",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.noWaterYet"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "The archive door opens on the report.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.noWaterYet"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. Drop the lead through the window. It reports: no water, snow waiting. | action=use-tool | target=dry-sill | tool=sounding-lead | requires=none | sets=dg13.noWaterYet",
+        "2. The archive door opens on the report. | action=traverse | exit=north | tool=none | requires=dg13.noWaterYet | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R12. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.noWaterYet",
+        "cleared.DG13.R12",
+        "visited.DG13.R12"
+      ]
+    },
+    {
+      "id": "DG13.R13",
+      "dungeon": "DG13",
+      "name": "Archive of Appointments",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "File the copy you made in the clerk's cage. The archive does not accept a retelling.",
+      "layoutNote": "Shelves west and east leave the aisle. The filing slot is on the east shelf.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#.###........###.#",
+          "#.###........###.#",
+          "#.###............#",
+          "#.###............#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R12",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R14",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.copyFiled"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "archivist",
+          "name": "Archivist",
+          "kind": "npc",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "archivist.line1",
+              "text": "The slot takes the copy in the book. It does not take a speech."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "file-slot",
+          "name": "Filing slot",
+          "kind": "slot",
+          "pos": {
+            "x": 14,
+            "y": 6
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Accepts dg13.appointmentsCopied and nothing handwritten fresh."
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R13.use-tool.file-slot",
+          "kind": "use-tool",
+          "target": "file-slot",
+          "tool": "field-book",
+          "sets": [
+            "dg13.copyFiled"
+          ],
+          "requires": [
+            "dg13.appointmentsCopied"
+          ],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R13.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.copyFiled"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R14",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R13",
+        "survivesDeath": [
+          "dg13.copyFiled",
+          "cleared.DG13.R13",
+          "visited.DG13.R13"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R13",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R13"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "File the copied appointments. The slot latches.",
+            "target": "file-slot",
+            "tool": "field-book",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.appointmentsCopied"
+            ],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.copyFiled"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Go on to the antechamber.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.copyFiled"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [],
+      "solutionTrace": [
+        "1. File the copied appointments. The slot latches. | action=use-tool | target=file-slot | tool=field-book | requires=dg13.appointmentsCopied | sets=dg13.copyFiled",
+        "2. Go on to the antechamber. | action=traverse | exit=north | tool=none | requires=dg13.copyFiled | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R13. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.copyFiled",
+        "cleared.DG13.R13",
+        "visited.DG13.R13"
+      ]
+    },
+    {
+      "id": "DG13.R14",
+      "dungeon": "DG13",
+      "name": "Antechamber of the Empty Chair",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": true,
+      "purpose": "The mayor's peg will lock the next door if you hang a coat on it. Leave it empty on purpose.",
+      "layoutNote": "A row of office pegs along the west. The mayor peg is marked EMPTY and stands apart at x=13,y=4. The aisle is clear.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#.#####..........#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R13",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R15",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.pegLeftEmpty"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "usher",
+          "name": "Usher",
+          "kind": "npc",
+          "pos": {
+            "x": 4,
+            "y": 8
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "usher.line1",
+              "text": "Every office has a peg. The mayor's peg is the one that must stay empty."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 4,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "mayor-peg",
+          "name": "Mayor peg",
+          "kind": "peg",
+          "pos": {
+            "x": 13,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "MAYOR — LEAVE EMPTY",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "other-pegs",
+          "name": "Office pegs",
+          "kind": "peg",
+          "pos": {
+            "x": 3,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "CLERK, LISTER, FENCE VIEWER, CONSTABLE. NONE OF THESE IS THE DOOR.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R14.interact.mayor-peg",
+          "kind": "interact",
+          "target": "mayor-peg",
+          "tool": null,
+          "sets": [
+            "dg13.pegLeftEmpty"
+          ],
+          "requires": [],
+          "requiresAbsent": [
+            "dg13.mayorPegFilled"
+          ]
+        },
+        {
+          "id": "tr.DG13.R14.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.pegLeftEmpty"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R15",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R14",
+        "survivesDeath": [
+          "dg13.pegLeftEmpty",
+          "dg13.mayorPegFilled",
+          "cleared.DG13.R14",
+          "visited.DG13.R14"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R14",
+          "meta.embryonic"
+        ],
+        "checkpoint": true,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R14"
+        ],
+        "note": "Choosing the empty peg survives death. A coat hung here and not retrieved remains as a previous body after death and still blocks the door until taken off."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "interact",
+            "note": "Confirm the mayor peg is empty. Do not hang the coat.",
+            "target": "mayor-peg",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [
+              "dg13.mayorPegFilled"
+            ],
+            "sets": [
+              "dg13.pegLeftEmpty"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Enter the mayor's chamber.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.pegLeftEmpty"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "hang-then-remove",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "use-tool",
+              "note": "Hang the coat. The north door locks, which the usher states aloud.",
+              "target": "mayor-peg",
+              "tool": "borrowed-coat",
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "dg13.mayorPegFilled"
+              ],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "interact",
+              "note": "Take the coat off. The peg is empty again.",
+              "target": "mayor-peg",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg13.mayorPegFilled"
+              ],
+              "requiresAbsent": [],
+              "sets": [
+                "dg13.pegLeftEmpty"
+              ],
+              "clears": [
+                "dg13.mayorPegFilled"
+              ],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Enter once the peg is empty.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg13.pegLeftEmpty"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Confirm the mayor peg is empty. Do not hang the coat. | action=interact | target=mayor-peg | tool=none | requires=none | absent=dg13.mayorPegFilled | sets=dg13.pegLeftEmpty",
+        "2. Enter the mayor's chamber. | action=traverse | exit=north | tool=none | requires=dg13.pegLeftEmpty | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R14. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.pegLeftEmpty",
+        "dg13.mayorPegFilled",
+        "cleared.DG13.R14",
+        "visited.DG13.R14"
+      ]
+    },
+    {
+      "id": "DG13.R15",
+      "dungeon": "DG13",
+      "name": "Chamber of the Empty Mayor",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "Boss. Adjourn the vacancy. Do not become it.",
+      "layoutNote": "A horseshoe dais. The chair is north of center but off the door column, at x=6,y=3. Three roll doors are painted on the east wall as objects. The ordinance lectern is west.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#..###......####.#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R14",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG13.R16",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.emptyMayorAdjourned"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "empty-mayor",
+          "name": "The Empty Mayor",
+          "kind": "boss",
+          "pos": {
+            "x": 6,
+            "y": 3
+          },
+          "solid": true,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "empty-mayor.line1",
+              "text": "Motion: that a body be assigned the chair."
+            },
+            {
+              "id": "empty-mayor.line2",
+              "text": "The roll is open."
+            },
+            {
+              "id": "empty-mayor.line3",
+              "text": "Ordinance: a mayor must be a name."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 6,
+            "y": 3
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "chair",
+          "name": "Empty chair",
+          "kind": "chair",
+          "pos": {
+            "x": 7,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "ribbon",
+          "name": "Appointment ribbon",
+          "kind": "ribbon",
+          "pos": {
+            "x": 6,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "Appears if you sit. The knife cuts it."
+        },
+        {
+          "id": "roll-doors",
+          "name": "Roll board",
+          "kind": "board",
+          "pos": {
+            "x": 13,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "1 EAST DOOR, 2 MIDDLE DOOR, 3 WEST DOOR.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        },
+        {
+          "id": "ordinance",
+          "name": "Ordinance sheet",
+          "kind": "document",
+          "pos": {
+            "x": 4,
+            "y": 4
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "A MAYOR MUST BE A NAME. WRITE: VACANT. OR STAMP: VACANT.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R15.boss.empty-mayor",
+          "kind": "boss",
+          "target": "empty-mayor",
+          "tool": null,
+          "sets": [
+            "dg13.emptyMayorAdjourned"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R15.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.emptyMayorAdjourned"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG13.R16",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R15",
+        "survivesDeath": [
+          "dg13.emptyMayorAdjourned",
+          "cleared.DG13.R15",
+          "visited.DG13.R15"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R15",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R15"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "boss",
+            "note": "Adjourn the Empty Mayor by the posted roll and by writing vacant.",
+            "target": "empty-mayor",
+            "tool": null,
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": [
+              {
+                "event": "sit",
+                "note": "Sit in the empty chair. A ribbon pins the current body."
+              },
+              {
+                "event": "cut-ribbon",
+                "tool": "field-knife",
+                "note": "Cut the appointment ribbon."
+              },
+              {
+                "event": "leave-dais",
+                "note": "Step off the dais without a name in the chair."
+              },
+              {
+                "event": "ring",
+                "door": 1,
+                "tool": "county-bell",
+                "note": "Ring the first door on the roll board."
+              },
+              {
+                "event": "ring",
+                "door": 2,
+                "tool": "county-bell",
+                "note": "Ring the second door."
+              },
+              {
+                "event": "ring",
+                "door": 3,
+                "tool": "county-bell",
+                "note": "Ring the third door. The roll closes."
+              },
+              {
+                "event": "write-vacant",
+                "tool": "field-book",
+                "note": "Write the ordinance line already printed: vacant."
+              }
+            ],
+            "machine": "boss.empty-mayor",
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.emptyMayorAdjourned"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Climb to the roof of names.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.emptyMayorAdjourned"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "stamp-vacant",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "boss",
+              "note": "Alternate adjournment by seal. Sets mayorSealedVacant inside the machine.",
+              "target": "empty-mayor",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": [
+                {
+                  "event": "leave-dais",
+                  "note": "Leave the dais without sitting."
+                },
+                {
+                  "event": "ring",
+                  "door": 1,
+                  "tool": "county-bell",
+                  "note": "Ring 1."
+                },
+                {
+                  "event": "ring",
+                  "door": 2,
+                  "tool": "county-bell",
+                  "note": "Ring 2."
+                },
+                {
+                  "event": "ring",
+                  "door": 3,
+                  "tool": "county-bell",
+                  "note": "Ring 3."
+                },
+                {
+                  "event": "stamp-vacant",
+                  "tool": "office-seal",
+                  "note": "Stamp the ordinance vacant."
+                }
+              ],
+              "machine": "boss.empty-mayor",
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            },
+            {
+              "action": "traverse",
+              "note": "Leave.",
+              "target": null,
+              "tool": null,
+              "exit": "north",
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [
+                "dg13.emptyMayorAdjourned"
+              ],
+              "requiresAbsent": [],
+              "sets": [],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Adjourn the Empty Mayor by the posted roll and by writing vacant. | action=boss | target=empty-mayor | tool=none | requires=none | sets=dg13.emptyMayorAdjourned",
+        "  1.sit: Sit in the empty chair. A ribbon pins the current body. tool=none",
+        "  1.cut-ribbon: Cut the appointment ribbon. tool=field-knife",
+        "  1.leave-dais: Step off the dais without a name in the chair. tool=none",
+        "  1.ring: Ring the first door on the roll board. tool=county-bell",
+        "  1.ring: Ring the second door. tool=county-bell",
+        "  1.ring: Ring the third door. The roll closes. tool=county-bell",
+        "  1.write-vacant: Write the ordinance line already printed: vacant. tool=field-book",
+        "2. Climb to the roof of names. | action=traverse | exit=north | tool=none | requires=dg13.emptyMayorAdjourned | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R15. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.emptyMayorAdjourned",
+        "cleared.DG13.R15",
+        "visited.DG13.R15"
+      ]
+    },
+    {
+      "id": "DG13.R16",
+      "dungeon": "DG13",
+      "name": "Roof of Names",
+      "environment": null,
+      "region": "dg13.house",
+      "checkpoint": false,
+      "purpose": "The needle wakes and points toward the lake. A plaque names a house that was never appointed. Reading it is optional and is not a Refuse requirement.",
+      "layoutNote": "Open roof, low parapet walls at the corners. The lake side is the north door.",
+      "bounds": {
+        "w": 18,
+        "h": 11,
+        "unit": "tile"
+      },
+      "tileset": "addison-interior",
+      "legend": {
+        "#": "wall",
+        ".": "floor",
+        "D": "door",
+        "~": "water",
+        "V": "void",
+        "=": "ice",
+        ",": "snow",
+        ":": "bridge",
+        "+": "marked-station"
+      },
+      "layout": {
+        "rows": [
+          "#########D########",
+          "#................#",
+          "#.##..........##.#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#................#",
+          "#########D########"
+        ]
+      },
+      "exits": [
+        {
+          "id": "south",
+          "facing": "south",
+          "tile": {
+            "x": 9,
+            "y": 10
+          },
+          "landing": {
+            "room": "DG13.R15",
+            "x": 9,
+            "y": 1
+          },
+          "requires": [],
+          "kind": "door"
+        },
+        {
+          "id": "north",
+          "facing": "north",
+          "tile": {
+            "x": 9,
+            "y": 0
+          },
+          "landing": {
+            "room": "DG14.R01",
+            "x": 9,
+            "y": 9
+          },
+          "requires": [
+            "dg13.emptyMayorAdjourned"
+          ],
+          "kind": "door"
+        }
+      ],
+      "actors": [
+        {
+          "id": "wind",
+          "name": "Roof wind",
+          "kind": "fixture",
+          "pos": {
+            "x": 14,
+            "y": 8
+          },
+          "solid": false,
+          "joinsParty": false,
+          "dialogue": [
+            {
+              "id": "wind.line1",
+              "text": "The needle was stone. It is trying to be a direction."
+            }
+          ],
+          "onDeathReset": "return-to-start",
+          "start": {
+            "x": 14,
+            "y": 8
+          }
+        }
+      ],
+      "objects": [
+        {
+          "id": "needle-peg",
+          "name": "Needle peg",
+          "kind": "peg",
+          "pos": {
+            "x": 4,
+            "y": 3
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": null,
+          "text": null,
+          "textByDecision": null,
+          "note": "The marble needle lifts off the peg when touched."
+        },
+        {
+          "id": "unappointed-plaque",
+          "name": "Unappointed plaque",
+          "kind": "plaque",
+          "pos": {
+            "x": 13,
+            "y": 7
+          },
+          "blocksMovement": false,
+          "tool": null,
+          "inscription": "THERE IS A HOUSE THAT WAS NEVER APPOINTED. IT IS NOT THIS ONE.",
+          "text": null,
+          "textByDecision": null,
+          "note": null
+        }
+      ],
+      "transitions": [
+        {
+          "id": "tr.DG13.R16.use-tool.needle-peg",
+          "kind": "use-tool",
+          "target": "needle-peg",
+          "tool": "marble-needle",
+          "sets": [
+            "dg13.needleToLake"
+          ],
+          "requires": [],
+          "requiresAbsent": []
+        },
+        {
+          "id": "tr.DG13.R16.north",
+          "kind": "exit",
+          "when": {
+            "op": "and",
+            "conds": [
+              {
+                "op": "flag",
+                "flag": "dg13.emptyMayorAdjourned"
+              }
+            ]
+          },
+          "exit": "north",
+          "to": {
+            "room": "DG14.R01",
+            "x": 9,
+            "y": 9
+          }
+        }
+      ],
+      "persistence": {
+        "visitedFlag": "visited.DG13.R16",
+        "survivesDeath": [
+          "dg13.needleToLake",
+          "disc.quiet.unappointedPlaque",
+          "cleared.DG13.R16",
+          "visited.DG13.R16"
+        ],
+        "resetsOnDeath": [
+          "strike.dg13.house",
+          "hazard.DG13.R16",
+          "meta.embryonic"
+        ],
+        "checkpoint": false,
+        "region": "dg13.house",
+        "onLeave": [
+          "visited.DG13.R16"
+        ],
+        "note": "Puzzle results and discoveries remain after a death. Strike counts, embryonic form, and in-progress boss indices do not. Actor positions return to their starts."
+      },
+      "solution": {
+        "id": "main",
+        "when": {
+          "op": "always"
+        },
+        "steps": [
+          {
+            "action": "use-tool",
+            "note": "Lift the needle. It points to the lake cut.",
+            "target": "needle-peg",
+            "tool": "marble-needle",
+            "exit": null,
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [],
+            "requiresAbsent": [],
+            "sets": [
+              "dg13.needleToLake"
+            ],
+            "clears": [],
+            "value": true
+          },
+          {
+            "action": "traverse",
+            "note": "Leave toward the lake.",
+            "target": null,
+            "tool": null,
+            "exit": "north",
+            "event": null,
+            "line": null,
+            "script": null,
+            "machine": null,
+            "requires": [
+              "dg13.emptyMayorAdjourned"
+            ],
+            "requiresAbsent": [],
+            "sets": [],
+            "clears": [],
+            "value": true
+          }
+        ]
+      },
+      "alternates": [
+        {
+          "id": "read-plaque",
+          "when": {
+            "op": "always"
+          },
+          "steps": [
+            {
+              "action": "interact",
+              "note": "Read the plaque. Optional corroboration, not a required witness.",
+              "target": "unappointed-plaque",
+              "tool": null,
+              "exit": null,
+              "event": null,
+              "line": null,
+              "script": null,
+              "machine": null,
+              "requires": [],
+              "requiresAbsent": [],
+              "sets": [
+                "disc.quiet.unappointedPlaque"
+              ],
+              "clears": [],
+              "value": true
+            }
+          ]
+        }
+      ],
+      "solutionTrace": [
+        "1. Lift the needle. It points to the lake cut. | action=use-tool | target=needle-peg | tool=marble-needle | requires=none | sets=dg13.needleToLake",
+        "2. Leave toward the lake. | action=traverse | exit=north | tool=none | requires=dg13.emptyMayorAdjourned | sets=none",
+        "3. Room clear is recorded as cleared.DG13.R16. Death does not erase it."
+      ],
+      "death": {
+        "hazards": []
+      },
+      "orderPuzzle": null,
+      "produces": [
+        "dg13.needleToLake",
+        "disc.quiet.unappointedPlaque",
+        "cleared.DG13.R16",
+        "visited.DG13.R16"
+      ]
+    }
+  ]
+}

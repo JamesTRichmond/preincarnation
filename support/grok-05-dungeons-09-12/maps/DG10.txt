@@ -1,0 +1,311 @@
+DG10 The Ferryman's Ledger
+Boss: The Collector in DG10-R14. Miniboss in DG10-R10.
+Entry DG10-R01 @ 3,6.
+Legend: # ruin or wall, . floor, , road, ~ water, G gust, + gated, ! hazard. Letters are objects.
+
+DG10-R01  Landing Stair  [main]  18x12
+Ledger Landing. The board shows four object-hooks and nothing that can be spent.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+#........N.#######
+#.V........#######
+#.....*..........#
+###...L..........#
+##...............#
+##.@F,,,,,,,,,,,E#
+##...............#
+#####......#######
+#####......#######
+########.D.#######
+##################
+  east@16,6 -> DG10-R02 [walk] if open
+  north@9,1 -> DG10-R08 [walk] if open
+  down@9,10 -> DG10-R12 [walk] if open
+  board@4,6 -> DG10-R04 [board] if open
+  god-fly-lake@2,2 -> DG10-R05 [walk] if open
+
+DG10-R02  Ticket Cradle  [main]  18x12
+The marble ticket waits on its cradle. It is the first line's object, not a fare.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+#.........########
+#.......t.########
+#W........########
+#.........########
+##################
+##################
+##################
+##################
+  west@1,6 -> DG10-R01 [walk] if open
+
+DG10-R03  West Sluice  [main]  18x12
+Ferry dock for the west channel. A chain, not a payment, opens the cabin.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...############
+###..............#
+###.F...H,,,,,,,E#
+###..............#
+##################
+##################
+##################
+##################
+  board@4,6 -> DG10-R04 [board] if open
+  east@16,6 -> DG10-R09 [walk] if dg10.chain
+
+DG10-R04  Ferry Deck  [main]  18x12
+The deck is the only crossing. Home plank returns to the landing. Channel plank obeys one lever.
+persistent: flags, hooked-debts, collected-rewards
+reset: ferry-position-on-transition-death, carried-object-on-transition-death, hazards
+##################
+##################
+##################
+########.........#
+########.*.......#
+#................#
+#.H,,,,,,F,,,,,C.#
+#................#
+########...#######
+########...#######
+########...#######
+##################
+  launch-home@2,6 -> DG10-R01 [ferry-launch] if open
+  launch-channel@15,6 -> DG10-R05 [ferry-launch] if open
+  graph-home@9,9 -> DG10-R01 [graph] if open
+  graph-default@9,9 -> DG10-R05 [graph] if open
+  graph-w@9,9 -> DG10-R03 [graph] if open
+  graph-e@9,9 -> DG10-R06 [graph] if open
+  graph-s@9,9 -> DG10-R11 [graph] if open
+
+DG10-R05  Hook Hall  [main]  18x12
+Four hooks. Each accepts one object. The north door reads the four lines.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+###......N.#######
+###........#######
+###...........####
+###...k.k.k.k.####
+###...........####
+###.F.........####
+###...........####
+###.*.############
+###...############
+##################
+##################
+  board@4,6 -> DG10-R04 [board] if open
+  north@9,1 -> DG10-R13 [walk] if dg10.D1+dg10.D2+dg10.D3+dg10.D4
+
+DG10-R06  East Channel  [main]  18x12
+East dock. A side pool holds a shell that the ledger will not accept.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+#######...########
+#######.s~########
+#######.~.########
+#######...########
+###..............#
+###.F...........E#
+###..............#
+###.*.############
+###...############
+##################
+##################
+  board@4,6 -> DG10-R04 [board] if open
+  east@16,6 -> DG10-R07 [walk] if open
+
+DG10-R07  Bell Tower  [main]  18x12
+The ferry bell's cradle. Above it, the night crib is optional.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+########.U.#######
+###...##...#######
+###.*.##...#######
+#..........#######
+#.......b..#######
+#W.........#######
+#..........#######
+##################
+##################
+##################
+##################
+  west@1,6 -> DG10-R06 [walk] if open
+  up@9,1 -> DG10-R16 [walk] if open
+
+DG10-R08  Machinery Loft  [main]  18x12
+Three levers, one channel. The wall diagram is the whole machine.
+persistent: channel-levers, flags
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+###...############
+###.*.############
+###...############
+###...........####
+###.W...E...S.####
+###...........####
+###...#.......####
+###...#.......####
+###...........####
+###......s....####
+##################
+  south@9,10 -> DG10-R01 [walk] if open
+
+DG10-R09  Red Lantern Cabin  [main]  18x12
+Cradle of the red lantern, the third line's object.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+#.........########
+#.......L.########
+#W........########
+#.........########
+##################
+##################
+##################
+##################
+  west@1,6 -> DG10-R03 [walk] if open
+
+DG10-R10  Oarlock Vault  [main]  18x12
+The Chain Warden guards the oarlock. Stand at the painted chest: pins 1-2-3, then the hammer. A miss resets and spends nothing.
+persistent: miniboss-defeat, hooked-debts, flags
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##.....###########
+##..*..###########
+##..........######
+#...........######
+#...........######
+#W......,...######
+#...........######
+#.......o...######
+#..........#######
+#..........#######
+##################
+  west@1,6 -> DG10-R11 [walk] if open
+
+DG10-R11  South Run  [main]  18x12
+South dock. East is the vault. North is the crane.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+########.N.#######
+###...##...#######
+###.*.##...#######
+###...##...#######
+###..............#
+###.F...,,,,,,,,E#
+###..............#
+##################
+##################
+##################
+##################
+  board@4,6 -> DG10-R04 [board] if open
+  east@16,6 -> DG10-R10 [walk] if open
+  north@9,1 -> DG10-R15 [walk] if open
+
+DG10-R12  Keel Walk  [optional]  18x12
+Under the landing. A scratched line with Ellis's name and no hook.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+#######..U.#######
+###...#....#######
+###.*.#....#######
+###...#...########
+#######...########
+#######.D.########
+#######...########
+##################
+##################
+##################
+##################
+  up@9,1 -> DG10-R01 [walk] if open
+
+DG10-R13  Antechamber  [main]  18x12
+The four struck lines are copied on the door. The Collector is east.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+########.........#
+########.........#
+########.........#
+###...##...####..#
+###.*............#
+###.....,,,,,,,,E#
+###..............#
+########...####..#
+########.........#
+########.S.......#
+##################
+  south@9,10 -> DG10-R05 [walk] if open
+  east@16,6 -> DG10-R14 [walk] if dg10.D1+dg10.D2+dg10.D3+dg10.D4
+
+DG10-R14  The Collector  [main]  18x12
+The Collector tries to add Ellis as a line. Each proof is a mark on the floor. Glass, the bell, the line, the seal. God-light is refused.
+persistent: collected-rewards, hooked-debts, flags
+reset: boss-phase-if-not-defeated, enemy-positions
+##################
+##..........######
+##..*........#####
+##.............###
+#................#
+#................#
+#.......,,......E#
+#................#
+#................#
+#######.....######
+#######..S..######
+##################
+  south@9,10 -> DG10-R13 [walk] if open
+  east@16,6 -> COUNTY:CHAMPLAIN-SHORE [walk] if dg10.cleared
+
+DG10-R15  High Crane  [optional]  18x12
+Optional return rope to the landing once the pin is hammered. It skips a home crossing, not a debt.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...#..........#
+#######.H,,,,,,,.#
+#######.........R#
+#######..........#
+#######...########
+#######....#######
+#######..S.#######
+##################
+  south@9,10 -> DG10-R11 [walk] if open
+  rope@16,6 -> DG10-R01 [walk] if dg10.crane
+
+DG10-R16  Night Crib  [optional]  18x12
+Optional glass shows passengers the ferry never carried.
+persistent: flags, hooked-debts, collected-rewards
+reset: enemy-positions, ferry-position-on-transition-death, carried-object-on-transition-death
+##################
+##################
+###...############
+###.*.############
+###...############
+#######...########
+#######.g.########
+#######...########
+#######...########
+#######....#######
+#######..D.#######
+##################
+  down@9,10 -> DG10-R07 [walk] if open

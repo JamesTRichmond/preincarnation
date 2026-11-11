@@ -1,0 +1,1 @@
+npm 10.9.9 npm ci failed: lock file ajv@6.15.0 does not satisfy ajv@8.20.0. Subsequent npm install without the lock crashed in @npmcli/arborist (edgesOut). Package was built with the sandbox toolchain @tanstack/react-start 1.168.60.
