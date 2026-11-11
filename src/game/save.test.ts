@@ -118,6 +118,41 @@ describe("migrate", () => {
     assert.equal(s.flags.lastSkillAward, 2);
     assert.ok(s.kitchen.known.length >= 12);
   });
+
+  it("keeps a v8 life and remembers the skill that death already paid", () => {
+    const raw = {
+      version: 8,
+      cycle: 4,
+      karma: 1,
+      crowns: 1,
+      incarnation: "smuggler",
+      upgrades: { vitality: 2, edge: 1 },
+      flags: {
+        bottles: ["syrup", "empty"],
+        chests: ["in-int_sugar"],
+        caches: ["creemee-cup"],
+        lastDeed: "You spoke with Maeve on the Green",
+        returnedFromDeath: true,
+        townsCleared: ["quarry"],
+      },
+      maxHp: 5,
+      hp: 5,
+      mapId: "middlebury",
+      x: 40,
+      y: 40,
+      inventory: [],
+      equippedId: "",
+      character: { name: "Ira Fenn", skillPoints: 2, created: true, idealId: "the_job" },
+    } as unknown as SaveData;
+    const s = migrate(raw);
+    assert.equal(s.version, SAVE_VERSION);
+    assert.equal(s.flags.lastSkillAward, 2);
+    assert.equal(s.character.skillPoints, 2);
+    assert.equal(s.upgrades.vitality, 2);
+    assert.deepEqual(s.flags.bottles, ["syrup", "empty"]);
+    assert.deepEqual(s.flags.chests, ["in-int_sugar"]);
+    assert.equal(s.cycle, 4);
+  });
 });
 
 describe("writeSave / loadSave", () => {
