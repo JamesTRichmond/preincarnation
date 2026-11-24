@@ -1,14 +1,14 @@
 # PREINCARNATION: CEO Status
 
-_Updated 2026-11-18T02:19:15.411Z. Main at `b8d621e`._
+_Updated 2026-11-24T02:00:29.982Z. Main at `ff6179d`._
 
-## Health of main (`b8d621e`)
+## Health of main (`ff6179d`)
 
 | Gate | Result |
 |---|---|
 | SAVE_VERSION | 9 |
-| Vision | Marble Vein is the sole plot. One person. Death is exactly fourteen winters. 320×240. No accounts, live geo, or weather. |
-| Density path | Not mounted. See ops/DENSITY.md. James's decision remains open. |
+| Vision | Marble Vein is the only plot. One person. Death is fourteen winters. 320×240. No accounts. No live geo or weather. |
+| Density path | Not mounted. See ops/DENSITY.md. That call is James's. |
 | Support packs | Isolated; they do not touch the walk. |
 | `test:game` | Green (542 tests). |
 | Engine, save, and live systems | Untouched; this is a docs-only update. |
